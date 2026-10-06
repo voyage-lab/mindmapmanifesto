@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Why You Tell Yourself What You Want Is Not Available</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&amp;family=Inter:wght@200;300;400;500&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css">
+<style>
+:root{--w:rgba(238,240,255,0.92);--a:rgba(130,200,255,1);--a2:rgba(130,200,255,0.42);--v:rgba(180,120,255,0.85);--glass:rgba(12,16,38,0.46)}
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar{width:16.67%}
+#r1:checked~#bar{width:33.33%}
+#r2:checked~#bar{width:50.00%}
+#r3:checked~#bar{width:66.67%}
+#r4:checked~#bar{width:83.33%}
+#r5:checked~#bar{width:100.00%}
+#r0:checked~#stage #s0, #r1:checked~#stage #s1, #r2:checked~#stage #s2, #r3:checked~#stage #s3, #r4:checked~#stage #s4, #r5:checked~#stage #s5{opacity:1;clip-path:inset(0);pointer-events:all}
+#r0:checked~#dnav label:nth-child(1), #r1:checked~#dnav label:nth-child(2), #r2:checked~#dnav label:nth-child(3), #r3:checked~#dnav label:nth-child(4), #r4:checked~#dnav label:nth-child(5), #r5:checked~#dnav label:nth-child(6){width:22px;border-radius:3px;background:var(--a2);box-shadow:0 0 12px rgba(130,200,255,.3)}
+
+:root {
+  --w:rgba(238,240,255,0.92);--a:rgba(130,200,255,1);--a2:rgba(130,200,255,0.42);--v:rgba(180,120,255,0.85);--glass:rgba(12,16,38,0.46)
+}
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar {
+  width:16.67%
+}
+
+:root {
+  --w:rgba(238,240,255,0.92);--a:rgba(130,200,255,1);--a2:rgba(130,200,255,0.42);--v:rgba(180,120,255,0.85);--glass:rgba(12,16,38,0.46)
+}
+
+@keyframes ob {
+  0%,100%{transform:translate(0,0)}40%{transform:translate(35px,25px)}70%{transform:translate(-20px,35px)}
+}
+
+#pts {
+  position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden
+}
+
+.pt {
+  position:absolute;border-radius:50%;animation:rise linear infinite;opacity:0
+}
+
+@keyframes rise {
+  0%{transform:translateY(105vh) scale(0);opacity:0}7%{opacity:.55}90%{opacity:.2}100%{transform:translateY(-8vh) scale(1.3);opacity:0}
+}
+
+.slide.on {
+  opacity:1;transform:scale(1) translateY(0);pointer-events:all
+}
+
+.slide.off {
+  opacity:0;transform:scale(.97) translateY(-20px);transition:opacity .4s ease,transform .4s ease
+}
+
+.orn {
+  display:flex;align-items:center;gap:14px;margin:0 auto 34px
+}
+
+.ol {
+  flex:1;height:1px;max-width:60px;background:linear-gradient(90deg,transparent,var(--a2))
+}
+
+.ol.r {
+  background:linear-gradient(90deg,var(--a2),transparent)
+}
+
+.og {
+  width:6px;height:6px;background:var(--a2);transform:rotate(45deg);box-shadow:0 0 10px rgba(130,200,255,.4)
+}
+
+.h1 em {
+  font-style:italic;color:var(--a)
+}
+
+.h1 strong {
+  font-weight:700
+}
+
+.h2 em {
+  font-style:italic;color:var(--a)
+}
+
+.bd em {
+  font-style:italic;color:rgba(160,215,255,.97)
+}
+
+.bd strong {
+  font-weight:700;color:var(--w)
+}
+
+.trio {
+  display:flex;flex-direction:column;gap:12px;max-width:660px;margin:30px auto 0
+}
+
+.tr {
+  background:var(--glass);border:1px solid rgba(130,200,255,.14);border-radius:3px;backdrop-filter:blur(12px);padding:16px 28px;font-family:'Libre Baskerville',serif;font-style:italic;font-size:clamp(14px,1.6vw,21px);color:rgba(200,225,255,.85);opacity:0;transform:translateX(-10px);animation:si .5s ease forwards
+}
+
+.tr:nth-child(1) {
+  animation-delay:.1s
+}
+
+.tr:nth-child(2) {
+  animation-delay:.25s
+}
+
+.tr:nth-child(3) {
+  animation-delay:.4s
+}
+
+@keyframes si {
+  to{opacity:1;transform:translateX(0)}
+}
+
+.pq {
+  position:relative;max-width:700px;margin:28px auto 0;padding:28px 36px;background:var(--glass);border:1px solid rgba(130,200,255,.15);border-radius:3px;backdrop-filter:blur(12px)
+}
+
+.pq::before {
+  content:'"';font-family:'Libre Baskerville',serif;font-size:90px;line-height:.4;color:rgba(130,200,255,.1);position:absolute;top:14px;left:16px;font-style:italic
+}
+
+.pq-t {
+  font-family:'Libre Baskerville',serif;font-style:italic;font-size:clamp(15px,1.75vw,23px);line-height:1.7;color:rgba(200,225,255,.88)
+}
+
+.pq-t em {
+  color:var(--a);font-style:normal
+}
+
+.sw {
+  max-width:700px;margin:0 auto
+}
+
+.sr {
+  display:flex;align-items:baseline;gap:16px;margin-bottom:20px;text-align:left
+}
+
+.sn {
+  font-family:'Libre Baskerville',serif;font-size:clamp(28px,3vw,40px);font-weight:700;color:rgba(130,200,255,.15);line-height:1;flex-shrink:0;width:36px
+}
+
+.st {
+  font-family:'Libre Baskerville',serif;font-size:clamp(15px,1.7vw,22px);line-height:1.65;color:rgba(215,230,255,.83)
+}
+
+.st em {
+  font-style:italic;color:rgba(160,215,255,.95)
+}
+
+.ac {
+  background:linear-gradient(135deg,rgba(16,22,58,.6),rgba(10,14,36,.5));border:1px solid rgba(130,200,255,.22);border-radius:4px;backdrop-filter:blur(16px);padding:38px 48px;max-width:680px;margin:28px auto 0;box-shadow:0 24px 70px rgba(0,0,0,.45),0 0 50px rgba(100,160,255,.06)
+}
+
+.ah {
+  font-family:'Libre Baskerville',serif;font-weight:700;font-size:clamp(13px,1.4vw,18px);letter-spacing:2px;text-transform:uppercase;color:var(--a2);margin-bottom:18px
+}
+
+.at {
+  font-family:'Libre Baskerville',serif;font-size:clamp(17px,2vw,26px);line-height:1.75;color:rgba(220,235,255,.88)
+}
+
+.at em {
+  font-style:italic;color:var(--a)
+}
+
+.at strong {
+  font-weight:700;color:var(--w)
+}
+
+.cta:hover {
+  border-color:rgba(130,200,255,.55);color:var(--a);box-shadow:0 0 28px rgba(110,175,255,.12)
+}
+
+.nb:hover {
+  border-color:rgba(130,200,255,.55);background:rgba(14,24,68,.6);color:#fff;box-shadow:0 0 22px rgba(100,170,255,.18)
+}
+
+.nb svg {
+  width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round
+}
+
+#dots {
+  display:flex;gap:7px;align-items:center
+}
+
+.dot.on {
+  width:22px;border-radius:3px;background:var(--a2);box-shadow:0 0 12px rgba(130,200,255,.32)
+}
+
+@media(max-width:700px) {
+  body{cursor:auto}#cur{display:none}.hint{display:none}.slide{padding:38px 20px 90px}.lbl{font-size:11px;letter-spacing:3px;margin-bottom:14px}.tri{margin-bottom:16px}.h2{font-size:26px}.sub{font-size:13px;letter-spacing:2px;margin-bottom:26px}.bd{font-size:17px;line-height:1.7}.freq-list{margin-top:14px;gap:8px}.freq-text{font-size:15px}.rule-card{padding:20px 18px}.rule-label{font-size:10px;letter-spacing:3px}.rule-title{font-size:22px}.rule-body{font-size:15px;line-height:1.65}.fa{grid-template-columns:1fr}.fa-half:first-child{border-right:none;border-bottom:1px solid rgba(160,198,248,.1)}.fa-label{font-size:10px;letter-spacing:2.5px}.fa-text{font-size:15px}.good{padding:20px 18px;margin-top:12px}.gd-head{font-size:10px;letter-spacing:3px}.gd-text{font-size:17px;line-height:1.65}.not-list{margin-left:0;margin-top:14px}.nw-text{font-size:15px}.two-col{grid-template-columns:1fr}.col-half:first-child{border-right:none;border-bottom:1px solid rgba(160,198,248,.1)}.card{padding:20px 18px}.card-head{font-size:10px;letter-spacing:3px}.card-text{font-size:17px;line-height:1.65}.item-text{font-size:15px}.col-text{font-size:15px}.list{gap:8px;margin-top:14px}#nav{bottom:max(18px,env(safe-area-inset-bottom,18px))}#dnav{bottom:max(18px,env(safe-area-inset-bottom,18px))}.nb{width:44px;height:44px;cursor:auto;touch-action:manipulation}.dot{cursor:auto;touch-action:manipulation}.cta{margin-top:22px}
+}
+</style>
+</head>
+<body>
+<input type="radio" name="s" id="r0" checked>
+<input type="radio" name="s" id="r1">
+<input type="radio" name="s" id="r2">
+<input type="radio" name="s" id="r3">
+<input type="radio" name="s" id="r4">
+<input type="radio" name="s" id="r5">
+
+<div id="bg"></div>
+<div class="sc"></div>
+<div class="orb oa"></div>
+<div class="orb ob"></div>
+<div id="pts">
+  <div class="pt" style="width:1.64px;height:1.64px;left:56.40%;background:rgba(130,200,255,0.30);box-shadow:0 0 6.57px rgba(130,200,255,0.22);animation-duration:13.92s;animation-delay:-15.39s;"></div>
+  <div class="pt" style="width:3.88px;height:3.88px;left:60.72%;background:rgba(180,120,255,0.13);box-shadow:0 0 15.54px rgba(180,120,255,0.22);animation-duration:23.46s;animation-delay:-2.52s;"></div>
+  <div class="pt" style="width:4.07px;height:4.07px;left:10.81%;background:rgba(160,220,255,0.41);box-shadow:0 0 16.27px rgba(160,220,255,0.22);animation-duration:10.46s;animation-delay:-6.86s;"></div>
+  <div class="pt" style="width:3.57px;height:3.57px;left:39.67%;background:rgba(130,200,255,0.41);box-shadow:0 0 14.28px rgba(130,200,255,0.22);animation-duration:22.87s;animation-delay:-1.67s;"></div>
+  <div class="pt" style="width:3.62px;height:3.62px;left:10.19%;background:rgba(180,120,255,0.29);box-shadow:0 0 14.47px rgba(180,120,255,0.22);animation-duration:23.90s;animation-delay:-18.71s;"></div>
+  <div class="pt" style="width:3.30px;height:3.30px;left:98.38%;background:rgba(160,220,255,0.11);box-shadow:0 0 13.21px rgba(160,220,255,0.22);animation-duration:24.09s;animation-delay:-7.64s;"></div>
+  <div class="pt" style="width:2.70px;height:2.70px;left:50.60%;background:rgba(130,200,255,0.20);box-shadow:0 0 10.80px rgba(130,200,255,0.22);animation-duration:16.14s;animation-delay:-18.69s;"></div>
+  <div class="pt" style="width:4.08px;height:4.08px;left:96.08%;background:rgba(180,120,255,0.11);box-shadow:0 0 16.31px rgba(180,120,255,0.22);animation-duration:21.44s;animation-delay:-18.23s;"></div>
+  <div class="pt" style="width:3.68px;height:3.68px;left:73.38%;background:rgba(160,220,255,0.22);box-shadow:0 0 14.70px rgba(160,220,255,0.22);animation-duration:27.38s;animation-delay:-5.94s;"></div>
+  <div class="pt" style="width:4.03px;height:4.03px;left:48.35%;background:rgba(130,200,255,0.26);box-shadow:0 0 16.11px rgba(130,200,255,0.22);animation-duration:17.84s;animation-delay:-16.08s;"></div>
+  <div class="pt" style="width:2.14px;height:2.14px;left:83.07%;background:rgba(180,120,255,0.37);box-shadow:0 0 8.56px rgba(180,120,255,0.22);animation-duration:11.56s;animation-delay:-19.40s;"></div>
+  <div class="pt" style="width:2.05px;height:2.05px;left:61.03%;background:rgba(160,220,255,0.23);box-shadow:0 0 8.21px rgba(160,220,255,0.22);animation-duration:16.82s;animation-delay:-0.63s;"></div>
+  <div class="pt" style="width:4.18px;height:4.18px;left:21.21%;background:rgba(130,200,255,0.13);box-shadow:0 0 16.71px rgba(130,200,255,0.22);animation-duration:24.36s;animation-delay:-7.49s;"></div>
+  <div class="pt" style="width:4.28px;height:4.28px;left:27.63%;background:rgba(180,120,255,0.32);box-shadow:0 0 17.12px rgba(180,120,255,0.22);animation-duration:10.18s;animation-delay:-20.86s;"></div>
+  <div class="pt" style="width:1.50px;height:1.50px;left:48.86%;background:rgba(160,220,255,0.32);box-shadow:0 0 6.00px rgba(160,220,255,0.22);animation-duration:23.65s;animation-delay:-15.19s;"></div>
+  <div class="pt" style="width:3.46px;height:3.46px;left:79.29%;background:rgba(130,200,255,0.24);box-shadow:0 0 13.84px rgba(130,200,255,0.22);animation-duration:11.67s;animation-delay:-4.88s;"></div>
+  <div class="pt" style="width:3.62px;height:3.62px;left:58.16%;background:rgba(180,120,255,0.18);box-shadow:0 0 14.49px rgba(180,120,255,0.22);animation-duration:18.52s;animation-delay:-11.68s;"></div>
+  <div class="pt" style="width:2.69px;height:2.69px;left:33.08%;background:rgba(160,220,255,0.33);box-shadow:0 0 10.76px rgba(160,220,255,0.22);animation-duration:22.65s;animation-delay:-5.96s;"></div>
+  <div class="pt" style="width:2.08px;height:2.08px;left:19.26%;background:rgba(130,200,255,0.11);box-shadow:0 0 8.32px rgba(130,200,255,0.22);animation-duration:12.15s;animation-delay:-11.79s;"></div>
+  <div class="pt" style="width:3.87px;height:3.87px;left:21.64%;background:rgba(180,120,255,0.13);box-shadow:0 0 15.47px rgba(180,120,255,0.22);animation-duration:18.72s;animation-delay:-15.94s;"></div>
+  <div class="pt" style="width:4.62px;height:4.62px;left:28.30%;background:rgba(160,220,255,0.25);box-shadow:0 0 18.47px rgba(160,220,255,0.22);animation-duration:11.81s;animation-delay:-4.27s;"></div>
+  <div class="pt" style="width:2.00px;height:2.00px;left:1.41%;background:rgba(130,200,255,0.13);box-shadow:0 0 7.98px rgba(130,200,255,0.22);animation-duration:19.61s;animation-delay:-6.03s;"></div>
+</div>
+<div id="bar"></div>
+
+<div id="stage">
+<section class="slide" id="s0">
+ <p class="lbl">
+  01 — 06
+ </p>
+ <div class="orn">
+  <div class="ol">
+  </div>
+  <div class="og">
+  </div>
+  <div class="ol r">
+  </div>
+ </div>
+ <h1 class="h1">
+  Why You Tell Yourself
+  <br/>
+  <em>
+   What You Want
+  </em>
+  <br/>
+  <strong>
+   Is Not Available
+  </strong>
+ </h1>
+ <p class="sub">
+  The second great limiting belief
+ </p>
+</section>
+
+<section class="slide" id="s1">
+ <p class="lbl">
+  02 — 06
+ </p>
+ <div class="orn">
+  <div class="ol">
+  </div>
+  <div class="og">
+  </div>
+  <div class="ol r">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(20px,2.8vw,38px);margin-bottom:10px;">
+  <em>
+   It is not available to me.
+  </em>
+ </h2>
+ <p class="bd" style="font-size:clamp(13px,1.3vw,17px);color:rgba(160,200,255,.6);margin-bottom:4px;">
+  It sounds like realism. It feels like realism. But it is a belief — handed to you before you were old enough to question it.
+ </p>
+ <div class="trio">
+  <div class="tr">
+   I want love, but it never works out
+   <em>
+    for me.
+   </em>
+  </div>
+  <div class="tr">
+   I want success, but I did not come from the
+   <em>
+    right background.
+   </em>
+  </div>
+  <div class="tr">
+   I want to be healthy, but it
+   <em>
+    runs in my family.
+   </em>
+  </div>
+ </div>
+</section>
+
+<section class="slide" id="s2">
+ <p class="lbl">
+  03 — 06
+ </p>
+ <div class="orn">
+  <div class="ol">
+  </div>
+  <div class="og">
+  </div>
+  <div class="ol r">
+  </div>
+ </div>
+ <h2 class="h2">
+  We learn what we live.
+  <br/>
+  We live what we learn.
+ </h2>
+ <p class="bd" style="max-width:680px;">
+  If the adults around you believed good things were hard to come by,
+      you
+  <em>
+   absorbed
+  </em>
+  that.
+  <br/>
+  <br/>
+  If you grew up with very few choices — what to eat, what to wear,
+      what to do — your mind concluded that options were
+  <strong>
+   not really yours to have.
+  </strong>
+ </p>
+</section>
+
+<section class="slide" id="s3">
+ <p class="lbl">
+  04 — 06
+ </p>
+ <div class="orn">
+  <div class="ol">
+  </div>
+  <div class="og">
+  </div>
+  <div class="ol r">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(22px,3vw,42px);margin-bottom:22px;">
+  This belief is
+  <em>
+   sneaky.
+  </em>
+ </h2>
+ <div class="sw">
+  <div class="sr">
+   <span class="sn">
+    01
+   </span>
+   <p class="st">
+    Brushing off compliments as though they were meant for someone else
+   </p>
+  </div>
+  <div class="sr">
+   <span class="sn">
+    02
+   </span>
+   <p class="st">
+    Rationalizing why
+    <em>
+     good things could not possibly last
+    </em>
+   </p>
+  </div>
+ </div>
+ <div class="pq" style="margin-top:20px;">
+  <p class="pq-t">
+   Someone says you did an amazing job and you say —
+   <br/>
+   <em>
+    "Oh, I just got lucky. Anyone could have done it."
+   </em>
+   <br/>
+   <br/>
+   That is not modesty. That is a
+   <em>
+    belief running in the background.
+   </em>
+  </p>
+ </div>
+</section>
+
+<section class="slide" id="s4">
+ <p class="lbl">
+  05 — 06
+ </p>
+ <div class="orn">
+  <div class="ol">
+  </div>
+  <div class="og">
+  </div>
+  <div class="ol r">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(26px,3.5vw,50px);">
+  Start
+  <em>
+   small.
+  </em>
+ </h2>
+ <div class="ac">
+  <p class="ah">
+   Your practice today
+  </p>
+  <p class="at">
+   Praise yourself. For something. Anything.
+   <br/>
+   <br/>
+   Because
+   <em>
+    self-praise
+   </em>
+   is always available to you —
+   <br/>
+   <strong>
+    no matter what you were taught.
+   </strong>
+  </p>
+ </div>
+</section>
+
+<section class="slide" id="s5">
+ <p class="lbl">
+  06 — 06
+ </p>
+ <div class="orn">
+  <div class="ol">
+  </div>
+  <div class="og">
+  </div>
+  <div class="ol r">
+  </div>
+ </div>
+ <h1 class="h1" style="font-size:clamp(28px,4.2vw,58px);line-height:1.18;">
+  Self-praise is
+  <br/>
+  <em>
+   always
+  </em>
+  available to you —
+  <br/>
+  <strong>
+   no matter what
+   <br/>
+   you were taught.
+  </strong>
+ </h1>
+ <span class="cta">
+  Follow for more
+ </span>
+</section>
+
+</div>
+
+<nav id="dnav">
+  <div class="dots">
+    <label for="r0" class="dot"></label>
+    <label for="r1" class="dot"></label>
+    <label for="r2" class="dot"></label>
+    <label for="r3" class="dot"></label>
+    <label for="r4" class="dot"></label>
+    <label for="r5" class="dot"></label>
+  </div>
+</nav>
+<p class="hint">click dots to navigate</p>
+
+<script src="slides.js"></script>
+</body>
+</html>

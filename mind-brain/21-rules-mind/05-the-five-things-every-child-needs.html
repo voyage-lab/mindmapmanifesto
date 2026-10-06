@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The 5 Things Every Child Needs</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Montserrat:wght@200;300;400;600&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css">
+<style>
+
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar{width:16.67%}
+#r1:checked~#bar{width:33.33%}
+#r2:checked~#bar{width:50.00%}
+#r3:checked~#bar{width:66.67%}
+#r4:checked~#bar{width:83.33%}
+#r5:checked~#bar{width:100.00%}
+#r0:checked~#stage #s0, #r1:checked~#stage #s1, #r2:checked~#stage #s2, #r3:checked~#stage #s3, #r4:checked~#stage #s4, #r5:checked~#stage #s5{opacity:1;clip-path:inset(0);pointer-events:all}
+#r0:checked~#dnav label:nth-child(1), #r1:checked~#dnav label:nth-child(2), #r2:checked~#dnav label:nth-child(3), #r3:checked~#dnav label:nth-child(4), #r4:checked~#dnav label:nth-child(5), #r5:checked~#dnav label:nth-child(6){width:22px;border-radius:3px;background:rgba(120,200,255,0.36);box-shadow:0 0 12px rgba(120,200,255,.3)}
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar {
+  width:16.67%
+}
+
+/* Animated particles */
+  .particles {
+  position: fixed;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+    border-radius: 50%;
+    animation: float linear infinite;
+    opacity: 0;
+}
+
+/* Slides container */
+  .slides-container {
+  position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide.active {
+  opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+.slide.exit {
+  opacity: 0;
+    transform: translateY(-30px) scale(0.97);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Slide number */
+  .slide-num {
+  font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: rgba(100, 180, 255, 0.5);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+}
+
+/* Decorative line */
+  .deco-line {
+  width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(120, 190, 255, 0.8), transparent);
+    margin: 0 auto 36px;
+    animation: pulse-line 3s ease-in-out infinite;
+}
+
+@keyframes pulse-line {
+  0%, 100% { width: 60px; opacity: 0.6; }
+    50%       { width: 100px; opacity: 1; }
+}
+
+/* Main title */
+  .slide-title {
+  font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 68px);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    color: #fff;
+    margin-bottom: 16px;
+    text-shadow: 0 0 60px rgba(100, 180, 255, 0.3);
+}
+
+.slide-title em {
+  font-style: italic;
+    color: rgba(160, 215, 255, 0.95);
+}
+
+.slide-title strong {
+  font-weight: 600;
+    color: #fff;
+}
+
+/* Subtitle */
+  .slide-subtitle {
+  font-family: 'Montserrat', sans-serif;
+    font-weight: 200;
+    font-size: clamp(13px, 1.5vw, 17px);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(120, 190, 255, 0.65);
+    margin-bottom: 48px;
+}
+
+/* Body text */
+  .slide-body {
+  font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(18px, 2.2vw, 28px);
+    line-height: 1.75;
+    color: rgba(230, 245, 255, 0.88);
+    max-width: 760px;
+    margin: 0 auto;
+    text-shadow: 0 2px 20px rgba(0,0,40,0.5);
+}
+
+.slide-body em {
+  font-style: italic;
+    color: rgba(160, 215, 255, 1);
+}
+
+/* Feature cards for slide 3 */
+  .needs-grid {
+  display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 24px;
+    max-width: 820px;
+}
+
+.need-card {
+  background: rgba(20, 40, 80, 0.4);
+    border: 1px solid rgba(100, 180, 255, 0.18);
+    border-radius: 4px;
+    padding: 18px 28px;
+    backdrop-filter: blur(8px);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    color: rgba(200, 230, 255, 0.9);
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    animation: card-in 0.6s ease forwards;
+    opacity: 0;
+}
+
+.need-card:hover {
+  border-color: rgba(100, 180, 255, 0.5);
+    background: rgba(30, 60, 120, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(80, 150, 255, 0.15);
+}
+
+@keyframes card-in {
+  to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(15px); }
+}
+
+.need-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.need-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.need-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.need-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.need-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* Quote style */
+  .quote-wrap {
+  position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.quote-mark {
+  font-family: 'Cormorant Garamond', serif;
+    font-size: 120px;
+    line-height: 0.5;
+    color: rgba(100, 180, 255, 0.12);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    font-style: italic;
+    font-weight: 600;
+}
+
+/* CTA / final slide */
+  .cta-tag {
+  display: inline-block;
+    border: 1px solid rgba(100, 180, 255, 0.35);
+    color: rgba(120, 190, 255, 0.8);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    border-radius: 2px;
+    margin-top: 36px;
+    backdrop-filter: blur(4px);
+    background: rgba(20, 50, 100, 0.25);
+}
+
+/* Nav */
+  .nav {
+  position: fixed;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    z-index: 100;
+}
+
+.nav-btn {
+  width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(100, 180, 255, 0.3);
+    background: rgba(10, 20, 50, 0.5);
+    backdrop-filter: blur(8px);
+    cursor: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: rgba(150, 200, 255, 0.7);
+}
+
+.nav-btn:hover {
+  border-color: rgba(100, 180, 255, 0.7);
+    background: rgba(20, 50, 100, 0.6);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(80, 150, 255, 0.25);
+}
+
+.nav-btn svg {
+  width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+.nav-dots {
+  display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.dot.active {
+  width: 20px;
+    border-radius: 3px;
+    background: rgba(100, 180, 255, 0.85);
+    box-shadow: 0 0 10px rgba(80, 150, 255, 0.4);
+}
+
+/* Keyboard hint */
+  .hint {
+  position: fixed;
+    bottom: 36px;
+    right: 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: rgba(100, 150, 200, 0.35);
+    text-transform: uppercase;
+    z-index: 100;
+}
+
+/* Glow orb decoration */
+  .orb {
+  position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(80px);
+    z-index: 1;
+    animation: orb-drift ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(80, 50, 180, 0.18) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    animation-duration: 14s;
+}
+
+.orb-2 {
+  width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(20, 100, 200, 0.14) 0%, transparent 70%);
+    bottom: -80px; right: -80px;
+    animation-duration: 18s;
+    animation-delay: -7s;
+}
+
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0); }
+    33%       { transform: translate(30px, 20px); }
+    66%       { transform: translate(-20px, 30px); }
+}
+
+/* Progress bar */
+  .progress-bar {
+  position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(80, 150, 255, 0.8), rgba(160, 100, 255, 0.8));
+    z-index: 200;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px rgba(80, 150, 255, 0.5);
+}
+
+/* Responsive */
+  @media (max-width: 768px) {
+  body { cursor: auto; }
+    .cursor { display: none; }
+    .hint { display: none; }
+    .slide { padding: 38px 20px 90px; }
+    .slide-num { font-size: 11px; letter-spacing: 3px; margin-bottom: 18px; }
+    .need-card { padding: 12px 16px; font-size: 13px; }
+    .nav { bottom: max(18px, env(safe-area-inset-bottom, 18px)); }
+    .nav-btn { width: 44px; height: 44px; cursor: auto; touch-action: manipulation; }
+}
+</style>
+</head>
+<body>
+<input type="radio" name="s" id="r0" checked>
+<input type="radio" name="s" id="r1">
+<input type="radio" name="s" id="r2">
+<input type="radio" name="s" id="r3">
+<input type="radio" name="s" id="r4">
+<input type="radio" name="s" id="r5">
+
+<div id="bg"></div>
+<div class="sc"></div>
+<div class="orb oa"></div>
+<div class="orb ob"></div>
+<div id="particles">
+  <div class="particle" style="width:4.74px;height:4.74px;left:78.74%;background:rgba(80,150,255,0.21);box-shadow:0 0 14.23px rgba(80,150,255,0.3);animation-duration:14.16s;animation-delay:-17.44s;"></div>
+  <div class="particle" style="width:4.93px;height:4.93px;left:81.66%;background:rgba(130,80,220,0.19);box-shadow:0 0 14.80px rgba(130,80,220,0.3);animation-duration:21.21s;animation-delay:-6.10s;"></div>
+  <div class="particle" style="width:4.68px;height:4.68px;left:2.37%;background:rgba(60,200,230,0.19);box-shadow:0 0 14.04px rgba(60,200,230,0.3);animation-duration:15.86s;animation-delay:-6.57s;"></div>
+  <div class="particle" style="width:4.96px;height:4.96px;left:27.91%;background:rgba(80,150,255,0.49);box-shadow:0 0 14.87px rgba(80,150,255,0.3);animation-duration:24.83s;animation-delay:-7.99s;"></div>
+  <div class="particle" style="width:5.42px;height:5.42px;left:93.92%;background:rgba(130,80,220,0.31);box-shadow:0 0 16.27px rgba(130,80,220,0.3);animation-duration:14.31s;animation-delay:-19.41s;"></div>
+  <div class="particle" style="width:2.21px;height:2.21px;left:26.55%;background:rgba(60,200,230,0.49);box-shadow:0 0 6.64px rgba(60,200,230,0.3);animation-duration:14.17s;animation-delay:-8.69s;"></div>
+  <div class="particle" style="width:4.41px;height:4.41px;left:60.62%;background:rgba(80,150,255,0.23);box-shadow:0 0 13.24px rgba(80,150,255,0.3);animation-duration:22.23s;animation-delay:-7.70s;"></div>
+  <div class="particle" style="width:3.81px;height:3.81px;left:70.88%;background:rgba(130,80,220,0.20);box-shadow:0 0 11.42px rgba(130,80,220,0.3);animation-duration:12.03s;animation-delay:-18.51s;"></div>
+  <div class="particle" style="width:3.65px;height:3.65px;left:74.20%;background:rgba(60,200,230,0.39);box-shadow:0 0 10.96px rgba(60,200,230,0.3);animation-duration:25.41s;animation-delay:-7.28s;"></div>
+  <div class="particle" style="width:1.78px;height:1.78px;left:33.02%;background:rgba(80,150,255,0.37);box-shadow:0 0 5.34px rgba(80,150,255,0.3);animation-duration:18.28s;animation-delay:-16.96s;"></div>
+  <div class="particle" style="width:4.38px;height:4.38px;left:30.93%;background:rgba(130,80,220,0.22);box-shadow:0 0 13.14px rgba(130,80,220,0.3);animation-duration:20.17s;animation-delay:-8.05s;"></div>
+  <div class="particle" style="width:2.68px;height:2.68px;left:42.04%;background:rgba(60,200,230,0.15);box-shadow:0 0 8.05px rgba(60,200,230,0.3);animation-duration:30.81s;animation-delay:-13.55s;"></div>
+  <div class="particle" style="width:5.11px;height:5.11px;left:30.09%;background:rgba(80,150,255,0.35);box-shadow:0 0 15.33px rgba(80,150,255,0.3);animation-duration:22.96s;animation-delay:-0.01s;"></div>
+  <div class="particle" style="width:2.65px;height:2.65px;left:58.00%;background:rgba(130,80,220,0.27);box-shadow:0 0 7.94px rgba(130,80,220,0.3);animation-duration:25.09s;animation-delay:-9.30s;"></div>
+  <div class="particle" style="width:3.27px;height:3.27px;left:47.32%;background:rgba(60,200,230,0.19);box-shadow:0 0 9.81px rgba(60,200,230,0.3);animation-duration:30.02s;animation-delay:-15.92s;"></div>
+  <div class="particle" style="width:2.18px;height:2.18px;left:51.55%;background:rgba(80,150,255,0.13);box-shadow:0 0 6.54px rgba(80,150,255,0.3);animation-duration:24.66s;animation-delay:-6.70s;"></div>
+  <div class="particle" style="width:4.77px;height:4.77px;left:67.28%;background:rgba(130,80,220,0.40);box-shadow:0 0 14.32px rgba(130,80,220,0.3);animation-duration:16.49s;animation-delay:-3.98s;"></div>
+  <div class="particle" style="width:1.60px;height:1.60px;left:47.51%;background:rgba(60,200,230,0.20);box-shadow:0 0 4.79px rgba(60,200,230,0.3);animation-duration:28.99s;animation-delay:-1.46s;"></div>
+</div>
+<div id="bar"></div>
+
+<div id="stage">
+<section class="slide" id="s0">
+ <div class="slide-num">
+  01 / 06
+ </div>
+ <div class="deco-line">
+ </div>
+ <h1 class="slide-title">
+  <em>
+   The 5 Things
+  </em>
+  <br/>
+  <strong>
+   Every Child Needs
+  </strong>
+ </h1>
+ <p class="slide-subtitle">
+  A framework for understanding the psyche
+ </p>
+</section>
+
+<section class="slide" id="s1">
+ <div class="slide-num">
+  02 / 06
+ </div>
+ <div class="deco-line">
+ </div>
+ <div class="quote-wrap">
+  <span class="quote-mark">
+   "
+  </span>
+  <p class="slide-body">
+   Most of the struggles you have as an adult
+   <br/>
+   started with something
+   <em>
+    a child needed
+   </em>
+   <br/>
+   and never got.
+  </p>
+ </div>
+</section>
+
+<section class="slide" id="s2">
+ <div class="slide-num">
+  03 / 06
+ </div>
+ <div class="deco-line">
+ </div>
+ <h2 class="slide-title" style="font-size: clamp(28px,3.5vw,46px); margin-bottom: 12px;">
+  Every child needs five things
+ </h2>
+ <p class="slide-body" style="font-size: clamp(14px,1.5vw,19px); margin-bottom: 28px; color: rgba(180,220,255,0.7);">
+  These are not luxuries. Not nice-to-haves.
+  <br/>
+  They are fundamental — like food and water, but for the psyche.
+ </p>
+ <div class="needs-grid">
+  <div class="need-card">
+   To feel significant
+  </div>
+  <div class="need-card">
+   To feel loved
+  </div>
+  <div class="need-card">
+   To feel they matter
+  </div>
+  <div class="need-card">
+   To feel celebrated
+  </div>
+  <div class="need-card">
+   To feel their parents are proud
+  </div>
+ </div>
+</section>
+
+<section class="slide" id="s3">
+ <div class="slide-num">
+  04 / 06
+ </div>
+ <div class="deco-line">
+ </div>
+ <p class="slide-body" style="max-width: 680px;">
+  When those needs go unmet, a child does not blame the adult.
+  <br/>
+  <br/>
+  They
+  <em>
+   cannot.
+  </em>
+  <br/>
+  <br/>
+  So they do the only thing that makes sense to a developing mind —
+  <br/>
+  they blame themselves.
+ </p>
+ <p class="slide-body" style="margin-top: 36px; font-style: italic; font-size: clamp(16px,1.8vw,24px); color: rgba(160, 215, 255, 0.8);">
+  "I am not getting this because something is wrong with me."
+ </p>
+</section>
+
+<section class="slide" id="s4">
+ <div class="slide-num">
+  05 / 06
+ </div>
+ <div class="deco-line">
+ </div>
+ <h2 class="slide-title" style="font-size: clamp(26px,3vw,42px); margin-bottom: 28px;">
+  That conclusion follows them into adulthood
+ </h2>
+ <div style="display: flex; flex-direction: column; gap: 18px; max-width: 660px; text-align: left;">
+  <p class="slide-body" style="font-size: clamp(15px,1.6vw,22px);">
+   Because I felt
+   <em>
+    unsafe
+   </em>
+   — I cannot take risks.
+  </p>
+  <p class="slide-body" style="font-size: clamp(15px,1.6vw,22px);">
+   Because I felt
+   <em>
+    unlovable
+   </em>
+   — I hold myself back.
+  </p>
+  <p class="slide-body" style="font-size: clamp(15px,1.6vw,22px);">
+   Because I felt
+   <em>
+    unworthy
+   </em>
+   — I do not aim high.
+  </p>
+ </div>
+ <p class="slide-body" style="margin-top: 36px; font-style: italic; color: rgba(180, 210, 255, 0.75);">
+  The child grew up. But the belief stayed.
+ </p>
+</section>
+
+<section class="slide" id="s5">
+ <div class="slide-num">
+  06 / 06
+ </div>
+ <div class="deco-line">
+ </div>
+ <h2 class="slide-title" style="font-size: clamp(32px,4vw,58px); margin-bottom: 28px;">
+  The good news —
+  <br/>
+  <em>
+   you are no longer that child.
+  </em>
+ </h2>
+ <p class="slide-body">
+  You can meet your own needs now.
+  <br/>
+  You have choices they did not have.
+  <br/>
+  <br/>
+  <em>
+   That changes everything.
+  </em>
+ </p>
+ <span class="cta-tag">
+  Follow for more
+ </span>
+</section>
+
+</div>
+
+<nav id="dnav">
+  <div class="dots">
+    <label for="r0" class="dot"></label>
+    <label for="r1" class="dot"></label>
+    <label for="r2" class="dot"></label>
+    <label for="r3" class="dot"></label>
+    <label for="r4" class="dot"></label>
+    <label for="r5" class="dot"></label>
+  </div>
+</nav>
+<p class="hint">click dots to navigate</p>
+
+<script src="slides.js"></script>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Imagination Is More Powerful Than Logic</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&amp;family=Syne:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css">
+<style>
+:root{
+  --w:  rgba(252,248,235,0.93);
+  --gold:rgba(255,208,90,1);
+  --g2: rgba(255,208,90,0.38);
+  --g3: rgba(255,208,90,0.14);
+  --r:  rgba(255,140,80,0.8);
+  --gl: rgba(16,12,4,0.52);
+}
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar{width:16.67%}
+#r1:checked~#bar{width:33.33%}
+#r2:checked~#bar{width:50.00%}
+#r3:checked~#bar{width:66.67%}
+#r4:checked~#bar{width:83.33%}
+#r5:checked~#bar{width:100.00%}
+#r0:checked~#stage #s0, #r1:checked~#stage #s1, #r2:checked~#stage #s2, #r3:checked~#stage #s3, #r4:checked~#stage #s4, #r5:checked~#stage #s5{opacity:1;clip-path:inset(0);pointer-events:all}
+#r0:checked~#dnav label:nth-child(1), #r1:checked~#dnav label:nth-child(2), #r2:checked~#dnav label:nth-child(3), #r3:checked~#dnav label:nth-child(4), #r4:checked~#dnav label:nth-child(5), #r5:checked~#dnav label:nth-child(6){width:22px;border-radius:3px;background:var(--g2);box-shadow:0 0 12px rgba(255,140,80,.3)}
+
+:root {
+  --w:  rgba(252,248,235,0.93);
+  --gold:rgba(255,208,90,1);
+  --g2: rgba(255,208,90,0.38);
+  --g3: rgba(255,208,90,0.14);
+  --r:  rgba(255,140,80,0.8);
+  --gl: rgba(16,12,4,0.52);
+}
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar {
+  width:16.67%
+}
+
+:root {
+  --w:  rgba(252,248,235,0.93);
+  --gold:rgba(255,208,90,1);
+  --g2: rgba(255,208,90,0.38);
+  --g3: rgba(255,208,90,0.14);
+  --r:  rgba(255,140,80,0.8);
+  --gl: rgba(16,12,4,0.52);
+}
+
+/* cursor */
+#cur {
+  position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%)
+}
+
+/* bg */
+#bg {
+  position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;transform:scale(1.07);will-change:transform
+}
+
+/* progress */
+#bar {
+  position:fixed;top:0;left:0;z-index:500;height:2px;background:linear-gradient(90deg,var(--r),var(--gold));box-shadow:0 0 16px rgba(255,208,90,.4);transition:width .75s cubic-bezier(.4,0,.2,1)
+}
+
+/* orbs */
+.orb {
+  position:fixed;border-radius:50%;pointer-events:none;filter:blur(110px);z-index:1
+}
+
+/* particles */
+#pts {
+  position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden
+}
+
+.pt {
+  position:absolute;border-radius:50%;animation:pr linear infinite;opacity:0
+}
+
+@keyframes pr {
+  0%{transform:translateY(108vh) scale(0);opacity:0}8%{opacity:.45}90%{opacity:.15}100%{transform:translateY(-8vh) scale(1.4);opacity:0}
+}
+
+/* spark ornament */
+.spark {
+  display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin:0 auto 28px;position:relative
+}
+
+.spark svg {
+  width:48px;height:48px
+}
+
+.spark-ring {
+  animation:sr 12s linear infinite
+}
+
+@keyframes sr {
+  to{transform:rotate(360deg)}
+}
+
+/* stage + transitions — HORIZONTAL slide */
+#stage {
+  position:relative;z-index:10;width:100vw;height:100vh;display:grid;place-items:center;overflow:hidden
+}
+
+.slide.on {
+  opacity:1;transform:translateX(0);pointer-events:all
+}
+
+.slide.off {
+  opacity:0;transform:translateX(-40px);transition:opacity .38s ease,transform .38s ease
+}
+
+/* type */
+.h1 {
+  font-family:'Fraunces',serif;font-weight:300;font-size:clamp(36px,5.2vw,70px);line-height:1.1;color:var(--w);text-shadow:0 0 80px rgba(255,208,90,.12);margin-bottom:16px
+}
+
+.h1 em {
+  font-style:italic;color:var(--gold)
+}
+
+.h1 strong {
+  font-weight:700
+}
+
+.h2 em {
+  font-style:italic;color:var(--gold)
+}
+
+.bd em {
+  font-style:italic;color:rgba(255,220,120,.97)
+}
+
+.bd strong {
+  font-weight:700;color:var(--w)
+}
+
+/* big pull quote */
+.pull {
+  max-width:720px;margin:0 auto;
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:clamp(22px,3.2vw,44px);line-height:1.35;
+  color:var(--w);text-shadow:0 0 60px rgba(255,208,90,.15);
+}
+
+.pull em {
+  color:var(--gold);font-style:italic
+}
+
+.pull-rule {
+  width:48px;height:1px;background:var(--g2);margin:28px auto 0
+}
+
+/* logic vs reality — 3 rows */
+.battle {
+  display:flex;flex-direction:column;gap:14px;max-width:700px;margin:20px auto 0
+}
+
+.row {
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:16px;
+  background:rgba(16,12,4,.44);border:1px solid rgba(255,208,90,.1);
+  border-radius:3px;backdrop-filter:blur(12px);
+  padding:14px 22px;
+  opacity:0;animation:ri .5s ease forwards;
+}
+
+.row:nth-child(1) {
+  animation-delay:.1s
+}
+
+.row:nth-child(2) {
+  animation-delay:.25s
+}
+
+.row:nth-child(3) {
+  animation-delay:.4s
+}
+
+@keyframes ri {
+  to{opacity:1}
+}
+
+.logic-t {
+  font-family:'Fraunces',serif;font-size:clamp(13px,1.4vw,18px);line-height:1.5;color:rgba(200,190,160,.55);text-align:right;text-decoration:line-through;text-decoration-color:rgba(255,100,80,.35)
+}
+
+.vs {
+  font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(255,208,90,.3);text-transform:uppercase;flex-shrink:0
+}
+
+.feel-t {
+  font-family:'Fraunces',serif;font-style:italic;font-size:clamp(13px,1.4vw,18px);line-height:1.5;color:rgba(240,225,185,.85);text-align:left
+}
+
+/* imagine section */
+.imagine-box {
+  background:linear-gradient(135deg,rgba(22,16,4,.62),rgba(14,10,2,.52));
+  border:1px solid rgba(255,208,90,.2);
+  border-left:3px solid rgba(255,208,90,.5);
+  border-radius:3px;backdrop-filter:blur(16px);
+  padding:34px 44px;max-width:700px;margin:24px auto 0;
+  box-shadow:0 28px 80px rgba(0,0,0,.5),0 0 60px rgba(255,180,60,.04);
+  text-align:left;
+}
+
+.ib-head {
+  font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--g2);margin-bottom:16px
+}
+
+.ib-text {
+  font-family:'Fraunces',serif;font-size:clamp(17px,2vw,26px);line-height:1.78;color:rgba(240,228,200,.88)
+}
+
+.ib-text em {
+  font-style:italic;color:var(--gold)
+}
+
+/* questions */
+.qs {
+  display:flex;flex-direction:column;gap:18px;max-width:640px;margin:24px auto 0
+}
+
+.q {
+  display:flex;align-items:center;gap:20px;text-align:left;
+  opacity:0;transform:translateX(14px);
+  animation:qi .5s ease forwards;
+}
+
+.q:nth-child(1) {
+  animation-delay:.1s
+}
+
+.q:nth-child(2) {
+  animation-delay:.28s
+}
+
+.q:nth-child(3) {
+  animation-delay:.46s
+}
+
+@keyframes qi {
+  to{opacity:1;transform:translateX(0)}
+}
+
+.q-num {
+  font-family:'Syne',sans-serif;font-size:clamp(28px,3vw,44px);font-weight:700;color:rgba(255,208,90,.12);line-height:1;flex-shrink:0;width:44px
+}
+
+.q-text {
+  font-family:'Fraunces',serif;font-style:italic;font-size:clamp(16px,1.85vw,25px);line-height:1.55;color:rgba(240,228,200,.88)
+}
+
+.q-text em {
+  font-style:normal;color:var(--gold)
+}
+
+/* cta */
+.cta {
+  display:inline-block;margin-top:38px;border:1px solid rgba(255,208,90,.25);background:rgba(22,16,4,.28);backdrop-filter:blur(10px);padding:12px 32px;border-radius:2px;font-family:'Syne',sans-serif;font-size:10px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:var(--g2);transition:all .3s
+}
+
+.cta:hover {
+  border-color:rgba(255,208,90,.52);color:var(--gold);box-shadow:0 0 28px rgba(255,180,60,.12)
+}
+
+/* nav */
+#nav {
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:18px;z-index:100
+}
+
+.nb:hover {
+  border-color:rgba(255,208,90,.5);background:rgba(22,16,2,.6);color:#fff;box-shadow:0 0 22px rgba(220,160,40,.18)
+}
+
+.nb svg {
+  width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round
+}
+
+#dots {
+  display:flex;gap:7px;align-items:center
+}
+
+.dot.on {
+  width:22px;border-radius:3px;background:var(--g2);box-shadow:0 0 12px rgba(220,160,40,.3)
+}
+
+@media(max-width:700px) {
+  body{cursor:auto}#cur{display:none}.hint{display:none}.slide{padding:38px 20px 90px}.lbl{font-size:11px;letter-spacing:3px;margin-bottom:14px}.tri{margin-bottom:16px}.h2{font-size:26px}.sub{font-size:13px;letter-spacing:2px;margin-bottom:26px}.bd{font-size:17px;line-height:1.7}.freq-list{margin-top:14px;gap:8px}.freq-text{font-size:15px}.rule-card{padding:20px 18px}.rule-label{font-size:10px;letter-spacing:3px}.rule-title{font-size:22px}.rule-body{font-size:15px;line-height:1.65}.fa{grid-template-columns:1fr}.fa-half:first-child{border-right:none;border-bottom:1px solid rgba(160,198,248,.1)}.fa-label{font-size:10px;letter-spacing:2.5px}.fa-text{font-size:15px}.good{padding:20px 18px;margin-top:12px}.gd-head{font-size:10px;letter-spacing:3px}.gd-text{font-size:17px;line-height:1.65}.not-list{margin-left:0;margin-top:14px}.nw-text{font-size:15px}.two-col{grid-template-columns:1fr}.col-half:first-child{border-right:none;border-bottom:1px solid rgba(160,198,248,.1)}.card{padding:20px 18px}.card-head{font-size:10px;letter-spacing:3px}.card-text{font-size:17px;line-height:1.65}.item-text{font-size:15px}.col-text{font-size:15px}.list{gap:8px;margin-top:14px}#nav{bottom:max(18px,env(safe-area-inset-bottom,18px))}#dnav{bottom:max(18px,env(safe-area-inset-bottom,18px))}.nb{width:44px;height:44px;cursor:auto;touch-action:manipulation}.dot{cursor:auto;touch-action:manipulation}.cta{margin-top:22px}
+}
+</style>
+</head>
+<body>
+<input type="radio" name="s" id="r0" checked>
+<input type="radio" name="s" id="r1">
+<input type="radio" name="s" id="r2">
+<input type="radio" name="s" id="r3">
+<input type="radio" name="s" id="r4">
+<input type="radio" name="s" id="r5">
+
+<div id="bg"></div>
+<div class="sc"></div>
+<div class="orb oa"></div>
+<div class="orb ob"></div>
+<div id="pts">
+  <div class="pt" style="width:4.59px;height:4.59px;left:54.22%;background:rgba(255,208,90,0.27);box-shadow:0 0 18.36px rgba(255,208,90,0.22);animation-duration:23.46s;animation-delay:-1.26s;"></div>
+  <div class="pt" style="width:3.24px;height:3.24px;left:85.27%;background:rgba(255,140,80,0.25);box-shadow:0 0 12.98px rgba(255,140,80,0.22);animation-duration:12.83s;animation-delay:-21.14s;"></div>
+  <div class="pt" style="width:1.48px;height:1.48px;left:59.50%;background:rgba(255,230,120,0.14);box-shadow:0 0 5.92px rgba(255,230,120,0.22);animation-duration:22.15s;animation-delay:-5.17s;"></div>
+  <div class="pt" style="width:1.62px;height:1.62px;left:24.62%;background:rgba(255,208,90,0.38);box-shadow:0 0 6.48px rgba(255,208,90,0.22);animation-duration:20.70s;animation-delay:-13.63s;"></div>
+  <div class="pt" style="width:2.67px;height:2.67px;left:52.28%;background:rgba(255,140,80,0.27);box-shadow:0 0 10.67px rgba(255,140,80,0.22);animation-duration:26.82s;animation-delay:-4.49s;"></div>
+  <div class="pt" style="width:3.71px;height:3.71px;left:39.58%;background:rgba(255,230,120,0.15);box-shadow:0 0 14.83px rgba(255,230,120,0.22);animation-duration:22.09s;animation-delay:-6.60s;"></div>
+  <div class="pt" style="width:2.31px;height:2.31px;left:7.25%;background:rgba(255,208,90,0.33);box-shadow:0 0 9.23px rgba(255,208,90,0.22);animation-duration:18.25s;animation-delay:-21.97s;"></div>
+  <div class="pt" style="width:4.69px;height:4.69px;left:21.32%;background:rgba(255,140,80,0.10);box-shadow:0 0 18.75px rgba(255,140,80,0.22);animation-duration:14.77s;animation-delay:-20.53s;"></div>
+  <div class="pt" style="width:4.28px;height:4.28px;left:36.95%;background:rgba(255,230,120,0.38);box-shadow:0 0 17.13px rgba(255,230,120,0.22);animation-duration:12.84s;animation-delay:-18.34s;"></div>
+  <div class="pt" style="width:3.66px;height:3.66px;left:98.72%;background:rgba(255,208,90,0.28);box-shadow:0 0 14.65px rgba(255,208,90,0.22);animation-duration:21.77s;animation-delay:-0.17s;"></div>
+  <div class="pt" style="width:4.06px;height:4.06px;left:66.34%;background:rgba(255,140,80,0.17);box-shadow:0 0 16.24px rgba(255,140,80,0.22);animation-duration:26.90s;animation-delay:-2.95s;"></div>
+  <div class="pt" style="width:1.60px;height:1.60px;left:55.32%;background:rgba(255,230,120,0.11);box-shadow:0 0 6.42px rgba(255,230,120,0.22);animation-duration:14.90s;animation-delay:-13.31s;"></div>
+  <div class="pt" style="width:3.71px;height:3.71px;left:63.42%;background:rgba(255,208,90,0.14);box-shadow:0 0 14.85px rgba(255,208,90,0.22);animation-duration:14.75s;animation-delay:-10.75s;"></div>
+  <div class="pt" style="width:4.37px;height:4.37px;left:9.23%;background:rgba(255,140,80,0.37);box-shadow:0 0 17.47px rgba(255,140,80,0.22);animation-duration:17.62s;animation-delay:-6.09s;"></div>
+  <div class="pt" style="width:1.21px;height:1.21px;left:63.71%;background:rgba(255,230,120,0.34);box-shadow:0 0 4.85px rgba(255,230,120,0.22);animation-duration:14.72s;animation-delay:-16.31s;"></div>
+  <div class="pt" style="width:3.13px;height:3.13px;left:0.97%;background:rgba(255,208,90,0.22);box-shadow:0 0 12.52px rgba(255,208,90,0.22);animation-duration:11.35s;animation-delay:-19.43s;"></div>
+  <div class="pt" style="width:4.36px;height:4.36px;left:83.46%;background:rgba(255,140,80,0.26);box-shadow:0 0 17.46px rgba(255,140,80,0.22);animation-duration:20.49s;animation-delay:-3.26s;"></div>
+  <div class="pt" style="width:1.65px;height:1.65px;left:89.90%;background:rgba(255,230,120,0.18);box-shadow:0 0 6.58px rgba(255,230,120,0.22);animation-duration:24.33s;animation-delay:-18.94s;"></div>
+  <div class="pt" style="width:4.35px;height:4.35px;left:24.95%;background:rgba(255,208,90,0.14);box-shadow:0 0 17.38px rgba(255,208,90,0.22);animation-duration:11.85s;animation-delay:-17.16s;"></div>
+  <div class="pt" style="width:4.29px;height:4.29px;left:62.07%;background:rgba(255,140,80,0.21);box-shadow:0 0 17.18px rgba(255,140,80,0.22);animation-duration:12.78s;animation-delay:-20.46s;"></div>
+  <div class="pt" style="width:4.23px;height:4.23px;left:81.08%;background:rgba(255,230,120,0.41);box-shadow:0 0 16.90px rgba(255,230,120,0.22);animation-duration:25.87s;animation-delay:-0.55s;"></div>
+  <div class="pt" style="width:3.78px;height:3.78px;left:93.08%;background:rgba(255,208,90,0.19);box-shadow:0 0 15.11px rgba(255,208,90,0.22);animation-duration:24.44s;animation-delay:-19.01s;"></div>
+</div>
+<div id="bar"></div>
+
+<div id="stage">
+<section class="slide" id="s0">
+ <p class="lbl">
+  01 — 06
+ </p>
+ <div class="spark">
+  <svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+   <circle class="spark-ring" cx="24" cy="24" r="22" stroke="rgba(255,208,90,0.18)" stroke-dasharray="4 6" stroke-width="1">
+   </circle>
+   <circle cx="24" cy="24" r="14" stroke="rgba(255,208,90,0.1)" stroke-width="1">
+   </circle>
+   <circle cx="24" cy="24" fill="rgba(255,208,90,0.35)" r="4">
+   </circle>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="2" y2="10">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="38" y2="46">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="2" x2="10" y1="24" y2="24">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="38" x2="46" y1="24" y2="24">
+   </line>
+  </svg>
+ </div>
+ <h1 class="h1">
+  <em>
+   Imagination
+  </em>
+  <br/>
+  Is More Powerful
+  <br/>
+  <strong>
+   Than Logic
+  </strong>
+ </h1>
+ <p class="sub">
+  The most misunderstood rule of the mind
+ </p>
+</section>
+
+<section class="slide" id="s1">
+ <p class="lbl">
+  02 — 06
+ </p>
+ <div class="spark">
+  <svg fill="none" viewbox="0 0 48 48">
+   <circle class="spark-ring" cx="24" cy="24" r="22" stroke="rgba(255,208,90,0.18)" stroke-dasharray="4 6" stroke-width="1">
+   </circle>
+   <circle cx="24" cy="24" fill="rgba(255,208,90,0.35)" r="4">
+   </circle>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="2" y2="10">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="38" y2="46">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="2" x2="10" y1="24" y2="24">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="38" x2="46" y1="24" y2="24">
+   </line>
+  </svg>
+ </div>
+ <p class="pull">
+  You cannot
+  <em>
+   think
+  </em>
+  your way out
+  <br/>
+  of something you have
+  <em>
+   felt
+  </em>
+  your way into.
+ </p>
+ <div class="pull-rule">
+ </div>
+ <p class="bd" style="margin-top:28px;font-size:clamp(15px,1.6vw,21px);color:rgba(220,200,150,.65);">
+  In the battle between emotion and logic — emotion wins. Every single time.
+  <br/>
+  <strong>
+   Imagination is more powerful than logic. Always has been.
+  </strong>
+ </p>
+</section>
+
+<section class="slide" id="s2">
+ <p class="lbl">
+  03 — 06
+ </p>
+ <div class="spark">
+  <svg fill="none" viewbox="0 0 48 48">
+   <circle class="spark-ring" cx="24" cy="24" r="22" stroke="rgba(255,208,90,0.18)" stroke-dasharray="4 6" stroke-width="1">
+   </circle>
+   <circle cx="24" cy="24" fill="rgba(255,208,90,0.35)" r="4">
+   </circle>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="2" y2="10">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="38" y2="46">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="2" x2="10" y1="24" y2="24">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="38" x2="46" y1="24" y2="24">
+   </line>
+  </svg>
+ </div>
+ <h2 class="h2" style="font-size:clamp(18px,2.4vw,34px);margin-bottom:8px;">
+  Logic talks to the
+  <em>
+   wrong
+  </em>
+  part of your brain.
+ </h2>
+ <p class="bd" style="font-size:clamp(12px,1.2vw,15px);color:rgba(200,180,120,.5);margin-bottom:4px;">
+  The part actually running the show runs on feeling and imagination.
+ </p>
+ <div class="battle">
+  <div class="row">
+   <p class="logic-t">
+    You know smoking is bad for you
+   </p>
+   <span class="vs">
+    but
+   </span>
+   <p class="feel-t">
+    <em>
+     the craving doesn't care
+    </em>
+   </p>
+  </div>
+  <div class="row">
+   <p class="logic-t">
+    You know the presentation will be fine
+   </p>
+   <span class="vs">
+    but
+   </span>
+   <p class="feel-t">
+    <em>
+     the panic still comes
+    </em>
+   </p>
+  </div>
+  <div class="row">
+   <p class="logic-t">
+    You know your ex wasn't right for you
+   </p>
+   <span class="vs">
+    but
+   </span>
+   <p class="feel-t">
+    <em>
+     you still check their Instagram
+    </em>
+   </p>
+  </div>
+ </div>
+</section>
+
+<section class="slide" id="s3">
+ <p class="lbl">
+  04 — 06
+ </p>
+ <div class="spark">
+  <svg fill="none" viewbox="0 0 48 48">
+   <circle class="spark-ring" cx="24" cy="24" r="22" stroke="rgba(255,208,90,0.18)" stroke-dasharray="4 6" stroke-width="1">
+   </circle>
+   <circle cx="24" cy="24" fill="rgba(255,208,90,0.35)" r="4">
+   </circle>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="2" y2="10">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="38" y2="46">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="2" x2="10" y1="24" y2="24">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="38" x2="46" y1="24" y2="24">
+   </line>
+  </svg>
+ </div>
+ <h2 class="h2" style="font-size:clamp(20px,2.8vw,40px);margin-bottom:8px;">
+  Stop trying to logic yourself into change.
+ </h2>
+ <div class="imagine-box">
+  <p class="ib-head">
+   Instead — use the right language
+  </p>
+  <p class="ib-text">
+   <em>
+    Imagine
+   </em>
+   it.
+   <em>
+    Feel
+   </em>
+   it.
+   <br/>
+   <br/>
+   Picture the version of you who already has what you want.
+   <br/>
+   <br/>
+   That is the language your mind
+   <em>
+    actually speaks.
+   </em>
+  </p>
+ </div>
+</section>
+
+<section class="slide" id="s4">
+ <p class="lbl">
+  05 — 06
+ </p>
+ <div class="spark">
+  <svg fill="none" viewbox="0 0 48 48">
+   <circle class="spark-ring" cx="24" cy="24" r="22" stroke="rgba(255,208,90,0.18)" stroke-dasharray="4 6" stroke-width="1">
+   </circle>
+   <circle cx="24" cy="24" fill="rgba(255,208,90,0.35)" r="4">
+   </circle>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="2" y2="10">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="38" y2="46">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="2" x2="10" y1="24" y2="24">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="38" x2="46" y1="24" y2="24">
+   </line>
+  </svg>
+ </div>
+ <h2 class="h2" style="font-size:clamp(20px,2.8vw,40px);margin-bottom:4px;">
+  Picture the version of you
+  <br/>
+  who
+  <em>
+   already has
+  </em>
+  what you want.
+ </h2>
+ <p class="bd" style="font-size:clamp(12px,1.2vw,16px);color:rgba(200,180,120,.52);margin-bottom:0">
+  Ask yourself —
+ </p>
+ <div class="qs">
+  <div class="q">
+   <span class="q-num">
+    01
+   </span>
+   <p class="q-text">
+    How do they
+    <em>
+     stand?
+    </em>
+   </p>
+  </div>
+  <div class="q">
+   <span class="q-num">
+    02
+   </span>
+   <p class="q-text">
+    How do they
+    <em>
+     talk?
+    </em>
+   </p>
+  </div>
+  <div class="q">
+   <span class="q-num">
+    03
+   </span>
+   <p class="q-text">
+    How do they
+    <em>
+     see themselves?
+    </em>
+   </p>
+  </div>
+ </div>
+</section>
+
+<section class="slide" id="s5">
+ <p class="lbl">
+  06 — 06
+ </p>
+ <div class="spark">
+  <svg fill="none" viewbox="0 0 48 48">
+   <circle class="spark-ring" cx="24" cy="24" r="22" stroke="rgba(255,208,90,0.18)" stroke-dasharray="4 6" stroke-width="1">
+   </circle>
+   <circle cx="24" cy="24" fill="rgba(255,208,90,0.35)" r="4">
+   </circle>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="2" y2="10">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="24" x2="24" y1="38" y2="46">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="2" x2="10" y1="24" y2="24">
+   </line>
+   <line stroke="rgba(255,208,90,0.3)" stroke-width="1" x1="38" x2="46" y1="24" y2="24">
+   </line>
+  </svg>
+ </div>
+ <h1 class="h1" style="font-size:clamp(30px,4.8vw,65px);line-height:1.14;">
+  Stop arguing
+  <br/>
+  with yourself.
+  <br/>
+  <br/>
+  <em>
+   Start imagining
+   <br/>
+   a better story.
+  </em>
+ </h1>
+ <span class="cta">
+  Follow for more
+ </span>
+</section>
+
+</div>
+
+<nav id="dnav">
+  <div class="dots">
+    <label for="r0" class="dot"></label>
+    <label for="r1" class="dot"></label>
+    <label for="r2" class="dot"></label>
+    <label for="r3" class="dot"></label>
+    <label for="r4" class="dot"></label>
+    <label for="r5" class="dot"></label>
+  </div>
+</nav>
+<p class="hint">click dots to navigate</p>
+
+<script src="slides.js"></script>
+</body>
+</html>

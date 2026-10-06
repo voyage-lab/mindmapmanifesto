@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mind × Brain — MindMapManifesto</title>
+<meta name="description" content="Two series on how you work inside — the 15 brain waves and the 21 rules of the mind.">
+<meta property="og:title" content="Mind × Brain">
+<meta property="og:description" content="Two series on how you work inside — the 15 brain waves and the 21 rules of the mind.">
+<meta property="og:image" content="../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --char: #1a1918;
+    --paper: #e9e3d6;
+    --paper-dim: #b9b2a3;
+    --glass: rgba(220, 235, 240, .55);
+    --pencil: #6b655b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100svh;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 20px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .bg {
+    position: fixed; inset: 0; z-index: -2;
+    background: url("../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg") center / cover no-repeat;
+    filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+    transform: scale(1.04);
+  }
+  .bg::after {
+    content: ""; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%);
+  }
+
+  nav { padding: 20px 16px; }
+  nav a { font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--paper-dim); text-decoration: none; }
+  nav a:hover { color: var(--paper); }
+
+  main { max-width: 900px; margin: 0 auto; padding: 1rem 16px 4rem; }
+
+  header { text-align: center; margin-bottom: 3rem; }
+  h1 {
+    font-family: "Caveat", cursive; font-weight: 700;
+    font-size: clamp(3rem, 10vw, 6rem); line-height: 1;
+    text-shadow: 0 4px 30px rgba(0,0,0,.8);
+  }
+  .sub {
+    margin: .6rem 0 0;
+    font-size: clamp(.85rem, 2vw, 1.1rem);
+    letter-spacing: .5em; text-transform: uppercase; color: var(--paper-dim);
+  }
+
+  /* paper notes, taped under the glass */
+  .note {
+    background: var(--paper); color: var(--char);
+    padding: 2.2rem clamp(1.2rem, 4vw, 2.4rem) 2rem;
+    border-radius: 2px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.75);
+    position: relative;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(120,100,70,.12), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(90,75,55,.15), transparent 45%);
+  }
+  .note::before {
+    content: ""; position: absolute; top: -14px; left: 50%;
+    width: 120px; height: 28px; transform: translateX(-50%) rotate(2deg);
+    background: var(--glass); box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  }
+  .note h2 { font-family: "Caveat", cursive; font-size: clamp(2rem, 5vw, 2.5rem); line-height: 1.1; margin-bottom: .8rem; }
+  .note .margin { font-family: "Caveat", cursive; font-size: 1.4rem; color: var(--pencil); }
+
+  .series { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 3rem 2rem; }
+  a.note { display: flex; flex-direction: column; text-decoration: none; transition: transform .3s; }
+  a.note:nth-child(odd) { transform: rotate(-.8deg); }
+  a.note:nth-child(even) { transform: rotate(.7deg); }
+  a.note:hover { transform: rotate(0) translateY(-4px); }
+  a.note .margin { margin-bottom: .2rem; }
+  a.note p { line-height: 1.45; }
+  .enter { margin-top: auto; padding-top: 1rem; font-family: "Caveat", cursive; font-size: 1.6rem; }
+  @media (max-width: 760px) { a.note:nth-child(n) { transform: none; } }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<nav><a href="../index.html">← back to the map</a></nav>
+
+<main>
+  <header>
+    <h1>mind x brain</h1>
+    <p class="sub">— two series —</p>
+  </header>
+
+  <div class="series">
+    <a class="note" href="15-brain-waves/index.html">
+      <span class="margin">15 parts</span>
+      <h2>the brain waves</h2>
+      <p>Gamma, beta, alpha, theta, delta — what hypnosis actually does, and why some states are more open to change.</p>
+      <span class="enter">Enter →</span>
+    </a>
+    <a class="note" href="21-rules-mind/index.html">
+      <span class="margin">21 parts</span>
+      <h2>the rules of the mind</h2>
+      <p>How your mind takes orders, the beliefs it runs on, fight, flight and freeze — and how to tell it better things.</p>
+      <span class="enter">Enter →</span>
+    </a>
+  </div>
+</main>
+</body>
+</html>

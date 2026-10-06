@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Your Mind Only Responds to 2 Things</title>
+<link href="https://fonts.googleapis.com/css2?family=Gilda+Display&amp;family=Space+Grotesk:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css">
+<style>
+:root{
+  --w:  rgba(242,238,255,0.93);
+  --v:  rgba(195,158,255,1);
+  --v2: rgba(195,158,255,0.36);
+  --v3: rgba(195,158,255,0.12);
+  --r:  rgba(150,100,255,0.8);
+  --gl: rgba(8,4,20,0.52);
+}
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar{width:16.67%}
+#r1:checked~#bar{width:33.33%}
+#r2:checked~#bar{width:50.00%}
+#r3:checked~#bar{width:66.67%}
+#r4:checked~#bar{width:83.33%}
+#r5:checked~#bar{width:100.00%}
+#r0:checked~#stage #s0, #r1:checked~#stage #s1, #r2:checked~#stage #s2, #r3:checked~#stage #s3, #r4:checked~#stage #s4, #r5:checked~#stage #s5{opacity:1;clip-path:inset(0);pointer-events:all}
+#r0:checked~#dnav label:nth-child(1), #r1:checked~#dnav label:nth-child(2), #r2:checked~#dnav label:nth-child(3), #r3:checked~#dnav label:nth-child(4), #r4:checked~#dnav label:nth-child(5), #r5:checked~#dnav label:nth-child(6){width:22px;border-radius:3px;background:var(--v2);box-shadow:0 0 12px rgba(150,100,255,.3)}
+
+:root {
+  --w:  rgba(242,238,255,0.93);
+  --v:  rgba(195,158,255,1);
+  --v2: rgba(195,158,255,0.36);
+  --v3: rgba(195,158,255,0.12);
+  --r:  rgba(150,100,255,0.8);
+  --gl: rgba(8,4,20,0.52);
+}
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar {
+  width:16.67%
+}
+
+:root {
+  --w:  rgba(242,238,255,0.93);
+  --v:  rgba(195,158,255,1);
+  --v2: rgba(195,158,255,0.36);
+  --v3: rgba(195,158,255,0.12);
+  --r:  rgba(150,100,255,0.8);
+  --gl: rgba(8,4,20,0.52);
+}
+
+#pts {
+  position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden
+}
+
+.pt {
+  position:absolute;border-radius:50%;animation:pr linear infinite;opacity:0
+}
+
+@keyframes pr {
+  0%{transform:translateY(108vh) scale(0);opacity:0}8%{opacity:.42}90%{opacity:.15}100%{transform:translateY(-8vh) scale(1.4);opacity:0}
+}
+
+/* II ornament — two parallel bars */
+.ii {
+  display:flex;align-items:center;justify-content:center;gap:7px;margin:0 auto 28px;height:38px
+}
+
+.ii-bar {
+  width:2px;height:32px;background:linear-gradient(to bottom,transparent,var(--v2),transparent);border-radius:1px
+}
+
+.ii-bar:first-child {
+  animation:ib 3s ease-in-out infinite
+}
+
+.ii-bar:last-child {
+  animation:ib 3s ease-in-out infinite .4s
+}
+
+@keyframes ib {
+  0%,100%{height:28px;opacity:.5}50%{height:36px;opacity:.9}
+}
+
+/* stage — BLUR FADE transition */
+#stage {
+  position:relative;z-index:10;width:100vw;height:100vh;display:grid;place-items:center;overflow:hidden
+}
+
+.slide.on {
+  opacity:1;filter:blur(0);pointer-events:all
+}
+
+.slide.off {
+  opacity:0;filter:blur(6px);transition:opacity .36s ease,filter .36s ease
+}
+
+.h1 em {
+  font-style:italic;color:var(--v)
+}
+
+.h1 strong {
+  font-weight:400
+}
+
+.h2 em {
+  font-style:italic;color:var(--v)
+}
+
+.bd em {
+  font-style:italic;color:rgba(215,190,255,.97)
+}
+
+.bd strong {
+  font-weight:400;color:var(--w)
+}
+
+/* the two things — big reveal */
+.two-wrap {
+  display:flex;gap:20px;max-width:700px;margin:18px auto 0;align-items:stretch
+}
+
+.thing {
+  flex:1;position:relative;
+  padding:28px 28px 24px;
+  background:rgba(12,6,28,.46);
+  border:1px solid rgba(195,158,255,.14);
+  border-radius:3px;backdrop-filter:blur(14px);
+  text-align:left;
+  opacity:0;animation:ti .55s ease forwards;
+}
+
+.thing:nth-child(1) {
+  animation-delay:.1s
+}
+
+.thing:nth-child(2) {
+  animation-delay:.3s;border-color:rgba(195,158,255,.22);border-top:2px solid rgba(195,158,255,.45)
+}
+
+@keyframes ti {
+  to{opacity:1}
+}
+
+.thing-num {
+  font-size:64px;font-weight:600;line-height:.8;color:rgba(195,158,255,.07);position:absolute;top:12px;right:14px;letter-spacing:-4px
+}
+
+.thing-label {
+  font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--v2);margin-bottom:14px
+}
+
+.thing-name {
+  font-family:'Gilda Display',serif;font-style:italic;font-size:clamp(22px,2.8vw,38px);color:var(--v);line-height:1.1;margin-bottom:10px
+}
+
+.thing-desc {
+  font-family:'Gilda Display',serif;font-size:clamp(13px,1.4vw,18px);line-height:1.6;color:rgba(220,210,240,.72)
+}
+
+/* control statement */
+.control {
+  background:rgba(12,6,28,.46);
+  border:1px solid rgba(195,158,255,.16);
+  border-left:3px solid rgba(195,158,255,.5);
+  border-radius:3px;backdrop-filter:blur(14px);
+  padding:24px 36px;max-width:680px;margin:24px auto 0;
+  font-family:'Gilda Display',serif;font-style:italic;
+  font-size:clamp(17px,2vw,26px);line-height:1.65;
+  color:rgba(220,210,240,.88);
+}
+
+.control em {
+  font-style:normal;color:var(--v)
+}
+
+/* proof cards — song/anxiety */
+.proof {
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:700px;margin:18px auto 0
+}
+
+.pc {
+  padding:22px 24px;text-align:left;
+  background:rgba(12,6,28,.44);border:1px solid rgba(195,158,255,.12);
+  border-radius:3px;backdrop-filter:blur(12px);
+  opacity:0;animation:pi .5s ease forwards;
+}
+
+.pc:first-child {
+  animation-delay:.12s
+}
+
+.pc:last-child {
+  animation-delay:.3s
+}
+
+@keyframes pi {
+  to{opacity:1}
+}
+
+.pc-tag {
+  font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--v2);margin-bottom:10px
+}
+
+.pc-title {
+  font-family:'Gilda Display',serif;font-style:italic;font-size:clamp(16px,1.9vw,24px);color:var(--v);margin-bottom:8px
+}
+
+.pc-text {
+  font-family:'Gilda Display',serif;font-size:clamp(13px,1.4vw,18px);line-height:1.6;color:rgba(220,210,240,.75)
+}
+
+.proof-note {
+  font-family:'Gilda Display',serif;font-style:italic;font-size:clamp(14px,1.5vw,20px);color:rgba(195,158,255,.65);margin-top:18px;max-width:660px
+}
+
+/* application */
+.app-steps {
+  display:flex;flex-direction:column;gap:12px;max-width:640px;margin:18px auto 0
+}
+
+.ast {
+  display:flex;align-items:center;gap:20px;text-align:left;
+  padding:16px 24px;
+  background:rgba(12,6,28,.44);border:1px solid rgba(195,158,255,.12);
+  border-radius:3px;backdrop-filter:blur(12px);
+  opacity:0;animation:ai .48s ease forwards;
+}
+
+.ast:nth-child(1) {
+  animation-delay:.1s
+}
+
+.ast:nth-child(2) {
+  animation-delay:.26s
+}
+
+.ast:nth-child(3) {
+  animation-delay:.42s
+}
+
+@keyframes ai {
+  to{opacity:1}
+}
+
+.ast-icon {
+  width:28px;height:28px;border-radius:50%;border:1px solid rgba(195,158,255,.25);display:grid;place-items:center;flex-shrink:0;font-size:9px;font-weight:600;letter-spacing:1px;color:var(--v2)
+}
+
+.ast-text {
+  font-family:'Gilda Display',serif;font-size:clamp(15px,1.7vw,22px);line-height:1.55;color:rgba(225,218,245,.86)
+}
+
+.ast-text em {
+  font-style:italic;color:var(--v)
+}
+
+/* toolkit card */
+.toolkit {
+  background:linear-gradient(135deg,rgba(16,8,36,.62),rgba(10,5,24,.52));
+  border:1px solid rgba(195,158,255,.22);
+  border-top:2px solid rgba(195,158,255,.5);
+  border-radius:4px;backdrop-filter:blur(18px);
+  padding:38px 50px;max-width:680px;margin:22px auto 0;
+  box-shadow:0 28px 80px rgba(0,0,0,.5),0 0 60px rgba(150,100,255,.05);
+}
+
+.tk-head {
+  font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--v2);margin-bottom:16px
+}
+
+.tk-num {
+  font-family:'Gilda Display',serif;font-size:clamp(48px,6vw,80px);font-weight:400;line-height:.85;color:rgba(195,158,255,.12);margin-bottom:8px
+}
+
+.tk-text {
+  font-family:'Gilda Display',serif;font-style:italic;font-size:clamp(20px,2.5vw,34px);line-height:1.4;color:var(--v);text-shadow:0 0 40px rgba(195,158,255,.25)
+}
+
+.tk-sub {
+  font-size:clamp(12px,1.1vw,15px);font-weight:300;letter-spacing:1.5px;color:rgba(195,158,255,.38);margin-top:14px
+}
+
+.cta:hover {
+  border-color:rgba(195,158,255,.52);color:var(--v);box-shadow:0 0 28px rgba(150,100,255,.12)
+}
+
+.nb:hover {
+  border-color:rgba(195,158,255,.5);background:rgba(16,8,34,.6);color:#fff;box-shadow:0 0 22px rgba(150,100,255,.18)
+}
+
+.nb svg {
+  width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round
+}
+
+#dots {
+  display:flex;gap:7px;align-items:center
+}
+
+.dot.on {
+  width:22px;border-radius:3px;background:var(--v2);box-shadow:0 0 12px rgba(150,100,255,.3)
+}
+
+@media(max-width:700px) {
+  body{cursor:auto}#cur{display:none}.hint{display:none}.slide{padding:38px 20px 90px}.lbl{font-size:11px;letter-spacing:3px;margin-bottom:14px}.tri{margin-bottom:16px}.h2{font-size:26px}.sub{font-size:13px;letter-spacing:2px;margin-bottom:26px}.bd{font-size:17px;line-height:1.7}.freq-list{margin-top:14px;gap:8px}.freq-text{font-size:15px}.rule-card{padding:20px 18px}.rule-label{font-size:10px;letter-spacing:3px}.rule-title{font-size:22px}.rule-body{font-size:15px;line-height:1.65}.fa{grid-template-columns:1fr}.fa-half:first-child{border-right:none;border-bottom:1px solid rgba(160,198,248,.1)}.fa-label{font-size:10px;letter-spacing:2.5px}.fa-text{font-size:15px}.good{padding:20px 18px;margin-top:12px}.gd-head{font-size:10px;letter-spacing:3px}.gd-text{font-size:17px;line-height:1.65}.not-list{margin-left:0;margin-top:14px}.nw-text{font-size:15px}.two-col{grid-template-columns:1fr}.col-half:first-child{border-right:none;border-bottom:1px solid rgba(160,198,248,.1)}.card{padding:20px 18px}.card-head{font-size:10px;letter-spacing:3px}.card-text{font-size:17px;line-height:1.65}.item-text{font-size:15px}.col-text{font-size:15px}.list{gap:8px;margin-top:14px}#nav{bottom:max(18px,env(safe-area-inset-bottom,18px))}#dnav{bottom:max(18px,env(safe-area-inset-bottom,18px))}.nb{width:44px;height:44px;cursor:auto;touch-action:manipulation}.dot{cursor:auto;touch-action:manipulation}.cta{margin-top:22px}
+}
+</style>
+</head>
+<body>
+<input type="radio" name="s" id="r0" checked>
+<input type="radio" name="s" id="r1">
+<input type="radio" name="s" id="r2">
+<input type="radio" name="s" id="r3">
+<input type="radio" name="s" id="r4">
+<input type="radio" name="s" id="r5">
+
+<div id="bg"></div>
+<div class="sc"></div>
+<div class="orb oa"></div>
+<div class="orb ob"></div>
+<div id="pts">
+  <div class="pt" style="width:3.44px;height:3.44px;left:27.50%;background:rgba(195,158,255,0.08);box-shadow:0 0 13.75px rgba(195,158,255,0.22);animation-duration:14.02s;animation-delay:-16.20s;"></div>
+  <div class="pt" style="width:3.57px;height:3.57px;left:8.69%;background:rgba(150,100,255,0.38);box-shadow:0 0 14.27px rgba(150,100,255,0.22);animation-duration:17.59s;animation-delay:-0.66s;"></div>
+  <div class="pt" style="width:1.97px;height:1.97px;left:2.65%;background:rgba(220,190,255,0.25);box-shadow:0 0 7.86px rgba(220,190,255,0.22);animation-duration:13.58s;animation-delay:-14.30s;"></div>
+  <div class="pt" style="width:3.11px;height:3.11px;left:58.93%;background:rgba(195,158,255,0.15);box-shadow:0 0 12.43px rgba(195,158,255,0.22);animation-duration:24.57s;animation-delay:-0.14s;"></div>
+  <div class="pt" style="width:4.02px;height:4.02px;left:34.03%;background:rgba(150,100,255,0.31);box-shadow:0 0 16.08px rgba(150,100,255,0.22);animation-duration:12.80s;animation-delay:-21.06s;"></div>
+  <div class="pt" style="width:2.38px;height:2.38px;left:9.67%;background:rgba(220,190,255,0.10);box-shadow:0 0 9.51px rgba(220,190,255,0.22);animation-duration:25.25s;animation-delay:-13.28s;"></div>
+  <div class="pt" style="width:4.02px;height:4.02px;left:53.62%;background:rgba(195,158,255,0.33);box-shadow:0 0 16.10px rgba(195,158,255,0.22);animation-duration:27.52s;animation-delay:-8.33s;"></div>
+  <div class="pt" style="width:3.13px;height:3.13px;left:61.85%;background:rgba(150,100,255,0.36);box-shadow:0 0 12.53px rgba(150,100,255,0.22);animation-duration:25.51s;animation-delay:-12.70s;"></div>
+  <div class="pt" style="width:3.67px;height:3.67px;left:22.79%;background:rgba(220,190,255,0.09);box-shadow:0 0 14.66px rgba(220,190,255,0.22);animation-duration:15.21s;animation-delay:-1.76s;"></div>
+  <div class="pt" style="width:2.01px;height:2.01px;left:27.80%;background:rgba(195,158,255,0.11);box-shadow:0 0 8.06px rgba(195,158,255,0.22);animation-duration:21.44s;animation-delay:-8.03s;"></div>
+  <div class="pt" style="width:2.50px;height:2.50px;left:26.70%;background:rgba(150,100,255,0.14);box-shadow:0 0 9.98px rgba(150,100,255,0.22);animation-duration:26.86s;animation-delay:-14.26s;"></div>
+  <div class="pt" style="width:3.33px;height:3.33px;left:72.91%;background:rgba(220,190,255,0.13);box-shadow:0 0 13.33px rgba(220,190,255,0.22);animation-duration:12.94s;animation-delay:-8.35s;"></div>
+  <div class="pt" style="width:4.66px;height:4.66px;left:55.69%;background:rgba(195,158,255,0.29);box-shadow:0 0 18.65px rgba(195,158,255,0.22);animation-duration:22.32s;animation-delay:-18.54s;"></div>
+  <div class="pt" style="width:3.92px;height:3.92px;left:3.21%;background:rgba(150,100,255,0.15);box-shadow:0 0 15.66px rgba(150,100,255,0.22);animation-duration:15.68s;animation-delay:-5.89s;"></div>
+  <div class="pt" style="width:1.94px;height:1.94px;left:87.64%;background:rgba(220,190,255,0.40);box-shadow:0 0 7.75px rgba(220,190,255,0.22);animation-duration:15.66s;animation-delay:-14.42s;"></div>
+  <div class="pt" style="width:2.58px;height:2.58px;left:45.89%;background:rgba(195,158,255,0.39);box-shadow:0 0 10.34px rgba(195,158,255,0.22);animation-duration:14.77s;animation-delay:-5.43s;"></div>
+  <div class="pt" style="width:3.16px;height:3.16px;left:58.46%;background:rgba(150,100,255,0.16);box-shadow:0 0 12.66px rgba(150,100,255,0.22);animation-duration:26.16s;animation-delay:-8.79s;"></div>
+  <div class="pt" style="width:1.97px;height:1.97px;left:50.95%;background:rgba(220,190,255,0.42);box-shadow:0 0 7.87px rgba(220,190,255,0.22);animation-duration:11.64s;animation-delay:-1.04s;"></div>
+  <div class="pt" style="width:1.58px;height:1.58px;left:79.21%;background:rgba(195,158,255,0.29);box-shadow:0 0 6.34px rgba(195,158,255,0.22);animation-duration:17.60s;animation-delay:-1.40s;"></div>
+  <div class="pt" style="width:2.54px;height:2.54px;left:52.91%;background:rgba(150,100,255,0.42);box-shadow:0 0 10.14px rgba(150,100,255,0.22);animation-duration:27.48s;animation-delay:-18.94s;"></div>
+  <div class="pt" style="width:1.24px;height:1.24px;left:68.17%;background:rgba(220,190,255,0.32);box-shadow:0 0 4.96px rgba(220,190,255,0.22);animation-duration:19.67s;animation-delay:-5.87s;"></div>
+  <div class="pt" style="width:3.44px;height:3.44px;left:43.48%;background:rgba(195,158,255,0.11);box-shadow:0 0 13.77px rgba(195,158,255,0.22);animation-duration:18.17s;animation-delay:-20.98s;"></div>
+</div>
+<div id="bar"></div>
+
+<div id="stage">
+<section class="slide" id="s0">
+ <p class="lbl">
+  01 — 06
+ </p>
+ <div class="ii">
+  <div class="ii-bar">
+  </div>
+  <div class="ii-bar">
+  </div>
+ </div>
+ <h1 class="h1">
+  Your Mind Only
+  <br/>
+  Responds to
+  <em>
+   2 Things
+  </em>
+ </h1>
+ <p class="sub">
+  Most people have no idea what they are
+ </p>
+</section>
+
+<section class="slide" id="s1">
+ <p class="lbl">
+  02 — 06
+ </p>
+ <div class="ii">
+  <div class="ii-bar">
+  </div>
+  <div class="ii-bar">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(18px,2.4vw,34px);margin-bottom:8px;">
+  That is
+  <em>
+   it.
+  </em>
+  Nothing else.
+ </h2>
+ <p class="bd" style="font-size:clamp(12px,1.2vw,16px);color:rgba(180,165,220,.52);margin-bottom:4px;">
+  Not what happens to you. Not your circumstances. Not other people.
+ </p>
+ <div class="two-wrap">
+  <div class="thing">
+   <span class="thing-num">
+    1
+   </span>
+   <p class="thing-label">
+    Thing one
+   </p>
+   <p class="thing-name">
+    The pictures
+   </p>
+   <p class="thing-desc">
+    The images you make and play inside your head
+   </p>
+  </div>
+  <div class="thing">
+   <span class="thing-num">
+    2
+   </span>
+   <p class="thing-label">
+    Thing two
+   </p>
+   <p class="thing-name">
+    The words
+   </p>
+   <p class="thing-desc">
+    The things you say to yourself, all day, every day
+   </p>
+  </div>
+ </div>
+</section>
+
+<section class="slide" id="s2">
+ <p class="lbl">
+  03 — 06
+ </p>
+ <div class="ii">
+  <div class="ii-bar">
+  </div>
+  <div class="ii-bar">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(22px,3vw,44px);">
+  Which means you have
+  <br/>
+  <em>
+   way more control
+  </em>
+  <br/>
+  than you think.
+ </h2>
+ <div class="control">
+  You have been giving your
+  <em>
+   circumstances
+  </em>
+  the credit. Your
+  <em>
+   past
+  </em>
+  the blame. Other
+  <em>
+   people
+  </em>
+  the power.
+  <br/>
+  <br/>
+  But your mind was never responding to any of those things. It was only ever responding to the
+  <em>
+   pictures and words you fed it.
+  </em>
+ </div>
+</section>
+
+<section class="slide" id="s3">
+ <p class="lbl">
+  04 — 06
+ </p>
+ <div class="ii">
+  <div class="ii-bar">
+  </div>
+  <div class="ii-bar">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(20px,2.8vw,40px);margin-bottom:8px;">
+  Your mind cannot tell the difference
+  <br/>
+  between
+  <em>
+   real
+  </em>
+  and
+  <em>
+   vividly imagined.
+  </em>
+ </h2>
+ <div class="proof">
+  <div class="pc">
+   <p class="pc-tag">
+    Words at work
+   </p>
+   <p class="pc-title">
+    A song takes you back
+   </p>
+   <p class="pc-text">
+    You hear it and you are instantly there — the memory, the feeling, the moment. Words doing their job.
+   </p>
+  </div>
+  <div class="pc">
+   <p class="pc-tag">
+    Pictures at work
+   </p>
+   <p class="pc-title">
+    Anxious about nothing yet
+   </p>
+   <p class="pc-text">
+    The thing has not happened — but your body is already reacting to the picture you are playing in your head.
+   </p>
+  </div>
+ </div>
+ <p class="proof-note">
+  Real or imagined. Your mind treats both the same way.
+ </p>
+</section>
+
+<section class="slide" id="s4">
+ <p class="lbl">
+  05 — 06
+ </p>
+ <div class="ii">
+  <div class="ii-bar">
+  </div>
+  <div class="ii-bar">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(20px,2.8vw,40px);margin-bottom:10px;">
+  Want to feel more
+  <em>
+   confident?
+  </em>
+ </h2>
+ <div class="app-steps">
+  <div class="ast">
+   <span class="ast-icon">
+    01
+   </span>
+   <p class="ast-text">
+    <em>
+     Picture
+    </em>
+    yourself being confident — vividly, in detail
+   </p>
+  </div>
+  <div class="ast">
+   <span class="ast-icon">
+    02
+   </span>
+   <p class="ast-text">
+    <em>
+     Talk
+    </em>
+    to yourself like someone who already is
+   </p>
+  </div>
+  <div class="ast">
+   <span class="ast-icon">
+    →
+   </span>
+   <p class="ast-text">
+    Your mind will
+    <em>
+     follow.
+    </em>
+    It has no choice. That is literally all it responds to.
+   </p>
+  </div>
+ </div>
+</section>
+
+<section class="slide" id="s5">
+ <p class="lbl">
+  06 — 06
+ </p>
+ <div class="ii">
+  <div class="ii-bar">
+  </div>
+  <div class="ii-bar">
+  </div>
+ </div>
+ <h1 class="h1" style="font-size:clamp(28px,4.2vw,58px);line-height:1.16;">
+  Two things.
+  <br/>
+  <em>
+   That is your
+   <br/>
+   whole toolkit.
+  </em>
+  <br/>
+  <strong>
+   Use them deliberately.
+  </strong>
+ </h1>
+ <span class="cta">
+  Follow for more
+ </span>
+</section>
+
+</div>
+
+<nav id="dnav">
+  <div class="dots">
+    <label for="r0" class="dot"></label>
+    <label for="r1" class="dot"></label>
+    <label for="r2" class="dot"></label>
+    <label for="r3" class="dot"></label>
+    <label for="r4" class="dot"></label>
+    <label for="r5" class="dot"></label>
+  </div>
+</nav>
+<p class="hint">click dots to navigate</p>
+
+<script src="slides.js"></script>
+</body>
+</html>

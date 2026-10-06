@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Why Change Feels So Hard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400;1,6..96,600&amp;family=Plus+Jakarta+Sans:wght@200;300;400;500&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css">
+<style>
+:root{
+  --w:  rgba(235,248,248,0.93);
+  --t:  rgba(70,220,195,1);
+  --t2: rgba(70,220,195,0.36);
+  --t3: rgba(70,220,195,0.12);
+  --r:  rgba(40,180,200,0.8);
+  --gl: rgba(0,16,18,0.52);
+}
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar{width:16.67%}
+#r1:checked~#bar{width:33.33%}
+#r2:checked~#bar{width:50.00%}
+#r3:checked~#bar{width:66.67%}
+#r4:checked~#bar{width:83.33%}
+#r5:checked~#bar{width:100.00%}
+#r0:checked~#stage #s0, #r1:checked~#stage #s1, #r2:checked~#stage #s2, #r3:checked~#stage #s3, #r4:checked~#stage #s4, #r5:checked~#stage #s5{opacity:1;clip-path:inset(0);pointer-events:all}
+#r0:checked~#dnav label:nth-child(1), #r1:checked~#dnav label:nth-child(2), #r2:checked~#dnav label:nth-child(3), #r3:checked~#dnav label:nth-child(4), #r4:checked~#dnav label:nth-child(5), #r5:checked~#dnav label:nth-child(6){width:22px;border-radius:3px;background:var(--t2);box-shadow:0 0 12px rgba(70,220,195,.3)}
+
+:root {
+  --w:  rgba(235,248,248,0.93);
+  --t:  rgba(70,220,195,1);
+  --t2: rgba(70,220,195,0.36);
+  --t3: rgba(70,220,195,0.12);
+  --r:  rgba(40,180,200,0.8);
+  --gl: rgba(0,16,18,0.52);
+}
+
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar {
+  width:16.67%
+}
+
+:root {
+  --w:  rgba(235,248,248,0.93);
+  --t:  rgba(70,220,195,1);
+  --t2: rgba(70,220,195,0.36);
+  --t3: rgba(70,220,195,0.12);
+  --r:  rgba(40,180,200,0.8);
+  --gl: rgba(0,16,18,0.52);
+}
+
+#pts {
+  position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden
+}
+
+.pt {
+  position:absolute;border-radius:50%;animation:pr linear infinite;opacity:0
+}
+
+@keyframes pr {
+  0%{transform:translateY(108vh) scale(0);opacity:0}8%{opacity:.42}90%{opacity:.15}100%{transform:translateY(-8vh) scale(1.4);opacity:0}
+}
+
+/* zone ornament — two concentric rings */
+.zone {
+  position:relative;width:52px;height:52px;margin:0 auto 26px;display:flex;align-items:center;justify-content:center
+}
+
+.z-out {
+  position:absolute;width:52px;height:52px;border-radius:50%;border:1px solid rgba(70,220,195,.16);animation:zp 10s linear infinite
+}
+
+.z-mid {
+  position:absolute;width:36px;height:36px;border-radius:50%;border:1px solid rgba(70,220,195,.1);animation:zp 14s linear infinite reverse
+}
+
+.z-dot {
+  width:5px;height:5px;border-radius:50%;background:var(--t2);box-shadow:0 0 12px rgba(70,220,195,.5)
+}
+
+@keyframes zp {
+  to{transform:rotate(360deg)}
+}
+
+/* stage — ZOOM transition */
+#stage {
+  position:relative;z-index:10;width:100vw;height:100vh;display:grid;place-items:center;overflow:hidden
+}
+
+.slide.on {
+  opacity:1;transform:scale(1);pointer-events:all
+}
+
+.slide.off {
+  opacity:0;transform:scale(.96);transition:opacity .38s ease,transform .38s ease
+}
+
+.h1 em {
+  font-style:italic;color:var(--t)
+}
+
+.h1 strong {
+  font-weight:600
+}
+
+.h2 em {
+  font-style:italic;color:var(--t)
+}
+
+.bd em {
+  font-style:italic;color:rgba(100,235,215,.97)
+}
+
+.bd strong {
+  font-weight:600;color:var(--w)
+}
+
+/* familiar / unfamiliar split — slide 2 */
+.split {
+  display:grid;grid-template-columns:1fr 1px 1fr;gap:0;max-width:680px;margin:24px auto 0;align-items:stretch
+}
+
+.sp-half {
+  padding:22px 28px;text-align:left
+}
+
+.sp-half:first-child {
+  text-align:right
+}
+
+.sp-divider {
+  background:linear-gradient(to bottom,transparent,rgba(70,220,195,.2),transparent)
+}
+
+.sp-label {
+  font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;margin-bottom:10px
+}
+
+.sp-half:first-child .sp-label {
+  color:rgba(70,220,195,.35)
+}
+
+.sp-half:last-child .sp-label {
+  color:rgba(255,120,100,.35)
+}
+
+.sp-text {
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(15px,1.7vw,22px);line-height:1.65;color:rgba(200,230,228,.82)
+}
+
+.sp-text em {
+  font-style:normal;color:var(--t)
+}
+
+.sp-text.red em {
+  color:rgba(255,140,110,.8)
+}
+
+.sp-note {
+  font-size:clamp(12px,1.2vw,16px);color:rgba(120,200,190,.55);margin-top:8px;font-style:italic
+}
+
+/* not because — slide 3 */
+.not-list {
+  display:flex;flex-direction:column;gap:10px;max-width:640px;margin:20px auto 0
+}
+
+.not-row {
+  display:flex;align-items:center;gap:18px;
+  padding:14px 24px;
+  background:rgba(0,20,22,.44);border:1px solid rgba(70,220,195,.1);
+  border-radius:3px;backdrop-filter:blur(12px);
+  text-align:left;
+  opacity:0;animation:nr .48s ease forwards;
+}
+
+.not-row:nth-child(1) {
+  animation-delay:.1s
+}
+
+.not-row:nth-child(2) {
+  animation-delay:.25s
+}
+
+.not-row:nth-child(3) {
+  animation-delay:.4s
+}
+
+@keyframes nr {
+  to{opacity:1}
+}
+
+.not-x {
+  font-size:10px;font-weight:500;letter-spacing:2px;color:rgba(255,120,90,.4);text-transform:uppercase;flex-shrink:0;width:48px
+}
+
+.not-text {
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(14px,1.6vw,21px);color:rgba(200,230,228,.82);line-height:1.5
+}
+
+.not-text em {
+  font-style:normal;color:var(--t)
+}
+
+.not-truth {
+  font-family:'Bodoni Moda',serif;font-size:clamp(16px,1.8vw,24px);line-height:1.6;color:rgba(100,235,215,.82);margin-top:20px;max-width:640px;font-style:italic
+}
+
+/* secret — slide 4 */
+.secret-grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:660px;margin:22px auto 0
+}
+
+.sg {
+  padding:22px 26px;
+  background:rgba(0,20,22,.44);border:1px solid rgba(70,220,195,.12);
+  border-radius:3px;backdrop-filter:blur(12px);
+  text-align:left;
+  opacity:0;animation:sg .5s ease forwards;
+}
+
+.sg:first-child {
+  border-color:rgba(255,100,80,.15);animation-delay:.1s
+}
+
+.sg:last-child {
+  border-color:rgba(70,220,195,.2);border-top:2px solid rgba(70,220,195,.4);animation-delay:.28s
+}
+
+@keyframes sg {
+  to{opacity:1}
+}
+
+.sg-head {
+  font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px
+}
+
+.sg:first-child .sg-head {
+  color:rgba(255,120,90,.45)
+}
+
+.sg:last-child .sg-head {
+  color:var(--t2)
+}
+
+.sg-text {
+  font-family:'Bodoni Moda',serif;font-size:clamp(15px,1.7vw,22px);line-height:1.6;color:rgba(200,230,228,.85)
+}
+
+.sg-text em {
+  font-style:italic;color:var(--t)
+}
+
+/* the question — slide 5 */
+.q-card {
+  background:linear-gradient(135deg,rgba(0,28,30,.62),rgba(0,18,20,.52));
+  border:1px solid rgba(70,220,195,.22);
+  border-top:2px solid rgba(70,220,195,.5);
+  border-radius:4px;backdrop-filter:blur(18px);
+  padding:40px 52px;max-width:700px;margin:22px auto 0;
+  box-shadow:0 28px 80px rgba(0,0,0,.5),0 0 60px rgba(40,180,170,.05);
+}
+
+.q-card-inst {
+  font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--t2);margin-bottom:18px
+}
+
+.q-card-text {
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(22px,3vw,42px);line-height:1.38;color:var(--t);text-shadow:0 0 40px rgba(70,220,195,.25)
+}
+
+.q-card-sub {
+  font-size:clamp(12px,1.1vw,15px);font-weight:300;letter-spacing:1.5px;color:rgba(70,220,195,.4);margin-top:16px
+}
+
+/* cta */
+.cta {
+  display:inline-block;margin-top:36px;border:1px solid rgba(70,220,195,.25);background:rgba(0,20,22,.28);backdrop-filter:blur(10px);padding:12px 32px;border-radius:2px;font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:var(--t2);transition:all .3s
+}
+
+.cta:hover {
+  border-color:rgba(70,220,195,.52);color:var(--t);box-shadow:0 0 28px rgba(40,180,170,.12)
+}
+
+.nb:hover {
+  border-color:rgba(70,220,195,.5);background:rgba(0,26,28,.6);color:#fff;box-shadow:0 0 22px rgba(40,180,170,.18)
+}
+
+.nb svg {
+  width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round
+}
+
+#dots {
+  display:flex;gap:7px;align-items:center
+}
+
+.dot.on {
+  width:22px;border-radius:3px;background:var(--t2);box-shadow:0 0 12px rgba(40,180,170,.3)
+}
+
+@media(max-width:700px) {
+  body{cursor:auto}#cur{display:none}.hint{display:none}.slide{padding:38px 20px 90px}.lbl{font-size:11px;letter-spacing:3px;margin-bottom:14px}.tri{margin-bottom:16px}.h2{font-size:26px}.sub{font-size:13px;letter-spacing:2px;margin-bottom:26px}.bd{font-size:17px;line-height:1.7}.freq-list{margin-top:14px;gap:8px}.freq-text{font-size:15px}.rule-card{padding:20px 18px}.rule-label{font-size:10px;letter-spacing:3px}.rule-title{font-size:22px}.rule-body{font-size:15px;line-height:1.65}.fa{grid-template-columns:1fr}.fa-half:first-child{border-right:none;border-bottom:1px solid rgba(160,198,248,.1)}.fa-label{font-size:10px;letter-spacing:2.5px}.fa-text{font-size:15px}.good{padding:20px 18px;margin-top:12px}.gd-head{font-size:10px;letter-spacing:3px}.gd-text{font-size:17px;line-height:1.65}.not-list{margin-left:0;margin-top:14px}.nw-text{font-size:15px}.two-col{grid-template-columns:1fr}.col-half:first-child{border-right:none;border-bottom:1px solid rgba(160,198,248,.1)}.card{padding:20px 18px}.card-head{font-size:10px;letter-spacing:3px}.card-text{font-size:17px;line-height:1.65}.item-text{font-size:15px}.col-text{font-size:15px}.list{gap:8px;margin-top:14px}#nav{bottom:max(18px,env(safe-area-inset-bottom,18px))}#dnav{bottom:max(18px,env(safe-area-inset-bottom,18px))}.nb{width:44px;height:44px;cursor:auto;touch-action:manipulation}.dot{cursor:auto;touch-action:manipulation}.cta{margin-top:22px}
+}
+</style>
+</head>
+<body>
+<input type="radio" name="s" id="r0" checked>
+<input type="radio" name="s" id="r1">
+<input type="radio" name="s" id="r2">
+<input type="radio" name="s" id="r3">
+<input type="radio" name="s" id="r4">
+<input type="radio" name="s" id="r5">
+
+<div id="bg"></div>
+<div class="sc"></div>
+<div class="orb oa"></div>
+<div class="orb ob"></div>
+<div id="pts">
+  <div class="pt" style="width:2.85px;height:2.85px;left:91.61%;background:rgba(70,220,195,0.30);box-shadow:0 0 11.39px rgba(70,220,195,0.22);animation-duration:13.27s;animation-delay:-12.88s;"></div>
+  <div class="pt" style="width:3.42px;height:3.42px;left:9.12%;background:rgba(40,180,200,0.24);box-shadow:0 0 13.69px rgba(40,180,200,0.22);animation-duration:16.26s;animation-delay:-7.33s;"></div>
+  <div class="pt" style="width:3.55px;height:3.55px;left:32.98%;background:rgba(120,240,220,0.37);box-shadow:0 0 14.18px rgba(120,240,220,0.22);animation-duration:22.49s;animation-delay:-6.34s;"></div>
+  <div class="pt" style="width:4.51px;height:4.51px;left:55.01%;background:rgba(70,220,195,0.35);box-shadow:0 0 18.03px rgba(70,220,195,0.22);animation-duration:18.19s;animation-delay:-6.92s;"></div>
+  <div class="pt" style="width:2.33px;height:2.33px;left:40.42%;background:rgba(40,180,200,0.41);box-shadow:0 0 9.33px rgba(40,180,200,0.22);animation-duration:19.26s;animation-delay:-21.74s;"></div>
+  <div class="pt" style="width:3.50px;height:3.50px;left:41.32%;background:rgba(120,240,220,0.26);box-shadow:0 0 14.01px rgba(120,240,220,0.22);animation-duration:13.38s;animation-delay:-7.96s;"></div>
+  <div class="pt" style="width:3.85px;height:3.85px;left:76.00%;background:rgba(70,220,195,0.29);box-shadow:0 0 15.39px rgba(70,220,195,0.22);animation-duration:13.66s;animation-delay:-12.08s;"></div>
+  <div class="pt" style="width:4.45px;height:4.45px;left:69.83%;background:rgba(40,180,200,0.22);box-shadow:0 0 17.79px rgba(40,180,200,0.22);animation-duration:12.19s;animation-delay:-21.41s;"></div>
+  <div class="pt" style="width:3.33px;height:3.33px;left:15.84%;background:rgba(120,240,220,0.15);box-shadow:0 0 13.32px rgba(120,240,220,0.22);animation-duration:19.92s;animation-delay:-12.15s;"></div>
+  <div class="pt" style="width:1.53px;height:1.53px;left:91.29%;background:rgba(70,220,195,0.42);box-shadow:0 0 6.10px rgba(70,220,195,0.22);animation-duration:18.31s;animation-delay:-2.58s;"></div>
+  <div class="pt" style="width:4.11px;height:4.11px;left:71.66%;background:rgba(40,180,200,0.24);box-shadow:0 0 16.45px rgba(40,180,200,0.22);animation-duration:19.16s;animation-delay:-6.02s;"></div>
+  <div class="pt" style="width:4.12px;height:4.12px;left:24.37%;background:rgba(120,240,220,0.41);box-shadow:0 0 16.49px rgba(120,240,220,0.22);animation-duration:19.92s;animation-delay:-8.44s;"></div>
+  <div class="pt" style="width:4.43px;height:4.43px;left:87.93%;background:rgba(70,220,195,0.25);box-shadow:0 0 17.71px rgba(70,220,195,0.22);animation-duration:25.55s;animation-delay:-6.08s;"></div>
+  <div class="pt" style="width:3.97px;height:3.97px;left:93.42%;background:rgba(40,180,200,0.22);box-shadow:0 0 15.86px rgba(40,180,200,0.22);animation-duration:19.14s;animation-delay:-18.05s;"></div>
+  <div class="pt" style="width:2.19px;height:2.19px;left:58.69%;background:rgba(120,240,220,0.17);box-shadow:0 0 8.76px rgba(120,240,220,0.22);animation-duration:27.98s;animation-delay:-10.77s;"></div>
+  <div class="pt" style="width:1.72px;height:1.72px;left:34.51%;background:rgba(70,220,195,0.26);box-shadow:0 0 6.88px rgba(70,220,195,0.22);animation-duration:19.93s;animation-delay:-11.96s;"></div>
+  <div class="pt" style="width:2.79px;height:2.79px;left:18.87%;background:rgba(40,180,200,0.18);box-shadow:0 0 11.17px rgba(40,180,200,0.22);animation-duration:22.55s;animation-delay:-12.58s;"></div>
+  <div class="pt" style="width:2.02px;height:2.02px;left:4.36%;background:rgba(120,240,220,0.34);box-shadow:0 0 8.07px rgba(120,240,220,0.22);animation-duration:23.40s;animation-delay:-15.52s;"></div>
+  <div class="pt" style="width:4.04px;height:4.04px;left:66.37%;background:rgba(70,220,195,0.21);box-shadow:0 0 16.16px rgba(70,220,195,0.22);animation-duration:24.77s;animation-delay:-21.58s;"></div>
+  <div class="pt" style="width:2.93px;height:2.93px;left:50.23%;background:rgba(40,180,200,0.08);box-shadow:0 0 11.73px rgba(40,180,200,0.22);animation-duration:20.62s;animation-delay:-19.13s;"></div>
+  <div class="pt" style="width:4.26px;height:4.26px;left:52.60%;background:rgba(120,240,220,0.22);box-shadow:0 0 17.04px rgba(120,240,220,0.22);animation-duration:18.22s;animation-delay:-15.89s;"></div>
+  <div class="pt" style="width:2.63px;height:2.63px;left:15.44%;background:rgba(70,220,195,0.30);box-shadow:0 0 10.54px rgba(70,220,195,0.22);animation-duration:18.45s;animation-delay:-21.32s;"></div>
+</div>
+<div id="bar"></div>
+
+<div id="stage">
+<section class="slide" id="s0">
+ <p class="lbl">
+  01 — 06
+ </p>
+ <div class="zone">
+  <div class="z-out">
+  </div>
+  <div class="z-mid">
+  </div>
+  <div class="z-dot">
+  </div>
+ </div>
+ <h1 class="h1">
+  Why Change
+  <br/>
+  Feels
+  <em>
+   So Hard
+  </em>
+ </h1>
+ <p class="sub">
+  Something inside you is actively fighting back
+ </p>
+</section>
+
+<section class="slide" id="s1">
+ <p class="lbl">
+  02 — 06
+ </p>
+ <div class="zone">
+  <div class="z-out">
+  </div>
+  <div class="z-mid">
+  </div>
+  <div class="z-dot">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(20px,2.8vw,40px);margin-bottom:8px;">
+  Your mind loves what is
+  <em>
+   familiar.
+  </em>
+  <br/>
+  It hates what is unfamiliar.
+ </h2>
+ <div class="split">
+  <div class="sp-half">
+   <p class="sp-label">
+    Familiar feels like
+   </p>
+   <p class="sp-text">
+    <em>
+     Safety.
+    </em>
+    Home. Known. Comfortable — even when it hurts.
+   </p>
+  </div>
+  <div class="sp-divider">
+  </div>
+  <div class="sp-half">
+   <p class="sp-label" style="color:rgba(255,120,100,.35)">
+    Unfamiliar feels like
+   </p>
+   <p class="sp-text red">
+    <em>
+     Threat.
+    </em>
+    Danger. Risk. Something to be avoided — even when it's growth.
+   </p>
+  </div>
+ </div>
+ <p class="bd" style="margin-top:20px;font-size:clamp(13px,1.3vw,17px);color:rgba(120,200,190,.52);">
+  That is how your brain was wired to survive.
+ </p>
+</section>
+
+<section class="slide" id="s2">
+ <p class="lbl">
+  03 — 06
+ </p>
+ <div class="zone">
+  <div class="z-out">
+  </div>
+  <div class="z-mid">
+  </div>
+  <div class="z-dot">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(20px,2.8vw,40px);margin-bottom:10px;">
+  This is why you go back.
+ </h2>
+ <div class="not-list">
+  <div class="not-row">
+   <span class="not-x">
+    not
+   </span>
+   <p class="not-text">
+    Because you are
+    <em>
+     weak
+    </em>
+   </p>
+  </div>
+  <div class="not-row">
+   <span class="not-x">
+    not
+   </span>
+   <p class="not-text">
+    Because you do not
+    <em>
+     want better
+    </em>
+   </p>
+  </div>
+  <div class="not-row">
+   <span class="not-x">
+    not
+   </span>
+   <p class="not-text">
+    Because something is
+    <em>
+     wrong with you
+    </em>
+   </p>
+  </div>
+ </div>
+ <p class="not-truth">
+  Because your mind is just doing its job — keeping you inside what it knows.
+ </p>
+</section>
+
+<section class="slide" id="s3">
+ <p class="lbl">
+  04 — 06
+ </p>
+ <div class="zone">
+  <div class="z-out">
+  </div>
+  <div class="z-mid">
+  </div>
+  <div class="z-dot">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(20px,2.8vw,40px);margin-bottom:14px;">
+  The secret is not
+  <em>
+   willpower.
+  </em>
+ </h2>
+ <div class="secret-grid">
+  <div class="sg">
+   <p class="sg-head">
+    What doesn't work
+   </p>
+   <p class="sg-text">
+    Forcing yourself. White-knuckling it. Trying harder with the same approach.
+   </p>
+  </div>
+  <div class="sg">
+   <p class="sg-head">
+    What actually works
+   </p>
+   <p class="sg-text">
+    <em>
+     Repetition.
+    </em>
+    Make the unfamiliar familiar. Do it enough — it becomes the new comfort zone.
+   </p>
+  </div>
+ </div>
+ <p class="bd" style="margin-top:20px;font-size:clamp(13px,1.4vw,18px);color:rgba(100,220,200,.65);">
+  Your mind stops seeing it as a threat. It becomes
+  <strong>
+   the new normal.
+  </strong>
+ </p>
+</section>
+
+<section class="slide" id="s4">
+ <p class="lbl">
+  05 — 06
+ </p>
+ <div class="zone">
+  <div class="z-out">
+  </div>
+  <div class="z-mid">
+  </div>
+  <div class="z-dot">
+  </div>
+ </div>
+ <h2 class="h2" style="font-size:clamp(20px,2.8vw,40px);margin-bottom:6px;">
+  Stop asking why change is hard.
+ </h2>
+ <p class="bd" style="font-size:clamp(13px,1.3vw,17px);color:rgba(100,180,175,.52);margin-bottom:4px;">
+  Ask a better question instead.
+ </p>
+ <div class="q-card">
+  <p class="q-card-inst">
+   Your daily question
+  </p>
+  <p class="q-card-text">
+   What am I making familiar today?
+  </p>
+  <p class="q-card-sub">
+   Answer it. Then do that thing.
+  </p>
+ </div>
+</section>
+
+<section class="slide" id="s5">
+ <p class="lbl">
+  06 — 06
+ </p>
+ <div class="zone">
+  <div class="z-out">
+  </div>
+  <div class="z-mid">
+  </div>
+  <div class="z-dot">
+  </div>
+ </div>
+ <h1 class="h1" style="font-size:clamp(30px,4.8vw,65px);line-height:1.14;">
+  You do not need
+  <br/>
+  more willpower.
+  <br/>
+  <br/>
+  <em>
+   You need
+   <br/>
+   more repetition.
+  </em>
+ </h1>
+ <span class="cta">
+  Follow for more
+ </span>
+</section>
+
+</div>
+
+<nav id="dnav">
+  <div class="dots">
+    <label for="r0" class="dot"></label>
+    <label for="r1" class="dot"></label>
+    <label for="r2" class="dot"></label>
+    <label for="r3" class="dot"></label>
+    <label for="r4" class="dot"></label>
+    <label for="r5" class="dot"></label>
+  </div>
+</nav>
+<p class="hint">click dots to navigate</p>
+
+<script src="slides.js"></script>
+</body>
+</html>

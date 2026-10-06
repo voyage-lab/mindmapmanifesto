@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The 3 Foundational Rules of the Mind</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* Navigation & Progress Bar width calculation (6 slides) */
+#r0:checked~#bar{width:16.67%}
+#r1:checked~#bar{width:33.33%}
+#r2:checked~#bar{width:50.00%}
+#r3:checked~#bar{width:66.67%}
+#r4:checked~#bar{width:83.33%}
+#r5:checked~#bar{width:100.00%}
+
+#r0:checked~#stage #s0,
+#r1:checked~#stage #s1,
+#r2:checked~#stage #s2,
+#r3:checked~#stage #s3,
+#r4:checked~#stage #s4,
+#r5:checked~#stage #s5{opacity:1;clip-path:inset(0);pointer-events:all}
+
+#r0:checked~#dnav label:nth-child(1),
+#r1:checked~#dnav label:nth-child(2),
+#r2:checked~#dnav label:nth-child(3),
+#r3:checked~#dnav label:nth-child(4),
+#r4:checked~#dnav label:nth-child(5),
+#r5:checked~#dnav label:nth-child(6){width:22px;border-radius:3px;background:var(--s2);box-shadow:0 0 12px rgba(80,130,220,.3)}
+
+/* Rule-specific styles for Rule 01 */
+.examples{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ex{display:flex;align-items:center;gap:12px}
+.ex-dot{width:4px;height:4px;border-radius:50%;background:var(--s2);flex-shrink:0;box-shadow:0 0 6px rgba(160,198,248,.4)}
+.ex-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(13px,1.4vw,18px);color:rgba(200,215,240,.7)}
+
+.two-items{display:flex;gap:14px;margin-top:14px}
+.ti{flex:1;padding:14px 18px;background:rgba(160,198,248,.05);border:1px solid rgba(160,198,248,.1);border-radius:3px;text-align:center}
+.ti-num{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--s2);margin-bottom:6px}
+.ti-name{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(16px,2vw,26px);color:var(--s)}
+
+.not-weak{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.nw{display:flex;align-items:center;gap:12px}
+.nw-x{font-size:9px;font-weight:500;letter-spacing:2px;color:rgba(255,120,100,.35);text-transform:uppercase;flex-shrink:0;width:52px;text-align:right}
+.nw-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(13px,1.4vw,18px);color:rgba(200,215,240,.75)}
+</style>
+</head>
+<body>
+<input type="radio" name="s" id="r0" checked>
+<input type="radio" name="s" id="r1">
+<input type="radio" name="s" id="r2">
+<input type="radio" name="s" id="r3">
+<input type="radio" name="s" id="r4">
+<input type="radio" name="s" id="r5">
+
+<div id="bg"></div>
+<div class="sc"></div>
+<div class="orb oa"></div>
+<div class="orb ob"></div>
+<div id="bar"></div>
+
+<div id="stage">
+  <!-- 01 title -->
+  <section class="slide" id="s0">
+    <p class="lbl">01 — 06</p>
+    <div class="tri"><div class="tri-bar"></div><div class="tri-bar"></div><div class="tri-bar"></div></div>
+    <h1 class="h1">The <em>3 Foundational</em><br>Rules of the Mind</h1>
+    <p class="sub">Your mind is either working for you or against you</p>
+    <div class="two-col">
+      <div class="col-half">
+        <p class="col-label">Working against you</p>
+        <p class="col-text">When you don't know the rules — it runs on autopilot.</p>
+      </div>
+      <div class="col-half">
+        <p class="col-label">Working for you</p>
+        <p class="col-text">When you understand it — you become the one giving instructions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 rule 1 -->
+  <section class="slide" id="s1">
+    <p class="lbl">02 — 06</p>
+    <div class="tri"><div class="tri-bar"></div><div class="tri-bar"></div><div class="tri-bar"></div></div>
+    <div class="card" style="text-align:left; width:100%; max-width:760px; padding:32px 40px;">
+      <p class="card-head" style="color:var(--s); font-size:18px; margin-bottom:8px;">Rule 01</p>
+      <p class="card-text" style="font-size:clamp(18px,2.2vw,30px); line-height:1.3; margin-bottom:16px;">
+        Your mind does exactly what it <em>thinks</em> you want — not what you actually want.
+      </p>
+      <p class="item-text" style="margin-bottom:12px;">Keep saying these, and your mind goes — <em>got it, delivering more:</em></p>
+      <div class="examples">
+        <div class="ex"><div class="ex-dot"></div><p class="ex-text">"I am so stressed."</p></div>
+        <div class="ex"><div class="ex-dot"></div><p class="ex-text">"I am so broke."</p></div>
+        <div class="ex"><div class="ex-dot"></div><p class="ex-text">"I am so tired."</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 rule 2 -->
+  <section class="slide" id="s2">
+    <p class="lbl">03 — 06</p>
+    <div class="tri"><div class="tri-bar"></div><div class="tri-bar"></div><div class="tri-bar"></div></div>
+    <div class="card" style="text-align:left; width:100%; max-width:760px; padding:32px 40px;">
+      <p class="card-head" style="color:var(--s); font-size:18px; margin-bottom:8px;">Rule 02</p>
+      <p class="card-text" style="font-size:clamp(18px,2.2vw,30px); line-height:1.3; margin-bottom:16px;">
+        Your mind only responds to <em>two things.</em>
+      </p>
+      <div class="two-items">
+        <div class="ti"><p class="ti-num">One</p><p class="ti-name">The pictures you make in your head</p></div>
+        <div class="ti"><p class="ti-num">Two</p><p class="ti-name">The words you say to yourself</p></div>
+      </div>
+      <p class="item-text" style="margin-top:20px; font-style:italic;">Change those two things and you literally start rewiring your reality.</p>
+    </div>
+  </section>
+
+  <!-- 04 rule 3 -->
+  <section class="slide" id="s3">
+    <p class="lbl">04 — 06</p>
+    <div class="tri"><div class="tri-bar"></div><div class="tri-bar"></div><div class="tri-bar"></div></div>
+    <div class="card" style="text-align:left; width:100%; max-width:760px; padding:32px 40px;">
+      <p class="card-head" style="color:var(--s); font-size:18px; margin-bottom:8px;">Rule 03</p>
+      <p class="card-text" style="font-size:clamp(18px,2.2vw,30px); line-height:1.3; margin-bottom:16px;">
+        Your mind <em>loves</em> what is familiar and <em>hates</em> what is unfamiliar.
+      </p>
+      <p class="item-text" style="margin-bottom:12px;">This is why change feels so hard. But it is not —</p>
+      <div class="not-weak">
+        <div class="nw"><span class="nw-x">not</span><p class="nw-text">Weakness</p></div>
+        <div class="nw"><span class="nw-x">not</span><p class="nw-text">Laziness</p></div>
+        <div class="nw"><span class="nw-x">just</span><p class="nw-text">Your mind doing its job — <em>protecting what it already knows.</em></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 good news -->
+  <section class="slide" id="s4">
+    <p class="lbl">05 — 06</p>
+    <div class="tri"><div class="tri-bar"></div><div class="tri-bar"></div><div class="tri-bar"></div></div>
+    <h2 class="h2" style="font-size:clamp(22px,3vw,44px);margin-bottom:8px;">The good news?</h2>
+    <div class="card">
+      <p class="card-head">How you work with the rules</p>
+      <p class="card-text">
+        You can make <em>new things familiar.</em><br><br>
+        You just have to repeat them until your mind believes you.<br><br>
+        <strong>Not motivation. Not willpower. Repetition.</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- 06 closing -->
+  <section class="slide" id="s5">
+    <p class="lbl">06 — 06</p>
+    <div class="tri"><div class="tri-bar"></div><div class="tri-bar"></div><div class="tri-bar"></div></div>
+    <h1 class="h1" style="font-size:clamp(30px,4.8vw,65px);line-height:1.14;">Three rules.<br><em>One mind.</em><br><strong>Infinite possibility —</strong><br><em>once you understand<br>how it works.</em></h1>
+    <span class="cta">Follow for more</span>
+  </section>
+</div>
+
+<nav id="dnav">
+  <div class="dots">
+    <label for="r0" class="dot"></label>
+    <label for="r1" class="dot"></label>
+    <label for="r2" class="dot"></label>
+    <label for="r3" class="dot"></label>
+    <label for="r4" class="dot"></label>
+    <label for="r5" class="dot"></label>
+  </div>
+</nav>
+<p class="hint">click dots to navigate</p>
+
+<script src="slides.js"></script>
+</body>
+</html>
