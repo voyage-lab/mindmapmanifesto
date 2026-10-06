@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Language of Reality — Words as Spells</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Outfit:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #050507; color: #e8e8ed; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    @keyframes orbFloat {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, -20px) scale(1.05); }
+    }
+    @keyframes mmm-reveal { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+    @keyframes mmm-fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes mmm-blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+    @keyframes waveExpand { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; } }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(167,139,250,0.3); border-radius: 2px; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../theme-app.css"/>
+</head>
+<body>
+  <nav class="mb-nav" aria-label="Series navigation"><a href="../index.html">← back to mind x brain</a></nav>
+  <p class="mb-hint" aria-hidden="true">← → keys or swipe</p>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    /* ── Shared Components ───────────────────────────────────────── */
+
+    function Orbs({ color1 = '#a78bfa', color2 = '#818cf8', opacity = 0.2 }) {
+      return (
+        <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', overflow:'hidden' }}>
+          <div style={{ position:'absolute', width:580, height:580, borderRadius:'50%', background:color1, filter:'blur(130px)', opacity, top:'-15%', left:'-10%', animation:'orbFloat 18s ease-in-out infinite alternate' }}/>
+          <div style={{ position:'absolute', width:420, height:420, borderRadius:'50%', background:color2, filter:'blur(130px)', opacity, bottom:'-10%', right:'-10%', animation:'orbFloat 20s ease-in-out infinite alternate-reverse' }}/>
+        </div>
+      );
+    }
+
+    function ProgressBar({ pct, colorA = '#a78bfa', colorB = '#818cf8' }) {
+      return (
+        <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:50, height:3, background:'#14141c' }}>
+          <div style={{ height:'100%', width:`${pct}%`, background:`linear-gradient(90deg,${colorA},${colorB})`, transition:'width 0.5s ease' }}/>
+        </div>
+      );
+    }
+
+    function Eyebrow({ children, color = '#a78bfa' }) {
+      return (
+        <div style={{ fontSize:'0.7rem', letterSpacing:'0.2em', textTransform:'uppercase', color, marginBottom:16, display:'flex', alignItems:'center', gap:10, fontWeight:500 }}>
+          <span style={{ width:28, height:1, background:color, opacity:0.5, flexShrink:0, display:'block' }}/>
+          {children}
+        </div>
+      );
+    }
+
+    function StepIndicator({ current, total, color = '#a78bfa' }) {
+      return (
+        <div style={{ fontSize:'0.72rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'#8888a0' }}>
+          Chapter <span style={{ color, fontWeight:600 }}>{current}</span> of {total}
+        </div>
+      );
+    }
+
+    function ArrowRight({ size = 16 }) {
+      return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>);
+    }
+
+    function ArrowLeft({ size = 16 }) {
+      return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>);
+    }
+
+    function BackBtn({ onClick }) {
+      return (
+        <button onClick={onClick} style={{ display:'flex', alignItems:'center', gap:6, color:'#8888a0', background:'none', border:'none', cursor:'pointer', fontSize:'0.82rem', fontFamily:'Inter,sans-serif' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#e8e8ed'}
+          onMouseLeave={e => e.currentTarget.style.color = '#8888a0'}>
+          <ArrowLeft size={15}/> Back
+        </button>
+      );
+    }
+
+    function BottomNav({ onBack, onNext, nextLabel = 'Continue', nextColor = ['#a78bfa','#7c3aed'], nextGlow = 'rgba(167,139,250,0.35)' }) {
+      const [hov, setHov] = useState(false);
+      return (
+        <div style={{ display:'flex', justifyContent: onBack ? 'space-between' : 'flex-end', alignItems:'center', marginTop:64, paddingTop:32, borderTop:'1px solid #1e1e2a' }}>
+          {onBack && <BackBtn onClick={onBack}/>}
+          <button onClick={onNext}
+            onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+            style={{ display:'inline-flex', alignItems:'center', gap:9, padding:'13px 26px', borderRadius:12, fontSize:'0.875rem', fontWeight:600, border:'none', cursor:'pointer', fontFamily:'Inter,sans-serif', background:`linear-gradient(135deg,${nextColor[0]},${nextColor[1]})`, color:'#fff', transform: hov ? 'translateY(-1px)' : 'translateY(0)', boxShadow: hov ? `0 8px 28px ${nextGlow}` : 'none', transition:'all 0.3s ease' }}>
+            {nextLabel} <ArrowRight/>
+          </button>
+        </div>
+      );
+    }
+
+    function InsightCard({ label = 'Key Insight', children, accentColor = '#a78bfa' }) {
+      return (
+        <div style={{ background:'#0d0d12', border:`1px solid ${accentColor}33`, borderRadius:18, padding:34, marginBottom:36, position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'absolute', inset:0, background:`linear-gradient(135deg,${accentColor}0f,transparent 60%)`, pointerEvents:'none' }}/>
+          <div style={{ fontSize:'0.68rem', letterSpacing:'0.2em', textTransform:'uppercase', color:accentColor, marginBottom:14, fontWeight:600 }}>{label}</div>
+          <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.05rem,2.4vw,1.3rem)', lineHeight:1.72, color:'#e8e8ed', position:'relative' }}>{children}</p>
+        </div>
+      );
+    }
+
+    function Footer() { return <footer style={{ textAlign:'center', marginTop:56, color:'#8888a0', fontSize:'0.75rem' }}>© 2026 MindMapManifesto.com</footer>; }
+    function PageWrapper({ children, maxWidth = 820 }) { return <div style={{ position:'relative', zIndex:1, maxWidth, margin:'0 auto', padding:'60px 24px 100px' }}>{children}</div>; }
+
+    function Prose({ children }) {
+      return <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(0.95rem,2.1vw,1.1rem)', lineHeight:1.88, color:'rgba(220,215,240,0.72)', marginBottom:22 }}>{children}</p>;
+    }
+
+    function PullQuote({ children, color = '#a78bfa' }) {
+      return (
+        <div style={{ borderLeft:`2px solid ${color}40`, paddingLeft:24, marginBottom:30, marginTop:4 }}>
+          <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(1rem,2.2vw,1.18rem)', lineHeight:1.78, color:`${color}a0` }}>{children}</p>
+        </div>
+      );
+    }
+
+    function Etymology({ word, parts, meaning, color = '#a78bfa' }) {
+      return (
+        <div style={{ background:'#0d0d12', border:`1px solid ${color}1f`, borderLeft:`3px solid ${color}55`, borderRadius:12, padding:'16px 22px', marginBottom:10 }}>
+          <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:6, flexWrap:'wrap' }}>
+            <span style={{ fontFamily:"'Playfair Display',serif", fontSize:'1.18rem', fontWeight:700, color:'#e8e8ed', letterSpacing:'0.02em' }}>{word}</span>
+            <span style={{ fontSize:'0.78rem', color, opacity:0.75, fontStyle:'italic', fontFamily:"'Playfair Display',serif" }}>{parts}</span>
+          </div>
+          <p style={{ fontSize:'0.85rem', color:'#8888a0', lineHeight:1.65 }}>{meaning}</p>
+        </div>
+      );
+    }
+
+    function Chapter({ children, accent='#a78bfa', orbA, orbB, pct, n, label, title, nextLabel, onBack, onNext, nextColor, nextGlow }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1={orbA||accent} color2={orbB||accent}/>
+          <ProgressBar pct={pct} colorA={accent} colorB={orbB||accent}/>
+          <PageWrapper>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:56 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={n} total={20} color={accent}/>
+            </nav>
+            <div style={{ marginBottom:36, animation:'mmm-fadeUp 0.7s ease-out' }}>
+              <Eyebrow color={accent}>{label}</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.9rem,4.6vw,2.95rem)', fontWeight:700, lineHeight:1.18, marginBottom:8, background:`linear-gradient(135deg,#e8e8ed 0%,${accent} 100%)`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{title}</h1>
+            </div>
+            {children}
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel={nextLabel} nextColor={nextColor} nextGlow={nextGlow}/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 0: Landing ───────────────────────────────────────── */
+    function LandingScreen({ onNext }) {
+      const [hov, setHov] = useState(false);
+      const stars = useMemo(() => Array.from({ length: 36 }).map((_, i) => ({
+        size: i % 4 === 0 ? 2 : 1,
+        opacity: 0.08 + (i % 7) * 0.04,
+        top:  `${(i * 37 + 11) % 100}%`,
+        left: `${(i * 53 + 7)  % 100}%`,
+      })), []);
+      return (
+        <div style={{ background:'#000', minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at 50% 50%, #0a0612 0%, #000 65%)', opacity:0.95 }}/>
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, black, transparent, black)' }}/>
+          {stars.map((s, i) => (<div key={i} style={{ position:'absolute', width:s.size, height:s.size, borderRadius:'50%', background:'white', opacity:s.opacity, top:s.top, left:s.left }}/>))}
+          <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:820, display:'flex', flexDirection:'column', alignItems:'center', gap:36, animation:'mmm-reveal 1.5s cubic-bezier(0.16,1,0.3,1) forwards' }}>
+            <div style={{ fontSize:'0.65rem', letterSpacing:'0.6em', color:'rgba(167,139,250,0.5)', textTransform:'uppercase', fontWeight:700 }}>The Language of Reality</div>
+            <div>
+              <h1 style={{ fontFamily:"'Outfit',sans-serif", fontSize:'clamp(2.8rem,10vw,6rem)', fontWeight:700, letterSpacing:'-0.02em', color:'white', marginBottom:10 }}>Words as Spells</h1>
+              <div style={{ fontSize:'clamp(0.9rem,2.2vw,1.3rem)', fontWeight:300, color:'rgba(255,255,255,0.4)', letterSpacing:'0.1em' }}>Twenty Chapters</div>
+            </div>
+            <div style={{ maxWidth:600, borderLeft:'2px solid rgba(167,139,250,0.3)', paddingLeft:26, textAlign:'left' }}>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(0.95rem,1.9vw,1.13rem)', lineHeight:1.8, color:'rgba(255,255,255,0.55)' }}>
+                "Every word you speak creates either coherence or chaos inside your body. You speak 16,000 words a day. The question isn't whether you're casting spells. The question is what you're creating."
+              </p>
+            </div>
+            <button onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} onClick={onNext}
+              style={{ backdropFilter:'blur(20px) saturate(180%)', background:'rgba(167,139,250,0.08)', border:'1px solid rgba(167,139,250,0.28)', borderRadius:9999, padding:'18px 52px', fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.4em', textTransform:'uppercase', color:'white', cursor:'pointer', transform: hov ? 'scale(1.05)' : 'scale(1)', boxShadow: hov ? '0 0 48px rgba(167,139,250,0.18)' : 'none', transition:'all 0.5s ease', fontFamily:'Inter,sans-serif' }}>
+              Begin
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── Chapter 1 ──────────────────────────────────────────────── */
+    function Ch1({ onBack, onNext }) {
+      return (
+        <Chapter accent="#a78bfa" orbB="#c084fc" pct={5} n={1} label="Chapter One · Words as Spells" title="The Unseen Power Behind Everyday Words" nextLabel="How Language Shapes You" onBack={onBack} onNext={onNext}>
+          <Prose>What if every word you've ever spoken was a spell? Not metaphor. Mechanism. There's a reason it's called <em style={{ color:'#c4b5fd' }}>spelling</em> — you're literally arranging letters into spells. The structure of language is called <em style={{ color:'#c4b5fd' }}>grammar</em>, from grimoire, a book of magic. Cursive comes from curse. It's hiding in plain sight.</Prose>
+          <InsightCard label="The Disappearance" accentColor="#a78bfa">In 1946 something vanished from American schools — not prayer, not paddling. <em style={{ color:'#a78bfa' }}>Etymology</em>, the study of where words come from. And the moment they removed it, you lost the ability to see the trap.</InsightCard>
+          <Prose>Because when you understand what words really mean at their root, you start noticing that almost every word you use was designed to program limitations you never agreed to. This isn't conspiracy. This is the operating system you've been running blind.</Prose>
+          <PullQuote color="#a78bfa">Once you understand that your words aren't describing reality — they're creating it — you become ungovernable.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 2 ──────────────────────────────────────────────── */
+    function Ch2({ onBack, onNext }) {
+      return (
+        <Chapter accent="#818cf8" orbB="#6366f1" pct={10} n={2} label="Chapter Two · Words as Spells" title="How Language Shapes the Way You Feel and Think" nextLabel="Why Word Origins Matter" onBack={onBack} onNext={onNext} nextColor={['#818cf8','#4f46e5']} nextGlow="rgba(129,140,248,0.35)">
+          <Prose>Before 1946, every child learned to decode words — to understand the hidden programs inside language. Then it stopped, globally, almost simultaneously. They replaced etymology with memorization and standardized tests. Why? Because if you knew that <em style={{ color:'#a5b4fc' }}>understand</em> literally means to stand under — to submit — you might stop saying "I understand" in every agreement.</Prose>
+          <div style={{ background:'#0d0d12', border:'1px solid rgba(129,140,248,0.18)', borderRadius:16, padding:24, marginBottom:30 }}>
+            <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(129,140,248,0.55)', marginBottom:14 }}>Failure language you use every day</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+              {[
+                {phrase:'"I\'m trying to lose weight."', decode:'Subconscious hears: trying — effort without result.'},
+                {phrase:'"I want to be successful."', decode:'Body hears: want — lack, desire, the state of not having.'},
+                {phrase:'"I need more money."', decode:'Cells receive: need — scarcity, desperation, emergency mode.'},
+              ].map((item, i) => (
+                <div key={i} style={{ borderLeft:'2px solid rgba(129,140,248,0.3)', paddingLeft:14 }}>
+                  <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.95rem', color:'#e8e8ed', marginBottom:5 }}>{item.phrase}</div>
+                  <p style={{ fontSize:'0.83rem', color:'#8888a0', lineHeight:1.6 }}>{item.decode}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <InsightCard label="Contaminated Vocabulary" accentColor="#818cf8">Every one of those statements is a spell. You just cast limitation into your reality <em style={{ color:'#818cf8' }}>without knowing it</em>.</InsightCard>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 3 ──────────────────────────────────────────────── */
+    function Ch3({ onBack, onNext }) {
+      return (
+        <Chapter accent="#c084fc" orbB="#a78bfa" pct={15} n={3} label="Chapter Three · Words as Spells" title="Why Word Origins Matter More Than You Were Taught" nextLabel="How Meanings Influence You" onBack={onBack} onNext={onNext} nextColor={['#c084fc','#9333ea']} nextGlow="rgba(192,132,252,0.35)">
+          <Prose>The elite study etymology like their lives depend on it. They teach their children Latin, Greek, Sanskrit, Hebrew — ancient languages that are essentially frequency codes. Your kids get text speak and emojis. They dumbed down the vocabulary, removed etymology from schools, and told you the biggest lie ever told: sticks and stones may break my bones, but words will never hurt me.</Prose>
+          <InsightCard label="Not Protection — Programming" accentColor="#c084fc">That phrase isn't protection. It's <em style={{ color:'#c084fc' }}>programming you to dismiss the most powerful force in your reality</em>. Words aren't communication tools. They're technology. Frequency technology. Every word creates an electromagnetic signature.</InsightCard>
+          <Prose>You are 70% water. You speak roughly 16,000 words a day. Every single word is creating either coherence or chaos inside your body. When you say "I'm so stupid," your cells hear that. When you say "I'm broke. I'm tired. I'm stressed." Every water molecule reshapes around that frequency.</Prose>
+          <PullQuote color="#c084fc">Some people manifest easily — not because they're more spiritual. Because they understand that every sentence is a contract with the universe, and the universe always says yes.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 4 ──────────────────────────────────────────────── */
+    function Ch4({ onBack, onNext }) {
+      return (
+        <Chapter accent="#6366f1" orbB="#818cf8" pct={20} n={4} label="Chapter Four · Words as Spells" title="How Meanings Influence Your Choices Without Noticing" nextLabel="Phrases That Limit You" onBack={onBack} onNext={onNext} nextColor={['#6366f1','#4338ca']} nextGlow="rgba(99,102,241,0.35)">
+          <Prose>Once you decode even five words, you can't unsee it. They're telling you exactly what they're doing — and you're agreeing because nobody taught you to read the code.</Prose>
+          <div style={{ marginBottom:30 }}>
+            <Etymology color="#6366f1" word="Mortgage" parts="mort (death) + gage (pledge)" meaning="A death pledge. You're signing your life force to the bank for 30 years. They tell you exactly what it is — in the name itself."/>
+            <Etymology color="#6366f1" word="Pharmacy" parts="from Greek pharmacia" meaning="Sorcery, witchcraft, the use of drugs and potions for magical purposes. The word itself carries the frequency of chemical sorcery."/>
+            <Etymology color="#6366f1" word="Government" parts="govern (control, steer) + ment (mind)" meaning="Mind control. Not conspiracy theory — etymology. They're broadcasting their function in the name itself."/>
+          </div>
+          <InsightCard label="What Changes When You See This" accentColor="#6366f1">You gain complete <em style={{ color:'#818cf8' }}>linguistic sovereignty</em>. You stop speaking unconsciously. You stop signing invisible contracts. You stop casting limitation spells over your own life.</InsightCard>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 5 ──────────────────────────────────────────────── */
+    function Ch5({ onBack, onNext }) {
+      return (
+        <Chapter accent="#8b5cf6" orbB="#a78bfa" pct={25} n={5} label="Chapter Five · Words as Spells" title="Phrases That Quietly Limit Your Confidence" nextLabel="How the Body Responds" onBack={onBack} onNext={onNext} nextColor={['#8b5cf6','#6d28d9']} nextGlow="rgba(139,92,246,0.35)">
+          <Prose>The 1946 shift wasn't a gradual phase-out. It was coordinated. After World War II — after they saw what propaganda could do, how language could move entire nations — they systematically removed linguistic literacy from education.</Prose>
+          <div style={{ background:'#0d0d12', border:'1px solid rgba(139,92,246,0.2)', borderRadius:16, padding:24, marginBottom:28 }}>
+            <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(139,92,246,0.55)', marginBottom:14 }}>Edward Bernays — Nephew of Freud · 1928</div>
+            <p style={{ fontSize:'0.88rem', color:'#8888a0', lineHeight:1.78, marginBottom:14 }}>He literally wrote the book on propaganda — then renamed it "public relations" because propaganda sounded too negative after WWI. His philosophy was simple:</p>
+            <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'1rem', color:'rgba(196,181,253,0.85)', lineHeight:1.7 }}>"A population that decodes language is dangerous. A population that understands etymology asks too many questions. They see through the manipulation."</p>
+          </div>
+          <Prose>How many contracts have you signed using terms you never decoded? How many agreements have you made using words designed to mean something other than what you assumed? When you sign a mortgage, do you know you're signing a death pledge? When you say "I understand" in a legal agreement, do you know you're saying "I position myself beneath your authority"?</Prose>
+          <PullQuote color="#8b5cf6">They framed it as educational reform. Progress. Modernization. But it wasn't progress. It was control.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 6 ──────────────────────────────────────────────── */
+    function Ch6({ onBack, onNext }) {
+      return (
+        <Chapter accent="#22d3ee" orbB="#06b6d4" pct={30} n={6} label="Chapter Six · Words as Spells" title="How the Body Responds to the Words You Use" nextLabel="When Sound Creates Form" onBack={onBack} onNext={onNext} nextColor={['#22d3ee','#0891b2']} nextGlow="rgba(34,211,238,0.35)">
+          <Prose>Dr. Masaru Emoto did something so simple and so profound it broke through all the academic gatekeeping. He took water, exposed it to different words — written, spoken, even thoughts directed at it. Then he froze the water and photographed the crystals under a microscope.</Prose>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, marginBottom:30 }}>
+            <div style={{ background:'linear-gradient(135deg,#050e14 0%,#0d0d12 100%)', border:'1px solid rgba(34,211,238,0.25)', borderRadius:14, padding:20 }}>
+              <div style={{ fontSize:'0.62rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(34,211,238,0.7)', marginBottom:8 }}>Love &amp; Gratitude</div>
+              <p style={{ fontSize:'0.85rem', color:'#8888a0', lineHeight:1.65 }}>Perfect, symmetrical crystals. Absolute geometric perfection.</p>
+            </div>
+            <div style={{ background:'#0d0d12', border:'1px solid rgba(120,80,80,0.25)', borderRadius:14, padding:20 }}>
+              <div style={{ fontSize:'0.62rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(200,120,120,0.7)', marginBottom:8 }}>Hate &amp; "You Make Me Sick"</div>
+              <p style={{ fontSize:'0.85rem', color:'#8888a0', lineHeight:1.65 }}>Chaos. Broken, distorted, ugly formations.</p>
+            </div>
+          </div>
+          <InsightCard label="You Are 70% Water" accentColor="#22d3ee">Every cell, every organ, every system — mostly water. And you speak 16,000 words a day. <em style={{ color:'#67e8f9' }}>"I am sick" isn't a description. It's an instruction.</em> Your body follows it.</InsightCard>
+          <Prose>Cymatics proves this further. Sand on a vibrating plate forms geometric patterns depending on frequency. Your body is the plate. Your words are the frequency. Your cells arrange themselves accordingly.</Prose>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 7 ──────────────────────────────────────────────── */
+    function Ch7({ onBack, onNext }) {
+      return (
+        <Chapter accent="#06b6d4" orbB="#67e8f9" pct={35} n={7} label="Chapter Seven · Words as Spells" title="When Sound Creates Form — What the Experiments Show" nextLabel="Language as Influence" onBack={onBack} onNext={onNext} nextColor={['#06b6d4','#0891b2']} nextGlow="rgba(6,182,212,0.35)">
+          <Prose>Princeton's Global Consciousness Project set up random number generators worldwide — machines that should produce purely random data. Then they measured what happened during major collective events. September 11th. Princess Diana's funeral. Moments when millions focused on the same thing at the same time.</Prose>
+          <InsightCard label="The Numbers Became Less Random" accentColor="#06b6d4">Significantly. Measurably. Statistically impossible to explain away. Human consciousness was affecting machines — not through touch, not proximity. Through <em style={{ color:'#67e8f9' }}>field</em>. Through frequency. Through collective attention creating coherence in the quantum field.</InsightCard>
+          <Prose>If millions of people can collapse randomness through field — what is one person doing? What are you doing every moment to your body, your relationships, your circumstances? Broadcasting unconscious frequency in every direction.</Prose>
+          <PullQuote color="#06b6d4">Your words aren't just vibrating air. They're altering electromagnetic fields. They're collapsing quantum possibilities. They're programming matter.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 8 ──────────────────────────────────────────────── */
+    function Ch8({ onBack, onNext }) {
+      return (
+        <Chapter accent="#67e8f9" orbB="#06b6d4" pct={40} n={8} label="Chapter Eight · Words as Spells" title="Language as Influence, Not Information" nextLabel="Vocabulary &amp; Identity" onBack={onBack} onNext={onNext} nextColor={['#22d3ee','#0e7490']} nextGlow="rgba(103,232,249,0.35)">
+          <Prose>Why is it called spelling? Why not wording? Why not lettering? Why was correct spelling so important in school? Because incorrect spelling breaks the spell. The frequency changes. The code doesn't execute properly.</Prose>
+          <div style={{ background:'#0d0d12', border:'1px solid rgba(103,232,249,0.18)', borderRadius:16, padding:24, marginBottom:28 }}>
+            <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(103,232,249,0.55)', marginBottom:16 }}>Hiding in Plain Sight</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+              {[
+                { w:'Spelling', d:'Assembling letters into words — literally how you cast spells.' },
+                { w:'Grammar', d:'From grimoire — a book of magical spells.' },
+                { w:'Cursive', d:'From curse — flowing script that binds.' },
+              ].map(item => (
+                <div key={item.w} style={{ display:'flex', gap:14, alignItems:'baseline' }}>
+                  <span style={{ minWidth:90, fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'1rem', color:'#67e8f9' }}>{item.w}</span>
+                  <span style={{ fontSize:'0.86rem', color:'#8888a0', lineHeight:1.65 }}>{item.d}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <Prose>Most people speak unconsciously, which is why most people feel powerless. They broadcast random frequency all day, contradicting themselves, creating chaos — then wondering why their life feels out of control. Once you know, every conversation becomes a conscious ritual.</Prose>
+          <PullQuote color="#67e8f9">Every email you write, every text you send, every conversation you have — you're casting spells. The only question is whether you know it.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 9 ──────────────────────────────────────────────── */
+    function Ch9({ onBack, onNext }) {
+      return (
+        <Chapter accent="#fbbf24" orbB="#f59e0b" pct={45} n={9} label="Chapter Nine · Words as Spells" title="How Your Vocabulary Builds (or Blocks) Identity" nextLabel="Common Words Decoded" onBack={onBack} onNext={onNext} nextColor={['#fbbf24','#d97706']} nextGlow="rgba(251,191,36,0.35)">
+          <Prose>Once you start decoding the words you use most, you can't stop. Identity is built sentence by sentence, and most of the building blocks are pre-programmed.</Prose>
+          <div style={{ marginBottom:30 }}>
+            <Etymology color="#fbbf24" word="Mortgage" parts="mort (death) + gage (pledge)" meaning="The death pledge. Thirty years of life force, signed in plain language."/>
+            <Etymology color="#fbbf24" word="Government" parts="govern (control) + ment (mind)" meaning="Mind control. Broadcasting its own function in its name."/>
+            <Etymology color="#fbbf24" word="Understand" parts="under (beneath) + stand (take a position)" meaning="To stand beneath. To submit. Every time you say I understand in an agreement, you're saying I submit to your authority."/>
+          </div>
+          <InsightCard label="Try a Substitution" accentColor="#fbbf24">Replace <em style={{ color:'#fcd34d' }}>"I understand"</em> with <em style={{ color:'#fcd34d' }}>"I comprehend."</em> Comprehend means to grasp — to hold equally. Feel the difference. That's a frequency change, in real time, in your own mouth.</InsightCard>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 10 ─────────────────────────────────────────────── */
+    function Ch10({ onBack, onNext }) {
+      return (
+        <Chapter accent="#f59e0b" orbB="#fbbf24" pct={50} n={10} label="Chapter Ten · Words as Spells" title="Breaking Down Common Words You've Never Questioned" nextLabel="Self-Talk Loop" onBack={onBack} onNext={onNext} nextColor={['#f59e0b','#d97706']} nextGlow="rgba(245,158,11,0.35)">
+          <Prose>Some words you use every day are not what you think they are. The reframe doesn't require belief — it just requires looking.</Prose>
+          <div style={{ marginBottom:30 }}>
+            <Etymology color="#f59e0b" word="Pharmacy" parts="from Greek pharmacia" meaning="Sorcery. Witchcraft. The use of drugs and potions for magical purposes. The word itself carries the frequency of its origin."/>
+            <Etymology color="#f59e0b" word="Human" parts="hue (light, color) + man (mind)" meaning="Light mind. Light being. You're a being of consciousness having a physical experience — coded right into the name."/>
+            <Etymology color="#f59e0b" word="Person" parts="per (through) + son (sound)" meaning="Sound moving through form. You are vibration wearing matter. Frequency wearing meat."/>
+          </div>
+          <InsightCard label="The Recognition" accentColor="#f59e0b">You're not a solid thing. You're sound moving through form. <em style={{ color:'#fcd34d' }}>You're already frequency.</em> Your words are just you consciously directing the frequency you already are.</InsightCard>
+          <PullQuote color="#f59e0b">Every one of these words is a revelation. And you've been using them your whole life without knowing what you were saying.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 11 ─────────────────────────────────────────────── */
+    function Ch11({ onBack, onNext }) {
+      return (
+        <Chapter accent="#ec4899" orbB="#f472b6" pct={55} n={11} label="Chapter Eleven · Words as Spells" title="Self-Talk as a Psychological Loop" nextLabel="The I AM Pattern" onBack={onBack} onNext={onNext} nextColor={['#ec4899','#be185d']} nextGlow="rgba(236,72,153,0.35)">
+          <Prose>The Bible isn't only a religious text. Whether you read it that way or not, it functions as a frequency manual. It tells you flat out: words create reality.</Prose>
+          <div style={{ background:'#0d0d12', border:'1px solid rgba(236,72,153,0.2)', borderRadius:16, padding:24, marginBottom:28 }}>
+            <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(236,72,153,0.55)', marginBottom:16 }}>The Three Anchors</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+              {[
+                {ref:'John 1:1', body:'"In the beginning was the Word, and the Word was with God, and the Word was God." Not the thought. Not the feeling. The Word. Creation through spoken language.'},
+                {ref:'Proverbs 18:21', body:'"Life and death are in the power of the tongue." Not kind of influenced. Determining factor. You\'re speaking life or speaking death every day. There is no neutral.'},
+                {ref:'Exodus 3:14', body:'Moses asks God: "Who should I say sent me?" God doesn\'t give a name. God says: "I AM that I AM." A state of being. Pure present-tense existence.'},
+              ].map(v => (
+                <div key={v.ref}>
+                  <div style={{ fontSize:'0.7rem', letterSpacing:'0.18em', textTransform:'uppercase', color:'#ec4899', marginBottom:5, opacity:0.85, fontWeight:600 }}>{v.ref}</div>
+                  <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.7 }}>{v.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <Prose>Jesus didn't <em style={{ color:'#f9a8d4' }}>think</em> demons out of people. He didn't wish them away. He <em style={{ color:'#f9a8d4' }}>spoke</em> to them. Direct command. When he calmed the storm, he didn't meditate on calmness — he spoke to the storm: "Peace, be still." Words altering matter.</Prose>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 12 ─────────────────────────────────────────────── */
+    function Ch12({ onBack, onNext }) {
+      return (
+        <Chapter accent="#f472b6" orbB="#ec4899" pct={60} n={12} label="Chapter Twelve · Words as Spells" title="The 'I AM' Pattern and Why It Matters" nextLabel="Attention &amp; Reality" onBack={onBack} onNext={onNext} nextColor={['#f472b6','#db2777']} nextGlow="rgba(244,114,182,0.35)">
+          <Prose><em style={{ color:'#f9a8d4' }}>I AM</em> are the two most powerful words in any language. Not just English. Any language. Because I AM is the name of source. When you say I AM, you're not describing yourself. You're commanding reality. The quantum field responds instantly.</Prose>
+          <InsightCard label="Where Most People Lose the Power" accentColor="#f472b6">"I am <em style={{ color:'#f472b6' }}>trying</em> to be confident." Trying cancels creator power. "I am <em style={{ color:'#f472b6' }}>working on</em> being healthy." Working on means not there yet. "I <em style={{ color:'#f472b6' }}>wish</em> I was..." Wish is lack. All failure codes.</InsightCard>
+          <div style={{ background:'#0d0d12', border:'1px solid rgba(244,114,182,0.15)', borderRadius:16, padding:22, marginBottom:28 }}>
+            <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(244,114,182,0.55)', marginBottom:14 }}>Present Tense. Absolute. Declarative.</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+              {[
+                'I am abundant — right now as I speak.',
+                'I am healthy — period. No question. No doubt.',
+                'I am sovereign — full stop. No negotiation.',
+              ].map((s, i) => (
+                <div key={i} style={{ display:'flex', gap:14, alignItems:'center' }}>
+                  <div style={{ width:5, height:5, borderRadius:'50%', background:'#f472b6', flexShrink:0, opacity:0.6 }}/>
+                  <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.98rem', color:'rgba(255,180,220,0.78)', lineHeight:1.5 }}>{s}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <PullQuote color="#f472b6">Whatever follows I AM becomes your reality instruction. And the universe doesn't argue. It says yes.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 13 ─────────────────────────────────────────────── */
+    function Ch13({ onBack, onNext }) {
+      return (
+        <Chapter accent="#34d399" orbB="#10b981" pct={65} n={13} label="Chapter Thirteen · Words as Spells" title="Attention, Interpretation, and Reality" nextLabel="Spoken Words &amp; Resistance" onBack={onBack} onNext={onNext} nextColor={['#34d399','#059669']} nextGlow="rgba(52,211,153,0.35)">
+          <Prose>You think you're solid. You look in the mirror and see a body. But that's an illusion. You're 99.999% empty space. The atoms making up your body are mostly electromagnetic fields. You are frequency wearing meat.</Prose>
+          <InsightCard label="The HeartMath Discovery" accentColor="#34d399">Your heart generates an electromagnetic field that extends <em style={{ color:'#6ee7b7' }}>15 feet around you</em> in all directions. That field carries information, emotion, intention, frequency — and it affects everyone and everything nearby. You're a walking broadcasting station.</InsightCard>
+          <Prose>This is why some people drain you. Their frequency is chaotic, low. Your body has to work harder to maintain coherence near them. This is why being around certain people lights you up — frequency matching, resonance. This is why some places feel good and others feel heavy. Residual frequency in the field.</Prose>
+          <PullQuote color="#34d399">The question is what you're broadcasting. Limitation or possibility. Fear or power. Submission or sovereignty. Your reality is matching your broadcast — always.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 14 ─────────────────────────────────────────────── */
+    function Ch14({ onBack, onNext }) {
+      return (
+        <Chapter accent="#10b981" orbB="#34d399" pct={70} n={14} label="Chapter Fourteen · Words as Spells" title="How Spoken Words Override Inner Resistance" nextLabel="Reclaim Your Narrative" onBack={onBack} onNext={onNext} nextColor={['#10b981','#047857']} nextGlow="rgba(16,185,129,0.35)">
+          <Prose>Media doesn't report news — it casts mass spells. Every headline is a frequency broadcast. Every phrase repeated across channels is a ritual. Repetition is how you program consciousness.</Prose>
+          <div style={{ background:'#0d0d12', border:'1px solid rgba(16,185,129,0.2)', borderRadius:16, padding:24, marginBottom:28 }}>
+            <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(16,185,129,0.55)', marginBottom:16 }}>Two Phrases You've Heard 10,000 Times</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+              {[
+                {p:'"Stay safe."', d:'Stay = remain, don\'t move, don\'t change. Safe = protected from danger, which implies danger is everywhere. The phrase is a submission command. Stay small. Stay controlled. Stay afraid.'},
+                {p:'"The new normal."', d:'Repetition programs reality. This phrase is telling you: accept it, adapt, don\'t resist. Your mind hears it enough times and it becomes your operating system.'},
+              ].map(item => (
+                <div key={item.p} style={{ borderLeft:'2px solid rgba(16,185,129,0.3)', paddingLeft:14 }}>
+                  <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'1rem', color:'#6ee7b7', marginBottom:6 }}>{item.p}</div>
+                  <p style={{ fontSize:'0.85rem', color:'#8888a0', lineHeight:1.65 }}>{item.d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <InsightCard label="You Can't Be Programmed If You're Aware" accentColor="#10b981">Once you recognize the spell being cast, it loses power over you. You become immune. You become <em style={{ color:'#10b981' }}>ungovernable</em>.</InsightCard>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 15 ─────────────────────────────────────────────── */
+    function Ch15({ onBack, onNext }) {
+      return (
+        <Chapter accent="#6ee7b7" orbB="#34d399" pct={75} n={15} label="Chapter Fifteen · Words as Spells" title="Reclaiming Your Internal Narrative" nextLabel="Reaction to Conscious Speech" onBack={onBack} onNext={onNext} nextColor={['#6ee7b7','#10b981']} nextGlow="rgba(110,231,183,0.35)">
+          <Prose>This is your name too. The Bible repeats it: you are made in the image of God. Same creative authority. When Jesus said "I am the way, the truth, the life. I am the light of the world. I am the resurrection." — he wasn't claiming exclusivity. He was demonstrating creator consciousness. Teaching the template.</Prose>
+          <InsightCard label="What Got Diluted" accentColor="#6ee7b7">They made it about <em style={{ color:'#6ee7b7' }}>worshipping</em> him instead of <em style={{ color:'#6ee7b7' }}>becoming like</em> him. Because they don't want 7 billion people walking around speaking with I AM authority. That would be the end of control.</InsightCard>
+          <Prose>The universe doesn't judge. It doesn't question whether you deserve it. It doesn't decide if you're worthy. It says yes and starts arranging circumstances, people, and opportunities to match your declaration. That's how creation works. That's the operating system.</Prose>
+          <PullQuote color="#6ee7b7">You are not at the mercy of circumstances. You are the frequency that attracts experience.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 16 ─────────────────────────────────────────────── */
+    function Ch16({ onBack, onNext }) {
+      return (
+        <Chapter accent="#a78bfa" orbB="#c084fc" pct={80} n={16} label="Chapter Sixteen · Words as Spells" title="Moving From Reaction to Conscious Speech" nextLabel="Shift Your Vocabulary" onBack={onBack} onNext={onNext}>
+          <Prose>The famous double-slit experiment changed physics. Scientists shot particles at a screen with two slits. When they observed which slit the particle went through — particle behavior, one band on the back screen. When they didn't observe — wave behavior, interference pattern, particle going through both slits at once.</Prose>
+          <InsightCard label="Observation Collapses Reality" accentColor="#a78bfa">Particles — the building blocks of everything — don't exist in a fixed state until observed. They exist as <em style={{ color:'#c4b5fd' }}>potential</em>. And observation collapses that potential into one definite form.</InsightCard>
+          <Prose>You're not living in a solid, fixed reality. You're living in a fluid field of potential. Your consciousness is constantly collapsing possibility into form. Your words are observation devices. When you say "I am broke," you're not describing — you're collapsing the wave function of all financial possibility into one limited outcome.</Prose>
+          <PullQuote color="#a78bfa">Most people don't manifest because they're observing current reality and describing it. That's not creating. That's copying.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 17 ─────────────────────────────────────────────── */
+    function Ch17({ onBack, onNext }) {
+      const swaps = [
+        { v:'"I can\'t afford it."',         c:'"I\'m choosing to invest elsewhere right now."' },
+        { v:'"I\'m so stressed."',           c:'"I\'m processing intense energy right now."' },
+        { v:'"I have to work."',             c:'"I choose to honor my commitments."' },
+        { v:'"I\'m trying to lose weight."', c:'"I\'m becoming healthier every day."' },
+        { v:'"I\'m stuck."',                 c:'"I\'m gathering information in this chapter."' },
+        { v:'"I need more money."',          c:'"I\'m ready to receive greater flow."' },
+        { v:'"I love you, but..."',          c:'"I love you, and I\'m choosing..."' },
+      ];
+      return (
+        <Chapter accent="#c084fc" orbB="#a78bfa" pct={85} n={17} label="Chapter Seventeen · Words as Spells" title="How to Shift Your Daily Vocabulary" nextLabel="The Six Practices" onBack={onBack} onNext={onNext} nextColor={['#c084fc','#9333ea']} nextGlow="rgba(192,132,252,0.35)">
+          <Prose>Every sentence you speak positions you as either victim or creator. Most people default to victim language without realizing it. The fix isn't motivation — it's substitution. Specific words swapped for specific words.</Prose>
+          <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:32 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, padding:'10px 16px', fontSize:'0.62rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'#8888a0' }}>
+              <div>Victim language</div>
+              <div style={{ color:'#c084fc' }}>Creator language</div>
+            </div>
+            {swaps.map((s, i) => (
+              <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, background:'#0d0d12', border:'1px solid #1e1e2a', borderLeft:'3px solid rgba(192,132,252,0.5)', borderRadius:10, padding:'12px 16px' }}>
+                <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.88rem', color:'rgba(180,180,200,0.55)' }}>{s.v}</div>
+                <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.88rem', color:'rgba(220,200,250,0.85)' }}>{s.c}</div>
+              </div>
+            ))}
+          </div>
+          <InsightCard label="Why This Works Immediately" accentColor="#c084fc">Each substitution shifts you from <em style={{ color:'#c084fc' }}>passive receiver to active creator</em>. Your nervous system responds immediately. Your cells respond. Your electromagnetic field responds. This isn't positive thinking — it's frequency reprogramming at the cellular level.</InsightCard>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 18 ─────────────────────────────────────────────── */
+    function Ch18({ onBack, onNext }) {
+      return (
+        <Chapter accent="#fbbf24" orbB="#f59e0b" pct={90} n={18} label="Chapter Eighteen · Words as Spells" title="Six Practices for Transforming the Way You Speak" nextLabel="Becoming Intentional" onBack={onBack} onNext={onNext} nextColor={['#fbbf24','#d97706']} nextGlow="rgba(251,191,36,0.35)">
+          <Prose>Six practices. We'll start with the first — the foundation. The next chapter covers the remaining five.</Prose>
+          <div style={{ background:'linear-gradient(135deg,#100c00 0%,#0d0d12 100%)', border:'1px solid rgba(251,191,36,0.2)', borderRadius:18, padding:28, marginBottom:30 }}>
+            <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(251,191,36,0.6)', marginBottom:8, fontWeight:600 }}>Practice One</div>
+            <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:'1.5rem', fontWeight:700, color:'#e8e8ed', marginBottom:18 }}>The 7-Day Vocabulary Detox</h2>
+            <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+              {[
+                { d:'Days 1–2', t:'Eliminate "can\'t" and "try"', e:'"I can\'t afford that" → "I\'m choosing to invest elsewhere." "I\'m trying to be healthier" → "I\'m becoming healthier."' },
+                { d:'Days 3–4', t:'Eliminate "have to" and "need to"', e:'"I have to go to work" → "I choose to honor my commitments." "I need to make money" → "I\'m ready to receive income."' },
+                { d:'Days 5–6', t:'Eliminate "always" and "never"', e:'"I always fail" → "I\'m learning new patterns." "I never have money" → "I\'m developing financial flow."' },
+                { d:'Day 7',    t:'Eliminate "but"', e:'But cancels everything before it. "I love you but..." doesn\'t feel like love. Replace with "and." Both things get to be true.' },
+              ].map(item => (
+                <div key={item.d} style={{ background:'rgba(251,191,36,0.04)', border:'1px solid rgba(251,191,36,0.15)', borderRadius:10, padding:'12px 16px' }}>
+                  <div style={{ display:'flex', alignItems:'baseline', gap:12, marginBottom:5, flexWrap:'wrap' }}>
+                    <span style={{ fontSize:'0.7rem', letterSpacing:'0.15em', textTransform:'uppercase', color:'#fbbf24', fontWeight:700 }}>{item.d}</span>
+                    <span style={{ fontSize:'0.92rem', fontWeight:600, color:'#e8e8ed' }}>{item.t}</span>
+                  </div>
+                  <p style={{ fontSize:'0.82rem', color:'#8888a0', lineHeight:1.6 }}>{item.e}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <InsightCard label="Don't Judge — Observe" accentColor="#fbbf24">Set a phone reminder every two hours. Where do you default to victim language? Which people trigger it? Which situations? <em style={{ color:'#fcd34d' }}>Awareness creates choice. Choice creates sovereignty.</em></InsightCard>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 19 ─────────────────────────────────────────────── */
+    function Ch19({ onBack, onNext }) {
+      const practices = [
+        { n:'02', t:'I AM Reconstruction', body:'Write every limiting "I am" statement you say regularly. Then write the truth — the power declaration. Speak them in a mirror, morning and night, for 21 days. Auditory, visual, kinesthetic — triple programming.' },
+        { n:'03', t:'Morning Reality Decree', body:'Before you touch your phone, set your frequency for the day. A 30-second present-tense declaration: "I am a powerful creator. I create opportunities. I attract aligned people. I embody confidence." Spoken aloud. So it is.' },
+        { n:'04', t:'Etymology Investigation', body:'Pick five words you use constantly. Look them up on etymonline.com. Read the root. Ask: does this match what I want to create? "Worry" comes from a word meaning to strangle. Replace with "I\'m focusing my attention."' },
+        { n:'05', t:'The Linguistic Shield', body:'Morning: "I am sovereign in my perception. No frequency enters my field without consent." When you notice manipulative framing in media: "I do not accept this spell. I return this frequency to sender." Evening: "I release what isn\'t mine to carry."' },
+        { n:'06', t:'Evening Gratitude Rewire', body:'Find three moments today that made you feel alive. Don\'t list them — relive them. 30 seconds each. Feel the warmth, the joy, the aliveness again. Your subconscious doesn\'t distinguish between memory and experience. Fall asleep in that frequency.' },
+      ];
+      return (
+        <Chapter accent="#f472b6" orbB="#ec4899" pct={93} n={19} label="Chapter Nineteen · Words as Spells" title="Becoming Intentional With Your Frequency" nextLabel="What Changes" onBack={onBack} onNext={onNext} nextColor={['#f472b6','#db2777']} nextGlow="rgba(244,114,182,0.35)">
+          <Prose>The remaining five practices. Each one rewires a different layer of how your language interacts with your reality. You don't have to do them all at once. One is enough to start.</Prose>
+          <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom:32 }}>
+            {practices.map(p => (
+              <div key={p.n} style={{ background:'#0d0d12', border:'1px solid rgba(244,114,182,0.15)', borderRadius:14, padding:'18px 22px', position:'relative', overflow:'hidden' }}>
+                <div style={{ position:'absolute', top:14, right:18, fontFamily:"'Outfit',sans-serif", fontSize:'1.9rem', fontWeight:700, color:'rgba(244,114,182,0.06)' }}>{p.n}</div>
+                <div style={{ fontSize:'0.65rem', letterSpacing:'0.18em', textTransform:'uppercase', color:'#f472b6', marginBottom:7, opacity:0.85, fontWeight:600 }}>Practice {p.n}</div>
+                <h3 style={{ fontSize:'1rem', fontWeight:600, color:'#e8e8ed', marginBottom:8 }}>{p.t}</h3>
+                <p style={{ fontSize:'0.86rem', color:'#8888a0', lineHeight:1.7 }}>{p.body}</p>
+              </div>
+            ))}
+          </div>
+          <PullQuote color="#f472b6">You wouldn't let strangers reprogram your phone. Why let them reprogram your consciousness?</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Chapter 20 ─────────────────────────────────────────────── */
+    function Ch20({ onBack, onNext }) {
+      return (
+        <Chapter accent="#e879f9" orbB="#c084fc" pct={96} n={20} label="Chapter Twenty · Words as Spells" title="What Changes When You Stop Speaking on Autopilot" nextLabel="Complete Words as Spells" onBack={onBack} onNext={onNext} nextColor={['#e879f9','#a21caf']} nextGlow="rgba(232,121,249,0.35)">
+          <Prose>You came in wondering if words really control reality. You're leaving with proof — etymology, electromagnetic fields, water responding to frequency, quantum observation collapsing possibility into form, the 1946 removal of linguistic literacy, the elite study of dead frequency languages while the rest of us were handed emojis.</Prose>
+          <InsightCard label="The Bottom Line" accentColor="#e879f9">You are not broken. You've been speaking the wrong language. You are not powerless. They convinced you words don't matter. <em style={{ color:'#e879f9' }}>But words are spells. Every sentence is a contract. Every conversation is a ritual. And you are the spellcaster.</em></InsightCard>
+          <div style={{ background:'linear-gradient(135deg,#180a1f 0%,#0d0d12 100%)', border:'1px solid rgba(232,121,249,0.2)', borderRadius:16, padding:24, marginBottom:28 }}>
+            <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(232,121,249,0.55)', marginBottom:14 }}>You Are</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:9 }}>
+              {[
+                'A light being. Human = light mind.',
+                'Sound moving through form. Person = sound through.',
+                'Electromagnetic frequency wearing meat.',
+                '70% water — and water responds to your words.',
+                'The observer in the quantum field, collapsing possibility into form.',
+              ].map((s, i) => (
+                <div key={i} style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+                  <div style={{ width:5, height:5, borderRadius:'50%', background:'#e879f9', flexShrink:0, opacity:0.6, marginTop:9 }}/>
+                  <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.93rem', color:'rgba(240,200,255,0.75)', lineHeight:1.6 }}>{s}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <PullQuote color="#e879f9">Speak life. Speak power. Speak sovereignty. The universe always says yes. The question is what you've been telling it.</PullQuote>
+        </Chapter>
+      );
+    }
+
+    /* ── Completion Screen ──────────────────────────────────────── */
+    function CompletionScreen({ onNext }) {
+      return (
+        <div style={{ background:'#000', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', position:'relative', overflow:'hidden' }} onClick={onNext}>
+          <div style={{ position:'absolute', width:600, height:600, borderRadius:'50%', background:'#a78bfa', filter:'blur(130px)', opacity:0.12, top:'15%', left:'5%', animation:'orbFloat 12s ease-in-out infinite alternate' }}/>
+          <div style={{ position:'absolute', width:440, height:440, borderRadius:'50%', background:'#f472b6', filter:'blur(140px)', opacity:0.09, bottom:'10%', right:'5%', animation:'orbFloat 16s ease-in-out infinite alternate-reverse' }}/>
+          <div style={{ position:'absolute', width:360, height:360, borderRadius:'50%', background:'#06b6d4', filter:'blur(120px)', opacity:0.08, top:'8%', right:'15%' }}/>
+          {[0, 1, 2].map(i => (<div key={i} style={{ position:'absolute', top:'50%', left:'50%', width:100+i*90, height:100+i*90, borderRadius:'50%', border:`1px solid ${['rgba(167,139,250,0.35)','rgba(244,114,182,0.25)','rgba(6,182,212,0.18)'][i]}`, animation:`waveExpand 5s ease-out ${i*1.6}s infinite` }}/>))}
+          <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:760 }}>
+            <div style={{ fontSize:'0.62rem', letterSpacing:'0.5em', textTransform:'uppercase', color:'rgba(167,139,250,0.4)', marginBottom:36 }}>Complete · The Spell Is Broken</div>
+            <h1 style={{ fontFamily:"'Outfit',sans-serif", fontSize:'clamp(2.2rem,8vw,5rem)', fontWeight:700, background:'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#06b6d4 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', letterSpacing:1, marginBottom:32, animation:'mmm-reveal 2s ease-out 0.5s both', lineHeight:1.1 }}>YOU ARE<br/>THE SPELLCASTER</h1>
+            <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(1rem,2.4vw,1.25rem)', color:'rgba(210,200,255,0.55)', lineHeight:1.8, marginBottom:44, animation:'mmm-fadeUp 1.5s ease-out 1.5s both' }}>Every conversation is now a conscious ritual.<br/>Every sentence is a reality command.<br/>The choice is yours, every time you speak.</p>
+            <div style={{ background:'rgba(167,139,250,0.06)', border:'1px solid rgba(167,139,250,0.15)', borderRadius:16, padding:'26px 36px', maxWidth:600, margin:'0 auto 48px', animation:'mmm-fadeUp 1.5s ease-out 2.2s both' }}>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'1.05rem', color:'rgba(220,200,255,0.72)', lineHeight:1.8 }}>"You speak 16,000 words a day. That's 16,000 reality commands. 16,000 spells cast. The question is — what will you create tomorrow?"</p>
+              <div style={{ fontSize:'0.6rem', letterSpacing:'0.25em', textTransform:'uppercase', color:'rgba(167,139,250,0.3)', marginTop:12 }}>Cast wisely · Cast consciously</div>
+            </div>
+            <div style={{ fontSize:'0.72rem', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(255,255,255,0.18)', animation:'mmm-blink 2.5s ease-in-out 3.5s infinite' }}>*click anywhere to restart*</div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── App ─────────────────────────────────────────────────────── */
+    function App() {
+      const [screen, setScreen] = useState(0);
+      const go = n => setScreen(n);
+      useEffect(() => { window.scrollTo(0, 0); }, [screen]);
+
+      const chapters = [
+        Ch1, Ch2, Ch3, Ch4, Ch5, Ch6, Ch7, Ch8, Ch9, Ch10,
+        Ch11, Ch12, Ch13, Ch14, Ch15, Ch16, Ch17, Ch18, Ch19, Ch20,
+      ];
+
+      const screens = [
+        <LandingScreen onNext={() => go(1)} />,
+        ...chapters.map((Ch, i) => (
+          <Ch key={i+1} onBack={() => go(i)} onNext={() => go(i+2)} />
+        )),
+        <CompletionScreen onNext={() => go(0)} />,
+      ];
+
+      return screens[screen];
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+  <script src="../app-nav.js"></script>
+</body>
+</html>

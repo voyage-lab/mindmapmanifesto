@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Creative Visualization — Part One</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Outfit:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #050507; color: #e8e8ed; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    @keyframes orbFloat {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, -20px) scale(1.05); }
+    }
+    @keyframes mmm-reveal {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes mmm-fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes mmm-blink {
+      0%, 100% { opacity: 0.3; }
+      50%       { opacity: 0.7; }
+    }
+    @keyframes waveExpand {
+      0%   { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
+      100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(167,139,250,0.3); border-radius: 2px; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../theme-app.css"/>
+</head>
+<body>
+  <nav class="mb-nav" aria-label="Series navigation"><a href="index.html">← back to creative visualization</a><a href="part2-b.html" rel="next">part 2 →</a></nav>
+  <p class="mb-hint" aria-hidden="true">← → keys or swipe</p>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    /* ── Shared Components ───────────────────────────────────── */
+
+    function Orbs({ color1 = '#a78bfa', color2 = '#818cf8', opacity = 0.22 }) {
+      return (
+        <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', overflow:'hidden' }}>
+          <div style={{ position:'absolute', width:580, height:580, borderRadius:'50%', background:color1, filter:'blur(130px)', opacity, top:'-15%', left:'-10%', animation:'orbFloat 18s ease-in-out infinite alternate' }}/>
+          <div style={{ position:'absolute', width:420, height:420, borderRadius:'50%', background:color2, filter:'blur(130px)', opacity, bottom:'-10%', right:'-10%', animation:'orbFloat 20s ease-in-out infinite alternate-reverse' }}/>
+        </div>
+      );
+    }
+
+    function ProgressBar({ pct, colorA = '#a78bfa', colorB = '#818cf8' }) {
+      return (
+        <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:50, height:3, background:'#14141c' }}>
+          <div style={{ height:'100%', width:`${pct}%`, background:`linear-gradient(90deg,${colorA},${colorB})`, transition:'width 0.5s ease' }}/>
+        </div>
+      );
+    }
+
+    function Eyebrow({ children, color = '#a78bfa' }) {
+      return (
+        <div style={{ fontSize:'0.7rem', letterSpacing:'0.2em', textTransform:'uppercase', color, marginBottom:16, display:'flex', alignItems:'center', gap:10, fontWeight:500 }}>
+          <span style={{ width:28, height:1, background:color, opacity:0.5, flexShrink:0, display:'block' }}/>
+          {children}
+        </div>
+      );
+    }
+
+    function StepIndicator({ current, total, color = '#a78bfa' }) {
+      return (
+        <div style={{ fontSize:'0.72rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'#8888a0' }}>
+          Chapter <span style={{ color, fontWeight:600 }}>{current}</span> of {total}
+        </div>
+      );
+    }
+
+    function ArrowRight({ size = 16 }) {
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      );
+    }
+
+    function ArrowLeft({ size = 16 }) {
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+      );
+    }
+
+    function BackBtn({ onClick }) {
+      return (
+        <button onClick={onClick}
+          style={{ display:'flex', alignItems:'center', gap:6, color:'#8888a0', background:'none', border:'none', cursor:'pointer', fontSize:'0.82rem', fontFamily:'Inter,sans-serif' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#e8e8ed'}
+          onMouseLeave={e => e.currentTarget.style.color = '#8888a0'}>
+          <ArrowLeft size={15}/> Back
+        </button>
+      );
+    }
+
+    function BottomNav({ onBack, onNext, nextLabel = 'Continue', nextColor = ['#a78bfa','#7c3aed'], nextGlow = 'rgba(167,139,250,0.35)' }) {
+      const [hov, setHov] = useState(false);
+      return (
+        <div style={{ display:'flex', justifyContent: onBack ? 'space-between' : 'flex-end', alignItems:'center', marginTop:64, paddingTop:32, borderTop:'1px solid #1e1e2a' }}>
+          {onBack && <BackBtn onClick={onBack}/>}
+          <button onClick={onNext}
+            onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+            style={{ display:'inline-flex', alignItems:'center', gap:9, padding:'13px 26px', borderRadius:12, fontSize:'0.875rem', fontWeight:600, border:'none', cursor:'pointer', fontFamily:'Inter,sans-serif', background:`linear-gradient(135deg,${nextColor[0]},${nextColor[1]})`, color:'#fff', transform: hov ? 'translateY(-1px)' : 'translateY(0)', boxShadow: hov ? `0 8px 28px ${nextGlow}` : 'none', transition:'all 0.3s ease' }}>
+            {nextLabel} <ArrowRight/>
+          </button>
+        </div>
+      );
+    }
+
+    function InsightCard({ label = 'Key Insight', children, accentColor = '#a78bfa' }) {
+      return (
+        <div style={{ background:'#0d0d12', border:`1px solid ${accentColor}33`, borderRadius:18, padding:36, marginBottom:40, position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'absolute', inset:0, background:`linear-gradient(135deg,${accentColor}0f,transparent 60%)`, pointerEvents:'none' }}/>
+          <div style={{ fontSize:'0.68rem', letterSpacing:'0.2em', textTransform:'uppercase', color:accentColor, marginBottom:14, fontWeight:600 }}>{label}</div>
+          <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.05rem,2.4vw,1.35rem)', lineHeight:1.72, color:'#e8e8ed', position:'relative' }}>{children}</p>
+        </div>
+      );
+    }
+
+    function Tag({ children, color }) {
+      return (
+        <span style={{ background:`${color}10`, border:`1px solid ${color}30`, borderRadius:20, padding:'7px 15px', fontSize:'0.82rem', color:`${color}cc`, fontFamily:"'Playfair Display',serif", fontStyle:'italic' }}>
+          {children}
+        </span>
+      );
+    }
+
+    function Prose({ children }) {
+      return <p style={{ fontSize:'0.95rem', color:'#8888a0', lineHeight:1.85, marginBottom:20 }}>{children}</p>;
+    }
+
+    function Footer() {
+      return <footer style={{ textAlign:'center', marginTop:56, color:'#8888a0', fontSize:'0.75rem' }}>© 2026 MindMapManifesto.com</footer>;
+    }
+
+    function PageWrapper({ children, maxWidth = 860 }) {
+      return <div style={{ position:'relative', zIndex:1, maxWidth, margin:'0 auto', padding:'60px 24px 100px' }}>{children}</div>;
+    }
+
+    /* ── Screen 0: Landing ───────────────────────────────────── */
+
+    function LandingScreen({ onNext }) {
+      const [hov, setHov] = useState(false);
+      const stars = useMemo(() =>
+        Array.from({ length: 32 }).map((_, i) => ({
+          size: i % 4 === 0 ? 2 : 1,
+          opacity: 0.08 + (i % 7) * 0.04,
+          top:  `${(i * 37 + 11) % 100}%`,
+          left: `${(i * 53 + 7)  % 100}%`,
+        })), []);
+
+      return (
+        <div style={{ background:'#000', minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at 50% 50%, #0d0a20 0%, #000 65%)', opacity:0.9 }}/>
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, black, transparent, black)' }}/>
+          {stars.map((s, i) => (
+            <div key={i} style={{ position:'absolute', width:s.size, height:s.size, borderRadius:'50%', background:'white', opacity:s.opacity, top:s.top, left:s.left }}/>
+          ))}
+
+          <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:820, display:'flex', flexDirection:'column', alignItems:'center', gap:40, animation:'mmm-reveal 1.5s cubic-bezier(0.16,1,0.3,1) forwards' }}>
+
+            <div style={{ fontSize:'0.65rem', letterSpacing:'0.6em', color:'rgba(167,139,250,0.6)', textTransform:'uppercase', fontWeight:700 }}>
+              Creative Visualization
+            </div>
+
+            <div>
+              <h1 style={{ fontFamily:"'Outfit',sans-serif", fontSize:'clamp(2.8rem,10vw,6rem)', fontWeight:700, letterSpacing:'-0.02em', color:'white', marginBottom:10 }}>
+                Part One
+              </h1>
+              <div style={{ fontSize:'clamp(0.9rem,2.2vw,1.3rem)', fontWeight:300, color:'rgba(255,255,255,0.4)', letterSpacing:'0.1em' }}>
+                The Basics of Creative Visualization
+              </div>
+            </div>
+
+            <div style={{ maxWidth:580, borderLeft:'2px solid rgba(167,139,250,0.3)', paddingLeft:28, textAlign:'left' }}>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(0.95rem,1.9vw,1.15rem)', lineHeight:1.8, color:'rgba(255,255,255,0.55)', marginBottom:12 }}>
+                "There's a version of your life that exists only in your head. You've glimpsed it. Maybe in a daydream. Maybe in a rare quiet moment. And then you dismissed it. Because wanting things and actually having them have always felt like two very different worlds. What if they weren't?"
+              </p>
+              <div style={{ fontSize:'0.65rem', letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(167,139,250,0.4)' }}>
+                Where we begin
+              </div>
+            </div>
+
+            <button
+              onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+              onClick={onNext}
+              style={{ backdropFilter:'blur(20px) saturate(180%)', background:'rgba(167,139,250,0.1)', border:'1px solid rgba(167,139,250,0.3)', borderRadius:9999, padding:'18px 52px', fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.4em', textTransform:'uppercase', color:'white', cursor:'pointer', transform: hov ? 'scale(1.05)' : 'scale(1)', boxShadow: hov ? '0 0 48px rgba(167,139,250,0.22)' : 'none', transition:'all 0.5s ease', fontFamily:'Inter,sans-serif' }}>
+              Let's Go
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── Screen 1: You're Already Doing It ───────────────────── */
+
+    function AlreadyDoingItScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#a78bfa" color2="#818cf8"/>
+          <ProgressBar pct={11}/>
+          <PageWrapper maxWidth={780}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={1} total={9}/>
+            </nav>
+
+            <div style={{ marginBottom:48, animation:'mmm-fadeUp 0.8s ease-out' }}>
+              <Eyebrow>The First Thing to Understand</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:20, background:'linear-gradient(135deg,#e8e8ed 0%,#a78bfa 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                You're Already Doing It
+              </h1>
+              <Prose>
+                Creative visualization is not new. It is not strange. It is not something you have to learn from scratch. You are already doing it — every day, every hour. In fact, you have never stopped.
+              </Prose>
+            </div>
+
+            <InsightCard label="The Core Insight" accentColor="#a78bfa">
+              Your imagination is always running. Always creating images, expectations, and internal narratives about how things are and how things will go. The only question is whether you are <em style={{ color:'#a78bfa' }}>directing it</em> or letting it run on autopilot.
+            </InsightCard>
+
+            <div style={{ background:'#0d0d12', border:'1px solid rgba(255,80,60,0.12)', borderTop:'2px solid rgba(255,80,60,0.25)', borderRadius:16, padding:26, marginBottom:20 }}>
+              <div style={{ fontSize:'0.65rem', letterSpacing:'0.25em', textTransform:'uppercase', color:'rgba(255,100,80,0.45)', marginBottom:12 }}>What autopilot builds</div>
+              <p style={{ fontSize:'0.88rem', color:'#8888a0', lineHeight:1.75 }}>
+                Most of us carry deep, unexamined beliefs about life being hard, about not being enough, about things never quite working out. That autopilot has been quietly building exactly that — lack, limitation, difficulty. Not because that's the truth. Because that's what's been running in the background.
+              </p>
+            </div>
+
+            <div style={{ background:'#0d0d12', border:'1px solid rgba(167,139,250,0.15)', borderTop:'2px solid rgba(167,139,250,0.35)', borderRadius:16, padding:26, marginBottom:20 }}>
+              <div style={{ fontSize:'0.65rem', letterSpacing:'0.25em', textTransform:'uppercase', color:'rgba(167,139,250,0.5)', marginBottom:12 }}>What this practice offers</div>
+              <p style={{ fontSize:'0.88rem', color:'#8888a0', lineHeight:1.75 }}>
+                Not forced positivity onto a broken foundation. Learning to use the imagination you already have — more consciously, more deliberately, more honestly — to create what you actually want. Love. Fulfillment. Satisfying relationships. Rewarding work. Health. Prosperity. Inner peace. Whatever that looks like for you.
+              </p>
+            </div>
+
+            <div style={{ borderLeft:'2px solid rgba(167,139,250,0.2)', paddingLeft:22, marginBottom:8 }}>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(0.95rem,2vw,1.1rem)', color:'rgba(220,210,255,0.65)', lineHeight:1.8 }}>
+                "Imagination is the ability to create an idea, a mental picture, or a felt sense of something. In creative visualization, you use that ability to create a clear image of something you want to bring into reality. Then you hold it. Return to it. Give it energy. Until it becomes real."
+              </p>
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="How It Actually Works"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 2: Here's How It Actually Works ──────────────── */
+
+    function HowItWorksScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#818cf8" color2="#a78bfa"/>
+          <ProgressBar pct={22} colorA="#818cf8" colorB="#a78bfa"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={2} total={9} color="#818cf8"/>
+            </nav>
+
+            <div style={{ marginBottom:48 }}>
+              <Eyebrow color="#818cf8">The Principles</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:20, background:'linear-gradient(135deg,#e8e8ed 0%,#818cf8 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                Here's How It Actually Works
+              </h1>
+              <Prose>
+                Once you see why this works, it stops feeling like wishful thinking and starts feeling like using a tool correctly. There are four principles underneath all of it.
+              </Prose>
+            </div>
+
+            <div style={{ display:'flex', flexDirection:'column', gap:14, marginBottom:40 }}>
+              {[
+                {
+                  num: '01',
+                  title: 'The physical universe is energy',
+                  body: 'What appears to be solid matter breaks down, when you look closely enough, into pure energy. Everything — including your body, including your thoughts — is energy at different rates of vibration. We are not separate things in a world of separate things. We are all expressions of one field. Finer energy, like thought, is easier to move. Denser energy, like matter, takes more time. But they are the same stuff. Which means one can influence the other.',
+                  color: '#818cf8',
+                },
+                {
+                  num: '02',
+                  title: 'Energy is magnetic',
+                  body: "Energy of a similar quality attracts energy of a similar quality. You've seen this in action. You think of someone and then run into them. You need a piece of information and it shows up in the next thing you read. Thoughts and feelings carry their own energetic signature and naturally draw toward them what matches.",
+                  color: '#a78bfa',
+                },
+                {
+                  num: '03',
+                  title: 'Form follows idea',
+                  body: "Thought is the lightest, fastest form of energy there is. It manifests first. Everything else follows. Every physical thing in the world started as an idea. A meal starts with the thought, I'll make dinner. A career starts with wanting to do something meaningful. The idea is always first. And here's the critical part: you don't even need to take direct physical action for this to work. Simply holding a clear thought sets energy in motion.",
+                  color: '#c084fc',
+                },
+                {
+                  num: '04',
+                  title: 'The law of radiation and attraction',
+                  body: "What you put out into the universe comes back to you. Whatever you think about most, believe most strongly, expect most deeply, and imagine most vividly, you will attract into your life. Negative and fearful thinking doesn't just feel bad — it draws the very things you're trying to avoid. Positive, expectant, open thinking attracts situations and events that match. Not because the universe is playing favourites. Because that is simply how the mechanism works.",
+                  color: '#818cf8',
+                },
+              ].map(p => (
+                <div key={p.num} style={{ background:'#0d0d12', border:`1px solid ${p.color}20`, borderRadius:16, padding:26, display:'flex', gap:22 }}>
+                  <div style={{ fontSize:'0.6rem', color:p.color, letterSpacing:'0.3em', textTransform:'uppercase', flexShrink:0, marginTop:4, opacity:0.6, minWidth:24 }}>{p.num}</div>
+                  <div>
+                    <h3 style={{ fontSize:'1rem', fontWeight:600, color:'#e8e8ed', marginBottom:9 }}>{p.title}</h3>
+                    <p style={{ fontSize:'0.86rem', color:'#8888a0', lineHeight:1.72 }}>{p.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <InsightCard label="What This Means" accentColor="#818cf8">
+              The inner creates the outer. Not immediately. Not magically. But <em style={{ color:'#818cf8' }}>consistently, over time, in the direction of what is held in mind.</em> If you constantly think you are incapable, you will behave in ways that confirm it. If you believe yourself to be whole, you carry yourself as someone who is.
+            </InsightCard>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="A Simple Exercise" nextColor={['#818cf8','#6366f1']} nextGlow="rgba(129,140,248,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 3: A Simple Exercise ─────────────────────────── */
+
+    function ExerciseScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#10b981" color2="#818cf8"/>
+          <ProgressBar pct={33} colorA="#10b981" colorB="#818cf8"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={3} total={9} color="#10b981"/>
+            </nav>
+
+            <div style={{ marginBottom:48 }}>
+              <Eyebrow color="#10b981">Start Right Now</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:20, background:'linear-gradient(135deg,#e8e8ed 0%,#10b981 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                A Simple Exercise
+              </h1>
+              <Prose>
+                You don't have to wait until you've read everything. Here is the basic practice. Do it today. Choose something simple — something you can actually believe is possible in the not-too-distant future.
+              </Prose>
+            </div>
+
+            <div style={{ display:'flex', flexDirection:'column', gap:11, marginBottom:40 }}>
+              {[
+                { n:1, t:'Choose something within reach',    d:'For your first attempt, pick something simple. Something that feels possible. Not enormous. Something you can hold without immediately dismissing.' },
+                { n:2, t:'Get comfortable and slow down',   d:'Sit or lie somewhere quiet. Starting from your toes, deliberately relax each part of your body. Breathe slowly and deeply from your belly. Count down from ten to one, letting each number carry you deeper.' },
+                { n:3, t:'Bring it to mind specifically',   d:'Not vaguely. Specifically. If it\'s an object, imagine yourself holding it, using it, showing it to someone. If it\'s a situation, place yourself inside it. What does it look like? What are people saying? What does it feel like to be there right now?' },
+                { n:4, t:'Make it present tense',           d:'Not this will happen someday. This is happening now. Make it real. Make it sensory. Make it alive inside you before it is alive outside you.' },
+                { n:5, t:'Add affirmations',                d:'While you hold the image, make strong positive statements. Aloud or silently, whatever feels natural. "Here I am in my new apartment and I love it." "I am doing work that genuinely fulfils me." These matter enormously.' },
+                { n:6, t:'Close with the safeguard',        d:'"This or something better now manifests for me in totally satisfying and harmonious ways for the highest good of all concerned." This leaves room for something better and keeps your intentions aligned.' },
+                { n:7, t:'Handle doubt without fighting it', d:"If doubt creeps in, don't try to suppress it. Notice it. Let it pass through without grabbing hold of it. Return your attention to the image and the affirmations. Struggling against doubt gives it power. Acknowledging it calmly and redirecting does not." },
+              ].map(step => (
+                <div key={step.n} style={{ background:'#0d0d12', border:'1px solid rgba(16,185,129,0.13)', borderRadius:14, padding:'18px 22px', display:'flex', gap:18 }}>
+                  <div style={{ width:32, height:32, borderRadius:'50%', background:'rgba(16,185,129,0.1)', border:'1px solid rgba(16,185,129,0.28)', color:'#10b981', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'0.8rem', fontWeight:700, flexShrink:0 }}>{step.n}</div>
+                  <div>
+                    <h4 style={{ fontSize:'0.9rem', fontWeight:600, color:'#e8e8ed', marginBottom:5 }}>{step.t}</h4>
+                    <p style={{ fontSize:'0.84rem', color:'#8888a0', lineHeight:1.65 }}>{step.d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="Why Relaxation Matters" nextColor={['#10b981','#059669']} nextGlow="rgba(16,185,129,0.4)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 4: Why Relaxation Is Not Optional ────────────── */
+
+    function RelaxationScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#06b6d4" color2="#818cf8"/>
+          <ProgressBar pct={44} colorA="#06b6d4" colorB="#818cf8"/>
+          <PageWrapper maxWidth={780}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={4} total={9} color="#06b6d4"/>
+            </nav>
+
+            <div style={{ marginBottom:48 }}>
+              <Eyebrow color="#06b6d4">The Quality of State</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:20, background:'linear-gradient(135deg,#e8e8ed 0%,#06b6d4 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                Why Relaxation Is Not Optional
+              </h1>
+              <Prose>
+                Deep relaxation is part of this practice for a specific reason. It's not about comfort. It's about access. The state of mind you're in when you visualize determines how much of what you're doing actually lands.
+              </Prose>
+            </div>
+
+            <InsightCard label="The Alpha State" accentColor="#06b6d4">
+              When body and mind are deeply relaxed, the brain shifts from its normal busy state — what researchers call <em style={{ color:'#06b6d4' }}>beta</em> — into a slower, quieter state called <em style={{ color:'#06b6d4' }}>alpha</em>. Alpha has been found, repeatedly, to be dramatically more effective at producing real change through visualization. Ten minutes of deep, relaxed, focused practice may accomplish more than hours of anxious planning.
+            </InsightCard>
+
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginBottom:32 }}>
+              {[
+                { icon:'🌅', time:'After waking', note:'Morning — 15 min', desc:'You are emerging from sleep, already in alpha. Before the day takes hold, use this threshold moment. Your whole day tends to run more smoothly when you start here.', color:'#06b6d4' },
+                { icon:'🌙', time:'Before sleep', note:'Evening — 15 min', desc:'Your mind is naturally sliding toward sleep. Use these minutes consciously. The unconscious absorbs and processes through the night what it is given at the threshold.', color:'#818cf8' },
+              ].map(s => (
+                <div key={s.time} style={{ background:'#0d0d12', border:`1px solid ${s.color}22`, borderTop:`2px solid ${s.color}55`, borderRadius:16, padding:24 }}>
+                  <div style={{ fontSize:'1.8rem', marginBottom:12 }}>{s.icon}</div>
+                  <div style={{ fontSize:'0.65rem', letterSpacing:'0.2em', textTransform:'uppercase', color:s.color, marginBottom:6, opacity:0.7 }}>{s.note}</div>
+                  <h3 style={{ fontSize:'1rem', fontWeight:600, color:'#e8e8ed', marginBottom:8 }}>{s.time}</h3>
+                  <p style={{ fontSize:'0.84rem', color:'#8888a0', lineHeight:1.6 }}>{s.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+              {[
+                { label:'On posture', body:'If you tend to fall asleep during practice, sit up. Spine straight, balanced, supported. A straight spine helps energy flow and makes it easier to hold the meditative state without drifting off.' },
+                { label:'On method', body:'If you already have a relaxation or meditation practice, use it. If not, the method described in the exercise — relaxing the body part by part from toes to scalp, breathing deeply, counting down from ten to one — is reliable, simple, and works.' },
+              ].map(n => (
+                <div key={n.label} style={{ background:'#0d0d12', border:'1px solid #1e1e2a', borderRadius:14, padding:'18px 24px' }}>
+                  <h3 style={{ fontSize:'0.9rem', fontWeight:600, color:'#e8e8ed', marginBottom:7 }}>{n.label}</h3>
+                  <p style={{ fontSize:'0.86rem', color:'#8888a0', lineHeight:1.68 }}>{n.body}</p>
+                </div>
+              ))}
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="What Visualizing Actually Means" nextColor={['#06b6d4','#0891b2']} nextGlow="rgba(6,182,212,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 5: What Does It Mean to Visualize? ───────────── */
+
+    function VisualizeScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#f59e0b" color2="#a78bfa" opacity={0.18}/>
+          <ProgressBar pct={55} colorA="#f59e0b" colorB="#a78bfa"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={5} total={9} color="#f59e0b"/>
+            </nav>
+
+            <div style={{ marginBottom:48 }}>
+              <Eyebrow color="#f59e0b">Let's Clear This Up</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:20, background:'linear-gradient(135deg,#e8e8ed 0%,#f59e0b 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                What Does It Actually Mean to Visualize?
+              </h1>
+              <Prose>
+                A lot of people hear the word "visualize" and immediately feel they are doing it wrong. They close their eyes, try to see something vivid and clear, don't, and conclude they can't do this. Let's clear that up right now.
+              </Prose>
+            </div>
+
+            <InsightCard label="You Do Not Need to See" accentColor="#f59e0b">
+              The term <em style={{ color:'#f59e0b' }}>visualize</em> is shorthand for something broader: using your imagination to bring something to mind in whatever way is natural for you. That might be visual. It might be a physical felt sense. It might be hearing the sounds of a scenario. It might be a combination that shifts and changes. Whatever happens when you genuinely imagine something — that is your visualization. It is enough.
+            </InsightCard>
+
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14, marginBottom:36 }}>
+              {[
+                { mode:'See',   desc:"Clear mental pictures — scenes, colors, shapes, faces appearing in your mind's eye.", color:'#f59e0b' },
+                { mode:'Feel',  desc:'Physical sensations, emotional states, a bodily sense of what the experience is like.', color:'#a78bfa' },
+                { mode:'Sense', desc:"A knowing, a thinking-about, an impression. Something that doesn't fit neatly into image or feeling.", color:'#818cf8' },
+              ].map(m => (
+                <div key={m.mode} style={{ background:'#0d0d12', border:`1px solid ${m.color}22`, borderTop:`2px solid ${m.color}55`, borderRadius:16, padding:22, textAlign:'center' }}>
+                  <h3 style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'1.3rem', color:'#e8e8ed', marginBottom:12 }}>{m.mode}</h3>
+                  <p style={{ fontSize:'0.82rem', color:'#8888a0', lineHeight:1.6 }}>{m.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginBottom:32 }}>
+              <div style={{ background:'rgba(245,158,11,0.04)', border:'1px solid rgba(245,158,11,0.14)', borderRadius:16, padding:24 }}>
+                <div style={{ fontSize:'0.65rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(245,158,11,0.5)', marginBottom:12 }}>Receptive Mode</div>
+                <p style={{ fontSize:'0.84rem', color:'#8888a0', lineHeight:1.65 }}>You relax and allow images and impressions to come without forcing or directing them. You become a witness to what arises — useful for guidance and self-discovery.</p>
+              </div>
+              <div style={{ background:'rgba(167,139,250,0.04)', border:'1px solid rgba(167,139,250,0.14)', borderRadius:16, padding:24 }}>
+                <div style={{ fontSize:'0.65rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(167,139,250,0.5)', marginBottom:12 }}>Active Mode</div>
+                <p style={{ fontSize:'0.84rem', color:'#8888a0', lineHeight:1.65 }}>You consciously choose and create what you imagine. You decide the scene, populate it, direct the experience. The primary mode for creative visualization.</p>
+              </div>
+            </div>
+
+            <div style={{ background:'linear-gradient(135deg,#1a1400 0%,#0d0d12 100%)', border:'1px solid rgba(245,158,11,0.14)', borderRadius:16, padding:26 }}>
+              <div style={{ fontSize:'0.65rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(245,158,11,0.5)', marginBottom:14 }}>Try this now</div>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.75 }}>
+                Close your eyes. Think of a room in your home you know well. Notice what comes — the colours, the furniture, the light. It doesn't matter if it's vivid or vague. That process, whatever just happened, is how you visualize. Now recall a genuinely pleasant physical experience from the recent past. Let yourself re-enter it. Feel it again. That is creative visualization. You are already doing it.
+              </p>
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="When It Feels Blocked" nextColor={['#f59e0b','#d97706']} nextGlow="rgba(245,158,11,0.4)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 6: What If You Find It Difficult? ────────────── */
+
+    function DifficultScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#c084fc" color2="#818cf8" opacity={0.2}/>
+          <ProgressBar pct={66} colorA="#c084fc" colorB="#818cf8"/>
+          <PageWrapper maxWidth={780}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={6} total={9} color="#c084fc"/>
+            </nav>
+
+            <div style={{ marginBottom:48 }}>
+              <Eyebrow color="#c084fc">When the Door Won't Open</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:20, background:'linear-gradient(135deg,#e8e8ed 0%,#c084fc 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                What If You Find It Genuinely Difficult?
+              </h1>
+              <Prose>
+                Occasionally someone finds that visualization seems completely blocked. Not just unfamiliar — impossible. They try and nothing comes. This almost always has an emotional source.
+              </Prose>
+            </div>
+
+            <InsightCard label="The Usual Cause" accentColor="#c084fc">
+              Usually it is <em style={{ color:'#c084fc' }}>fear</em> — not of the visualization technique itself, but of what might be encountered by turning inward. Unacknowledged feelings. Old emotions that have never been expressed or processed. The mind protects you by keeping the door closed.
+            </InsightCard>
+
+            <div style={{ background:'linear-gradient(135deg,#160d22 0%,#0d0d12 100%)', border:'1px solid rgba(192,132,252,0.16)', borderRadius:18, padding:28, marginBottom:28 }}>
+              <div style={{ fontSize:'0.65rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(192,132,252,0.5)', marginBottom:14 }}>A real example</div>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(0.9rem,1.9vw,1.05rem)', color:'rgba(220,195,255,0.65)', lineHeight:1.8 }}>
+                A man in one workshop was unable to visualize and kept falling asleep every time he tried. When he looked at it honestly, he realized he had once had a deeply emotional experience during a visualization exercise and had been unconsciously protecting himself from having that happen again — especially in front of other people.
+              </p>
+            </div>
+
+            <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom:8 }}>
+              {[
+                { label:'If something arises', body:"If something unexpected or emotionally charged comes up during meditation, the best response is not to push it away. Look at it. Stay with it. Let yourself experience it fully. The things we refuse to face hold power over us. The things we look at directly lose their grip." },
+                { label:'If it feels overwhelming', body:'Working with a good therapist alongside these practices is genuinely valuable — not a sign of weakness. If there is a significant history of pain or trauma in your life, professional support matters.' },
+                { label:'If imagery stays elusive', body:'Problems with visualization are relatively rare. Most people find it comes naturally and gets easier with practice. And for those who do find it difficult, the other tool in this approach — affirmations — often works even more effectively. You need one. Not both.' },
+              ].map(n => (
+                <div key={n.label} style={{ background:'#0d0d12', border:'1px solid #1e1e2a', borderRadius:14, padding:'18px 24px' }}>
+                  <h3 style={{ fontSize:'0.9rem', fontWeight:600, color:'#e8e8ed', marginBottom:7 }}>{n.label}</h3>
+                  <p style={{ fontSize:'0.86rem', color:'#8888a0', lineHeight:1.68 }}>{n.body}</p>
+                </div>
+              ))}
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="The Four Steps" nextColor={['#c084fc','#9333ea']} nextGlow="rgba(192,132,252,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 7: The Four Steps That Make This Real ────────── */
+
+    function FourStepsScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#a78bfa" color2="#06b6d4"/>
+          <ProgressBar pct={77}/>
+          <PageWrapper maxWidth={840}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={7} total={9}/>
+            </nav>
+
+            <div style={{ marginBottom:48 }}>
+              <Eyebrow>Learn These. Return to Them.</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:20, background:'linear-gradient(135deg,#e8e8ed 0%,#a78bfa 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                The Four Steps That Make This Real
+              </h1>
+              <Prose>
+                Everything in this practice comes down to four steps. Everything else is elaboration on these.
+              </Prose>
+            </div>
+
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginBottom:32 }}>
+              {[
+                { num:'01', title:'Set your goal',          desc:'Decide what you want. When starting out, choose goals that feel believable — within the range of what you can at least imagine being possible. You don\'t need to believe they are certain. Just possible. Build from where you can actually show up with some openness.', color:'#a78bfa' },
+                { num:'02', title:'Create a clear picture',  desc:'Imagine the goal already realized. Present tense. Not "I will have this" but "I have this." Include detail. Bring in the senses. Make it feel real inside you before it is real outside you. A physical collage or "treasure map" is not required — but often surprisingly powerful.', color:'#818cf8' },
+                { num:'03', title:'Focus on it often',       desc:'Bring your goal to mind regularly — in formal meditation and informally throughout the day. The more you return to it, the more real it becomes in your inner world. The more you treat it as an established reality rather than a distant wish, the more energy builds around it.', color:'#06b6d4' },
+                { num:'04', title:'Give it positive energy', desc:'Think about your goal encouragingly. Make strong positive statements. See yourself receiving it, living it, enjoying it. Feel its reality as much as you can. Use your affirmations. Mean them. Let them sink in.', color:'#10b981' },
+              ].map(s => (
+                <div key={s.num} style={{ background:'#0d0d12', border:`1px solid ${s.color}22`, borderTop:`2px solid ${s.color}55`, borderRadius:16, padding:24 }}>
+                  <div style={{ fontSize:'0.6rem', color:s.color, letterSpacing:'0.3em', textTransform:'uppercase', marginBottom:12, opacity:0.65 }}>{s.num}</div>
+                  <h3 style={{ fontSize:'1rem', fontWeight:600, color:'#e8e8ed', marginBottom:10 }}>{s.title}</h3>
+                  <p style={{ fontSize:'0.84rem', color:'#8888a0', lineHeight:1.65 }}>{s.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <InsightCard label="On the Quality of Attention" accentColor="#a78bfa">
+              Hold your goal the way you'd hold something fragile and precious. <em style={{ color:'#a78bfa' }}>Firmly enough that it stays. Loosely enough that it isn't crushed.</em> Not gripping, straining, or desperately willing it into existence — that kind of effortful energy works against you.
+            </InsightCard>
+
+            <div style={{ background:'#0d0d12', border:'1px solid #1e1e2a', borderRadius:14, padding:'20px 24px' }}>
+              <h3 style={{ fontSize:'0.9rem', fontWeight:600, color:'#e8e8ed', marginBottom:9 }}>When goals change — and when they arrive</h3>
+              <p style={{ fontSize:'0.86rem', color:'#8888a0', lineHeight:1.72 }}>
+                Goals change. If your interest in a particular goal fades, acknowledge that consciously and redirect your energy toward what is genuinely alive for you now. And when something manifests — notice it. Celebrate it. Far too often people achieve exactly what they were visualizing and forget to even register that it happened. Acknowledge it. Feel good about it. Say thank you.
+              </p>
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="Affirmations"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 8: Affirmations ──────────────────────────────── */
+
+    function AffirmationsScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#818cf8" color2="#a78bfa"/>
+          <ProgressBar pct={88} colorA="#818cf8" colorB="#a78bfa"/>
+          <PageWrapper maxWidth={820}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={8} total={9} color="#818cf8"/>
+            </nav>
+
+            <div style={{ marginBottom:48 }}>
+              <Eyebrow color="#818cf8">The Most Important Element</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:20, background:'linear-gradient(135deg,#e8e8ed 0%,#818cf8 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                Affirmations
+              </h1>
+              <Prose>
+                You have a nearly continuous inner dialogue running in your mind. Most of the time you're not consciously aware of it. But it is always there — commenting on everything, interpreting everything, laying the foundation on which you build your experience of reality.
+              </Prose>
+            </div>
+
+            <InsightCard label="How the Mind Works" accentColor="#818cf8">
+              Your mind learns through repetition. <em style={{ color:'#818cf8' }}>It doesn't check for truth. It accepts what it receives often enough to log as familiar.</em> A lot of what it has logged came from when you were too young to question it. You can use this same mechanism — deliberately, consistently — to replace what runs underneath.
+            </InsightCard>
+
+            <div style={{ background:'#0d0d12', border:'1px solid #1e1e2a', borderRadius:16, padding:26, marginBottom:28 }}>
+              <h3 style={{ fontSize:'1rem', fontWeight:600, color:'#e8e8ed', marginBottom:16 }}>How to use affirmations well</h3>
+              <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+                {[
+                  { rule:'Present tense always',      body:'Not "I will be confident." "I am confident." The mind creates from what it receives as current reality. Give it that.' },
+                  { rule:'State what you want',        body:"Not what you're trying to avoid. Not \"I no longer feel anxious.\" \"I feel calm and centred.\" Your mind generates images around the words you use. Give it the image you want." },
+                  { rule:'Short and emotionally charged', body:'A long, theoretical affirmation loses its power. A short, felt statement lands. The more feeling it carries, the deeper it goes.' },
+                  { rule:'Choose what resonates',      body:"Not what works for someone else. Not what you think you should believe. What genuinely feels right for you — expansive, like a door opening rather than a wall being painted over." },
+                  { rule:'Work with resistance',       body:"If you can't say an affirmation without immediate contradiction rising up, that's valuable information. It tells you exactly what belief is sitting underneath. Soften the affirmation into something you can believe just a little. Build from there." },
+                ].map(item => (
+                  <div key={item.rule} style={{ display:'flex', gap:16, alignItems:'flex-start' }}>
+                    <div style={{ width:5, height:5, borderRadius:'50%', background:'#818cf8', flexShrink:0, marginTop:9, opacity:0.5 }}/>
+                    <p style={{ fontSize:'0.86rem', color:'#8888a0', lineHeight:1.68 }}>
+                      <span style={{ color:'#c4b5fd', fontWeight:600 }}>{item.rule}. </span>{item.body}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display:'flex', flexWrap:'wrap', gap:8, marginBottom:24 }}>
+              {[
+                '"I have everything I need within me."',
+                '"I love and accept myself completely."',
+                '"I am now moving toward work that fulfils me."',
+                '"Abundance is my natural state."',
+                '"Everything I need comes to me easily."',
+                '"I am open to receiving the best life offers."',
+                '"I am in the right place at the right time."',
+              ].map(a => (
+                <Tag key={a} color="#818cf8">{a}</Tag>
+              ))}
+            </div>
+
+            <div style={{ background:'linear-gradient(135deg,#0f0d1c 0%,#0d0d12 100%)', border:'1px solid rgba(129,140,248,0.15)', borderRadius:16, padding:24 }}>
+              <div style={{ fontSize:'0.65rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(129,140,248,0.5)', marginBottom:14 }}>With a spiritual dimension</div>
+              <p style={{ fontSize:'0.86rem', color:'#8888a0', lineHeight:1.72, marginBottom:16 }}>
+                For many people, affirmations become particularly powerful when they include some reference to a source larger than individual effort — whatever language is honest for you.
+              </p>
+              <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
+                {[
+                  '"Divine love is working through me here and now."',
+                  '"I am guided and supported by something greater than myself."',
+                  '"I give thanks that my life is unfolding perfectly."',
+                ].map(a => (
+                  <Tag key={a} color="#a78bfa">{a}</Tag>
+                ))}
+              </div>
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="The Paradox & What to Take Away" nextColor={['#818cf8','#6366f1']} nextGlow="rgba(129,140,248,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 9: Good Only + The Paradox + Takeaway ────────── */
+
+    function ParadoxScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#06b6d4" color2="#a78bfa"/>
+          <ProgressBar pct={96} colorA="#06b6d4" colorB="#a78bfa"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={9} total={9} color="#06b6d4"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#06b6d4">The Last Two Things</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:20, background:'linear-gradient(135deg,#e8e8ed 0%,#06b6d4 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                This Only Works for Good
+              </h1>
+              <Prose>
+                Creative visualization works by aligning you with the natural, harmonious flow of life. When aimed at controlling others or getting something at someone else's expense, it runs against the grain of how it actually works — and the law of what you put out coming back applies here as much as anywhere.
+              </Prose>
+            </div>
+
+            <div style={{ background:'linear-gradient(135deg,#051c22 0%,#0d0d12 100%)', border:'1px solid rgba(6,182,212,0.18)', borderRadius:18, padding:28, marginBottom:40 }}>
+              <div style={{ fontSize:'0.65rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'#06b6d4', marginBottom:14, fontWeight:600, opacity:0.8 }}>End every visualization with this</div>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(0.95rem,2vw,1.12rem)', lineHeight:1.8, color:'rgba(180,240,255,0.78)' }}>
+                "This or something better now manifests for me in totally satisfying and harmonious ways for the highest good of all concerned."
+              </p>
+              <p style={{ fontSize:'0.82rem', color:'rgba(120,190,210,0.5)', marginTop:14, lineHeight:1.6 }}>This phrase keeps your intentions clean, leaves room for something better than you imagined, and acknowledges that your thriving is not at the expense of anyone else's.</p>
+            </div>
+
+            <div style={{ marginBottom:24 }}>
+              <Eyebrow color="#a78bfa">The Paradox That Isn't</Eyebrow>
+              <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.4rem,3.5vw,2.1rem)', fontWeight:700, lineHeight:1.2, marginBottom:14, color:'#e8e8ed' }}>
+                Letting Go and Creating at Once
+              </h2>
+              <Prose>
+                Eastern philosophy says: be present, let go of desire. Creative visualization says: set goals, imagine outcomes. These sound contradictory. They aren't. Most people who try to create what they want are operating from fear and lack — the feeling that they are incomplete without this thing. From that state, creative visualization doesn't work well. When the spiritual traditions say "let go," they mean this grip. Let go and discover you are actually okay.
+              </Prose>
+            </div>
+
+            <InsightCard label="The River Metaphor" accentColor="#a78bfa">
+              Most people are clinging to the bank, afraid to let go. The first work is to release and trust the current — <em style={{ color:'#a78bfa' }}>that is the letting go, the surrender, the being present.</em> Once you are in the flow, you can begin to navigate, choose which channel to follow, steer with intention. That is the creative visualization. Both are necessary. Neither cancels the other out.
+            </InsightCard>
+
+            <div style={{ background:'#0d0d12', border:'1px solid #1e1e2a', borderRadius:16, padding:26 }}>
+              <h3 style={{ fontSize:'0.95rem', fontWeight:600, color:'#e8e8ed', marginBottom:12 }}>What to take away from all of this</h3>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.78, marginBottom:14 }}>
+                Start by noticing what you are already imagining. What does your internal narrative say about your future, your worth, your possibilities? Start noticing the language you use to describe your life. Ask, honestly, whether the images running in the background of your mind are the ones you would consciously choose.
+              </p>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.78 }}>
+                Then begin. Deliberately. Consistently. One thought, one image, one affirmation at a time. <span style={{ color:'#c4b5fd', fontWeight:600 }}>Your mind does not know the difference between what is vividly imagined and what is real. It responds to what it is given. It always has.</span> You can begin right now to give it something better.
+              </p>
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="Complete Part One" nextColor={['#a78bfa','#7c3aed']} nextGlow="rgba(167,139,250,0.4)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 10: Completion ───────────────────────────────── */
+
+    function CompletionScreen({ onNext }) {
+      return (
+        <div style={{ background:'#000', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', position:'relative', overflow:'hidden' }} onClick={onNext}>
+          <div style={{ position:'absolute', width:600, height:600, borderRadius:'50%', background:'#7c3aed', filter:'blur(130px)', opacity:0.14, top:'15%', left:'5%', animation:'orbFloat 12s ease-in-out infinite alternate' }}/>
+          <div style={{ position:'absolute', width:400, height:400, borderRadius:'50%', background:'#06b6d4', filter:'blur(130px)', opacity:0.11, bottom:'10%', right:'10%', animation:'orbFloat 16s ease-in-out infinite alternate-reverse' }}/>
+          <div style={{ position:'absolute', width:320, height:320, borderRadius:'50%', background:'#a78bfa', filter:'blur(120px)', opacity:0.1, top:'5%', right:'20%' }}/>
+
+          {[0, 1, 2].map(i => (
+            <div key={i} style={{ position:'absolute', top:'50%', left:'50%', width:100+i*90, height:100+i*90, borderRadius:'50%', border:`1px solid ${['rgba(167,139,250,0.4)','rgba(129,140,248,0.28)','rgba(6,182,212,0.2)'][i]}`, animation:`waveExpand 5s ease-out ${i*1.6}s infinite` }}/>
+          ))}
+
+          <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:720 }}>
+            <div style={{ fontSize:'0.62rem', letterSpacing:'0.5em', textTransform:'uppercase', color:'rgba(167,139,250,0.45)', marginBottom:36 }}>
+              Part One Complete
+            </div>
+
+            <h1 style={{ fontFamily:"'Outfit',sans-serif", fontSize:'clamp(2.2rem,8vw,5rem)', fontWeight:700, background:'linear-gradient(135deg,#a78bfa 0%,#818cf8 45%,#06b6d4 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', letterSpacing:1, marginBottom:32, animation:'mmm-reveal 2s ease-out 0.5s both', lineHeight:1.1 }}>
+              THE PRACTICE<br/>BEGINS
+            </h1>
+
+            <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(1rem,2.4vw,1.25rem)', color:'rgba(215,205,255,0.65)', lineHeight:1.75, marginBottom:44, animation:'mmm-fadeUp 1.5s ease-out 1.5s both' }}>
+              Your imagination is already running.<br/>
+              The only question has ever been<br/>
+              whether you are directing it.
+            </p>
+
+            <div style={{ background:'rgba(167,139,250,0.07)', border:'1px solid rgba(167,139,250,0.18)', borderRadius:16, padding:'26px 36px', maxWidth:580, margin:'0 auto 48px', animation:'mmm-fadeUp 1.5s ease-out 2.2s both' }}>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'1.1rem', color:'rgba(196,181,253,0.85)', lineHeight:1.72 }}>
+                "This or something better now manifests for me, in totally satisfying and harmonious ways, for the highest good of all concerned."
+              </p>
+            </div>
+
+            <div style={{ fontSize:'0.72rem', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(255,255,255,0.2)', animation:'mmm-blink 2.5s ease-in-out 3.5s infinite' }}>
+              *click anywhere to restart*
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── App ─────────────────────────────────────────────────── */
+
+    function App() {
+      const [screen, setScreen] = useState(0);
+      const go = n => setScreen(n);
+
+      useEffect(() => { window.scrollTo(0, 0); }, [screen]);
+
+      const screens = [
+        <LandingScreen        onNext={() => go(1)} />,
+        <AlreadyDoingItScreen onBack={() => go(0)} onNext={() => go(2)} />,
+        <HowItWorksScreen     onBack={() => go(1)} onNext={() => go(3)} />,
+        <ExerciseScreen       onBack={() => go(2)} onNext={() => go(4)} />,
+        <RelaxationScreen     onBack={() => go(3)} onNext={() => go(5)} />,
+        <VisualizeScreen      onBack={() => go(4)} onNext={() => go(6)} />,
+        <DifficultScreen      onBack={() => go(5)} onNext={() => go(7)} />,
+        <FourStepsScreen      onBack={() => go(6)} onNext={() => go(8)} />,
+        <AffirmationsScreen   onBack={() => go(7)} onNext={() => go(9)} />,
+        <ParadoxScreen        onBack={() => go(8)} onNext={() => go(10)} />,
+        <CompletionScreen     onNext={() => go(0)} />,
+      ];
+
+      return screens[screen];
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+  <script src="../app-nav.js"></script>
+</body>
+</html>

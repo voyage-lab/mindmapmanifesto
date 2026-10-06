@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Creative Visualization — Part Four</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Outfit:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #050507; color: #e8e8ed; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    @keyframes orbFloat {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, -20px) scale(1.05); }
+    }
+    @keyframes mmm-reveal {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes mmm-fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes mmm-blink {
+      0%, 100% { opacity: 0.3; }
+      50%       { opacity: 0.7; }
+    }
+    @keyframes waveExpand {
+      0%   { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
+      100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(167,139,250,0.3); border-radius: 2px; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../theme-app.css"/>
+</head>
+<body>
+  <nav class="mb-nav" aria-label="Series navigation"><a href="index.html">← back to creative visualization</a><a href="part3-b.html" rel="prev">← part 3</a><a href="part5-b.html" rel="next">part 5 →</a></nav>
+  <p class="mb-hint" aria-hidden="true">← → keys or swipe</p>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    /* ── Shared Components ───────────────────────────────────────── */
+
+    function Orbs({ color1 = '#a78bfa', color2 = '#818cf8', opacity = 0.2 }) {
+      return (
+        <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', overflow:'hidden' }}>
+          <div style={{ position:'absolute', width:580, height:580, borderRadius:'50%', background:color1, filter:'blur(130px)', opacity, top:'-15%', left:'-10%', animation:'orbFloat 18s ease-in-out infinite alternate' }}/>
+          <div style={{ position:'absolute', width:420, height:420, borderRadius:'50%', background:color2, filter:'blur(130px)', opacity, bottom:'-10%', right:'-10%', animation:'orbFloat 20s ease-in-out infinite alternate-reverse' }}/>
+        </div>
+      );
+    }
+
+    function ProgressBar({ pct, colorA = '#a78bfa', colorB = '#818cf8' }) {
+      return (
+        <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:50, height:3, background:'#14141c' }}>
+          <div style={{ height:'100%', width:`${pct}%`, background:`linear-gradient(90deg,${colorA},${colorB})`, transition:'width 0.5s ease' }}/>
+        </div>
+      );
+    }
+
+    function Eyebrow({ children, color = '#a78bfa' }) {
+      return (
+        <div style={{ fontSize:'0.7rem', letterSpacing:'0.2em', textTransform:'uppercase', color, marginBottom:16, display:'flex', alignItems:'center', gap:10, fontWeight:500 }}>
+          <span style={{ width:28, height:1, background:color, opacity:0.5, flexShrink:0, display:'block' }}/>
+          {children}
+        </div>
+      );
+    }
+
+    function StepIndicator({ current, total, color = '#a78bfa' }) {
+      return (
+        <div style={{ fontSize:'0.72rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'#8888a0' }}>
+          Chapter <span style={{ color, fontWeight:600 }}>{current}</span> of {total}
+        </div>
+      );
+    }
+
+    function ArrowRight({ size = 16 }) {
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      );
+    }
+
+    function ArrowLeft({ size = 16 }) {
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+      );
+    }
+
+    function BackBtn({ onClick }) {
+      return (
+        <button onClick={onClick}
+          style={{ display:'flex', alignItems:'center', gap:6, color:'#8888a0', background:'none', border:'none', cursor:'pointer', fontSize:'0.82rem', fontFamily:'Inter,sans-serif' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#e8e8ed'}
+          onMouseLeave={e => e.currentTarget.style.color = '#8888a0'}>
+          <ArrowLeft size={15}/> Back
+        </button>
+      );
+    }
+
+    function BottomNav({ onBack, onNext, nextLabel = 'Continue', nextColor = ['#a78bfa','#7c3aed'], nextGlow = 'rgba(167,139,250,0.35)' }) {
+      const [hov, setHov] = useState(false);
+      return (
+        <div style={{ display:'flex', justifyContent: onBack ? 'space-between' : 'flex-end', alignItems:'center', marginTop:64, paddingTop:32, borderTop:'1px solid #1e1e2a' }}>
+          {onBack && <BackBtn onClick={onBack}/>}
+          <button onClick={onNext}
+            onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+            style={{ display:'inline-flex', alignItems:'center', gap:9, padding:'13px 26px', borderRadius:12, fontSize:'0.875rem', fontWeight:600, border:'none', cursor:'pointer', fontFamily:'Inter,sans-serif', background:`linear-gradient(135deg,${nextColor[0]},${nextColor[1]})`, color:'#fff', transform: hov ? 'translateY(-1px)' : 'translateY(0)', boxShadow: hov ? `0 8px 28px ${nextGlow}` : 'none', transition:'all 0.3s ease' }}>
+            {nextLabel} <ArrowRight/>
+          </button>
+        </div>
+      );
+    }
+
+    function InsightCard({ label = 'Key Insight', children, accentColor = '#a78bfa' }) {
+      return (
+        <div style={{ background:'#0d0d12', border:`1px solid ${accentColor}33`, borderRadius:18, padding:36, marginBottom:40, position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'absolute', inset:0, background:`linear-gradient(135deg,${accentColor}0f,transparent 60%)`, pointerEvents:'none' }}/>
+          <div style={{ fontSize:'0.68rem', letterSpacing:'0.2em', textTransform:'uppercase', color:accentColor, marginBottom:14, fontWeight:600 }}>{label}</div>
+          <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.05rem,2.4vw,1.35rem)', lineHeight:1.72, color:'#e8e8ed', position:'relative' }}>{children}</p>
+        </div>
+      );
+    }
+
+    function Footer() {
+      return <footer style={{ textAlign:'center', marginTop:56, color:'#8888a0', fontSize:'0.75rem' }}>© 2026 MindMapManifesto.com</footer>;
+    }
+
+    function PageWrapper({ children, maxWidth = 860 }) {
+      return <div style={{ position:'relative', zIndex:1, maxWidth, margin:'0 auto', padding:'60px 24px 100px' }}>{children}</div>;
+    }
+
+    function Prose({ children }) {
+      return (
+        <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(0.95rem,2.1vw,1.12rem)', lineHeight:1.9, color:'rgba(220,215,240,0.7)', marginBottom:24 }}>
+          {children}
+        </p>
+      );
+    }
+
+    function PullQuote({ children, color = '#a78bfa' }) {
+      return (
+        <div style={{ borderLeft:`2px solid ${color}40`, paddingLeft:26, marginBottom:32, marginTop:4 }}>
+          <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(1.05rem,2.3vw,1.22rem)', lineHeight:1.8, color:`${color}99` }}>
+            {children}
+          </p>
+        </div>
+      );
+    }
+
+    function Steps({ steps, color = '#a78bfa' }) {
+      return (
+        <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom:28 }}>
+          {steps.map((step, i) => (
+            <div key={i} style={{ display:'flex', gap:16, alignItems:'flex-start' }}>
+              <div style={{ minWidth:24, height:24, borderRadius:'50%', background:`${color}15`, border:`1px solid ${color}30`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'0.65rem', color, flexShrink:0, marginTop:1, fontWeight:700 }}>{i+1}</div>
+              <p style={{ fontSize:'0.88rem', color:'#8888a0', lineHeight:1.68 }}>{step}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    /* ── Screen 0: Landing ───────────────────────────────────────── */
+
+    function LandingScreen({ onNext }) {
+      const [hov, setHov] = useState(false);
+      const stars = useMemo(() =>
+        Array.from({ length: 32 }).map((_, i) => ({
+          size: i % 4 === 0 ? 2 : 1,
+          opacity: 0.08 + (i % 7) * 0.04,
+          top:  `${(i * 37 + 11) % 100}%`,
+          left: `${(i * 53 + 7)  % 100}%`,
+        })), []);
+
+      return (
+        <div style={{ background:'#000', minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at 50% 50%, #0a0810 0%, #000 65%)', opacity:0.95 }}/>
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, black, transparent, black)' }}/>
+          {stars.map((s, i) => (
+            <div key={i} style={{ position:'absolute', width:s.size, height:s.size, borderRadius:'50%', background:'white', opacity:s.opacity, top:s.top, left:s.left }}/>
+          ))}
+
+          <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:820, display:'flex', flexDirection:'column', alignItems:'center', gap:40, animation:'mmm-reveal 1.5s cubic-bezier(0.16,1,0.3,1) forwards' }}>
+
+            <div style={{ fontSize:'0.65rem', letterSpacing:'0.6em', color:'rgba(167,139,250,0.5)', textTransform:'uppercase', fontWeight:700 }}>
+              Creative Visualization
+            </div>
+
+            <div>
+              <h1 style={{ fontFamily:"'Outfit',sans-serif", fontSize:'clamp(2.8rem,10vw,6rem)', fontWeight:700, letterSpacing:'-0.02em', color:'white', marginBottom:10 }}>
+                Part Four
+              </h1>
+              <div style={{ fontSize:'clamp(0.9rem,2.2vw,1.3rem)', fontWeight:300, color:'rgba(255,255,255,0.4)', letterSpacing:'0.1em' }}>
+                Special Techniques
+              </div>
+            </div>
+
+            <div style={{ maxWidth:580, borderLeft:'2px solid rgba(167,139,250,0.3)', paddingLeft:28, textAlign:'left' }}>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(0.95rem,1.9vw,1.15rem)', lineHeight:1.8, color:'rgba(255,255,255,0.55)' }}>
+                "None of it works occasionally. All of it works consistently. The mechanism doesn't care how slowly you begin. It only cares whether you begin."
+              </p>
+            </div>
+
+            <button
+              onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+              onClick={onNext}
+              style={{ backdropFilter:'blur(20px) saturate(180%)', background:'rgba(167,139,250,0.08)', border:'1px solid rgba(167,139,250,0.28)', borderRadius:9999, padding:'18px 52px', fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.4em', textTransform:'uppercase', color:'white', cursor:'pointer', transform: hov ? 'scale(1.05)' : 'scale(1)', boxShadow: hov ? '0 0 48px rgba(167,139,250,0.18)' : 'none', transition:'all 0.5s ease', fontFamily:'Inter,sans-serif' }}>
+              Enter Part Four
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── Screen 1: The Notebook ──────────────────────────────────── */
+
+    function NotebookScreen({ onBack, onNext }) {
+      const lists = [
+        { name:'Your Affirmations', desc:'The ones that resonate most. Sit with each one — don\'t skim. Some people give each one its own page.', color:'#a78bfa' },
+        { name:'Your Outflow List', desc:'Every way you give your energy to the world — money, time, love, attention, talents. Reminds you that you contribute, not just receive.', color:'#818cf8' },
+        { name:'Your Success List', desc:'Everything you have ever done successfully, at any scale. You have more evidence of your capability than you\'ve ever acknowledged.', color:'#c084fc' },
+        { name:'Your Appreciation List', desc:'Everything you\'re genuinely grateful for right now. Do it slowly. You\'ll find the list is longer than you expected.', color:'#a78bfa' },
+        { name:'Your Self-Esteem List', desc:'All the qualities you actually like about yourself. This is not arrogance. It\'s accurate accounting. The better you feel, the more you give.', color:'#818cf8' },
+        { name:'Your Self-Appreciation List', desc:'Things you can do purely for your own pleasure. Simple indulgences. Keep adding. Practice actually doing them.', color:'#c084fc' },
+        { name:'Your Healing List', desc:'Names of people who need support. Write specific affirmations for each. Every time you open the notebook, you send energy their way.', color:'#a78bfa' },
+        { name:'Your Fantasies List', desc:'Ideas and dreams that feel too big or too silly. Write them down anyway. Especially those. This loosens something in you.', color:'#818cf8' },
+      ];
+
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#a78bfa" color2="#c084fc"/>
+          <ProgressBar pct={10}/>
+          <PageWrapper maxWidth={820}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={1} total={10}/>
+            </nav>
+
+            <div style={{ marginBottom:40, animation:'mmm-fadeUp 0.8s ease-out' }}>
+              <Eyebrow>Chapter One · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#a78bfa 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                The Notebook
+              </h1>
+            </div>
+
+            <Prose>
+              What gets written down gets taken seriously. What stays in your head stays vague. And vague intentions produce vague results.
+            </Prose>
+
+            <InsightCard label="What the Notebook Becomes" accentColor="#a78bfa">
+              The physical record of your own transformation. You'll write things in it, come back months later, and find that what once seemed impossible has <em style={{ color:'#a78bfa' }}>quietly become your life</em>. That happens more than you'd think.
+            </InsightCard>
+
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:36 }}>
+              {lists.map((item, i) => (
+                <div key={i} style={{ background:'#0d0d12', border:`1px solid ${item.color}15`, borderLeft:`3px solid ${item.color}50`, borderRadius:14, padding:'14px 20px', display:'flex', gap:18 }}>
+                  <div style={{ minWidth:48, fontSize:'0.65rem', letterSpacing:'0.15em', textTransform:'uppercase', color:item.color, fontWeight:600, paddingTop:3, flexShrink:0, opacity:0.8 }}>{i+1}</div>
+                  <div>
+                    <h3 style={{ fontSize:'0.88rem', fontWeight:600, color:'#e8e8ed', marginBottom:5 }}>{item.name}</h3>
+                    <p style={{ fontSize:'0.84rem', color:'#8888a0', lineHeight:1.65 }}>{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <PullQuote color="#a78bfa">
+              You don't need hours a day. A few minutes here and there, a longer session every week or two. But the work done in this notebook will quietly outperform almost anything you could do in the external world for the same amount of time.
+            </PullQuote>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="What's Blocking You"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 2: What's Blocking You ──────────────────────────── */
+
+    function BlocksScreen({ onBack, onNext }) {
+      const beliefs = [
+        "I've done something bad and I deserve to suffer for it.",
+        "People are fundamentally selfish, cruel, or untrustworthy.",
+        "The world is not safe. There isn't enough to go around.",
+        "Life is supposed to be hard. I have to struggle.",
+        "Money is corrupt. The world is broken and getting worse.",
+      ];
+
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#818cf8" color2="#6366f1"/>
+          <ProgressBar pct={20} colorA="#818cf8" colorB="#6366f1"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={2} total={10} color="#818cf8"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#818cf8">Chapter Two · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#818cf8 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                What's Blocking You
+              </h1>
+            </div>
+
+            <Prose>
+              Blocks are real. They're not a sign of failure or weakness. A block is simply a place where your energy has stopped moving. It's constricted. It's been locked down.
+            </Prose>
+
+            <InsightCard label="The Root of Every Block" accentColor="#818cf8">
+              At the root of almost every block you'll find one thing: a <em style={{ color:'#818cf8' }}>repressed emotion</em> that never got expressed, sitting on top of a <em style={{ color:'#818cf8' }}>belief that was never questioned</em>.
+            </InsightCard>
+
+            <Prose>
+              Fear. Guilt. Sadness. Anger. Resentment. Self-criticism. These don't disappear when you ignore them. They harden. They become the invisible ceiling on every goal you try to reach.
+            </Prose>
+
+            <div style={{ background:'linear-gradient(135deg,#080a1a 0%,#0d0d12 100%)', border:'1px solid rgba(129,140,248,0.18)', borderRadius:18, padding:28, marginBottom:32 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(129,140,248,0.55)', marginBottom:16 }}>How to Work With Them</div>
+              <Steps color="#818cf8" steps={[
+                'Feel them fully and with acceptance — real acceptance, not performed. Let the emotion move instead of locking it down again.',
+                'When you do this, the energy that was frozen starts to flow. And underneath the emotion, you can finally see the belief that\'s been running the show.',
+                'That belief, once seen clearly, loses a significant amount of its power.',
+              ]}/>
+            </div>
+
+            <div style={{ background:'#0d0d12', border:'1px solid rgba(129,140,248,0.15)', borderRadius:16, padding:24, marginBottom:28 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(129,140,248,0.55)', marginBottom:14 }}>Beliefs That Show Up Most Often</div>
+              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                {beliefs.map((b, i) => (
+                  <div key={i} style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+                    <div style={{ width:5, height:5, borderRadius:'50%', background:'#818cf8', flexShrink:0, opacity:0.5, marginTop:9 }}/>
+                    <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.9rem', color:'rgba(190,195,240,0.65)', lineHeight:1.6 }}>{b}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <PullQuote color="#818cf8">
+              These ideas feel like observations. They're not. They're conclusions formed, often very early, from very specific experiences. They've been practiced so long they feel like facts. They aren't.
+            </PullQuote>
+
+            <Prose>
+              They are only beliefs. And beliefs can change.
+            </Prose>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="The Clearing Exercises" nextColor={['#818cf8','#4f46e5']} nextGlow="rgba(129,140,248,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 3: The Clearing Exercises ───────────────────────── */
+
+    function ClearingScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#22d3ee" color2="#818cf8" opacity={0.17}/>
+          <ProgressBar pct={30} colorA="#22d3ee" colorB="#818cf8"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={3} total={10} color="#22d3ee"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#22d3ee">Chapter Three · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#22d3ee 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                The Clearing Exercises
+              </h1>
+            </div>
+
+            <Prose>
+              These are simple. Do them honestly and they work.
+            </Prose>
+
+            <div style={{ background:'linear-gradient(135deg,#050e14 0%,#0d0d12 100%)', border:'1px solid rgba(34,211,238,0.18)', borderRadius:18, padding:26, marginBottom:24 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(34,211,238,0.55)', marginBottom:14 }}>Exercise One — Complete the Sentence</div>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.75, marginBottom:12 }}>
+                Take a piece of paper. At the top, write: <em style={{ color:'#67e8f9', fontFamily:"'Playfair Display',serif" }}>"The reason I can't have what I want is..."</em> Then immediately start writing. Don't think too hard. Don't edit. Write twenty or thirty completions as fast as they come — silly, serious, contradictory. All of them.
+              </p>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.75 }}>
+                Then do it again naming the specific thing you want: <em style={{ color:'#67e8f9', fontFamily:"'Playfair Display',serif" }}>"The reason I can't have the career I want is..."</em> When you're done, notice which ones <em style={{ color:'#e8e8ed' }}>feel</em> true. Not which ones are true. Those are the ones running your behavior.
+              </p>
+            </div>
+
+            <div style={{ background:'#0d0d12', border:'1px solid rgba(34,211,238,0.15)', borderRadius:16, padding:24, marginBottom:28 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(34,211,238,0.55)', marginBottom:14 }}>Exercise Two — The Belief Inventory</div>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.75 }}>
+                Write a list of the most negative beliefs you hold about yourself, other people, relationships, and the world. Don't filter. The more honest you are here, the more useful this becomes. Sit with the list. If emotion comes up, let it. That's not a problem. That's the process working.
+              </p>
+            </div>
+
+            <InsightCard label="Then Do This" accentColor="#22d3ee">
+              Tear up the lists and throw them away. This isn't just symbolic theater. It's a physical act that signals to your system that these ideas no longer have the authority they once did. <em style={{ color:'#22d3ee' }}>Follow it by writing affirmations.</em>
+            </InsightCard>
+
+            <div style={{ background:'linear-gradient(135deg,#050e14 0%,#0d0d12 100%)', border:'1px solid rgba(34,211,238,0.15)', borderRadius:16, padding:24, marginBottom:24 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(34,211,238,0.55)', marginBottom:14 }}>Clearing Affirmations</div>
+              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                {[
+                  'I now release my entire past. It is complete and I am free.',
+                  'I now dissolve all negative limiting beliefs. They have no power over me.',
+                  'I now forgive and release everyone in my life. We are all happy and free.',
+                  "I don't have to try to please others. I am naturally lovable and likable no matter what I do.",
+                  'I now let go of all accumulated guilt, fear, resentment, disappointment, and grudges. I am free and clear.',
+                ].map((a, i) => (
+                  <div key={i} style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+                    <div style={{ width:5, height:5, borderRadius:'50%', background:'#22d3ee', flexShrink:0, opacity:0.5, marginTop:9 }}/>
+                    <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.9rem', color:'rgba(160,235,245,0.7)', lineHeight:1.55 }}>{a}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="The Forgiveness Exercise" nextColor={['#22d3ee','#0891b2']} nextGlow="rgba(34,211,238,0.3)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 4: The Forgiveness Exercise ─────────────────────── */
+
+    function ForgivenessScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#34d399" color2="#22d3ee" opacity={0.17}/>
+          <ProgressBar pct={40} colorA="#34d399" colorB="#22d3ee"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={4} total={10} color="#34d399"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#34d399">Chapter Four · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#34d399 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                The Forgiveness Exercise
+              </h1>
+            </div>
+
+            <Prose>
+              This one is more significant than it sounds.
+            </Prose>
+
+            <div style={{ background:'linear-gradient(135deg,#050f09 0%,#0d0d12 100%)', border:'1px solid rgba(52,211,153,0.18)', borderRadius:18, padding:26, marginBottom:24 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(52,211,153,0.55)', marginBottom:16 }}>Forgiving Others</div>
+              <Steps color="#34d399" steps={[
+                'Write down the names of everyone who has ever hurt you, wronged you, or done you an injustice. Next to each name, write what they did and what you still resent them for.',
+                'Close your eyes. One by one, visualize each person. Tell them: in the past I felt anger or hurt toward you, but now I\'m going to do my best to forgive you and dissolve the energy between you.',
+                'Give them a blessing. Say, silently or aloud: I forgive you and release you. Go your own way and be happy.',
+                'When done, write at the bottom of the page: I now forgive and release you all. Then throw it away.',
+              ]}/>
+            </div>
+
+            <InsightCard label="What This Does" accentColor="#34d399">
+              People find this relieves burdens they have been carrying for decades. The other people involved, even ones you'll never see again, <em style={{ color:'#34d399' }}>pick this up on some level</em>. It helps them too. More importantly, it frees you.
+            </InsightCard>
+
+            <div style={{ background:'#0d0d12', border:'1px solid rgba(52,211,153,0.15)', borderRadius:16, padding:24, marginBottom:24 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(52,211,153,0.55)', marginBottom:14 }}>Important Note</div>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.75 }}>
+                If the charge around a particular person is very strong — especially a parent, spouse, or someone significant — don't try to force forgiveness before the anger and hurt have been fully acknowledged. Forcing forgiveness over unexpressed emotion just adds suppression to suppression. <em style={{ color:'#6ee7b7', fontFamily:"'Playfair Display',serif" }}>Express the feelings first.</em> The forgiveness will come naturally after.
+              </p>
+            </div>
+
+            <div style={{ background:'linear-gradient(135deg,#050f09 0%,#0d0d12 100%)', border:'1px solid rgba(52,211,153,0.15)', borderRadius:16, padding:24, marginBottom:28 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(52,211,153,0.55)', marginBottom:14 }}>Self-Forgiveness</div>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.75, marginBottom:14 }}>
+                Write down everyone you feel you've harmed or wronged. In the same meditative space, ask each person for their forgiveness. Picture them giving it to you.
+              </p>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.95rem', color:'rgba(160,235,210,0.7)', lineHeight:1.6 }}>
+                "I forgive myself and absolve myself of all guilt here and now and forever." Write it across the page. Tear it up. Throw it away.
+              </p>
+            </div>
+
+            <PullQuote color="#34d399">
+              You cannot keep moving forward while dragging a weight of self-punishment behind you. This is how you put it down.
+            </PullQuote>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="The Fastest Technique" nextColor={['#34d399','#059669']} nextGlow="rgba(52,211,153,0.3)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 5: Writing Affirmations ─────────────────────────── */
+
+    function WritingAffirmationsScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#f59e0b" color2="#fbbf24" opacity={0.15}/>
+          <ProgressBar pct={50} colorA="#f59e0b" colorB="#fbbf24"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={5} total={10} color="#f59e0b"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#f59e0b">Chapter Five · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#f59e0b 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                The Fastest Technique
+              </h1>
+            </div>
+
+            <Prose>
+              Writing affirmations has produced some of the most dramatic changes in the shortest time. Here's how it actually works.
+            </Prose>
+
+            <div style={{ background:'linear-gradient(135deg,#100c00 0%,#0d0d12 100%)', border:'1px solid rgba(245,158,11,0.2)', borderRadius:18, padding:26, marginBottom:28 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(245,158,11,0.55)', marginBottom:16 }}>The Practice</div>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.75, marginBottom:16 }}>
+                Take any affirmation. Write it ten to twenty times in a row, <em style={{ color:'#e8e8ed' }}>deliberately, not by rote</em>. Use your own name. Write it in first, second, and third person:
+              </p>
+              <div style={{ background:'rgba(245,158,11,0.05)', border:'1px solid rgba(245,158,11,0.15)', borderRadius:12, padding:'16px 20px', marginBottom:16 }}>
+                <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.95rem', color:'rgba(255,220,130,0.75)', lineHeight:1.7 }}>
+                  I, Sarah, am a confident and successful person.<br/>
+                  Sarah, you are a confident and successful person.<br/>
+                  Sarah is a confident and successful person.
+                </p>
+              </div>
+            </div>
+
+            <InsightCard label="Work With the Resistance" accentColor="#f59e0b">
+              When doubt comes up — <em style={{ color:'#f59e0b' }}>flip the paper over</em> and write every protest, every objection on the back. When done, look at it. What you've collected is a precise map of why you've been blocking yourself.
+            </InsightCard>
+
+            <div style={{ background:'#0d0d12', border:'1px solid rgba(245,158,11,0.15)', borderRadius:16, padding:24, marginBottom:28 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(245,158,11,0.55)', marginBottom:14 }}>Then Do This</div>
+              <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.75 }}>
+                Create new affirmations that directly address what's on the back. If one says <em style={{ color:'#fcd34d', fontFamily:"'Playfair Display',serif" }}>"I can never be more successful than my father,"</em> write: <em style={{ color:'#fcd34d', fontFamily:"'Playfair Display',serif" }}>"My father is proud and happy about my success."</em> Respond to each objection directly.
+              </p>
+            </div>
+
+            <Prose>
+              Do this once or twice a day for a few days. After you've worked through the resistance, stop writing the objections and just continue with the affirmations.
+            </Prose>
+
+            <PullQuote color="#f59e0b">
+              What you'll often find is that whatever you were working toward begins to manifest surprisingly quickly after this clearing has happened. The insights into your own patterns are worth the time alone.
+            </PullQuote>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="Goal Setting" nextColor={['#f59e0b','#d97706']} nextGlow="rgba(245,158,11,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 6: Goal Setting ──────────────────────────────────── */
+
+    function GoalSettingScreen({ onBack, onNext }) {
+      const exercises = [
+        { num:'01', title:'The Category Warm-Up', body:'Write categories across the top: Personal growth · Education · Work · Relationships · Creative expression · Money · Lifestyle · Possessions · Leisure · Travel. Under each, write things you\'d like to have, change, or improve. Don\'t overthink it.', color:'#c084fc' },
+        { num:'02', title:'Your Ideal Scene', body:'On a fresh page: "If I could be, do, and have everything I want, this would be my ideal scene." Go through the same categories and let yourself go — the version where everything worked out. No self-editing. Add one more category: World situation and environment.', color:'#a78bfa' },
+        { num:'03', title:'Top 10–12 Life Goals', body:'Based on what feels most meaningful, write your ten to twelve most important life goals as you feel them right now. Not obligations. Not shoulds. Actual wants. You can revise anytime.', color:'#818cf8' },
+        { num:'04', title:'Five-Year Goals', body:'The most significant things you want to move toward over the next five years. Be honest. Be ambitious. No one else needs to read this.', color:'#c084fc' },
+        { num:'05', title:'One-Year Down to One Week', body:'Five or six one-year goals moving in the same direction as your five-year goals. Then six months, one month, one week. As the timeframe gets shorter, get more realistic and specific.', color:'#a78bfa' },
+      ];
+
+      const rules = [
+        { r:'When you don\'t accomplish a goal', d:'Don\'t decide you\'ve failed. Decide whether you still want it. Reset or release it — but acknowledge it clearly. Unacknowledged unmet goals pile up and start to feel like failure by accumulation.' },
+        { r:'When you do accomplish a goal', d:'Stop and actually notice. Enjoy it for a moment. You trained yourself to achieve something. That\'s worth acknowledging.' },
+        { r:'If you feel overwhelmed by your list', d:'You\'ve taken on too much. Cut it down. This process is supposed to support your life, not add another layer of pressure.' },
+        { r:'If a goal consistently doesn\'t get done', d:'Ask honestly: do I actually want this, or do I think I should want it? Goals from genuine desire have traction. Goals from obligation have none.' },
+      ];
+
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#c084fc" color2="#a78bfa"/>
+          <ProgressBar pct={60} colorA="#c084fc" colorB="#a78bfa"/>
+          <PageWrapper maxWidth={820}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={6} total={10} color="#c084fc"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#c084fc">Chapter Six · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#c084fc 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                Goal Setting
+              </h1>
+            </div>
+
+            <Prose>
+              The moment you get genuinely clear on what you want — the moment your desire is specific and strong and unambiguous — it moves toward you. Sometimes within hours or days. Not through magic. Through the way intention organizes behavior, attention, and perception.
+            </Prose>
+
+            <InsightCard label="Goal Setting as a Game" accentColor="#c084fc">
+              Done properly this isn't about pressure or performance. It's about getting <em style={{ color:'#c084fc' }}>honest with yourself</em> about what actually matters. Think of it as a game, not a contract. When resistance comes up as you do this — which it will — that resistance is data.
+            </InsightCard>
+
+            <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom:36 }}>
+              {exercises.map(ex => (
+                <div key={ex.num} style={{ background:'#0d0d12', border:`1px solid ${ex.color}18`, borderRadius:14, padding:'18px 22px', position:'relative', overflow:'hidden' }}>
+                  <div style={{ position:'absolute', top:14, right:18, fontFamily:"'Outfit',sans-serif", fontSize:'2rem', fontWeight:700, color:`${ex.color}08` }}>{ex.num}</div>
+                  <div style={{ fontSize:'0.65rem', letterSpacing:'0.18em', textTransform:'uppercase', color:ex.color, marginBottom:8, opacity:0.8 }}>{ex.title}</div>
+                  <p style={{ fontSize:'0.86rem', color:'#8888a0', lineHeight:1.72 }}>{ex.body}</p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ fontSize:'0.65rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'#8888a0', marginBottom:16 }}>Four Rules to Keep This Useful</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:32 }}>
+              {rules.map((rule, i) => (
+                <div key={i} style={{ background:'#0d0d12', border:'1px solid #1e1e2a', borderRadius:12, padding:'14px 18px' }}>
+                  <span style={{ fontSize:'0.83rem', fontWeight:600, color:'#e8e8ed' }}>{rule.r}: </span>
+                  <span style={{ fontSize:'0.83rem', color:'#8888a0', lineHeight:1.65 }}>{rule.d}</span>
+                </div>
+              ))}
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="Your Ideal Scene" nextColor={['#c084fc','#9333ea']} nextGlow="rgba(192,132,252,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 7: Writing Your Ideal Scene ─────────────────────── */
+
+    function IdealSceneScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#06b6d4" color2="#c084fc" opacity={0.18}/>
+          <ProgressBar pct={70} colorA="#06b6d4" colorB="#c084fc"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={7} total={10} color="#06b6d4"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#06b6d4">Chapter Seven · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#06b6d4 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                Writing Your Ideal Scene
+              </h1>
+            </div>
+
+            <Prose>
+              This is one of the most powerful things you can do for any important goal. And it takes about ten minutes.
+            </Prose>
+
+            <div style={{ background:'linear-gradient(135deg,#050d10 0%,#0d0d12 100%)', border:'1px solid rgba(6,182,212,0.18)', borderRadius:18, padding:28, marginBottom:28 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(6,182,212,0.55)', marginBottom:16 }}>How to Write It</div>
+              <Steps color="#06b6d4" steps={[
+                'Think of a goal that matters to you. Write it clearly in one sentence.',
+                'Write the words Ideal Scene beneath it.',
+                'Describe the situation exactly as it would look when the goal is fully realized. Present tense. As if it already exists. Include as much detail as you like.',
+                'When done, write at the bottom: This or something better is now manifesting for me in totally satisfying and harmonious ways, for the highest good of all concerned.',
+                'Add any other affirmations you want. Sign your name.',
+              ]}/>
+            </div>
+
+            <InsightCard label="Keep It Where You'll See It" accentColor="#06b6d4">
+              Read it often. Meditate on it. Let it become a regular part of your inner landscape. This isn't passive. It's a daily act of <em style={{ color:'#06b6d4' }}>choosing your direction</em>.
+            </InsightCard>
+
+            <div style={{ background:'rgba(6,182,212,0.05)', border:'1px solid rgba(6,182,212,0.15)', borderRadius:16, padding:24, marginBottom:24 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(6,182,212,0.5)', marginBottom:12 }}>The Cosmic Affirmation</div>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(0.98rem,2.1vw,1.12rem)', color:'rgba(160,230,245,0.75)', lineHeight:1.8 }}>
+                "This or something better is now manifesting for me in totally satisfying and harmonious ways, for the highest good of all concerned."
+              </p>
+            </div>
+
+            <PullQuote color="#06b6d4">
+              You may put an ideal scene away and completely forget about it. Then one day, months or even years later, you come across it and realize that what you described has somehow become your life — sometimes almost exactly as you wrote it. This happens often enough that it's worth taking seriously.
+            </PullQuote>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="The Treasure Map" nextColor={['#06b6d4','#0891b2']} nextGlow="rgba(6,182,212,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 8: The Treasure Map ─────────────────────────────── */
+
+    function TreasureMapScreen({ onBack, onNext }) {
+      const guidelines = [
+        { r:'One map per goal', d:'Keep them focused. When you put everything on one map, the mind can\'t lock onto anything clearly.' },
+        { r:'Put yourself in it', d:'Use an actual photograph of yourself if you can — show yourself already living the reality.' },
+        { r:'Show only the finished result', d:'Not the struggle to get there. The realized, complete version. This is the destination, not the road.' },
+        { r:'Use color', d:'The more visual impact, the more it registers in the mind.' },
+        { r:'Make it believable', d:'It needs to feel possible to you, not like fantasy. Real detail, something your mind can actually accept.' },
+        { r:'Include something larger than yourself', d:'A cross, an om, a sun — whatever represents the source of intelligence or love you connect with. You\'re not doing this alone.' },
+        { r:'Write affirmations on it', d:'Including: This or something better now manifests for me in totally satisfying and harmonious ways, for the highest good of all concerned.' },
+      ];
+
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#f472b6" color2="#c084fc" opacity={0.17}/>
+          <ProgressBar pct={80} colorA="#f472b6" colorB="#c084fc"/>
+          <PageWrapper maxWidth={820}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={8} total={10} color="#f472b6"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#f472b6">Chapter Eight · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#f472b6 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                The Treasure Map
+              </h1>
+            </div>
+
+            <Prose>
+              A treasure map is a physical image of the reality you're creating. A blueprint. A collage. A visual representation of your goal, already realized.
+            </Prose>
+
+            <Prose>
+              It works because a clear, specific image has enormous power over the mind — more than words alone, more than intentions. Artistic skill is completely irrelevant. The simplest, most childlike treasure map works just as well as a polished one.
+            </Prose>
+
+            <InsightCard label="Why It Works" accentColor="#f472b6">
+              A physical picture you can hold, look at, and return to over and over again gives your goal a <em style={{ color:'#f472b6' }}>realness that abstract thinking can't match</em>. You're not just hoping. You're seeing.
+            </InsightCard>
+
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:32 }}>
+              {guidelines.map((g, i) => (
+                <div key={i} style={{ background:'#0d0d12', border:'1px solid rgba(244,114,182,0.12)', borderLeft:'3px solid rgba(244,114,182,0.4)', borderRadius:12, padding:'12px 18px', display:'flex', gap:16 }}>
+                  <div style={{ minWidth:62, fontSize:'0.72rem', letterSpacing:'0.1em', textTransform:'uppercase', color:'#f472b6', fontWeight:600, paddingTop:3, flexShrink:0, opacity:0.8 }}>{i+1}.</div>
+                  <div>
+                    <span style={{ fontSize:'0.85rem', fontWeight:600, color:'#e8e8ed', marginRight:6 }}>{g.r}.</span>
+                    <span style={{ fontSize:'0.84rem', color:'#8888a0', lineHeight:1.65 }}>{g.d}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ background:'linear-gradient(135deg,#160818 0%,#0d0d12 100%)', border:'1px solid rgba(244,114,182,0.15)', borderRadius:16, padding:22, marginBottom:28 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(244,114,182,0.55)', marginBottom:14 }}>Ideas by Goal</div>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                {[
+                  { g:'Health', h:'Show yourself active, strong, and radiantly well.' },
+                  { g:'Career', h:'Show yourself doing the work you want, earning the income you want. Be specific with numbers.' },
+                  { g:'Relationships', h:'Show you and the other person happy, connected, loving, with symbols of what that relationship means.' },
+                  { g:'Travel', h:'Put yourself in the destination with time and money to enjoy it fully.' },
+                ].map(item => (
+                  <div key={item.g} style={{ background:'rgba(244,114,182,0.04)', border:'1px solid rgba(244,114,182,0.12)', borderRadius:10, padding:'12px 14px' }}>
+                    <div style={{ fontSize:'0.7rem', letterSpacing:'0.15em', textTransform:'uppercase', color:'rgba(244,114,182,0.6)', marginBottom:6 }}>{item.g}</div>
+                    <p style={{ fontSize:'0.82rem', color:'#8888a0', lineHeight:1.58 }}>{item.h}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <PullQuote color="#f472b6">
+              Have fun with this. Genuinely. The energy you bring to making it becomes part of what you're building.
+            </PullQuote>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="Your Body Is Part of This" nextColor={['#f472b6','#db2777']} nextGlow="rgba(244,114,182,0.3)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 9: Your Body Is Part of This ────────────────────── */
+
+    function BodyScreen({ onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#fbbf24" color2="#f59e0b" opacity={0.15}/>
+          <ProgressBar pct={90} colorA="#fbbf24" colorB="#f59e0b"/>
+          <PageWrapper maxWidth={800}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={9} total={10} color="#fbbf24"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#fbbf24">Chapter Nine · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#fbbf24 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                Your Body Is Part of This
+              </h1>
+            </div>
+
+            <Prose>
+              The beliefs you hold about your body, the mental images you carry of yourself, the running commentary you maintain about your physical appearance — these are not passive observations. They are instructions.
+            </Prose>
+
+            <Prose>
+              So start changing the instructions.
+            </Prose>
+
+            <div style={{ display:'flex', flexDirection:'column', gap:14, marginBottom:36 }}>
+              {[
+                {
+                  ctx:'During Exercise',
+                  body:'Whatever you do, use your mind while you\'re doing it. If you run, picture yourself covering ground effortlessly, almost floating. If you do yoga or dance, put your awareness inside your muscles and picture them lengthening, becoming more capable with every movement. If you play a sport, regularly visualize yourself performing at your best — not hoping for it, actually seeing it in detail.',
+                  color:'#fbbf24',
+                },
+                {
+                  ctx:'During Daily Routines',
+                  body:'Turn them into rituals. In the shower, picture the water washing away every tension and residue of a difficult day. When you apply lotion, tell your skin it\'s becoming smoother and more alive. When you wash your hair, affirm that it\'s thicker and more vital. When you brush your teeth, affirm that they\'re strong and well cared for. These take no extra time. They just require your attention to be where your hands already are.',
+                  color:'#f59e0b',
+                },
+                {
+                  ctx:'When You Eat',
+                  body:'Sit down. Close your eyes for a moment. Take a breath. Silently thank whoever or whatever provided this meal. Then open your eyes and actually look at what\'s in front of you. Eat slowly. Taste it. Tell yourself this food is being converted into energy and health. Tell yourself your body takes what it needs and easily releases the rest. The mental state you bring to eating is part of what you\'re digesting.',
+                  color:'#d97706',
+                },
+              ].map(item => (
+                <div key={item.ctx} style={{ background:'#0d0d12', border:`1px solid ${item.color}18`, borderTop:`2px solid ${item.color}50`, borderRadius:14, padding:'20px 22px' }}>
+                  <div style={{ fontSize:'0.65rem', letterSpacing:'0.2em', textTransform:'uppercase', color:item.color, marginBottom:10, opacity:0.8 }}>{item.ctx}</div>
+                  <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.75 }}>{item.body}</p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ background:'linear-gradient(135deg,#100c00 0%,#0d0d12 100%)', border:'1px solid rgba(251,191,36,0.15)', borderRadius:16, padding:24, marginBottom:24 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(251,191,36,0.55)', marginBottom:14 }}>Affirmations for Health and Beauty</div>
+              <div style={{ display:'flex', flexDirection:'column', gap:9 }}>
+                {[
+                  'Every day I am growing healthier and more attractive.',
+                  'Everything I do adds to my health and beauty.',
+                  'Everything I eat adds to my health and vitality.',
+                  'I am good to my body and my body is good to me.',
+                  'I now desire only what genuinely nourishes me.',
+                  'The more I love and appreciate myself, the more beautiful I become.',
+                ].map((a, i) => (
+                  <div key={i} style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+                    <div style={{ width:5, height:5, borderRadius:'50%', background:'#fbbf24', flexShrink:0, opacity:0.5, marginTop:9 }}/>
+                    <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'0.9rem', color:'rgba(255,220,130,0.7)', lineHeight:1.55 }}>{a}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="Groups and Relationships" nextColor={['#fbbf24','#d97706']} nextGlow="rgba(251,191,36,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 10: Groups and Relationships ────────────────────── */
+
+    function GroupsScreen({ onBack, onNext }) {
+      const relSteps = [
+        { t:'Get clear on what you actually want', d:'Not what seems realistic given the history. What you genuinely want from this relationship. Write it out. Make an ideal scene.' },
+        { t:'Do an honest clearing', d:'Write: "The reason I can\'t have the relationship I want is..." Everything that comes up. The things you write on that page are the things currently running the relationship.' },
+        { t:'Replace with affirmations', d:'Begin picturing the relationship the way you want it to be — not as a fantasy to escape into, but as a clear intention to build toward.' },
+        { t:'For a difficult relationship', d:'In a quiet meditative state, imagine the two of you communicating openly and honestly. Picture yourself saying what needs to be said. Picture them genuinely hearing you. Do this as many times as needed.' },
+        { t:'Change the language', d:'Instead of constantly naming what\'s wrong, start naming what\'s improving. This isn\'t dishonesty. It\'s choosing to give energy to the version of the person you want to see more of.' },
+      ];
+
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <Orbs color1="#10b981" color2="#34d399" opacity={0.17}/>
+          <ProgressBar pct={96} colorA="#10b981" colorB="#34d399"/>
+          <PageWrapper maxWidth={820}>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:60 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={10} total={10} color="#10b981"/>
+            </nav>
+
+            <div style={{ marginBottom:40 }}>
+              <Eyebrow color="#10b981">Chapter Ten · Part Four</Eyebrow>
+              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:700, lineHeight:1.15, marginBottom:28, background:'linear-gradient(135deg,#e8e8ed 0%,#10b981 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+                Groups and Relationships
+              </h1>
+            </div>
+
+            <Prose>
+              Everything in this book can be done with a group. And when it is, something interesting happens — the collective energy amplifies everything. Each person's intention supports the others. The whole becomes more than the sum of its parts in a way that's hard to explain but easy to feel.
+            </Prose>
+
+            <div style={{ background:'#0d0d12', border:'1px solid rgba(16,185,129,0.15)', borderRadius:16, padding:22, marginBottom:32 }}>
+              <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(16,185,129,0.55)', marginBottom:14 }}>Group Techniques</div>
+              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                {[
+                  { m:'Singing and chanting', d:'Music bypasses the rational mind and gets straight to something deeper. Choose music that carries the attitude or reality you want to create.' },
+                  { m:'Meditating toward a shared goal', d:'Everyone sits in silence, visualizing and affirming the same thing at the same time. More powerful than it sounds — try it before you judge it.' },
+                  { m:'Group affirmations', d:'In pairs, taking turns saying affirmations to each other and receiving them. Being told by another person that you are capable and worthy hits differently than telling yourself.' },
+                  { m:'Group healing', d:'The person who wants healing sits in the center; everyone else forms a circle, eyes closed, sending healing energy as channels. Distance makes no difference — the person doesn\'t need to be in the room.' },
+                ].map((item, i) => (
+                  <div key={i} style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+                    <div style={{ width:5, height:5, borderRadius:'50%', background:'#10b981', flexShrink:0, opacity:0.5, marginTop:9 }}/>
+                    <p style={{ fontSize:'0.87rem', color:'#8888a0', lineHeight:1.68 }}><span style={{ color:'#e8e8ed', fontWeight:600 }}>{item.m}. </span>{item.d}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <InsightCard label="Your Relationships Are Mirrors" accentColor="#10b981">
+              Take total responsibility for your relationships — not as self-punishment, but as <em style={{ color:'#10b981' }}>power</em>. If you created them the way they are, consciously or not, then you can create them differently. The same mechanism that built the pattern can rebuild it.
+            </InsightCard>
+
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:28 }}>
+              {relSteps.map((step, i) => (
+                <div key={i} style={{ background:'#0d0d12', border:'1px solid rgba(16,185,129,0.12)', borderRadius:14, padding:'14px 18px', display:'flex', gap:16 }}>
+                  <div style={{ minWidth:24, height:24, borderRadius:'50%', background:'rgba(16,185,129,0.12)', border:'1px solid rgba(16,185,129,0.25)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'0.65rem', color:'#10b981', flexShrink:0, marginTop:1, fontWeight:700 }}>{i+1}</div>
+                  <div>
+                    <h3 style={{ fontSize:'0.85rem', fontWeight:600, color:'#e8e8ed', marginBottom:4 }}>{step.t}</h3>
+                    <p style={{ fontSize:'0.84rem', color:'#8888a0', lineHeight:1.65 }}>{step.d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <Prose>
+              Be aware: if difficulties in a relationship persist no matter what you try, that's a message. It's pointing to something in you that needs deeper attention than these techniques alone can reach. In those cases, working with a good therapist is not a detour from this path. It <em style={{ color:'#6ee7b7' }}>is</em> this path.
+            </Prose>
+
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel="Complete Part Four" nextColor={['#10b981','#059669']} nextGlow="rgba(16,185,129,0.35)"/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 11: Completion ───────────────────────────────────── */
+
+    function CompletionScreen({ onNext }) {
+      return (
+        <div style={{ background:'#000', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', position:'relative', overflow:'hidden' }} onClick={onNext}>
+          <div style={{ position:'absolute', width:600, height:600, borderRadius:'50%', background:'#a78bfa', filter:'blur(130px)', opacity:0.11, top:'15%', left:'5%', animation:'orbFloat 12s ease-in-out infinite alternate' }}/>
+          <div style={{ position:'absolute', width:440, height:440, borderRadius:'50%', background:'#f472b6', filter:'blur(140px)', opacity:0.07, bottom:'10%', right:'5%', animation:'orbFloat 16s ease-in-out infinite alternate-reverse' }}/>
+          <div style={{ position:'absolute', width:360, height:360, borderRadius:'50%', background:'#10b981', filter:'blur(120px)', opacity:0.09, top:'8%', right:'15%' }}/>
+
+          {[0, 1, 2].map(i => (
+            <div key={i} style={{ position:'absolute', top:'50%', left:'50%', width:100+i*90, height:100+i*90, borderRadius:'50%', border:`1px solid ${['rgba(167,139,250,0.35)','rgba(244,114,182,0.25)','rgba(16,185,129,0.2)'][i]}`, animation:`waveExpand 5s ease-out ${i*1.6}s infinite` }}/>
+          ))}
+
+          <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:740 }}>
+            <div style={{ fontSize:'0.62rem', letterSpacing:'0.5em', textTransform:'uppercase', color:'rgba(167,139,250,0.4)', marginBottom:36 }}>
+              Part Four Complete
+            </div>
+
+            <h1 style={{ fontFamily:"'Outfit',sans-serif", fontSize:'clamp(2.2rem,8vw,5rem)', fontWeight:700, background:'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#10b981 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', letterSpacing:1, marginBottom:32, animation:'mmm-reveal 2s ease-out 0.5s both', lineHeight:1.1 }}>
+              YOUR TOOLS,<br/>YOUR LIFE
+            </h1>
+
+            <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'clamp(1rem,2.4vw,1.25rem)', color:'rgba(210,200,255,0.5)', lineHeight:1.8, marginBottom:44, animation:'mmm-fadeUp 1.5s ease-out 1.5s both' }}>
+              The notebook. The clearing.<br/>
+              The forgiveness. The writing. The vision.<br/>
+              The map. The body. The group. The mirror.
+            </p>
+
+            <div style={{ background:'rgba(167,139,250,0.05)', border:'1px solid rgba(167,139,250,0.15)', borderRadius:16, padding:'26px 36px', maxWidth:580, margin:'0 auto 48px', animation:'mmm-fadeUp 1.5s ease-out 2.2s both' }}>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:'italic', fontSize:'1.05rem', color:'rgba(190,180,255,0.7)', lineHeight:1.8 }}>
+                "None of it works occasionally. All of it works consistently. Start small if you need to. One exercise. One affirmation. One page of a notebook. The mechanism doesn't care how slowly you begin. It only cares whether you begin."
+              </p>
+              <div style={{ fontSize:'0.6rem', letterSpacing:'0.25em', textTransform:'uppercase', color:'rgba(167,139,250,0.3)', marginTop:12 }}>So begin</div>
+            </div>
+
+            <div style={{ fontSize:'0.72rem', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(255,255,255,0.18)', animation:'mmm-blink 2.5s ease-in-out 3.5s infinite' }}>
+              *click anywhere to restart*
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── App ─────────────────────────────────────────────────────── */
+
+    function App() {
+      const [screen, setScreen] = useState(0);
+      const go = n => setScreen(n);
+
+      useEffect(() => { window.scrollTo(0, 0); }, [screen]);
+
+      const screens = [
+        <LandingScreen              onNext={() => go(1)} />,
+        <NotebookScreen             onBack={() => go(0)}  onNext={() => go(2)} />,
+        <BlocksScreen               onBack={() => go(1)}  onNext={() => go(3)} />,
+        <ClearingScreen             onBack={() => go(2)}  onNext={() => go(4)} />,
+        <ForgivenessScreen          onBack={() => go(3)}  onNext={() => go(5)} />,
+        <WritingAffirmationsScreen  onBack={() => go(4)}  onNext={() => go(6)} />,
+        <GoalSettingScreen          onBack={() => go(5)}  onNext={() => go(7)} />,
+        <IdealSceneScreen           onBack={() => go(6)}  onNext={() => go(8)} />,
+        <TreasureMapScreen          onBack={() => go(7)}  onNext={() => go(9)} />,
+        <BodyScreen                 onBack={() => go(8)}  onNext={() => go(10)} />,
+        <GroupsScreen               onBack={() => go(9)}  onNext={() => go(11)} />,
+        <CompletionScreen           onNext={() => go(0)} />,
+      ];
+
+      return screens[screen];
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+  <script src="../app-nav.js"></script>
+</body>
+</html>

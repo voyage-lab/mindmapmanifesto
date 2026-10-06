@@ -1,0 +1,134 @@
+/* ============================================================
+   MindMapManifesto site theme for the mind x brain chapter apps
+   (creative visualization, words & spells). These pages are React
+   apps styled with inline styles, so the overrides below match on
+   those inline styles (React writes colors as rgb(...)) and use
+   !important. Loaded last in every page.
+   ============================================================ */
+:root {
+  --ink: #0d0d0d;
+  --char: #1a1918;
+  --paper: #e9e3d6;
+  --paper-dim: #b9b2a3;
+  --glass: rgba(220, 235, 240, .55);
+  --pencil: #6b655b;
+}
+
+body { background: var(--ink) !important; color: var(--paper) !important; }
+body::before {
+  content: ""; position: fixed; inset: -2%; z-index: -2;
+  background: url("../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg") center / cover no-repeat;
+  filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+}
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%);
+}
+::-webkit-scrollbar-thumb { background: rgba(233,227,214,.3) !important; }
+
+/* screens become see-through so the site background shows; drop glows and colour washes */
+#root > div { background: transparent !important; }
+#root > div > div[style*="inset: 0px"]:not([style*="z-index"]) { display: none !important; }
+#root div[style*="blur(1"] { display: none !important; }
+#root div[style*="waveExpand"] { border-color: rgba(233,227,214,.25) !important; }
+
+/* type: Cormorant for text, Caveat for headings and buttons */
+#root, #root * {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  color: var(--paper) !important;
+  -webkit-text-fill-color: currentColor !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  border-color: rgba(233, 227, 214, .2) !important;
+}
+#root h1, #root h2, #root h1 * {
+  font-family: "Caveat", cursive !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.05 !important;
+  background: none !important;
+  text-shadow: 0 4px 30px rgba(0,0,0,.8) !important;
+}
+#root h1 { font-size: clamp(2.6rem, 7vw, 4.2rem) !important; }
+#root > div > div > div > h1, #root div[style*="mmm-reveal"] h1 { font-size: clamp(3rem, 10vw, 6rem) !important; }
+#root h3 { font-weight: 600 !important; font-size: 1.15rem !important; }
+#root p { font-size: max(1.05rem, 1em) !important; }
+#root em { text-decoration: underline; text-decoration-color: rgba(233,227,214,.4) !important; text-underline-offset: .12em; }
+#root [style*="text-transform: uppercase"] { color: var(--paper-dim) !important; letter-spacing: .3em !important; }
+#root [style*="border-radius: 50%"] { background: var(--paper-dim) !important; }
+#root div[style*="transition: width"] { background: var(--paper-dim) !important; }
+#root div[style*="position: fixed"][style*="height: 3px"] { background: rgba(0,0,0,.4) !important; }
+#root footer { color: var(--paper-dim) !important; font-size: 1rem !important; }
+
+/* tinted boxes on the dark background: quiet glass */
+#root [style*="background: rgba"]:not([style*="border-radius: 50%"]) { background: rgba(0,0,0,.35) !important; backdrop-filter: none !important; }
+
+/* cards (dark #0d0d12 panels, plain or gradient) become paper notes taped under the glass */
+#root [style*="rgb(13, 13, 18)"] {
+  background: var(--paper) !important;
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(120,100,70,.12), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(90,75,55,.15), transparent 45%) !important;
+  border: 0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,.7) !important;
+  overflow: visible !important;
+  position: relative;
+}
+#root [style*="rgb(13, 13, 18)"]::before {
+  content: ""; position: absolute; top: -12px; left: 50%;
+  width: 96px; height: 24px; transform: translateX(-50%) rotate(2deg);
+  background: var(--glass); box-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+#root [style*="rgb(13, 13, 18)"] * {
+  color: var(--char) !important;
+  border-color: rgba(26, 25, 24, .18) !important;
+  text-shadow: none !important;
+}
+#root [style*="rgb(13, 13, 18)"] [style*="text-transform: uppercase"] { color: var(--pencil) !important; }
+#root [style*="rgb(13, 13, 18)"] em { text-decoration-color: rgba(26,25,24,.35) !important; }
+#root [style*="rgb(13, 13, 18)"] [style*="border-radius: 50%"] { background: var(--pencil) !important; }
+#root [style*="rgb(13, 13, 18)"] [style*="border-radius: 50%"][style*="justify-content: center"] { background: transparent !important; border: 1px solid var(--pencil) !important; font-family: "Caveat", cursive !important; font-size: 1rem !important; }
+#root [style*="rgb(13, 13, 18)"] [style*="background: rgba"]:not([style*="border-radius: 50%"]) { background: rgba(26,25,24,.05) !important; }
+#root [style*="rgb(13, 13, 18)"] > div[style*="inset: 0px"] { display: none !important; }
+#root [style*="rgb(13, 13, 18)"] h3 { font-family: "Caveat", cursive !important; font-size: 1.6rem !important; font-weight: 700 !important; line-height: 1.1 !important; }
+
+/* numbered step circles outside cards */
+#root [style*="border-radius: 50%"][style*="justify-content: center"] { background: transparent !important; border: 1px solid var(--paper-dim) !important; font-family: "Caveat", cursive !important; font-size: 1rem !important; }
+
+/* buttons */
+#root button {
+  font-family: "Caveat", cursive !important;
+  font-size: 1.5rem !important; font-weight: 700 !important;
+  letter-spacing: 0 !important; text-transform: none !important;
+  color: var(--paper-dim) !important;
+}
+#root button:hover { color: var(--paper) !important; }
+#root button[style*="gradient"], #root button[style*="border-radius: 9999px"] {
+  background: var(--char) !important; color: var(--paper) !important;
+  border: 1px solid rgba(233,227,214,.35) !important; border-radius: 2px !important;
+  padding: .55rem 1.6rem !important; backdrop-filter: none !important;
+}
+#root button[style*="gradient"]:hover, #root button[style*="border-radius: 9999px"]:hover { background: #000 !important; }
+
+/* injected series nav ("back to the map" style) */
+.mb-nav {
+  display: flex; gap: 1.2rem; align-items: baseline;
+  padding: 20px 16px 0; position: relative; z-index: 5;
+}
+.mb-nav a {
+  font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.2;
+  color: var(--paper-dim); text-decoration: none;
+}
+.mb-nav a:hover { color: var(--paper); }
+.mb-nav a:first-child { margin-right: auto; }
+.mb-hint {
+  position: fixed; right: 16px; bottom: 12px; z-index: 60; pointer-events: none;
+  font-family: "Caveat", cursive; font-size: 1.1rem; color: var(--paper-dim); opacity: .8;
+}
+
+@media (max-width: 760px) {
+  .mb-nav a { font-size: 1.25rem; }
+  .mb-hint { display: none; }
+  #root div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+}
