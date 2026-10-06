@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="A birth-date fate & will graph and Pythagorean square (psychomatrix) calculator. Entertainment numerology, calculated entirely in your browser.">
+<meta name="theme-color" content="#0d0d0d">
+<title>Fate &amp; Will</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext x='1' y='14' font-size='14'%3E%F0%9F%94%AE%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0d0d;
+    --bg-2:#1a1918;
+    --panel:rgba(13,13,13,.62);
+    --panel-border:rgba(220,235,240,.22);
+    --text:#e9e3d6;
+    --muted:#b9b2a3;
+    --faint:rgba(233,227,214,.10);
+    --gold:#d9b46a;
+    --cyan:#9cc3cf;
+    --violet:#c9b8a0;
+    --danger:#e59a8a;
+    --serif:'Cormorant Garamond',Georgia,serif;
+    --sans:'Cormorant Garamond',Georgia,serif;
+    --hand:'Caveat',cursive;
+    --radius:3px;
+    --maxw:940px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    font-size:19px;
+    color:var(--text);
+    background:var(--bg);
+    min-height:100vh;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;
+    background:url("../iam.jpeg") center / cover no-repeat;
+    filter:grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+    transform:scale(1.04);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:-1;
+    background:radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%);
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(20px,5vw,56px) clamp(16px,4vw,28px) 64px}
+
+  header.site{text-align:center;margin-bottom:clamp(24px,5vw,44px)}
+  header.site .mark{font-size:34px;line-height:1}
+  header.site h1{
+    font-family:var(--serif);
+    font-weight:600;
+    letter-spacing:.02em;
+    font-size:clamp(2.1rem,6vw,3.2rem);
+    margin:.35rem 0 .2rem;
+  }
+  header.site p{color:var(--muted);margin:0;font-size:1rem}
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:var(--radius);
+    padding:clamp(18px,4vw,28px);
+    margin:18px 0;
+    backdrop-filter:blur(6px);
+  }
+  .card h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:1.6rem;
+    margin:0 0 .25rem;
+    letter-spacing:.01em;
+  }
+  .card h2 + .sub{color:var(--muted);margin:0 0 1.1rem;font-size:.95rem}
+
+  form .row{display:flex;gap:14px;flex-wrap:wrap}
+  .field{flex:1 1 120px;min-width:110px}
+  .field label{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:6px}
+  .field input{
+    width:100%;
+    font:inherit;
+    font-size:1.05rem;
+    color:var(--text);
+    background:rgba(0,0,0,.28);
+    border:1px solid var(--panel-border);
+    border-radius:10px;
+    padding:12px 12px;
+    -moz-appearance:textfield;
+  }
+  .field input::-webkit-outer-spin-button,.field input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .field input:focus-visible{outline:2px solid var(--violet);outline-offset:2px;border-color:transparent}
+
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+  button{
+    font:inherit;
+    font-weight:600;
+    letter-spacing:.02em;
+    cursor:pointer;
+    border-radius:10px;
+    padding:12px 22px;
+    border:1px solid transparent;
+    transition:transform .06s ease, filter .15s ease, background .15s ease;
+  }
+  button:active{transform:translateY(1px)}
+  .btn-primary{background:linear-gradient(180deg,#f5cd6b,#e6ad34);color:#241a02}
+  .btn-primary:hover{filter:brightness(1.05)}
+  .btn-ghost{background:transparent;color:var(--muted);border-color:var(--panel-border)}
+  .btn-ghost:hover{color:var(--text);border-color:var(--violet)}
+
+  .error{color:var(--danger);font-size:.92rem;margin-top:10px;min-height:1.2em}
+
+  #results[hidden]{display:none}
+
+  .legend{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:2px 0 14px;font-size:.9rem;color:var(--muted)}
+  .legend .key{display:inline-flex;align-items:center;gap:8px}
+  .swatch{width:22px;height:4px;border-radius:2px;display:inline-block}
+  .swatch.fate{background:var(--gold)}
+  .swatch.will{background:var(--cyan)}
+
+  .chart-holder{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  svg.graph{width:100%;height:auto;display:block;min-width:440px}
+  svg.graph .grid{stroke:var(--faint);stroke-width:1}
+  svg.graph .axis{stroke:rgba(255,255,255,.28);stroke-width:1}
+  svg.graph .line-fate{fill:none;stroke:var(--gold);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+  svg.graph .line-will{fill:none;stroke:var(--cyan);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+  svg.graph .dot-fate{fill:var(--gold)}
+  svg.graph .dot-will{fill:var(--cyan)}
+  svg.graph text{fill:var(--muted);font-family:var(--sans);font-size:12px}
+  svg.graph .xlab{font-size:11px}
+
+  .codes{display:flex;gap:22px;flex-wrap:wrap;margin:14px 0 4px;font-size:.92rem}
+  .codes b{color:var(--muted);font-weight:600}
+  .codes .digits{font-variant-numeric:tabular-nums;letter-spacing:.18em}
+  .codes .digits.fate{color:var(--gold)}
+  .codes .digits.will{color:var(--cyan)}
+
+  .toggle{display:flex;gap:8px;align-items:center;margin:16px 0 2px;font-size:.9rem;color:var(--muted);flex-wrap:wrap}
+  .toggle label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+
+  ul.periods{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+  ul.periods li{
+    display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline;
+    padding:10px 12px;border:1px solid var(--panel-border);border-radius:10px;background:rgba(0,0,0,.18);
+    font-size:.93rem;
+  }
+  ul.periods .when{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+  ul.periods .lead-fate{color:var(--gold)}
+  ul.periods .lead-will{color:var(--cyan)}
+  ul.periods .lead-even{color:var(--violet)}
+
+  .square{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;margin:6px auto 0;
+  }
+  .cell{
+    border:1px solid var(--panel-border);border-radius:12px;padding:12px 10px;text-align:center;
+    background:rgba(0,0,0,.20);min-height:104px;display:flex;flex-direction:column;justify-content:center;gap:4px;
+  }
+  .cell .glyph{font-family:var(--serif);font-size:1.5rem;letter-spacing:.14em;color:var(--text);min-height:1.6rem}
+  .cell .glyph.empty{color:rgba(255,255,255,.22)}
+  .cell .trait{font-size:.72rem;color:var(--muted);line-height:1.35}
+  .cell .strength{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em}
+  .s0{color:rgba(255,255,255,.30)}
+  .s1{color:#8fb7ff}
+  .s2{color:#7ee0a8}
+  .s3{color:var(--gold)}
+  .s4{color:#ffb26b}
+  .s5{color:var(--violet)}
+
+  .mini{margin-top:18px;font-size:.9rem;color:var(--muted)}
+  table.lines{width:100%;border-collapse:collapse;margin-top:10px;font-size:.9rem}
+  table.lines th,table.lines td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--panel-border)}
+  table.lines th{color:var(--muted);font-weight:600}
+  table.lines td.n{font-variant-numeric:tabular-nums;text-align:right;color:var(--text)}
+  .workingnums{margin-top:12px;font-size:.9rem;color:var(--muted)}
+  .workingnums code{background:rgba(0,0,0,.3);padding:2px 7px;border-radius:6px;color:var(--text);font-size:.95em}
+
+  .zodiac{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .zbox{border:1px solid var(--panel-border);border-radius:12px;padding:14px;background:rgba(0,0,0,.18)}
+  .zbox .zk{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+  .zbox .zv{font-family:var(--serif);font-size:1.3rem;margin-top:3px}
+  .zbox .zx{font-size:.82rem;color:var(--muted);margin-top:2px}
+
+  details.how{margin-top:22px}
+  details.how summary{
+    cursor:pointer;font-family:var(--serif);font-size:1.3rem;color:var(--text);
+    list-style:none;padding:6px 0;
+  }
+  details.how summary::-webkit-details-marker{display:none}
+  details.how summary::before{content:"▸ ";color:var(--violet)}
+  details.how[open] summary::before{content:"▾ "}
+  details.how .body{color:var(--muted);font-size:.94rem}
+  details.how h3{color:var(--text);font-family:var(--sans);font-size:1rem;margin:18px 0 6px}
+  details.how code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:6px;color:var(--text)}
+  details.how ol{padding-left:20px}
+
+  footer.site{margin-top:40px;text-align:center;color:var(--muted);font-size:.85rem;line-height:1.7}
+  footer.site a{color:var(--violet)}
+
+  @media (max-width:520px){
+    .cell{min-height:92px}
+    .cell .glyph{font-size:1.25rem}
+  }
+
+  .stars{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+  .stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.5}
+  @media (prefers-reduced-motion:no-preference){
+    .stars i{animation:tw 4s ease-in-out infinite}
+    @keyframes tw{0%,100%{opacity:.15}50%{opacity:.7}}
+  }
+
+  /* MindMapManifesto theme */
+  header.site h1{font-family:var(--hand);font-weight:700;font-size:clamp(3rem,10vw,5.5rem);line-height:1;text-shadow:0 4px 30px rgba(0,0,0,.8)}
+  header.site .mark{display:none}
+  .card h2,details.how summary,.zbox .zv{font-family:var(--hand);font-weight:700}
+  .card h2{font-size:2rem}
+  .btn-primary{background:var(--text);color:var(--bg-2);font-family:var(--hand);font-size:1.4rem;padding:6px 24px}
+  .btn-ghost{font-family:var(--hand);font-size:1.4rem;padding:6px 22px}
+  .field input{background:rgba(0,0,0,.4)}
+  svg.graph text{font-size:13px}
+  .s1{color:#a9c4d6}.s2{color:#a8c9a4}.s4{color:#e0a87a}
+  .stars{display:none}
+  footer.site a{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="stars" aria-hidden="true" id="stars"></div>
+
+<div class="wrap">
+  <header class="site">
+    <div class="mark">🔮</div>
+    <h1>Fate &amp; Will</h1>
+    <p>A birth-date graph of fate versus will, plus a Pythagorean square — all figured in your browser.</p>
+  </header>
+
+  <main>
+    <section class="card" aria-labelledby="form-h">
+      <h2 id="form-h">Your date of birth</h2>
+      <p class="sub">Enter the day, month and year you were born.</p>
+      <form id="birth-form" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="day">Day</label>
+            <input id="day" name="day" type="number" inputmode="numeric" min="1" max="31" placeholder="1–31" required>
+          </div>
+          <div class="field">
+            <label for="month">Month</label>
+            <input id="month" name="month" type="number" inputmode="numeric" min="1" max="12" placeholder="1–12" required>
+          </div>
+          <div class="field">
+            <label for="year">Year</label>
+            <input id="year" name="year" type="number" inputmode="numeric" min="1" max="9999" placeholder="e.g. 1990" required>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn-primary">Reveal</button>
+          <button type="button" class="btn-ghost" id="clear-btn">Clear</button>
+        </div>
+        <div class="error" id="form-error" role="alert" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section id="results" hidden aria-live="polite">
+      <div class="card" aria-labelledby="graph-h">
+        <h2 id="graph-h">The graph of fate &amp; will</h2>
+        <p class="sub" id="graph-for"></p>
+
+        <div class="legend">
+          <span class="key"><span class="swatch fate"></span> Fate — the pull of circumstance</span>
+          <span class="key"><span class="swatch will"></span> Will — the strength of your own hand</span>
+        </div>
+
+        <div class="chart-holder" id="chart-holder"></div>
+
+        <div class="codes">
+          <span><b>Fate code</b> <span class="digits fate" id="code-fate"></span></span>
+          <span><b>Will code</b> <span class="digits will" id="code-will"></span></span>
+        </div>
+
+        <p class="mini">Each point is one 12-year mark, from birth (age 0) to age 72.</p>
+
+        <ul class="periods" id="periods"></ul>
+      </div>
+
+      <div class="card" aria-labelledby="sq-h">
+        <h2 id="sq-h">Pythagorean square</h2>
+        <p class="sub">How many times each digit 1–9 appears once the four working numbers are added in. More tokens is read as a stronger trait.</p>
+        <div class="square" id="square"></div>
+        <div class="workingnums" id="workingnums"></div>
+
+        <div class="mini">
+          <strong style="color:var(--text)">Lines of the square</strong>
+          <table class="lines" id="lines">
+            <thead><tr><th>Line</th><th>Traditional meaning</th><th class="n">Tokens</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" aria-labelledby="z-h">
+        <h2 id="z-h">Signs</h2>
+        <p class="sub">Straightforward zodiac lookups from the same date.</p>
+        <div class="zodiac" id="zodiac"></div>
+        <p class="mini">The Chinese sign uses an approximate 4 February cut-off. A birth in late January or early February, near the true Chinese New Year, may belong to the previous animal year.</p>
+      </div>
+
+      <details class="how">
+        <summary>How this is calculated</summary>
+        <div class="body">
+          <h3>Fate &amp; will graph</h3>
+          <ol>
+            <li><strong>Fate code.</strong> Write the day (two digits) and month (two digits) side by side as one number, then multiply by the year. Example: <code>21 · 01 · 1998 → 2101 × 1998 = 4197798</code>.</li>
+            <li><strong>Will code.</strong> Replace every <code>0</code> in the written date with <code>1</code>, then do the same multiplication. Example: <code>2111 × 1998 = 4217778</code>.</li>
+            <li>If a product has fewer than seven digits, a <code>0</code> is padded on the front; the first seven digits are used.</li>
+            <li>Each digit (0–9) is one point on the line. The seven points sit 12 years apart, starting at your birth year: ages 0, 12, 24, 36, 48, 60 and 72. Example: born 1980 → 1980, 1992, 2004, 2016, 2028, 2040, 2052.</li>
+            <li>Where the fate line sits higher, the tradition reads the period as ruled by circumstance; where will sits higher, by your own choices; level stretches are read as turning points.</li>
+          </ol>
+
+          <h3>Pythagorean square (psychomatrix)</h3>
+          <ol>
+            <li>Take the eight digits of the date <code>D D M M Y Y Y Y</code>.</li>
+            <li><strong>W1</strong> = their sum. <strong>W2</strong> = the digits of W1 added together.</li>
+            <li><strong>W3</strong> = W1 − 2 × (first digit of the day). <strong>W4</strong> = the digits of W3 added together.</li>
+            <li>Pool together the date digits and the digits of W1–W4, then count how many <code>1</code>s, <code>2</code>s … <code>9</code>s there are. Zeros are ignored.</li>
+            <li>Each count fills its cell; rows, columns and diagonals are summed for the secondary lines.</li>
+          </ol>
+
+          <h3>Where the method comes from</h3>
+          <p>This is 20th-century popular numerology, most of it codified by Alexander Alexandrov in the 1990s. Pythagoras (c.&nbsp;570–495&nbsp;BCE) left no writings, and nothing resembling a birth-date square or a fate/will digit graph appears in any ancient source about him — the name is honorific. The 7-year cycle you may see elsewhere belongs to a different chart (the "graph of life", built from day × month × year with one digit per year); the fate &amp; will graph always uses 12-year steps.</p>
+          <p><strong>For entertainment.</strong> There is no scientific basis for any of this, and nothing here is advice.</p>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="site">
+    <p>Everything is computed locally in your browser — no date is sent anywhere.</p>
+    <p><a href="../index.html">← back to the map</a></p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- tiny starfield ----------
+  var starLayer = document.getElementById("stars");
+  var starCount = window.matchMedia("(max-width:600px)").matches ? 40 : 90;
+  for (var s = 0; s < starCount; s++) {
+    var star = document.createElement("i");
+    star.style.left = (Math.random() * 100).toFixed(2) + "%";
+    star.style.top = (Math.random() * 100).toFixed(2) + "%";
+    star.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
+    star.style.opacity = (0.15 + Math.random() * 0.5).toFixed(2);
+    starLayer.appendChild(star);
+  }
+
+  // ---------- helpers ----------
+  function digitsOf(n) { return String(Math.abs(n)).split("").map(Number); }
+  function digitSum(n) { return digitsOf(n).reduce(function (a, b) { return a + b; }, 0); }
+  function pad2(n) { return String(n).padStart(2, "0"); }
+
+  // ---------- fate & will codes ----------
+  function sevenDigitCode(product) {
+    var str = String(Math.abs(Math.trunc(product)));
+    while (str.length < 7) str = "0" + str;
+    return str.slice(0, 7).split("").map(Number);
+  }
+
+  function fateCode(day, month, year) {
+    var joined = Number(pad2(day) + pad2(month));      // e.g. 21,01 -> 2101
+    return sevenDigitCode(joined * year);
+  }
+
+  function willCode(day, month, year) {
+    var d = pad2(day).replace(/0/g, "1");
+    var m = pad2(month).replace(/0/g, "1");
+    var y = String(year).replace(/0/g, "1");
+    return sevenDigitCode(Number(d + m) * Number(y));
+  }
+
+  // ---------- pythagorean square ----------
+  function psychomatrix(day, month, year) {
+    var dateDigits = (pad2(day) + pad2(month) + String(year)).split("").map(Number);
+    var firstDayDigit = Number(String(day)[0]);
+
+    var w1 = dateDigits.reduce(function (a, b) { return a + b; }, 0);
+    var w2 = digitSum(w1);
+    var w3 = w1 - 2 * firstDayDigit;
+    var w4 = digitSum(w3);
+
+    var pool = dateDigits
+      .concat(digitsOf(w1), digitsOf(w2), digitsOf(w3), digitsOf(w4));
+
+    var counts = {};
+    for (var i = 1; i <= 9; i++) counts[i] = 0;
+    pool.forEach(function (dgt) { if (dgt >= 1 && dgt <= 9) counts[dgt]++; });
+
+    return { counts: counts, working: [w1, w2, w3, w4], pool: pool };
+  }
+
+  var TRAITS = {
+    1: "Character, willpower",
+    2: "Energy, charisma",
+    3: "Curiosity, creativity, the sciences",
+    4: "Health, vitality",
+    5: "Logic, intuition",
+    6: "Craft, labour, skill of hand",
+    7: "Luck, the lucky break",
+    8: "Sense of duty, responsibility",
+    9: "Memory, mind"
+  };
+
+  function strengthLabel(count) {
+    if (count === 0) return { txt: "Absent", cls: "s0" };
+    if (count === 1) return { txt: "Weak", cls: "s1" };
+    if (count === 2) return { txt: "Normal", cls: "s2" };
+    if (count === 3) return { txt: "Strong", cls: "s3" };
+    if (count === 4) return { txt: "Very strong", cls: "s4" };
+    return { txt: "Excessive", cls: "s5" };
+  }
+
+  var LINES = [
+    { name: "Column 1 (1·2·3)", meaning: "Self-esteem", cells: [1, 2, 3] },
+    { name: "Column 2 (4·5·6)", meaning: "Home &amp; family instinct", cells: [4, 5, 6] },
+    { name: "Column 3 (7·8·9)", meaning: "Talent &amp; ability", cells: [7, 8, 9] },
+    { name: "Row 1 (1·4·7)", meaning: "Purposefulness", cells: [1, 4, 7] },
+    { name: "Row 2 (2·5·8)", meaning: "Family", cells: [2, 5, 8] },
+    { name: "Row 3 (3·6·9)", meaning: "Stability, habits", cells: [3, 6, 9] },
+    { name: "Diagonal ↘ (1·5·9)", meaning: "Spirituality", cells: [1, 5, 9] },
+    { name: "Diagonal ↗ (3·5·7)", meaning: "Temperament", cells: [3, 5, 7] }
+  ];
+
+  // ---------- zodiac ----------
+  var WESTERN = [
+    { name: "Capricorn", sym: "♑", from: [12, 22], element: "Earth" },
+    { name: "Aquarius", sym: "♒", from: [1, 20], element: "Air" },
+    { name: "Pisces", sym: "♓", from: [2, 19], element: "Water" },
+    { name: "Aries", sym: "♈", from: [3, 21], element: "Fire" },
+    { name: "Taurus", sym: "♉", from: [4, 20], element: "Earth" },
+    { name: "Gemini", sym: "♊", from: [5, 21], element: "Air" },
+    { name: "Cancer", sym: "♋", from: [6, 21], element: "Water" },
+    { name: "Leo", sym: "♌", from: [7, 23], element: "Fire" },
+    { name: "Virgo", sym: "♍", from: [8, 23], element: "Earth" },
+    { name: "Libra", sym: "♎", from: [9, 23], element: "Air" },
+    { name: "Scorpio", sym: "♏", from: [10, 23], element: "Water" },
+    { name: "Sagittarius", sym: "♐", from: [11, 22], element: "Fire" }
+  ];
+
+  function westernSign(day, month) {
+    var current = WESTERN[0]; // Capricorn also covers 1 Jan – 19 Jan
+    WESTERN.forEach(function (sign) {
+      var mm = sign.from[0], dd = sign.from[1];
+      if (month > mm || (month === mm && day >= dd)) current = sign;
+    });
+    return current;
+  }
+
+  var ANIMALS = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake",
+                 "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
+  var STEM_ELEMENTS = ["Metal", "Metal", "Water", "Water", "Wood",
+                       "Wood", "Fire", "Fire", "Earth", "Earth"];
+
+  function chineseSign(day, month, year) {
+    var y = year;
+    if (month === 1 || (month === 2 && day <= 3)) y -= 1;
+    var animal = ANIMALS[((y - 4) % 12 + 12) % 12];
+    var element = STEM_ELEMENTS[((y % 10) + 10) % 10];
+    var yinYang = (y % 2 === 0) ? "Yang" : "Yin";
+    return { animal: animal, element: element, yinYang: yinYang, year: y };
+  }
+
+  function ageAt(day, month, year) {
+    var now = new Date();
+    var age = now.getFullYear() - year;
+    var m = now.getMonth() + 1;
+    if (m < month || (m === month && now.getDate() < day)) age--;
+    return age;
+  }
+
+  // ---------- rendering ----------
+  function renderGraph(fate, will, birthYear, step) {
+    var W = 760, H = 390, L = 44, R = 22, T = 18, B = 52;
+    var pw = W - L - R, ph = H - T - B;
+    var x = function (i) { return L + pw * i / 6; };
+    var y = function (v) { return T + ph * (1 - v / 9); };
+
+    var parts = [];
+    parts.push('<svg class="graph" viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
+      'aria-label="Line graph comparing the fate code and will code across seven life periods." ' +
+      'preserveAspectRatio="xMidYMid meet">');
+
+    for (var v = 0; v <= 9; v++) {
+      parts.push('<line class="grid" x1="' + L + '" y1="' + y(v) + '" x2="' + (W - R) + '" y2="' + y(v) + '"/>');
+      parts.push('<text x="' + (L - 10) + '" y="' + (y(v) + 4) + '" text-anchor="end">' + v + '</text>');
+    }
+    for (var i = 0; i <= 6; i++) {
+      parts.push('<line class="grid" x1="' + x(i) + '" y1="' + T + '" x2="' + x(i) + '" y2="' + (H - B) + '"/>');
+      var anchor = i === 0 ? "start" : (i === 6 ? "end" : "middle");
+      parts.push('<text class="xlab" x="' + x(i) + '" y="' + (H - B + 18) + '" text-anchor="' + anchor + '">' + (birthYear + step * i) + '</text>');
+      parts.push('<text class="xlab" x="' + x(i) + '" y="' + (H - B + 34) + '" text-anchor="' + anchor + '">age ' + (step * i) + '</text>');
+    }
+    parts.push('<line class="axis" x1="' + L + '" y1="' + (H - B) + '" x2="' + (W - R) + '" y2="' + (H - B) + '"/>');
+    parts.push('<line class="axis" x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (H - B) + '"/>');
+
+    var poly = function (arr, cls) {
+      return '<polyline class="' + cls + '" points="' +
+        arr.map(function (val, idx) { return x(idx) + "," + y(val); }).join(" ") + '"/>';
+    };
+    parts.push(poly(fate, "line-fate"));
+    parts.push(poly(will, "line-will"));
+
+    fate.forEach(function (val, idx) {
+      parts.push('<circle class="dot-fate" cx="' + x(idx) + '" cy="' + y(val) + '" r="4"/>');
+    });
+    will.forEach(function (val, idx) {
+      parts.push('<circle class="dot-will" cx="' + x(idx) + '" cy="' + y(val) + '" r="4"/>');
+    });
+
+    parts.push("</svg>");
+    document.getElementById("chart-holder").innerHTML = parts.join("");
+  }
+
+  function renderPeriods(fate, will, birthYear, step) {
+    var ul = document.getElementById("periods");
+    ul.innerHTML = "";
+    for (var i = 0; i < 7; i++) {
+      var when = (birthYear + step * i) + " · age " + (step * i);
+      var f = fate[i], w = will[i];
+      var lead, cls;
+      if (f > w) { lead = "Fate leads — circumstance sets the tone."; cls = "lead-fate"; }
+      else if (w > f) { lead = "Will leads — the outcome is mostly your call."; cls = "lead-will"; }
+      else { lead = "Level — a hinge point where the current can turn."; cls = "lead-even"; }
+      var li = document.createElement("li");
+      li.innerHTML = '<span class="when">' + when + "</span>" +
+        '<span class="' + cls + '">' + lead + " <span style=\"color:var(--muted)\">(" +
+        f + " vs " + w + ")</span></span>";
+      ul.appendChild(li);
+    }
+  }
+
+  function renderSquare(mx) {
+    var order = [1, 4, 7, 2, 5, 8, 3, 6, 9]; // columns read top-to-bottom, left to right
+    var host = document.getElementById("square");
+    host.innerHTML = "";
+    order.forEach(function (digit) {
+      var count = mx.counts[digit];
+      var st = strengthLabel(count);
+      var cell = document.createElement("div");
+      cell.className = "cell";
+      var glyph = count > 0 ? String(digit).repeat(count) : "—";
+      cell.innerHTML =
+        '<div class="glyph' + (count ? "" : " empty") + '">' + glyph + "</div>" +
+        '<div class="strength ' + st.cls + '">' + st.txt + "</div>" +
+        '<div class="trait">' + TRAITS[digit] + "</div>";
+      host.appendChild(cell);
+    });
+
+    var w = mx.working;
+    document.getElementById("workingnums").innerHTML =
+      "Working numbers: <code>W1 = " + w[0] + "</code> <code>W2 = " + w[1] +
+      "</code> <code>W3 = " + w[2] + "</code> <code>W4 = " + w[3] + "</code>";
+
+    var tbody = document.querySelector("#lines tbody");
+    tbody.innerHTML = "";
+    LINES.forEach(function (line) {
+      var total = line.cells.reduce(function (a, c) { return a + mx.counts[c]; }, 0);
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + line.name + "</td><td>" + line.meaning +
+        '</td><td class="n">' + total + "</td>";
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderZodiac(day, month, year) {
+    var west = westernSign(day, month);
+    var chin = chineseSign(day, month, year);
+    var age = ageAt(day, month, year);
+    var boxes = [
+      ["Age now", age >= 0 ? age + " years" : "not yet born", ""],
+      ["Western sign", west.sym + " " + west.name, west.element + " element"],
+      ["Chinese sign", chin.element + " " + chin.animal, chin.yinYang + " · year " + chin.year],
+    ];
+    var host = document.getElementById("zodiac");
+    host.innerHTML = "";
+    boxes.forEach(function (b) {
+      var d = document.createElement("div");
+      d.className = "zbox";
+      d.innerHTML = '<div class="zk">' + b[0] + '</div><div class="zv">' + b[1] +
+        '</div><div class="zx">' + b[2] + "</div>";
+      host.appendChild(d);
+    });
+  }
+
+  // ---------- controller ----------
+  var state = null; // { day, month, year, fate, will }
+
+  var STEP = 12; // fate & will points are 12 years apart: ages 0, 12 … 72
+
+  function drawFromState() {
+    if (!state) return;
+    renderGraph(state.fate, state.will, state.year, STEP);
+    renderPeriods(state.fate, state.will, state.year, STEP);
+  }
+
+  function daysInMonth(month, year) {
+    var lengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    if (month === 2) {
+      var leap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+      return leap ? 29 : 28;
+    }
+    return lengths[month - 1];
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    var errEl = document.getElementById("form-error");
+    errEl.textContent = "";
+
+    var day = parseInt(document.getElementById("day").value, 10);
+    var month = parseInt(document.getElementById("month").value, 10);
+    var year = parseInt(document.getElementById("year").value, 10);
+
+    if (!Number.isFinite(day) || !Number.isFinite(month) || !Number.isFinite(year)) {
+      errEl.textContent = "Please fill in the day, month and year.";
+      return;
+    }
+    if (month < 1 || month > 12) { errEl.textContent = "Month must be between 1 and 12."; return; }
+    if (year < 1 || year > 9999) { errEl.textContent = "Please enter a plausible year."; return; }
+    var dim = daysInMonth(month, year);
+    if (day < 1 || day > dim) {
+      errEl.textContent = "Day must be between 1 and " + dim + " for that month.";
+      return;
+    }
+
+    state = {
+      day: day, month: month, year: year,
+      fate: fateCode(day, month, year),
+      will: willCode(day, month, year)
+    };
+
+    document.getElementById("graph-for").textContent =
+      "Born " + pad2(day) + "." + pad2(month) + "." + year + ".";
+    document.getElementById("code-fate").textContent = state.fate.join(" ");
+    document.getElementById("code-will").textContent = state.will.join(" ");
+
+    drawFromState();
+    renderSquare(psychomatrix(day, month, year));
+    renderZodiac(day, month, year);
+
+    var results = document.getElementById("results");
+    results.hidden = false;
+    results.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function handleClear() {
+    document.getElementById("birth-form").reset();
+    document.getElementById("form-error").textContent = "";
+    document.getElementById("results").hidden = true;
+    state = null;
+  }
+
+  document.getElementById("birth-form").addEventListener("submit", handleSubmit);
+  document.getElementById("clear-btn").addEventListener("click", handleClear);
+})();
+</script>
+</body>
+</html>

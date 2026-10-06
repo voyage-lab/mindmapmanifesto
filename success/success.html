@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous Success Stories — MindMap Manifesto</title>
+    <meta name="description"
+        content="Champions, artists, and visionaries who used hypnosis to achieve the extraordinary.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --ink: #0d0d0d;
+            --char: #1a1918;
+            --paper: #e9e3d6;
+            --paper-dim: #b9b2a3;
+            --muted: #4a453d;
+            --glass: rgba(220, 235, 240, .55);
+        }
+        body {
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: 20px; line-height: 1.6;
+            background: var(--ink); color: var(--paper);
+            min-height: 100vh; overflow-x: hidden;
+        }
+        .ambient {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: url("../iam.jpeg") center / cover no-repeat;
+            filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+            transform: scale(1.04);
+        }
+        .ambient::after {
+            content: ""; position: fixed; inset: 0;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%);
+        }
+        .orb { display: none; }
+
+        .progress-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; height: 2px; background: rgba(255,255,255,.08); }
+        .progress-fill { height: 100%; width: 50%; background: var(--paper); opacity: .7; }
+
+        .page-wrapper { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 48px 16px 80px; }
+
+        .top-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; gap: 12px; }
+        .step-indicator { font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--paper-dim); }
+        .step-indicator span { color: var(--paper); font-weight: 700; }
+
+        .hero { text-align: center; margin-bottom: 56px; animation: fadeUp .8s ease-out; }
+        .eyebrow { font-size: clamp(.85rem, 2vw, 1.05rem); letter-spacing: .5em; text-transform: uppercase; color: var(--paper-dim); margin-bottom: .6rem; }
+        .eyebrow::before, .eyebrow::after { content: " — "; letter-spacing: 0; }
+        h1 {
+            font-family: "Caveat", cursive; font-weight: 700;
+            font-size: clamp(3rem, 10vw, 6rem); line-height: 1;
+            text-shadow: 0 4px 30px rgba(0,0,0,.8); margin-bottom: 1rem;
+        }
+        .hero-desc { font-size: clamp(1.15rem, 2.6vw, 1.5rem); font-style: italic; color: var(--paper); max-width: 680px; margin: 0 auto; line-height: 1.5; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+        /* paper note cards */
+        .performer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem 1.75rem; margin-bottom: 40px; }
+        .pcard {
+            background: var(--paper); color: var(--char);
+            background-image:
+                radial-gradient(circle at 20% 15%, rgba(120,100,70,.12), transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(90,75,55,.15), transparent 45%);
+            padding: 1.8rem 1.6rem 1.5rem; border-radius: 2px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.7);
+            position: relative; transition: transform .3s;
+            animation: fadeUp .7s ease-out both;
+        }
+        .pcard:nth-child(odd) { transform: rotate(-.8deg); }
+        .pcard:nth-child(even) { transform: rotate(.7deg); }
+        .pcard:hover { transform: rotate(0) translateY(-4px); }
+        .pcard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: .4rem; }
+        .pcard-era { font-family: "Caveat", cursive; font-size: 1.15rem; color: #6b655b; }
+        .pcard-icon { font-size: 1.5rem; filter: grayscale(1); opacity: .7; }
+        .pcard-name { font-family: "Caveat", cursive; font-weight: 700; font-size: 2.2rem; line-height: 1.05; }
+        .pcard-role { font-size: 1rem; font-style: italic; color: var(--muted); margin-bottom: .9rem; }
+        .pcard-body { font-size: 1.05rem; line-height: 1.5; margin-bottom: 1rem; }
+        .why-box { border-left: 2px solid var(--char); padding: .4rem 0 .4rem .9rem; margin-bottom: .9rem; }
+        .why-label { font-family: "Caveat", cursive; font-size: 1.3rem; line-height: 1.1; }
+        .why-text { font-size: 1rem; font-style: italic; color: var(--muted); line-height: 1.5; }
+        .video-tip { display: flex; align-items: center; gap: 7px; font-size: .9rem; color: #6b655b; border-top: 1px dashed rgba(26,25,24,.25); padding-top: .7rem; }
+        .video-tip svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 64px; padding-top: 32px; border-top: 1px solid #2a2a2a; }
+        .nav-back { display: flex; align-items: center; gap: 7px; color: var(--paper-dim); text-decoration: none; font-family: "Caveat", cursive; font-size: 1.5rem; }
+        .nav-back:hover { color: var(--paper); }
+        .nav-next {
+            display: inline-flex; align-items: center; gap: 9px;
+            padding: .7rem 2.2rem; border: 1px solid var(--glass);
+            color: var(--paper); text-decoration: none;
+            font-family: "Caveat", cursive; font-size: 1.6rem;
+            backdrop-filter: blur(6px); background: rgba(255,255,255,.04);
+            transition: background .3s, transform .3s;
+        }
+        .nav-next:hover { background: rgba(255,255,255,.12); transform: translateY(-2px); }
+        .nav-next svg, .nav-back svg { width: 18px; height: 18px; }
+
+        .footer { text-align: center; margin-top: 60px; color: var(--paper-dim); font-size: 1rem; }
+        .footer a { color: var(--paper); }
+
+        @media (max-width: 680px) { .performer-grid { grid-template-columns: 1fr; } }
+
+        /* language switcher */
+        .lang-switcher-container { position: relative; z-index: 100; }
+        .lang-btn {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(0,0,0,.4); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+            border: 1px solid var(--glass); border-radius: 999px;
+            padding: .4rem 1.1rem; font-family: "Caveat", cursive; font-size: 1.3rem;
+            color: var(--paper); cursor: pointer;
+        }
+        .lang-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+        .lang-dropdown {
+            position: absolute; right: 0; top: calc(100% + 8px); width: 170px;
+            background: var(--paper); color: var(--char);
+            box-shadow: 0 20px 50px rgba(0,0,0,.7); padding: 6px 0;
+            display: none; flex-direction: column; z-index: 101;
+        }
+        .lang-dropdown.show { display: flex; }
+        .lang-option {
+            width: 100%; background: none; border: none; text-align: left;
+            padding: 6px 16px; font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.05rem;
+            color: var(--char); cursor: pointer;
+        }
+        .lang-option:hover { background: rgba(26,25,24,.08); }
+        .lang-option.active { font-weight: 600; text-decoration: underline; }
+
+        @media (prefers-reduced-motion: reduce) { .hero, .pcard { animation: none; } }
+    </style>
+</head>
+
+<body>
+    <div class="ambient">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+
+    <div class="page-wrapper">
+
+        <nav class="top-nav">
+            <div class="step-indicator" data-i18n="chapter_indicator">Chapter <span>1</span> of 2</div>
+            <div class="lang-switcher-container" id="langSwitcherContainer">
+                <button class="lang-btn" id="langBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                    <span id="activeLangLabel">English</span>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <button class="lang-option" data-lang="en">English</button>
+                    <button class="lang-option" data-lang="uk">Українська</button>
+                    <button class="lang-option" data-lang="tr">Türkçe</button>
+                    <button class="lang-option" data-lang="ru">Русский</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="hero">
+            <div class="eyebrow" data-i18n="part_one">Part One</div>
+            <h1 data-i18n="title">Famous Success Stories</h1>
+            <p class="hero-desc" data-i18n="desc">Champions, artists, and visionaries who used hypnosis not as a last resort — but as a
+                competitive edge. Here's the record.</p>
+        </div>
+
+        <div class="performer-grid">
+
+            <!-- Adele -->
+            <div class="pcard art">
+                <div class="pcard-header">
+                    <span class="pcard-era" data-i18n="adele_era">Alpha / Theta · born 1988</span>
+                    <span class="pcard-icon">🎤</span>
+                </div>
+                <div class="pcard-name">Adele</div>
+                <div class="pcard-role" data-i18n="adele_role">Music & Entertainment · Singer/Songwriter</div>
+                <p class="pcard-body" data-i18n="adele_body"><strong>The Challenge:</strong> Despite her powerhouse vocals, Adele struggled with severe, crippling stage fright and anxiety. The pressure reached a peak in 2013 when she was scheduled to perform her hit song "Skyfall" live at the Academy Awards.<br><br>
+                <strong>How Hypnotherapy Helped:</strong> She turned to hypnotherapy to reframe her stage anxiety, calm her nervous system, and build performance confidence. The sessions were highly successful; she delivered a flawless Oscar performance and went on to win the Academy Award for Best Original Song.</p>
+                <div class="why-box">
+                    <div class="why-label" data-i18n="why_matters">Why This Matters</div>
+                    <p class="why-text" data-i18n="adele_why_text">Stage fright is not a lack of talent; it is a hyperactive nervous system threat response. Hypnotherapy directly speaks to the amygdala to reframe this response, letting your true capability shine through.</p>
+                </div>
+                <div class="video-tip" data-i18n="adele_video_tip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    Academy Awards 2013 · <em>"Adele Skyfall Oscar performance stage fright"</em>
+                </div>
+            </div>
+
+            <!-- Mike Tyson -->
+            <div class="pcard sport">
+                <div class="pcard-header">
+                    <span class="pcard-era" data-i18n="tyson_era">Theta · 1985–1996</span>
+                    <span class="pcard-icon">🥊</span>
+                </div>
+                <div class="pcard-name">Mike Tyson</div>
+                <div class="pcard-role" data-i18n="tyson_role">Heavyweight Boxing Champion</div>
+                <p class="pcard-body" data-i18n="tyson_body"><strong>The Challenge:</strong> Growing up in a dangerous environment, Tyson was an anxious and insecure young fighter with immense raw talent but high emotional volatility and fear of failing in the ring.<br><br>
+                <strong>How Hypnotherapy Helped:</strong> Trainer Cus D'Amato had him hypnotized up to three times daily before sparring, training, and fights. Hypnotist John Halpin conditioned Tyson to enter a state of complete relaxation combined with absolute focus and peak confidence. Tyson said: <em>"You relax, you go in there and totally focus on blackness, nothing. They tell you — you're going to be a savage, a ferocious animal."</em></p>
+                <div class="why-box">
+                    <div class="why-label" data-i18n="why_matters">Why This Matters</div>
+                    <p class="why-text" data-i18n="tyson_why_text">One of the most dominant athletes in history was systematically conditioned through hypnosis from age 13. The calm, focused, purposeful state he describes is available to anyone.</p>
+                </div>
+                <div class="video-tip" data-i18n="tyson_video_tip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    Joe Rogan Experience · <em>"Mike Tyson Cus D'Amato hypnosis"</em>
+                </div>
+            </div>
+
+            <!-- Princess Diana -->
+            <div class="pcard art">
+                <div class="pcard-header">
+                    <span class="pcard-era" data-i18n="diana_era">Alpha / Theta · 1961–1997</span>
+                    <span class="pcard-icon">👑</span>
+                </div>
+                <div class="pcard-name">Princess Diana</div>
+                <div class="pcard-role" data-i18n="diana_role">Royalty & Public Leadership</div>
+                <p class="pcard-body" data-i18n="diana_body"><strong>The Challenge:</strong> Stepping into the global spotlight as a royal, Diana faced unprecedented public scrutiny, intense press intrusion, and severe anxiety. She struggled with public speaking and the overwhelming demands of her role.<br><br>
+                <strong>How Hypnotherapy Helped:</strong> Diana used hypnotherapy to build self-esteem, manage stress, and develop a calm, confident presence. The therapy helped her overcome her fear of public speaking, allowing her to connect deeply with the public.</p>
+                <div class="why-box">
+                    <div class="why-label" data-i18n="why_matters">Why This Matters</div>
+                    <p class="why-text" data-i18n="diana_why_text">She became one of the most beloved and influential humanitarian figures of the 20th century. Hypnotic conditioning helps individuals build an internal sanctuary of self-worth that is impervious to external criticism.</p>
+                </div>
+                <div class="video-tip" data-i18n="diana_video_tip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    BBC Panorama / Biography · <em>"Princess Diana hypnotherapy stress management"</em>
+                </div>
+            </div>
+
+            <!-- Michael Jordan -->
+            <div class="pcard sport">
+                <div class="pcard-header">
+                    <span class="pcard-era" data-i18n="jordan_era">Alpha / Theta · 1988–2004</span>
+                    <span class="pcard-icon">🏀</span>
+                </div>
+                <div class="pcard-name">Michael Jordan</div>
+                <div class="pcard-role" data-i18n="jordan_role">6× NBA Champion</div>
+                <p class="pcard-body" data-i18n="jordan_body"><strong>The Challenge:</strong> Despite his unparalleled talent, Jordan faced extreme media scrutiny, intense physical exhaustion, and the pressure of keeping the Chicago Bulls at championship level year after year.<br><br>
+                <strong>How Hypnotherapy Helped:</strong> Phil Jackson brought in mindfulness and performance coach George Mumford. Mumford's deliberate Alpha-state training gave Jordan the ability to enter peak states on demand, block out stadium noise, and quiet his mind. On the game-winning 1998 Finals shot: <em>"The moment started to become the moment for me."</em></p>
+                <div class="why-box">
+                    <div class="why-label" data-i18n="why_matters">Why This Matters</div>
+                    <p class="why-text" data-i18n="jordan_why_text">Jordan wasn't naturally calm under pressure. He trained for it. The ability to drop into Alpha on demand in a stadium of 20,000 people is a learned skill, not a gift.</p>
+                </div>
+                <div class="video-tip" data-i18n="jordan_video_tip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    ESPN The Last Dance, Ep. 10 · <em>"George Mumford mindfulness Bulls"</em>
+                </div>
+            </div>
+
+            <!-- Mary Lou Retton -->
+            <div class="pcard art">
+                <div class="pcard-header">
+                    <span class="pcard-era" data-i18n="retton_era">Alpha / Theta · 1984</span>
+                    <span class="pcard-icon">🏅</span>
+                </div>
+                <div class="pcard-name">Mary Lou Retton</div>
+                <div class="pcard-role" data-i18n="retton_role">Sports & Athletics · Olympic Gymnast</div>
+                <p class="pcard-body" data-i18n="retton_body"><strong>The Challenge:</strong> Just six weeks before the 1984 Los Angeles Olympic Games, the 16-year-old gymnast had to undergo emergency knee surgery. She faced intense physical pain and a severely compressed timeline to prepare for the biggest event of her life.<br><br>
+                <strong>How Hypnotherapy Helped:</strong> Retton used hypnosis to mentally manage her physical pain and block it out during competition. She also used deep relaxation and visualization to mentally run through her routines thousands of times while her body recovered.</p>
+                <div class="why-box">
+                    <div class="why-label" data-i18n="why_matters">Why This Matters</div>
+                    <p class="why-text" data-i18n="retton_why_text">She went on to win five Olympic medals, including the historic individual all-around gold. Visualization in hypnosis activates the same motor cortex pathways as physical practice, accelerating rehabilitation and muscle memory.</p>
+                </div>
+                <div class="video-tip" data-i18n="retton_video_tip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    Olympic Archives 1984 · <em>"Mary Lou Retton knee surgery recovery visualization"</em>
+                </div>
+            </div>
+
+            <!-- Tiger Woods -->
+            <div class="pcard sport">
+                <div class="pcard-header">
+                    <span class="pcard-era" data-i18n="woods_era">Alpha / Theta · 1997–2008</span>
+                    <span class="pcard-icon">⛳</span>
+                </div>
+                <div class="pcard-name">Tiger Woods</div>
+                <div class="pcard-role" data-i18n="woods_role">Professional Golfer, 15× Major Champion</div>
+                <p class="pcard-body" data-i18n="woods_body"><strong>The Challenge:</strong> To dominate in professional golf, Tiger needed a way to eliminate extreme performance pressure, self-doubt, and the distraction of thousands of spectators watching his every move.<br><br>
+                <strong>How Hypnotherapy Helped:</strong> Beginning at age 13, Tiger trained with retired Navy clinical psychologist Dr. Jay Brunza. Through hypnosis, Tiger installed a physical anchor—his pre-shot blink—to instantly trigger an Alpha/Theta state of deep focus. Tiger later stated: <em>"Hypnosis is inherent in what I do now."</em></p>
+                <div class="why-box">
+                    <div class="why-label" data-i18n="why_matters">Why This Matters</div>
+                    <p class="why-text" data-i18n="woods_why_text">Tiger's pre-shot blink — that moment of stillness before he addresses the ball — is a hypnotic anchor trigger. A physical cue installed through hypnosis that drops him into Alpha/Theta on demand. This is teachable.</p>
+                </div>
+                <div class="video-tip" data-i18n="woods_video_tip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    Golf Digest, Dec 2002 · <em>"Tiger Woods Jay Brunza hypnosis"</em>
+                </div>
+            </div>
+
+        </div>
+
+        <nav class="bottom-nav" style="justify-content: flex-end;">
+            <a class="nav-next" href="brainwaves.html">
+                <span data-i18n="nav_next">The Success Map</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </nav>
+
+        <footer class="footer">
+            <p>&copy; 2026 <a href="../index.html">MindMapManifesto.com</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                chapter_indicator: "Chapter <span>1</span> of 2",
+                part_one: "Part One",
+                title: "Famous Success Stories",
+                desc: "Champions, artists, and visionaries who used hypnosis not as a last resort — but as a competitive edge. Here's the record.",
+                adele_era: "Alpha / Theta · born 1988",
+                adele_role: "Music & Entertainment · Singer/Songwriter",
+                adele_body: "<strong>The Challenge:</strong> Despite her powerhouse vocals, Adele struggled with severe, crippling stage fright and anxiety. The pressure reached a peak in 2013 when she was scheduled to perform her hit song \"Skyfall\" live at the Academy Awards.<br><br><strong>How Hypnotherapy Helped:</strong> She turned to hypnotherapy to reframe her stage anxiety, calm her nervous system, and build performance confidence. The sessions were highly successful; she delivered a flawless Oscar performance and went on to win the Academy Award for Best Original Song.",
+                why_matters: "Why This Matters",
+                adele_why_text: "Stage fright is not a lack of talent; it is a hyperactive nervous system threat response. Hypnotherapy directly speaks to the amygdala to reframe this response, letting your true capability shine through.",
+                adele_video_tip: "Academy Awards 2013 · <em>\"Adele Skyfall Oscar performance stage fright\"</em>",
+                
+                tyson_era: "Theta · 1985–1996",
+                tyson_role: "Heavyweight Boxing Champion",
+                tyson_body: "<strong>The Challenge:</strong> Growing up in a dangerous environment, Tyson was an anxious and insecure young fighter with immense raw talent but high emotional volatility and fear of failing in the ring.<br><br><strong>How Hypnotherapy Helped:</strong> Trainer Cus D'Amato had him hypnotized up to three times daily before sparring, training, and fights. Hypnotist John Halpin conditioned Tyson to enter a state of complete relaxation combined with absolute focus and peak confidence. Tyson said: <em>\"You relax, you go in there and totally focus on blackness, nothing. They tell you — you're going to be a savage, a ferocious animal.\"</em>",
+                tyson_why_text: "One of the most dominant athletes in history was systematically conditioned through hypnosis from age 13. The calm, focused, purposeful state he describes is available to anyone.",
+                tyson_video_tip: "Joe Rogan Experience · <em>\"Mike Tyson Cus D'Amato hypnosis\"</em>",
+                
+                diana_era: "Alpha / Theta · 1961–1997",
+                diana_role: "Royalty & Public Leadership",
+                diana_body: "<strong>The Challenge:</strong> Stepping into the global spotlight as a royal, Diana faced unprecedented public scrutiny, intense press intrusion, and severe anxiety. She struggled with public speaking and the overwhelming demands of her role.<br><br><strong>How Hypnotherapy Helped:</strong> Diana used hypnotherapy to build self-esteem, manage stress, and develop a calm, confident presence. The therapy helped her overcome her fear of public speaking, allowing her to connect deeply with the public.",
+                diana_why_text: "She became one of the most beloved and influential humanitarian figures of the 20th century. Hypnotic conditioning helps individuals build an internal sanctuary of self-worth that is impervious to external criticism.",
+                diana_video_tip: "BBC Panorama / Biography · <em>\"Princess Diana hypnotherapy stress management\"</em>",
+                
+                jordan_era: "Alpha / Theta · 1988–2004",
+                jordan_role: "6× NBA Champion",
+                jordan_body: "<strong>The Challenge:</strong> Despite his unparalleled talent, Jordan faced extreme media scrutiny, intense physical exhaustion, and the pressure of keeping the Chicago Bulls at championship level year after year.<br><br><strong>How Hypnotherapy Helped:</strong> Phil Jackson brought in mindfulness and performance coach George Mumford. Mumford's deliberate Alpha-state training gave Jordan the ability to enter peak states on demand, block out stadium noise, and quiet his mind. On the game-winning 1998 Finals shot: <em>\"The moment started to become the moment for me.\"</em>",
+                jordan_why_text: "Jordan wasn't naturally calm under pressure. He trained for it. The ability to drop into Alpha on demand in a stadium of 20,000 people is a learned skill, not a gift.",
+                jordan_video_tip: "ESPN The Last Dance, Ep. 10 · <em>\"George Mumford mindfulness Bulls\"</em>",
+                
+                retton_era: "Alpha / Theta · 1984",
+                retton_role: "Sports & Athletics · Olympic Gymnast",
+                retton_body: "<strong>The Challenge:</strong> Just six weeks before the 1984 Los Angeles Olympic Games, the 16-year-old gymnast had to undergo emergency knee surgery. She faced intense physical pain and a severely compressed timeline to prepare for the biggest event of her life.<br><br><strong>How Hypnotherapy Helped:</strong> Retton used hypnosis to mentally manage her physical pain and block it out during competition. She also used deep relaxation and visualization to mentally run through her routines thousands of times while her body recovered.",
+                retton_why_text: "She went on to win five Olympic medals, including the historic individual all-around gold. Visualization in hypnosis activates the same motor cortex pathways as physical practice, accelerating rehabilitation and muscle memory.",
+                retton_video_tip: "Olympic Archives 1984 · <em>\"Mary Lou Retton knee surgery recovery visualization\"</em>",
+                
+                woods_era: "Alpha / Theta · 1997–2008",
+                woods_role: "Professional Golfer, 15× Major Champion",
+                woods_body: "<strong>The Challenge:</strong> To dominate in professional golf, Tiger needed a way to eliminate extreme performance pressure, self-doubt, and the distraction of thousands of spectators watching his every move.<br><br><strong>How Hypnotherapy Helped:</strong> Beginning at age 13, Tiger trained with retired Navy clinical psychologist Dr. Jay Brunza. Through hypnosis, Tiger installed a physical anchor—his pre-shot blink—to instantly trigger an Alpha/Theta state of deep focus. Tiger later stated: <em>\"Hypnosis is inherent in what I do now.\"</em>",
+                woods_why_text: "Tiger's pre-shot blink — that moment of stillness before he addresses the ball — is a hypnotic anchor trigger. A physical cue installed through hypnosis that drops him into Alpha/Theta on demand. This is teachable.",
+                woods_video_tip: "Golf Digest, Dec 2002 · <em>\"Tiger Woods Jay Brunza hypnosis\"</em>",
+                
+                nav_next: "The Success Map"
+            },
+            uk: {
+                chapter_indicator: "Розділ <span>1</span> з 2",
+                part_one: "Частина перша",
+                title: "Відомі історії успіху",
+                desc: "Чемпіони, митці та візіонери, які використовували гіпноз не як останній засіб, а як конкурентну перевагу. Ось їхній звіт.",
+                adele_era: "Альфа / Тета · народилася 1988",
+                adele_role: "Музика та розваги · Співачка/Композиторка",
+                adele_body: "<strong>Проблема:</strong> Незважаючи на свій потужний голос, Адель страждала від сильного, сковувального страху сцени та тривоги. Тиск досяг піку в 2013 році, коли планувався її виступ з хітом \"Skyfall\" наживо на церемонії вручення премії \"Оскар\".<br><br><strong>Як допоміг гіпноз:</strong> Вона звернулася до гіпнотерапії, щоб змінити сприйняття страху сцени, заспокоїти нервову систему та розвинути впевненість у собі. Сеанси були надзвичайно успішними; вона бездоганно виконала пісню на \"Оскарі\" та отримала нагороду за найкращу оригінальну пісню.",
+                why_matters: "Чому це важливо",
+                adele_why_text: "Страх сцени — це не брак таланту, це реакція гіперактивної нервової системи на загрозу. Гіпнотерапія безпосередньо звертається до мигдалеподібного тіла, щоб змінити цю реакцію, дозволяючи розкритися вашим справжнім здібностям.",
+                adele_video_tip: "Церемонія Оскар 2013 · <em>\"Adele Skyfall Oscar performance stage fright\"</em>",
+                
+                tyson_era: "Тета · 1985–1996",
+                tyson_role: "Чемпіон світу з боксу у важкій вазі",
+                tyson_body: "<strong>Проблема:</strong> Виростаючи в небезпечному середовищі, Тайсон був тривожним і невпевненим у собі молодим бійцем із величезним талантом, але високою емоційною нестабільністю та страхом програти на рингу.<br><br><strong>Як допоміг гіпноз:</strong> Тренер Кас Д'Амато вводив його в стан гіпнозу до трьох разів на день перед спарингами, тренуваннями та боями. Гіпнотизер Джон Халпін налаштовував Тайсона на стан повного розслаблення в поєднанні з абсолютною концентрацією та піковою впевненістю. Тайсон розповідав: <em>\"Ти розслабляєшся, виходиш туди і повністю зосереджуєшся на темряві, ні на чому. Тобі кажуть — ти будеш дикуном, лютим звіром.\"</em>",
+                tyson_why_text: "Один із найсильніших атлетів в історії систематично проходив гіпнотичне налаштування з 13 років. Описаний ним спокійний, зосереджений і цілеспрямований стан доступний кожному.",
+                tyson_video_tip: "Подкаст Джо Рогана · <em>\"Mike Tyson Cus D'Amato hypnosis\"</em>",
+                
+                diana_era: "Альфа / Тета · 1961–1997",
+                diana_role: "Королівська родина та публічне лідерство",
+                diana_body: "<strong>Проблема:</strong> Опинившись у центрі світової уваги як член королівської родини, Діана зіткнулася з безпрецедентним суспільним тиском, інтенсивним втручанням преси та сильною тривогою. Вона відчувала труднощі з публічними виступами та перевантаженням від своїх обов'язків.<br><br><strong>Як допоміг гіпноз:</strong> Діана використовувала гіпнотерапію для підвищення самооцінки, подолання стресу та формування спокійної, впевненої поведінки. Терапія допомогла їй подолати страх публічних виступів, дозволивши їй щиро спілкуватися з людьми.",
+                diana_why_text: "Вона стала однією з найулюбленіших та найвпливовіших гуманітарних діячок XX століття. Гіпнотичне налаштування допомагає побудувати внутрішній храм самоцінності, захищений від зовнішньої критики.",
+                diana_video_tip: "BBC Панорама / Біографія · <em>\"Princess Diana hypnotherapy stress management\"</em>",
+                
+                jordan_era: "Альфа / Тета · 1988–2004",
+                jordan_role: "6-разовий чемпіон НБА",
+                jordan_body: "<strong>Проблема:</strong> Незважаючи на свій неперевершений талант, Джордан стикався з надзвичайною увагою ЗМІ, сильним фізичним виснаженням і тиском необхідності тримати Чикаго Буллз на чемпіонському рівні рік за роком.<br><br><strong>Як допоміг гіпноз:</strong> Філ Джексон залучив тренера з усвідомленості та ефективності Джорджа Мамфорда. Цілеспрямовані тренування Мамфорда на входження в Альфа-стан дали Джордану здатність входити в пікові стани за запитом, блокувати шум стадіону та заспокоювати розум. Про переможний кидок у фіналі 1998 року: <em>\"Ця мить почала ставати тією самою миттю для мене.\"</em>",
+                jordan_why_text: "Джордан не був спокійним під тиском від природи. Он тренировал это. Способность при необходимости входить в Альфа-состояние на стадионе среди 20 000 человек — это приобретенный навык, а не врожденный дар.",
+                jordan_video_tip: "Документальний серіал Остання гра, Еп. 10 · <em>\"George Mumford mindfulness Bulls\"</em>",
+                
+                retton_era: "Альфа / Тета · 1984",
+                retton_role: "Спорт і легка атлетика · Олімпійська гімнастка",
+                retton_body: "<strong>Проблема:</strong> Лише за шість тижнів до Олімпійських ігор 1984 року в Лос-Анджелесі 16-річній гімнастці довелося перенести термінову операцію на коліні. Вона зіткнулася з сильним фізичним болем і вкрай обмеженим часом на підготовку до найголовнішої події у своєму житті.<br><br><strong>Як допоміг гіпноз:</strong> Реттон використовувала гіпноз, щоб подумки впоратися з фізичним болем і блокувати його під час змагань. Вона також використовувала глибоке розслаблення та візуалізацію, щоб подумки повторювати свої вправи тисячі разів, поки її тіло відновлювалося.",
+                retton_why_text: "Вона завоювала п'ять олімпійських медалей, включаючи історичне золото в абсолютній першості. Візуалізація в гіпнозі активує ті самі шляхи рухової кори збудження, що й фізичні тренування, прискорюючи реабілітацію та м'язову пам'ять.",
+                retton_video_tip: "Олімпійський архів 1984 · <em>\"Mary Lou Retton knee surgery recovery visualization\"</em>",
+                
+                woods_era: "Альфа / Тета · 1997–2008",
+                woods_role: "Професійний гольфіст, 15-разовий переможець мейджорів",
+                woods_body: "<strong>Проблема:</strong> Щоб домінувати в професійному гольфі, Тайгеру був потрібен спосіб усунути величезний тиск відповідальності, невпевненість у собі та відволікання на тисячі глядачів, які стежили за кожним його кроком.<br><br><strong>Як допоміг гіпноз:</strong> Починаючи з 13 років, Тайгер тренувався з клінічним психологом ВМС у відставці доктором Джеєм Брунзою. За допомогою гіпнозу Тайгер встановив фізичний якір — моргання перед ударом — щоб миттєво викликати стан глибокої концентрації Альфа/Тета. Пізніше Тайгер зазначав: <em>\"Гіпноз є невід'ємною частиною того, що я роблю зараз.\"</em>",
+                woods_why_text: "Моргання Тайгера перед ударом — ця мить тиші перед тим, як він підходить до м'яча — є тригером гіпнотичного якоря. Фізичний якості, встановлений за допомогою гіпнозу, який миттєво вводить його в стан Альфа/Тета. Цьому можна навчити.",
+                woods_video_tip: "Golf Digest, грудень 2002 · <em>\"Tiger Woods Jay Brunza hypnosis\"</em>",
+                
+                nav_next: "Карта успіху"
+            },
+            tr: {
+                chapter_indicator: "Bölüm <span>1</span> / 2",
+                part_one: "Birinci Bölüm",
+                title: "Ünlü Başarı Hikayeleri",
+                desc: "Hipnozu son çare olarak değil, rekabet avantajı olarak kullanan şampiyonlar, sanatçılar ve vizyonerler. İşte kanıtlar.",
+                adele_era: "Alfa / Teta · d. 1988",
+                adele_role: "Müzik ve Eğlence · Şarkıcı/Şarkı Yazarı",
+                adele_body: "<strong>Zorluk:</strong> Güçlü sesine rağmen Adele, şiddetli ve felç edici bir sahne korkusu ve kaygıyla mücadele etti. Baskı, 2013 yılında Akademi Ödülleri'nde hit şarkısı \"Skyfall\"ı canlı olarak seslendirmesi planlandığında zirveye ulaştı.<br><br><strong>Hipnoterapi Nasıl Yardımcı Oldu:</strong> Sahne kaygısını yeniden çerçevelendirmek, sinir sistemini sakinleştirmek ve performans özgüvenini geliştirmek için hipnoterapiye başvurdu. Seanslar son derece başarılı oldu; kusursuz bir Oscar performansı sergiledi ve En İyi Özgün Şarkı Akademi Ödülü'nü kazandı.",
+                why_matters: "Bu Neden Önemli",
+                adele_why_text: "Sahne korkusu yetenek eksikliği değil; aşırı aktif bir sinir sistemi tehdit yanıtıdır. Hipnoterapi, bu yanıtı yeniden çerçevelendirmek için doğrudan amigdalaya hitap eder ve gerçek yeteneğinizin ortaya çıkmasını sağlar.",
+                adele_video_tip: "Akademi Ödülleri 2013 · <em>\"Adele Skyfall Oscar performance stage fright\"</em>",
+                
+                tyson_era: "Teta · 1985–1996",
+                tyson_role: "Ağır Sıklet Boks Şampiyonu",
+                tyson_body: "<strong>Zorluk:</strong> Tehlikeli bir çevrede büyüyen Tyson, muazzam bir yeteneğe sahip olmasına rağmen ringde başarısız olma korkusu ve yüksek duygusal dalgalanmalar yaşayan, kaygılı ve güvensiz genç bir dövüşçüydü.<br><br><strong>Hipnoterapi Nasıl Yardımcı Oldu:</strong> Antrenörü Cus D'Amato, sparring, antrenman ve dövüşlerden önce onu günde üç defaya kadar hipnotize ettirirdi. Hipnotist John Halpin, Tyson'ı tam bir rahatlama ile mutlak odaklanma ve zirve güveninin birleştiği bir duruma girmeye koşullandırdı. Tyson şunları söyledi: <em>\"Gevşiyorsun, oraya giriyorsun ve tamamen karanlığa, hiçbir şeye odaklanıyorsun. Sana — vahşi, yırtıcı bir hayvan olacağını söylüyorlar.\"</em>",
+                tyson_why_text: "Tarihin en baskın sporcularından biri, 13 yaşından itibaren hipnoz yoluyla sistematik olarak koşullandırıldı. Tarif ettiği sakin, odaklanmış ve amaca yönelik durum herkes için mümkündür.",
+                tyson_video_tip: "Joe Rogan Deneyimi · <em>\"Mike Tyson Cus D'Amato hypnosis\"</em>",
+                
+                diana_era: "Alfa / Teta · 1961–1997",
+                diana_role: "Kraliyet ve Toplumsal Liderlik",
+                diana_body: "<strong>Zorluk:</strong> Kraliyet üyesi olarak küresel ilgi odağı haline gelen Diana, benzeri görülmemiş bir kamuoyu denetimi, yoğun basın baskısı ve şiddetli kaygıyla karşı karşıya kaldı. Topluluk önünde konuşma yapmakta ve rolünün ezici talepleriyle başa çıkmakta zorlanıyordu.<br><br><strong>Hipnoterapi Nasıl Yardımcı Oldu:</strong> Diana özgüvenini geliştirmek, stresi yönetmek ve sakin, kendinden emin bir duruş sergilemek için hipnoterapi kullandı. Terapi, topluluk önünde konuşma korkusunu yenmesine yardımcı olarak halkla derin bağlar kurmasını sağladı.",
+                diana_why_text: "20. yüzyılın en sevilen ve etkili insani figürlerinden biri haline geldi. Hipnotik koşullandırma, bireylerin dış eleştirilerden etkilenmeyen, içsel bir özdeğer sığınağı inşa etmelerine yardımcı olur.",
+                diana_video_tip: "BBC Panorama / Biyografi · <em>\"Princess Diana hypnotherapy stress management\"</em>",
+                
+                jordan_era: "Alfa / Teta · 1988–2004",
+                jordan_role: "6× NBA Şampiyonu",
+                jordan_body: "<strong>Zorluk:</strong> Eşsiz yeteneğine rağmen Jordan, aşırı medya baskısı, yoğun fiziksel yorgunluk ve Chicago Bulls'u her yıl şampiyonluk seviyesinde tutmanın getirdiği stresle karşı karşıyaydı.<br><br><strong>Hipnoterapi Nasıl Yardımcı Oldu:</strong> Phil Jackson, farkındalık ve performans koçu George Mumford'u ekibe dahil etti. Mumford'un bilinçli Alfa durumu eğitimi, Jordan'a talep üzerine zirve durumlara girme, stadyum gürültüsünü engelleme ve zihnini susturma yeteneği kazandırdı. Şampiyonluğu getiren 1998 Finallerindeki şut hakkında: <em>\"O an benim için asıl an olmaya başladı.\"</em>",
+                jordan_why_text: "Jordan baskı altında doğuştan sakin değildi. Bunun için antrenman yaptı. 20.000 kişilik bir stadyumda talep üzerine Alfa durumuna geçebilmek bir yetenek değil, öğrenilmiş bir beceridir.",
+                jordan_video_tip: "ESPN Son Dans, 10. Bölüm · <em>\"George Mumford mindfulness Bulls\"</em>",
+                
+                retton_era: "Alfa / Teta · 1984",
+                retton_role: "Spor ve Atletizm · Olimpiyat Jimnastikçisi",
+                retton_body: "<strong>Zorluk:</strong> 1984 Los Angeles Olimpiyat Oyunları'ndan sadece altı hafta önce, 16 yaşındaki jimnastikçi acil diz ameliyatı geçirmek zorunda kaldı. Hayatının en büyük etkinliğine hazırlanmak için şiddetli fiziksel acı ve son derece dar bir zaman dilimi ile karşı karşıya kaldı.<br><br><strong>Hipnoterapi Nasıl Yardımcı Oldu:</strong> Retton, fiziksel acısını zihinsel olarak yönetmek ve yarışma sırasında bunu engellemek için hipnozu kullandı. Ayrıca bedeni iyileşirken hareketlerini zihinsel olarak binlerce kez tekrarlamak için derin gevşeme ve görselleştirme yöntemlerini uyguladı.",
+                retton_why_text: "Tarihi bireysel genel toplam altını da dahil olmak üzere beş Olimpiyat madalyası kazandı. Hipnozdaki görselleştirme, fiziksel pratikle aynı motor korteks yollarını aktive ederek rehabilitasyonu ve kas hafızasını hızlandırır.",
+                retton_video_tip: "Olimpiyat Arşivleri 1984 · <em>\"Mary Lou Retton knee surgery recovery visualization\"</em>",
+                
+                woods_era: "Alfa / Teta · 1997–2008",
+                woods_role: "Profesyonel Golfçü, 15× Major Şampiyonu",
+                woods_body: "<strong>Zorluk:</strong> Profesyonel golfe hükmetmek için Tiger'ın aşırı performans baskısını, şüpheleri ve kendisini izleyen binlerce seyircinin dikkat dağıtıcı etkisini ortadan kaldıracak bir yola ihtiyacı vardı.<br><br><strong>Hipnoterapi Nasıl Yardımcı Oldu:</strong> 13 yaşından itibaren Tiger, emekli Donanma klinik psikoloğu Dr. Jay Brunza ile çalıştı. Hipnoz yoluyla Tiger, derin bir Alfa/Teta odaklanma durumunu anında tetiklemek için fiziksel bir çapa (vuruş öncesi göz kırpma) yerleştirdi. Tiger daha sonra şunları söyledi: <em>\"Hipnoz şu anda yaptığım işin doğasında var.\"</em>",
+                woods_why_text: "Tiger'ın vuruş öncesi göz kırpması — topa vurmadan önceki o sessizlik anı — hipnotik bir çapa tetikleyicisidir. Hipnoz yoluyla kurulan ve onu talep üzerine Alfa/Teta durumuna geçiren fiziksel bir işaret. Bu öğretilebilir.",
+                woods_video_tip: "Golf Digest, Ara 2002 · <em>\"Tiger Woods Jay Brunza hypnosis\"</em>",
+                
+                nav_next: "Başarı Haritası"
+            },
+            ru: {
+                chapter_indicator: "Глава <span>1</span> из 2",
+                part_one: "Часть первая",
+                title: "Известные истории успеха",
+                desc: "Чемпионы, художники и визионеры, которые использовали гипноз не как крайнюю меру, а как конкурентное преимущество. Вот факты.",
+                adele_era: "Альфа / Тета · родилась 1988",
+                adele_role: "Музыка и развлечения · Певица/Автор песен",
+                adele_body: "<strong>Проблема:</strong> Несмотря на свой мощный вокал, Адель боролась с сильным, парализующим страхом сцены и тревогой. Давление достигло пика в 2013 году, когда планировалось ее живое выступление с хитом \"Skyfall\" на церемонии вручения премии \"Оскар\".<br><br><strong>Как помог гипноз:</strong> Она обратилась к гипнотерапии, чтобы изменить отношение к страху сцены, успокоить нервную систему и развить уверенность в себе. Сеансы прошли очень успешно; она безупречно выступила на \"Оскаре\" и выиграла премию в номинации \"Лучшая оригинальная песня\".",
+                why_matters: "Почему это важно",
+                adele_why_text: "Страх сцены — это не отсутствие таланта, а реакция гиперактивной нервной системы на угрозу. Гипнотерапия напрямую обращается к миндалевидному телу, чтобы изменить эту реакцию, позволяя вашим истинным способностям проявиться.",
+                adele_video_tip: "Церемония Оскар 2013 · <em>\"Adele Skyfall Oscar performance stage fright\"</em>",
+                
+                tyson_era: "Тета · 1985–1996",
+                tyson_role: "Чемпион мира по боксу в тяжелом весе",
+                tyson_body: "<strong>Проблема:</strong> Вырастая в опасной среде, Тайсон был тревожным и неуверенным в себе молодым бойцом с огромным талантом, но высокой эмоциональной нестабильностью и страхом проиграть на ринге.<br><br><strong>Как помог гипноз:</strong> Тренер Кас Д'Амато вводил его в состояние гипноза до трех раз в день перед спаррингами, тренировками и боями. Гипнотизер Джон Халпин настраивал Тайсона на состояние полного расслабления в сочетании с абсолютной концентрацией и пиковой уверенностью. Тайсон рассказывал: <em>\"Ты расслабляешься, выходишь туда и полностью сосредотачиваешься на темноте, ни на чем. Тебе говорят — ты будешь дикарем, свирепым зверем.\"</em>",
+                tyson_why_text: "Один из самых доминирующих атлетов в истории систематически проходил гипнотическую подготовку с 13 лет. Описанное им спокойное, сосредоточенное и целеустремленное состояние доступно каждому.",
+                tyson_video_tip: "Подкаст Джо Рогана · <em>\"Mike Tyson Cus D'Amato hypnosis\"</em>",
+                
+                diana_era: "Альфа / Тета · 1961–1997",
+                diana_role: "Королевская семья и публичное лидерство",
+                diana_body: "<strong>Проблема:</strong> Оказавшись в центре мирового внимания как член королевской семьи, Диана столкнулась с беспрецедентным общественным давлением, интенсивным вмешательством прессы и сильной тревогой. Она испытывала трудности с публичными выступлениями и перегрузкой от своих обязанностей.<br><br><strong>Как помог гипноз:</strong> Диана использовала гипнотерапию для повышения самооценки, преодоления стресса и формирования спокойного, уверенного присутствия. Терапия помогла ей преодолеть страх публичных выступлений, позволив ей искренне общаться с людьми.",
+                diana_why_text: "Она стала одной из самых любимых и влиятельных гуманитарных деятельниц XX века. Гипнотическая подготовка помогает человеку построить внутренний храм самоценности, защищенный от внешней критики.",
+                diana_video_tip: "BBC Панорама / Биография · <em>\"Princess Diana hypnotherapy stress management\"</em>",
+                
+                jordan_era: "Альфа / Тета · 1988–2004",
+                jordan_role: "6-кратный чемпион НБА",
+                jordan_body: "<strong>Проблема:</strong> Несмотря на свой непревзойденный талант, Джордан сталкивался с огромным вниманием СМИ, сильным физическим истощением и давлением необходимости удерживать Чикаго Буллз на чемпионском уровне год за годом.<br><br><strong>Как помог гипноз:</strong> Фил Джексон привлек тренера по осознанности и эффективности Джорджа Мамфорда. Специальные тренировки Мамфорда по входу в Альфа-состояние дали Джордану способность входить в пиковые состояния по запросу, блокировать шум стадиона и успокаивать ум. О победном броске в финале 1998 года: <em>\"Этот момент начал становиться тем самым моментом для меня.\"</em>",
+                jordan_why_text: "Джордан не был спокойным под давлением от природы. Он тренировал это. Способность при необходимости входить в Альфа-состояние на стадионе среди 20 000 человек — это приобретенный навык, а не врожденный дар.",
+                jordan_video_tip: "Документальный сериал Последний танец, Эп. 10 · <em>\"George Mumford mindfulness Bulls\"</em>",
+                
+                retton_era: "Альфа / Тета · 1984",
+                retton_role: "Спорт и легкая атлетика · Олимпийская гимнастка",
+                retton_body: "<strong>Проблема:</strong> Всего за шесть недель до Олимпийских игр 1984 года в Лос-Анджелесе 16-летней гимнастке пришлось перенести экстренную операцию на колене. Она столкнулась с сильной физической болью и крайне ограниченным временем на подготовку к самому важному событию в своей жизни.<br><br><strong>Как помог гипноз:</strong> Реттон использовала гипноз, чтобы мысленно справляться с физической болью и блокировать ее во время соревнований. Она также использовала глубокое расслабление и визуализацию, чтобы мысленно повторять свои упражнения тысячи раз, пока ее тело восстанавливалось.",
+                retton_why_text: "Она завоевала пять олимпийских медалей, включая историческое золото в абсолютном первенстве. Визуализация в гипнозе активирует те же пути двигательной коры, что и физическая практика, ускоряя реабилитацию и мышечную память.",
+                retton_video_tip: "Олимпийский архив 1984 · <em>\"Mary Lou Retton knee surgery recovery visualization\"</em>",
+                
+                woods_era: "Альфа / Тета · 1997–2008",
+                woods_role: "Профессиональный гольфист, 15-кратный победитель мейджоров",
+                woods_body: "<strong>Проблема:</strong> Чтобы доминировать в профессиональном гольфе, Тайгеру требовался способ устранить сильнейшее давление ответственности, неуверенность в себе и отвлечение на тысячи зрителей, следящих за каждым его движением.<br><br><strong>Как помог гипноз:</strong> Начиная с 13 лет, Тайгер тренировался с клиническим психологом ВМС в отставке доктором Джеем Брунзой. С помощью гипноза Тайгер установил физический якорь — моргание перед ударом — чтобы мгновенно вызывать состояние глубокой концентрации Альфа/Тета. Позже Тайгер отмечал: <em>\"Гипноз является неотъемлемой частью того, что я делаю сейчас.\"</em>",
+                woods_why_text: "Моргание Тайгера перед ударом — этот миг тишины перед тем, как он подходит к мячу — является триггером гипнотического якоря. Физический якорь, установленный с помощью гипноза, который вводит его в состояние Альфа/Тета на ходу. Этому можно научить.",
+                woods_video_tip: "Golf Digest, декабрь 2002 · <em>\"Tiger Woods Jay Brunza hypnosis\"</em>",
+                
+                nav_next: "Карта успеха"
+            }
+        };
+
+        const activeLabels = {
+            en: 'English',
+            uk: 'Українська',
+            tr: 'Türkçe',
+            ru: 'Русский'
+        };
+
+        function setLanguage(lang) {
+            localStorage.setItem('unifiedIntakeLang', lang);
+            
+            // Update active label in button
+            const activeLangLabel = document.getElementById('activeLangLabel');
+            if (activeLangLabel) {
+                activeLangLabel.innerText = activeLabels[lang] || 'English';
+            }
+            
+            // Update dropdown active class
+            document.querySelectorAll('.lang-option').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Translate all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key] !== undefined) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
+        // Toggle dropdown
+        const langBtn = document.getElementById('langBtn');
+        const langDropdown = document.getElementById('langDropdown');
+        
+        if (langBtn && langDropdown) {
+            langBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                langDropdown.classList.toggle('show');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!langDropdown.contains(e.target) && e.target !== langBtn) {
+                    langDropdown.classList.remove('show');
+                }
+            });
+        }
+        
+        document.querySelectorAll('.lang-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const selectedLang = btn.getAttribute('data-lang');
+                setLanguage(selectedLang);
+                if (langDropdown) {
+                    langDropdown.classList.remove('show');
+                }
+            });
+        });
+        
+        // Initialize
+        const initialLang = localStorage.getItem('unifiedIntakeLang') || 'en';
+        setLanguage(initialLang);
+    </script>
+</body>
+
+</html>

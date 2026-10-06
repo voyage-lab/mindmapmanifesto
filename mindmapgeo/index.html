@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mind Map GEO — MindMapManifesto</title>
+<meta name="description" content="Generative Engine Optimization: get cited by AI, not just ranked. Write for every state of mind your customer can be in, then let the data show which ones buy.">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --char: #1a1918;
+    --paper: #e9e3d6;
+    --paper-dim: #b9b2a3;
+    --glass: rgba(220, 235, 240, .55);
+    --pencil: #6b655b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100svh;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 20px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .bg {
+    position: fixed; inset: 0; z-index: -2;
+    background: url("../iam.jpeg") center / cover no-repeat;
+    filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+    transform: scale(1.04);
+  }
+  .bg::after {
+    content: ""; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%);
+  }
+
+  nav { padding: 20px 16px; }
+  nav a { font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--paper-dim); text-decoration: none; }
+  nav a:hover { color: var(--paper); }
+
+  main { max-width: 720px; margin: 0 auto; padding: 1rem 16px 4rem; }
+
+  header { text-align: center; margin-bottom: 3rem; }
+  h1 {
+    font-family: "Caveat", cursive; font-weight: 700;
+    font-size: clamp(3rem, 10vw, 6rem); line-height: 1;
+    text-shadow: 0 4px 30px rgba(0,0,0,.8);
+  }
+  .sub {
+    margin: .6rem 0 0;
+    font-size: clamp(.85rem, 2vw, 1.1rem);
+    letter-spacing: .5em; text-transform: uppercase; color: var(--paper-dim);
+  }
+
+  /* paper notes, taped under the glass */
+  .note {
+    background: var(--paper); color: var(--char);
+    padding: 2.2rem clamp(1.2rem, 4vw, 2.4rem) 2rem;
+    border-radius: 2px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.75);
+    position: relative;
+    margin: 0 0 3rem;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(120,100,70,.12), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(90,75,55,.15), transparent 45%);
+  }
+  .note:nth-of-type(odd) { transform: rotate(-.6deg); }
+  .note:nth-of-type(even) { transform: rotate(.5deg); }
+  .note::before {
+    content: ""; position: absolute; top: -14px; left: 50%;
+    width: 120px; height: 28px; transform: translateX(-50%) rotate(2deg);
+    background: var(--glass); box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  }
+  .note h2 { font-family: "Caveat", cursive; font-size: clamp(2rem, 5vw, 2.5rem); line-height: 1.1; margin-bottom: .8rem; }
+  .note p + p { margin-top: .8rem; }
+  .note .margin { font-family: "Caveat", cursive; font-size: 1.4rem; color: var(--pencil); margin-top: 1rem; }
+
+  .loop { list-style: none; counter-reset: s; margin-top: .4rem; }
+  .loop li { counter-increment: s; position: relative; padding: .6rem 0 .6rem 2.6rem; border-bottom: 1px dashed rgba(26,25,24,.18); }
+  .loop li:last-child { border-bottom: 0; }
+  .loop li::before {
+    content: counter(s); position: absolute; left: 0; top: .15rem;
+    font-family: "Caveat", cursive; font-size: 1.9rem; color: var(--pencil);
+  }
+
+  .cta { text-align: center; }
+  .cta a {
+    display: inline-block; padding: .7rem 2rem;
+    font-family: "Caveat", cursive; font-size: 1.7rem;
+    color: var(--paper); background: var(--char); border: 1px solid var(--char);
+    text-decoration: none; transition: transform .3s, background .3s;
+  }
+  .cta a:hover { transform: translateY(-2px); background: #000; }
+  .note.cta { padding-bottom: 2.4rem; }
+
+  footer {
+    text-align: center; padding: 2rem 16px;
+    border-top: 1px solid #2a2a2a; color: var(--paper-dim); font-size: 1rem;
+    background: rgba(0,0,0,.6);
+  }
+  footer .hand { font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--paper); }
+
+  @media (max-width: 760px) { .note:nth-of-type(n) { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .cta a { transition: none; } }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<nav><a href="../index.html">← back to the map</a></nav>
+
+<main>
+  <header>
+    <h1>get cited, not ranked</h1>
+    <p class="sub">— mind map geo —</p>
+  </header>
+
+  <section class="note">
+    <h2>what is GEO?</h2>
+    <p>People have stopped searching. They ask ChatGPT, Claude, Gemini or Perplexity — and get one answer that names a few sources.</p>
+    <p><b>Generative Engine Optimization</b> is making sure one of those sources is you.</p>
+  </section>
+
+  <section class="note">
+    <h2>cast the net, then follow the data</h2>
+    <ol class="loop">
+      <li><b>Write for every state of mind.</b> The same customer asks a different question when they're curious, desperate or certain they've tried everything. We write for all of them — so no one slips through because nobody wrote for them.</li>
+      <li><b>Measure what sticks.</b> Every page is tagged to the state it was written for. We track where AI cites you, and which pages bring enquiries and sales.</li>
+      <li><b>Focus.</b> The data shows which states your buyers are really in. We double down there and stop spending where nobody buys.</li>
+    </ol>
+    <p class="margin">The method that maps those states stays under the glass. Everything it produces is yours.</p>
+  </section>
+
+  <section class="note cta">
+    <h2>work with me</h2>
+    <p style="margin-bottom:1.4rem">Tell me what you offer and who it's for. I'll show you what they're asking.</p>
+    <a href="../contact-me/index.html">map your market →</a>
+  </section>
+</main>
+
+<footer>
+  <p class="hand">— under the glass —</p>
+  <p>© <span id="yr"></span> MindMapManifesto · mindmapmanifesto.com</p>
+</footer>
+
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

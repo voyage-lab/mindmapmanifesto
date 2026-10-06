@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0d0d0d">
+<title>Divination — MindMapManifesto</title>
+<meta name="description" content="Draw a tarot spread under the glass: one card, three cards, fate & will, or the Celtic Cross. All 78 cards, upright and reversed.">
+<meta property="og:title" content="Divination — MindMapManifesto">
+<meta property="og:description" content="Ask. Shuffle. Choose your cards. A tarot reading under the glass.">
+<meta property="og:image" content="../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg class="defs" aria-hidden="true" focusable="false">
+  <filter id="rough" x="-3%" y="-3%" width="106%" height="106%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="0.9" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="wrap">
+  <header class="topbar">
+    <a class="home-link" href="../index.html">← back to the map</a>
+    <button class="pill" id="sound" type="button" aria-pressed="false">▶ play Under the Glass</button>
+  </header>
+
+  <main id="app">
+    <section class="hero" id="ask-view" aria-labelledby="title">
+      <div class="ask">
+        <h1 id="title">divination</h1>
+        <p class="sub">— a tarot reading under the glass —</p>
+        <p class="lede">Hold a question in mind, shuffle, and pick your cards from the spread. Seventy-eight cards, drawn in ink.</p>
+        <form id="ask-form" class="steps" novalidate>
+          <div class="step">
+            <label class="step-label" for="q"><b>I</b> ask</label>
+            <input id="q" name="q" type="text" maxlength="140" autocomplete="off" placeholder="What do you want to know?">
+          </div>
+          <div class="step">
+            <p class="step-label" id="spread-label"><b>II</b> choose a spread</p>
+            <div class="spreads" role="radiogroup" aria-labelledby="spread-label">
+              <button type="button" class="spread" role="radio" aria-checked="false" data-spread="one">
+                <span class="mini" data-mini="one"></span>
+                <span class="sp-name">one card</span>
+                <span class="sp-desc">A card for today, or a straight answer.</span>
+              </button>
+              <button type="button" class="spread" role="radio" aria-checked="true" data-spread="three">
+                <span class="mini" data-mini="three"></span>
+                <span class="sp-name">three cards</span>
+                <span class="sp-desc">Past, present, future.</span>
+              </button>
+              <button type="button" class="spread" role="radio" aria-checked="false" data-spread="fate">
+                <span class="mini" data-mini="fate"></span>
+                <span class="sp-name">fate &amp; will</span>
+                <span class="sp-desc">What is given, what you choose, where they meet.</span>
+              </button>
+              <button type="button" class="spread" role="radio" aria-checked="false" data-spread="cross">
+                <span class="mini" data-mini="cross"></span>
+                <span class="sp-name">celtic cross</span>
+                <span class="sp-desc">Ten cards. The whole situation.</span>
+              </button>
+            </div>
+          </div>
+          <div class="step opts">
+            <label class="check" for="rev"><input type="checkbox" id="rev" checked> read reversed cards</label>
+            <button class="btn" type="submit" id="shuffle-btn">shuffle the deck</button>
+          </div>
+        </form>
+      </div>
+      <div class="deck-art" id="deck-art" aria-hidden="true"></div>
+    </section>
+
+    <section class="table" id="table-view" hidden aria-labelledby="asked">
+      <div class="table-head">
+        <h2 class="asked" id="asked"></h2>
+        <p class="meta"><span id="spread-name"></span> · <button class="link" type="button" id="restart">start over</button></p>
+      </div>
+      <p class="hint" id="hint" aria-live="polite"></p>
+      <div class="board" id="board"></div>
+      <div class="fan" id="fan" role="group" aria-label="The deck, face down"></div>
+      <div class="table-actions"><button class="btn quiet" type="button" id="turn-all" hidden>turn them all</button></div>
+    </section>
+
+    <section class="reading" id="reading" hidden aria-labelledby="reading-h"></section>
+
+    <section class="journal" aria-labelledby="journal-h">
+      <h2 id="journal-h">the journal</h2>
+      <p class="note">Your last readings, kept in this browser only.</p>
+      <ol class="journal-list" id="journal-list"></ol>
+      <div class="journal-foot" id="journal-foot"></div>
+    </section>
+
+    <details class="deck-browser" id="deck-browser">
+      <summary><span>the seventy-eight</span> <small>every card, upright and reversed</small></summary>
+      <div id="deck-grid"></div>
+    </details>
+  </main>
+
+  <footer class="foot">
+    <p class="hand">— under the glass —</p>
+    <p>For reflection and entertainment. Cards are shuffled with your browser's cryptographic random generator, and nothing you type leaves this page.</p>
+    <p>© <span id="yr"></span> MindMapManifesto · mindmapmanifesto.com</p>
+  </footer>
+</div>
+
+<dialog class="dlg" id="dlg" aria-labelledby="dlg-title">
+  <form method="dialog" class="dlg-top"><button class="x" aria-label="Close">×</button></form>
+  <div class="dlg-body" id="dlg-body"></div>
+</dialog>
+
+<audio id="track" src="../Under_the_Glass.mp3" loop preload="none"></audio>
+
+<script src="cards-major.js"></script>
+<script src="cards-minor.js"></script>
+<script src="art.js"></script>
+<script src="art-major.js"></script>
+<script src="reading.js"></script>
+<script src="ui.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
