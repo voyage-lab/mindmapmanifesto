@@ -161,6 +161,7 @@
       <input id="email" name="email" type="email" autocomplete="email" required>
       <label for="msg">the message</label>
       <textarea id="msg" name="message" required></textarea>
+      <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px">
       <button type="submit">send it through the glass →</button>
       <p class="status" id="status" role="status" aria-live="polite"></p>
     </form>
@@ -193,6 +194,12 @@
     const f = e.target;
     const btn = f.querySelector('button');
     const status = document.getElementById('status');
+    // Honeypot: only bots fill the hidden "website" field. Pretend success, send nothing.
+    if (f.website.value) {
+      f.reset();
+      status.textContent = 'received. it’s under the glass now.';
+      return;
+    }
     const label = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'sending…';
