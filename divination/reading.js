@@ -26,7 +26,7 @@
             { k: "present", d: "Where you stand now." },
             { k: "future", d: "Where this is heading if nothing changes." }],
       at: [[0.5, 0.5], [1.95, 0.5], [3.4, 0.5]] },
-    fate: { name: "fate & will", labels: true, maxW: 160, uw: 3.9, uh: 1.62,
+    fate: { name: "fate x will", labels: true, maxW: 160, uw: 3.9, uh: 1.62,
       pos: [{ k: "fate", d: "What is given: circumstances outside your control." },
             { k: "will", d: "What is yours to choose." },
             { k: "where they meet", d: "What comes of the two together." }],
