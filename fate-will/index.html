@@ -136,6 +136,16 @@
   svg.graph .dot-will{fill:var(--cyan)}
   svg.graph text{fill:var(--muted);font-family:var(--sans);font-size:12px}
   svg.graph .xlab{font-size:11px}
+  svg.graph .axis-title{font-size:12px;letter-spacing:.08em;text-transform:uppercase;fill:var(--muted)}
+  svg.graph .val{font-size:15px;font-weight:600;paint-order:stroke;stroke:#0d0d0d;stroke-width:4px;stroke-linejoin:round}
+  svg.graph .val-fate{fill:var(--gold)}
+  svg.graph .val-will{fill:var(--cyan)}
+  svg.graph .val-even{fill:var(--text)}
+  svg.graph .hinge{fill:none;stroke:var(--text);stroke-width:1.5}
+  svg.graph .col-hit{fill:transparent;cursor:pointer}
+  svg.graph .col-band{fill:rgba(233,227,214,.06);opacity:0;transition:opacity .15s}
+  svg.graph .col.on .col-band{opacity:1}
+  .swatch.hinge{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--text);background:none}
 
   .codes{display:flex;gap:22px;flex-wrap:wrap;margin:14px 0 4px;font-size:.92rem}
   .codes b{color:var(--muted);font-weight:600}
@@ -156,6 +166,11 @@
   ul.periods .lead-fate{color:var(--gold)}
   ul.periods .lead-will{color:var(--cyan)}
   ul.periods .lead-even{color:var(--violet)}
+  ul.periods li{transition:border-color .15s, background .15s}
+  ul.periods li.on{border-color:var(--text);background:rgba(233,227,214,.06)}
+  ul.periods .nums{color:var(--muted);white-space:nowrap}
+  ul.periods .nums .f{color:var(--gold)}
+  ul.periods .nums .w{color:var(--cyan)}
 
   .square{
     display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;margin:6px auto 0;
@@ -225,7 +240,9 @@
   .btn-primary{background:var(--text);color:var(--bg-2);font-family:var(--hand);font-size:1.4rem;padding:6px 24px}
   .btn-ghost{font-family:var(--hand);font-size:1.4rem;padding:6px 22px}
   .field input{background:rgba(0,0,0,.4)}
-  svg.graph text{font-size:13px}
+  svg.graph text{font-size:14px}
+  svg.graph .xlab{font-size:13px}
+  svg.graph .val{font-size:17px}
   .s1{color:#a9c4d6}.s2{color:#a8c9a4}.s4{color:#e0a87a}
   .stars{display:none}
   footer.site a{color:var(--text)}
@@ -276,6 +293,7 @@
         <div class="legend">
           <span class="key"><span class="swatch fate"></span> Fate — the pull of circumstance</span>
           <span class="key"><span class="swatch will"></span> Will — the strength of your own hand</span>
+          <span class="key"><span class="swatch hinge"></span> Level — both lines meet</span>
         </div>
 
         <div class="chart-holder" id="chart-holder"></div>
@@ -285,7 +303,7 @@
           <span><b>Will code</b> <span class="digits will" id="code-will"></span></span>
         </div>
 
-        <p class="mini">Each point is one 12-year mark, from birth (age 0) to age 72.</p>
+        <p class="mini">How to read it: each column is one 12-year mark, from birth (age 0) to age 72. The gold number is the matching digit of your fate code, the blue number the matching digit of your will code — 0 is weakest, 9 strongest. Whichever line is higher in a column is read as leading that stretch of life; a ringed point means the two are level. Hover or tap a column to see its reading below.</p>
 
         <ul class="periods" id="periods"></ul>
       </div>
@@ -488,15 +506,23 @@
 
   // ---------- rendering ----------
   function renderGraph(fate, will, birthYear, step) {
-    var W = 760, H = 390, L = 44, R = 22, T = 18, B = 52;
+    var W = 760, H = 430, L = 62, R = 30, T = 40, B = 76;
     var pw = W - L - R, ph = H - T - B;
     var x = function (i) { return L + pw * i / 6; };
     var y = function (v) { return T + ph * (1 - v / 9); };
+    var colW = pw / 6;
 
     var parts = [];
     parts.push('<svg class="graph" viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
       'aria-label="Line graph comparing the fate code and will code across seven life periods." ' +
       'preserveAspectRatio="xMidYMid meet">');
+
+    // hover bands sit underneath everything else
+    for (var c = 0; c <= 6; c++) {
+      var bx = Math.max(L, x(c) - colW / 2), bw = Math.min(W - R, x(c) + colW / 2) - bx;
+      parts.push('<g class="col" data-i="' + c + '"><rect class="col-band" x="' + bx + '" y="' + T +
+        '" width="' + bw + '" height="' + ph + '"/></g>');
+    }
 
     for (var v = 0; v <= 9; v++) {
       parts.push('<line class="grid" x1="' + L + '" y1="' + y(v) + '" x2="' + (W - R) + '" y2="' + y(v) + '"/>');
@@ -504,12 +530,13 @@
     }
     for (var i = 0; i <= 6; i++) {
       parts.push('<line class="grid" x1="' + x(i) + '" y1="' + T + '" x2="' + x(i) + '" y2="' + (H - B) + '"/>');
-      var anchor = i === 0 ? "start" : (i === 6 ? "end" : "middle");
-      parts.push('<text class="xlab" x="' + x(i) + '" y="' + (H - B + 18) + '" text-anchor="' + anchor + '">' + (birthYear + step * i) + '</text>');
-      parts.push('<text class="xlab" x="' + x(i) + '" y="' + (H - B + 34) + '" text-anchor="' + anchor + '">age ' + (step * i) + '</text>');
+      parts.push('<text class="xlab" x="' + x(i) + '" y="' + (H - B + 20) + '" text-anchor="middle">' + (birthYear + step * i) + '</text>');
+      parts.push('<text class="xlab" x="' + x(i) + '" y="' + (H - B + 37) + '" text-anchor="middle">age ' + (step * i) + '</text>');
     }
     parts.push('<line class="axis" x1="' + L + '" y1="' + (H - B) + '" x2="' + (W - R) + '" y2="' + (H - B) + '"/>');
     parts.push('<line class="axis" x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (H - B) + '"/>');
+    parts.push('<text class="axis-title" x="' + (L + pw / 2) + '" y="' + (H - 8) + '" text-anchor="middle">Year · your age</text>');
+    parts.push('<text class="axis-title" transform="translate(16 ' + (T + ph / 2) + ') rotate(-90)" text-anchor="middle">Digit value (0–9)</text>');
 
     var poly = function (arr, cls) {
       return '<polyline class="' + cls + '" points="' +
@@ -518,15 +545,53 @@
     parts.push(poly(fate, "line-fate"));
     parts.push(poly(will, "line-will"));
 
-    fate.forEach(function (val, idx) {
-      parts.push('<circle class="dot-fate" cx="' + x(idx) + '" cy="' + y(val) + '" r="4"/>');
-    });
-    will.forEach(function (val, idx) {
-      parts.push('<circle class="dot-will" cx="' + x(idx) + '" cy="' + y(val) + '" r="4"/>');
-    });
+    // points + value labels; the higher value is labelled above its dot, the lower one below
+    for (var k = 0; k <= 6; k++) {
+      var f = fate[k], w = will[k], cx = x(k);
+      var labelY = function (val, above, gap) {
+        gap = gap || 0;
+        var ly = above ? y(val) - 11 - gap : y(val) + 22 + gap;
+        if (!above && ly > H - B - 4) ly = y(val) - 11 - gap;   // no room below the 0 line
+        return ly;
+      };
+      if (f === w) {
+        parts.push('<circle class="hinge" cx="' + cx + '" cy="' + y(f) + '" r="9"/>');
+        parts.push('<circle class="dot-fate" cx="' + (cx - 2.5) + '" cy="' + y(f) + '" r="4"/>');
+        parts.push('<circle class="dot-will" cx="' + (cx + 2.5) + '" cy="' + y(f) + '" r="4"/>');
+        parts.push('<text class="val val-even" x="' + cx + '" y="' + labelY(f, true, 6) + '" text-anchor="middle">' + f + '</text>');
+      } else {
+        parts.push('<circle class="dot-fate" cx="' + cx + '" cy="' + y(f) + '" r="5"/>');
+        parts.push('<circle class="dot-will" cx="' + cx + '" cy="' + y(w) + '" r="5"/>');
+        parts.push('<text class="val val-fate" x="' + cx + '" y="' + labelY(f, f > w) + '" text-anchor="middle">' + f + '</text>');
+        parts.push('<text class="val val-will" x="' + cx + '" y="' + labelY(w, w > f) + '" text-anchor="middle">' + w + '</text>');
+      }
+    }
+
+    // invisible hit areas on top, with a native tooltip
+    for (var h = 0; h <= 6; h++) {
+      var hx = Math.max(0, x(h) - colW / 2), hw = Math.min(W, x(h) + colW / 2) - hx;
+      parts.push('<rect class="col-hit" data-i="' + h + '" x="' + hx + '" y="0" width="' + hw + '" height="' + H + '">' +
+        '<title>' + (birthYear + step * h) + ' (age ' + (step * h) + '): fate ' + fate[h] + ', will ' + will[h] + '</title></rect>');
+    }
 
     parts.push("</svg>");
-    document.getElementById("chart-holder").innerHTML = parts.join("");
+    var holder = document.getElementById("chart-holder");
+    holder.innerHTML = parts.join("");
+
+    var setActive = function (idx) {
+      holder.querySelectorAll(".col").forEach(function (g) {
+        g.classList.toggle("on", g.getAttribute("data-i") === String(idx));
+      });
+      document.querySelectorAll("#periods li").forEach(function (li, n) {
+        li.classList.toggle("on", n === idx);
+      });
+    };
+    holder.querySelectorAll(".col-hit").forEach(function (r) {
+      var idx = Number(r.getAttribute("data-i"));
+      r.addEventListener("mouseenter", function () { setActive(idx); });
+      r.addEventListener("click", function () { setActive(idx); });
+    });
+    holder.querySelector("svg").addEventListener("mouseleave", function () { setActive(-1); });
   }
 
   function renderPeriods(fate, will, birthYear, step) {
@@ -541,8 +606,8 @@
       else { lead = "Level — a hinge point where the current can turn."; cls = "lead-even"; }
       var li = document.createElement("li");
       li.innerHTML = '<span class="when">' + when + "</span>" +
-        '<span class="' + cls + '">' + lead + " <span style=\"color:var(--muted)\">(" +
-        f + " vs " + w + ")</span></span>";
+        '<span class="' + cls + '">' + lead + ' <span class="nums">(<span class="f">fate ' +
+        f + '</span> · <span class="w">will ' + w + "</span>)</span></span>";
       ul.appendChild(li);
     }
   }
