@@ -11,9 +11,16 @@
   <style>
    #r0:checked~#bar{width:20.00%}#r1:checked~#bar{width:40.00%}#r2:checked~#bar{width:60.00%}#r3:checked~#bar{width:80.00%}#r4:checked~#bar{width:100.00%}#r0:checked~#stage #s0,#r1:checked~#stage #s1,#r2:checked~#stage #s2,#r3:checked~#stage #s3,#r4:checked~#stage #s4{opacity:1;clip-path:inset(0);pointer-events:all}#r0:checked~#dnav label:nth-child(1),#r1:checked~#dnav label:nth-child(2),#r2:checked~#dnav label:nth-child(3),#r3:checked~#dnav label:nth-child(4),#r4:checked~#dnav label:nth-child(5){width:22px;border-radius:3px;background:var(--s2);box-shadow:0 0 12px rgba(80,130,220,.3)}
   </style>
- </head>
+ <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../theme.css">
+</head>
  <body>
-  <input checked="" id="r0" name="s" type="radio"/>
+  <nav id="series" aria-label="Series navigation">
+  <a href="index.html">← back to the rules of the mind</a>
+  <a href="12-the-two-forces-controlling-every-decision-you-make.html" rel="prev">← 12</a>
+  <a href="14-the-fight-response.html" rel="next">14 →</a>
+</nav>
+<input checked="" id="r0" name="s" type="radio"/>
   <input id="r1" name="s" type="radio"/>
   <input id="r2" name="s" type="radio"/>
   <input id="r3" name="s" type="radio"/>
@@ -231,9 +238,7 @@
     </label>
    </div>
   </nav>
-  <p class="hint">
-   click dots to navigate
-  </p>
+  <p class="hint">← → keys or swipe</p>
   <script src="slides.js">
   </script>
  </body>

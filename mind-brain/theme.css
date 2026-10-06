@@ -1,0 +1,143 @@
+/* ============================================================
+   MindMapManifesto site theme for the mind x brain decks.
+   Loaded last in every deck so it overrides shared.css and each
+   deck's own <style> block: ink + glass background, Caveat
+   headings, Cormorant Garamond text, cards as taped paper notes.
+   ============================================================ */
+:root {
+  --ink: #0d0d0d;
+  --char: #1a1918;
+  --paper: #e9e3d6;
+  --paper-dim: #b9b2a3;
+  --glass: rgba(220, 235, 240, .55);
+  --pencil: #6b655b;
+  /* the decks' own accent variables, remapped to the site palette */
+  --w: var(--paper);
+  --s: var(--paper);
+  --s2: var(--paper-dim);
+  --r: var(--paper-dim);
+}
+
+body { background: var(--ink) !important; cursor: auto !important; }
+#cur, .orb, #pts, .pt, .particle { display: none !important; }
+.nb, .dot { cursor: pointer !important; }
+
+/* background: the site image, dimmed and blurred like the other sub-pages */
+#bg {
+  background: url("../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg") center / cover no-repeat !important;
+  filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+  transform: scale(1.04) !important;
+}
+.sc { background: radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%) !important; }
+
+/* any leftover blue accents (dots, rings, chips, glows) become warm greys */
+#stage { filter: grayscale(1) sepia(.12); }
+
+/* text on the dark background */
+#stage, #stage * {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  color: var(--paper) !important;
+  text-shadow: none !important;
+  border-color: rgba(233, 227, 214, .2) !important;
+  box-shadow: none !important;
+}
+#stage em { font-style: italic; }
+#stage .h1, #stage .h2, #stage h1, #stage h2, #stage h3,
+#stage [class*="title"], #stage .rule-num, #stage .q-num, #stage .slide-num,
+#stage :is(.h1, .h2, h1, h2, h3, [class*="title"]) * {
+  font-family: "Caveat", cursive !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.05 !important;
+}
+#stage .h1, #stage h1 { text-shadow: 0 4px 30px rgba(0,0,0,.8) !important; }
+#stage .h1 em, #stage .h2 em, #stage h1 em, #stage h2 em, #stage [class*="title"] em {
+  font-style: normal !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(233, 227, 214, .4) !important;
+  text-decoration-thickness: 2px;
+  text-underline-offset: .12em;
+}
+#stage .lbl, #stage .sub, #stage [class*="label"], #stage [class*="head"], #stage [class*="tag"] {
+  color: var(--paper-dim) !important;
+  letter-spacing: .35em !important;
+}
+#stage .bd { font-size: clamp(18px, 2.1vw, 28px) !important; line-height: 1.6 !important; }
+#stage [class$="-text"], #stage [class*="-text "] { font-size: max(1em, 17px); }
+.tri-bar, .item-dot, .freq-dot, .beh-dot, .ex-dot { background: var(--paper-dim) !important; }
+
+/* cards become paper notes taped under the glass */
+#stage :is(.card, .good, .rule-card, .need-card, .two-col, .fa) {
+  background: var(--paper) !important;
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(120,100,70,.12), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(90,75,55,.15), transparent 45%) !important;
+  border: 0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 30px 80px rgba(0,0,0,.75) !important;
+  backdrop-filter: none !important;
+  transform: rotate(-.6deg);
+  position: relative;
+  overflow: visible !important;
+}
+#stage :is(.card, .good, .rule-card, .need-card, .two-col, .fa)::before {
+  content: "" !important; display: block !important;
+  position: absolute !important; top: -14px !important; left: 50% !important; right: auto !important;
+  width: 120px !important; height: 28px !important;
+  transform: translateX(-50%) rotate(2deg) !important;
+  background: var(--glass) !important; box-shadow: 0 2px 6px rgba(0,0,0,.25) !important;
+}
+#stage :is(.card, .good, .rule-card, .need-card, .two-col, .fa) * {
+  color: var(--char) !important;
+  border-color: rgba(26, 25, 24, .18) !important;
+}
+#stage :is(.card, .good, .rule-card, .need-card, .two-col, .fa) :is([class*="label"], [class*="head"], [class*="tag"]) {
+  color: var(--pencil) !important;
+}
+#stage :is(.card, .good, .rule-card, .need-card, .two-col, .fa) em {
+  text-decoration-color: rgba(26, 25, 24, .35) !important;
+}
+#stage :is(.col-half, .fa-half) { background: transparent !important; }
+
+#stage .cta {
+  font-family: "Caveat", cursive !important; font-size: 1.6rem !important;
+  letter-spacing: 0 !important; text-transform: none !important;
+  color: var(--paper) !important; background: var(--char) !important;
+  border: 1px solid var(--char) !important; padding: .5rem 1.8rem !important;
+  backdrop-filter: none !important;
+}
+
+/* progress bar + slide controls */
+#bar { background: var(--paper-dim) !important; box-shadow: none !important; }
+.nb {
+  background: rgba(0,0,0,.55) !important; border: 1px solid var(--glass) !important;
+  color: var(--paper) !important; box-shadow: none !important;
+}
+.nb:hover { background: #000 !important; }
+.dot { background: rgba(233,227,214,.3) !important; box-shadow: none !important; }
+.dot.on { background: var(--paper) !important; }
+#r0:checked ~ #dnav .dot[for="r0"], #r1:checked ~ #dnav .dot[for="r1"], #r2:checked ~ #dnav .dot[for="r2"],
+#r3:checked ~ #dnav .dot[for="r3"], #r4:checked ~ #dnav .dot[for="r4"], #r5:checked ~ #dnav .dot[for="r5"],
+#r6:checked ~ #dnav .dot[for="r6"], #r7:checked ~ #dnav .dot[for="r7"],
+#r8:checked ~ #dnav .dot[for="r8"], #r9:checked ~ #dnav .dot[for="r9"] { background: var(--paper) !important; }
+.hint { font-family: "Caveat", cursive !important; font-size: 1.1rem !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--paper-dim) !important; }
+
+/* series nav: "back to the map" style links */
+#series {
+  position: fixed; z-index: 100; display: flex; gap: 1.2rem; align-items: baseline;
+  top: 14px !important; left: 16px !important; right: 16px !important;
+  letter-spacing: 0 !important; text-transform: none !important;
+}
+#series a { text-decoration: none; }
+#series a[href="index.html"] { order: -1; margin-right: auto; }
+#series a {
+  font-family: "Caveat", cursive !important; font-size: 1.4rem !important;
+  color: var(--paper-dim) !important; text-shadow: 0 2px 12px rgba(0,0,0,.8);
+}
+#series a:hover, #series a:focus-visible { color: var(--paper) !important; }
+body.capture #series { display: none !important; }
+
+@media (max-width: 760px) {
+  #stage :is(.card, .good, .rule-card, .need-card, .two-col, .fa) { transform: none; }
+  #series a { font-size: 1.2rem !important; }
+}
