@@ -60,7 +60,7 @@ button { font: inherit; color: inherit; }
   gap: clamp(24px, 4vw, 64px); align-items: center; padding-block: clamp(4px, 2vw, 24px) clamp(24px, 4vw, 48px);
 }
 .hero h1 { font-family: var(--hand); font-weight: 700; font-size: clamp(3.6rem, 9vw, 6.4rem); line-height: .9; margin: 0; }
-.sub { margin: .55rem 0 0; letter-spacing: .38em; text-transform: uppercase; font-size: .76rem; color: var(--paper-dim); }
+.sub { margin: .6rem 0 0; letter-spacing: .5em; text-transform: uppercase; font-size: clamp(.85rem, 2vw, 1.1rem); color: var(--paper-dim); }
 .lede { max-width: 38ch; font-size: 1.15rem; font-style: italic; color: var(--paper-dim); margin: 1.1rem 0 0; }
 .steps { display: grid; gap: 1.5rem; margin-top: 2rem; }
 .step { display: grid; gap: .55rem; min-width: 0; }
