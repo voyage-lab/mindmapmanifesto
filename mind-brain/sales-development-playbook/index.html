@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Sales Development Playbook — MindMapManifesto</title>
+  <meta name="description" content="Notes on The Early Stage Sales Development Playbook by Kartheek Mulpuri and Ian Grover: preparation, outreach, lead acceptance, and the little things that make a new SDR succeed."/>
+  <meta property="og:title" content="The Sales Development Playbook"/>
+  <meta property="og:description" content="Notes on The Early Stage Sales Development Playbook by Kartheek Mulpuri and Ian Grover: preparation, outreach, lead acceptance, and the little things that make a new SDR succeed."/>
+  <meta property="og:image" content="../../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #050507; color: #e8e8ed; overflow-x: hidden; }
+    @keyframes mmm-reveal { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+    @keyframes mmm-fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes mmm-blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+    @keyframes waveExpand { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; } }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../theme-app.css"/>
+</head>
+<body>
+  <nav class="mb-nav" aria-label="Series navigation"><a href="../index.html">← back to mind x brain</a></nav>
+  <p class="mb-hint" aria-hidden="true">← → keys or swipe</p>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const SERIES = 'The SDR Playbook';
+    const ACCENT = '#818cf8';
+    const NUMBERS = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen','Twenty'];
+
+    /* ── Shared Components ───────────────────────────────────────── */
+
+    function ProgressBar({ pct }) {
+      return (
+        <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:50, height:3, background:'#14141c' }}>
+          <div style={{ height:'100%', width:`${pct}%`, background:ACCENT, transition:'width 0.5s ease' }}/>
+        </div>
+      );
+    }
+
+    function Eyebrow({ children }) {
+      return (
+        <div style={{ fontSize:'0.7rem', letterSpacing:'0.2em', textTransform:'uppercase', color:ACCENT, marginBottom:16, display:'flex', alignItems:'center', gap:10, fontWeight:500 }}>
+          <span style={{ width:28, height:1, background:ACCENT, opacity:0.5, flexShrink:0, display:'block' }}/>
+          {children}
+        </div>
+      );
+    }
+
+    function StepIndicator({ current, total }) {
+      return (
+        <div style={{ fontSize:'0.72rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'#8888a0' }}>
+          Part <span style={{ color:ACCENT, fontWeight:600 }}>{current}</span> of {total}
+        </div>
+      );
+    }
+
+    function ArrowRight({ size = 16 }) {
+      return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>);
+    }
+
+    function ArrowLeft({ size = 16 }) {
+      return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>);
+    }
+
+    function BackBtn({ onClick }) {
+      return (
+        <button onClick={onClick} style={{ display:'flex', alignItems:'center', gap:6, color:'#8888a0', background:'none', border:'none', cursor:'pointer', fontSize:'0.82rem' }}>
+          <ArrowLeft size={15}/> Back
+        </button>
+      );
+    }
+
+    function BottomNav({ onBack, onNext, nextLabel = 'Continue' }) {
+      return (
+        <div style={{ display:'flex', justifyContent: onBack ? 'space-between' : 'flex-end', alignItems:'center', gap:16, marginTop:64, paddingTop:32, borderTop:'1px solid #1e1e2a' }}>
+          {onBack && <BackBtn onClick={onBack}/>}
+          <button onClick={onNext}
+            style={{ display:'inline-flex', alignItems:'center', gap:9, padding:'13px 26px', borderRadius:12, fontSize:'0.875rem', fontWeight:600, border:'none', cursor:'pointer', background:`linear-gradient(135deg,${ACCENT},#4f46e5)`, color:'#fff', textAlign:'left' }}>
+            {nextLabel} <ArrowRight/>
+          </button>
+        </div>
+      );
+    }
+
+    function InsightCard({ label = 'Key Insight', children }) {
+      return (
+        <div style={{ background:'#0d0d12', border:`1px solid ${ACCENT}33`, borderRadius:18, padding:34, marginBottom:36, position:'relative' }}>
+          <div style={{ fontSize:'0.68rem', letterSpacing:'0.2em', textTransform:'uppercase', color:ACCENT, marginBottom:14, fontWeight:600 }}>{label}</div>
+          <p style={{ fontSize:'clamp(1.05rem,2.4vw,1.3rem)', lineHeight:1.72, color:'#e8e8ed', position:'relative' }}>{children}</p>
+        </div>
+      );
+    }
+
+    function Footer() { return <footer style={{ textAlign:'center', marginTop:56, color:'#8888a0', fontSize:'0.75rem' }}>© 2026 MindMapManifesto.com</footer>; }
+    function PageWrapper({ children, maxWidth = 820 }) { return <div style={{ position:'relative', zIndex:1, maxWidth, margin:'0 auto', padding:'60px 24px 100px' }}>{children}</div>; }
+
+    function Prose({ children }) {
+      return <p style={{ fontSize:'clamp(0.95rem,2.1vw,1.1rem)', lineHeight:1.88, color:'rgba(220,215,240,0.72)', marginBottom:22 }}>{children}</p>;
+    }
+
+    function PullQuote({ children }) {
+      return (
+        <div style={{ borderLeft:`2px solid ${ACCENT}40`, paddingLeft:24, marginBottom:30, marginTop:4 }}>
+          <p style={{ fontStyle:'italic', fontSize:'clamp(1rem,2.2vw,1.18rem)', lineHeight:1.78, color:`${ACCENT}a0` }}>{children}</p>
+        </div>
+      );
+    }
+
+    /* a paper note with an optional label, title and intro line */
+    function Card({ label, title, intro, children }) {
+      return (
+        <div style={{ background:'#0d0d12', border:`1px solid ${ACCENT}2e`, borderRadius:16, padding:'26px 28px', marginBottom:30 }}>
+          {label && <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:`${ACCENT}99`, marginBottom: title ? 8 : 16, fontWeight:600 }}>{label}</div>}
+          {title && <h3 style={{ fontSize:'1.35rem', fontWeight:700, color:'#e8e8ed', marginBottom:14 }}>{title}</h3>}
+          {intro && <p style={{ fontSize:'1rem', lineHeight:1.65, color:'#b8b8c8', marginBottom:16 }}>{intro}</p>}
+          {children}
+        </div>
+      );
+    }
+
+    function Points({ items }) {
+      return (
+        <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+          {items.map((t, i) => (
+            <div key={i} style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+              <div style={{ width:5, height:5, borderRadius:'50%', background:ACCENT, flexShrink:0, opacity:0.6, marginTop:12 }}/>
+              <p style={{ fontSize:'1rem', lineHeight:1.65, color:'rgba(220,215,240,0.78)' }}>{t}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function Steps({ items }) {
+      return (
+        <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+          {items.map((t, i) => (
+            <div key={i} style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+              <div style={{ width:28, height:28, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, border:`1px solid ${ACCENT}55`, fontSize:'0.78rem', marginTop:1 }}>{i + 1}</div>
+              <p style={{ fontSize:'1rem', lineHeight:1.65, color:'rgba(220,215,240,0.78)' }}>{t}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function Terms({ items }) {
+      return (
+        <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+          {items.map(([t, d], i) => (
+            <div key={i} style={{ borderLeft:`2px solid ${ACCENT}4d`, paddingLeft:14 }}>
+              <div style={{ fontWeight:700, fontSize:'1.1rem', color:'#e8e8ed', marginBottom:2 }}>{t}</div>
+              <p style={{ fontSize:'0.95rem', color:'#8888a0', lineHeight:1.6 }}>{d}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    /* lead qualification flow */
+    function FlowBox({ children }) {
+      return <div style={{ background:'rgba(129,140,248,0.06)', border:`1px solid ${ACCENT}33`, borderRadius:10, padding:'12px 16px', fontSize:'0.95rem', lineHeight:1.55, textAlign:'center' }}>{children}</div>;
+    }
+    function FlowRow({ children }) {
+      return <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>{children}</div>;
+    }
+    function Down() {
+      return <div aria-hidden="true" style={{ textAlign:'center', fontSize:'1.2rem', lineHeight:1, margin:'10px 0', color:ACCENT }}>↓</div>;
+    }
+
+    function Chapter({ children, n, label, title, nextLabel, onBack, onNext }) {
+      return (
+        <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+          <ProgressBar pct={n / PARTS.length * 100}/>
+          <PageWrapper>
+            <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:56 }}>
+              <BackBtn onClick={onBack}/>
+              <StepIndicator current={n} total={PARTS.length}/>
+            </nav>
+            <div style={{ marginBottom:36, animation:'mmm-fadeUp 0.7s ease-out' }}>
+              <Eyebrow>{label}</Eyebrow>
+              <h1 style={{ fontSize:'clamp(1.9rem,4.6vw,2.95rem)', fontWeight:700, lineHeight:1.18, marginBottom:8, color:'#e8e8ed' }}>{title}</h1>
+            </div>
+            {children}
+            <BottomNav onBack={onBack} onNext={onNext} nextLabel={nextLabel}/>
+            <Footer/>
+          </PageWrapper>
+        </div>
+      );
+    }
+
+    /* ── Screen 0: Landing ───────────────────────────────────────── */
+    function LandingScreen({ onNext }) {
+      return (
+        <div style={{ background:'#000', minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:820, display:'flex', flexDirection:'column', alignItems:'center', gap:36, animation:'mmm-reveal 1.5s cubic-bezier(0.16,1,0.3,1) forwards' }}>
+            <div style={{ fontSize:'0.65rem', letterSpacing:'0.6em', color:'rgba(129,140,248,0.5)', textTransform:'uppercase', fontWeight:700 }}>Notes on the book by Kartheek Mulpuri &amp; Ian Grover</div>
+            <div>
+              <h1 style={{ fontSize:'clamp(2.8rem,10vw,6rem)', fontWeight:700, letterSpacing:'-0.02em', color:'white', marginBottom:10 }}>The Sales Development Playbook</h1>
+              <div style={{ fontSize:'clamp(0.9rem,2.2vw,1.3rem)', fontWeight:300, color:'rgba(255,255,255,0.4)', letterSpacing:'0.1em' }}>A Guide for the Newly Hired SDR · Nineteen Parts</div>
+            </div>
+            <div style={{ maxWidth:600, borderLeft:'2px solid rgba(129,140,248,0.3)', paddingLeft:26, textAlign:'left' }}>
+              <p style={{ fontStyle:'italic', fontSize:'clamp(0.95rem,1.9vw,1.13rem)', lineHeight:1.8, color:'rgba(255,255,255,0.55)' }}>
+                “The material here is intended to serve as a framework. Every company is different and every SDR has their own style. You will have to iterate to find solutions that work for you.”
+              </p>
+            </div>
+            <button onClick={onNext}
+              style={{ background:'rgba(129,140,248,0.08)', border:'1px solid rgba(129,140,248,0.28)', borderRadius:9999, padding:'18px 52px', fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.4em', textTransform:'uppercase', color:'white', cursor:'pointer' }}>
+              Begin
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── Parts ───────────────────────────────────────────────────── */
+    const PARTS = [
+      {
+        title: 'Why This Playbook Exists',
+        body: <>
+          <Prose>Kartheek Mulpuri spent ten years in tech: he ran sales operations at an early-stage company that went on to an exit, built a lead-generation strategy that brought American consumer electronics brands to the Middle East, and saw dozens of sales development methods up close as a venture capitalist. Ian Grover has prospected 4- to 7-figure deals at early-, mid- and late-stage companies, and had to rebuild much of his playbook moving from Yelp, a public company, to Brickwork, a 19-person SaaS startup.</Prose>
+          <Prose>They found plenty of good blog posts, but no complete guide for an SDR (a sales development representative) at an early-stage company. So they wrote one.</Prose>
+          <InsightCard label="The problem">There have never been more early-stage SaaS companies: 11,288 as of November 2018, per Crunchbase, and growing. That means more new SDRs than ever are hired into imperfect situations, with no structured training, few tools and little process. Hundreds of them <em>burn out and churn within their first year.</em></InsightCard>
+          <PullQuote>Treat everything here as a framework, not a script. Adapt it to your company, your buyers and your own style, and keep iterating.</PullQuote>
+        </>,
+      },
+      {
+        title: 'The Team and the SDR’s Job',
+        body: <>
+          <Prose>Early stage here means pre-Series B, or fewer than 30 people. At that size, a sales team usually looks like this:</Prose>
+          <Card label="Who’s on the team">
+            <Terms items={[
+              ['The leader', 'The CEO or a Head of Sales runs the team.'],
+              ['Account executives (AEs)', 'Usually one to three. They work to close leads once a lead looks like a fit for the product.'],
+              ['Marketing', 'Maybe one person, likely junior or mid-level.'],
+              ['Customer success managers (CSMs)', 'One or two. They take over the day-to-day relationship once the AEs close a customer.'],
+              ['Sales development reps (SDRs)', 'One or two. That’s you: you own the lead qualification process.'],
+            ]}/>
+          </Card>
+          <Prose>Owning qualification means every lead passes through your hands before an AE spends time on it. This is the whole path:</Prose>
+          <Card label="How a lead moves">
+            <FlowRow>
+              <FlowBox><strong>Inbound:</strong> someone at a business shows interest in your product, usually by leaving their contact details.</FlowBox>
+              <FlowBox><strong>Outbound:</strong> you or marketing build a list of people at companies that could be a fit.</FlowBox>
+            </FlowRow>
+            <Down/>
+            <FlowBox>You engage the lead through a <strong>campaign</strong>: a planned string of emails, calls, LinkedIn messages and other touches.</FlowBox>
+            <Down/>
+            <FlowRow>
+              <FlowBox><strong>Interested:</strong> the lead takes an initial call with you, and you schedule a call for the AE.</FlowBox>
+              <FlowBox><strong>Not interested:</strong> the lead comes out of the active pipeline. Try to re-engage in 6–8 weeks.</FlowBox>
+            </FlowRow>
+            <Down/>
+            <FlowRow>
+              <FlowBox><strong>AE accepts:</strong> the AE takes the first call. If they want to keep talking, the lead becomes an <strong>opportunity.</strong></FlowBox>
+              <FlowBox><strong>AE rejects:</strong> you mark the lead disqualified in the CRM and email them that the team won’t move forward.</FlowBox>
+            </FlowRow>
+          </Card>
+          <InsightCard label="Three stages">The book splits the SDR’s work into <em>preparation, outreach and lead acceptance.</em> These notes follow the same order.</InsightCard>
+        </>,
+      },
+      {
+        title: 'Onboarding: Learn the Business',
+        body: <>
+          <Prose>Onboarding can make or break you in this role. It may be your first full-time job, your first sales job, or your first job in this industry, and at an early-stage company the team often hasn’t worked out or written down how qualification works. Expect to train yourself, test which techniques work, and figure out why they work in the industries you prospect.</Prose>
+          <InsightCard label="Ramp faster">Per TOPO, the average SDR takes about <em>three months</em> to ramp to full productivity. Working through it systematically gets you there much sooner.</InsightCard>
+          <Card label="Start with the company">
+            <Points items={[
+              'What does the whole team look like today, and who leads it?',
+              'What are the short-term and long-term goals?',
+              'What milestones has the company hit recently?',
+              'Is the culture engineer-driven or sales-driven?',
+              'Who manages sales, who does your manager report to, and what does the sales org chart look like?',
+              'Who are your go-to people for questions?',
+              'How are decisions made in sales, and how should you work with marketing?',
+              'What have lead-generation results looked like so far, and what has been hard?',
+              'How is reporting done, and which metrics do the company and the sales team track?',
+              'Are there regular meetings on the status of leads and opportunities? How often, and when?',
+            ]}/>
+          </Card>
+        </>,
+      },
+      {
+        title: 'Learn the Product and the Market',
+        body: <>
+          <Prose>Next, learn the product the way a customer would. Get a full demo from an AE or someone else on the team, because it’s hard to really understand a product without one. Then keep up with new features and modules as they ship.</Prose>
+          <Card label="The product">
+            <Points items={[
+              'What does it do, and what is it meant to do? What’s the long-term vision?',
+              'What’s in development, and where does it fall short today?',
+              'Why wouldn’t a company buy it?',
+              'What value does it deliver, how do customers measure success, and how do they calculate their ROI?',
+              'How satisfied are customers? What’s the Net Promoter Score?',
+              'What makes it unique? Is it a must-have or a luxury?',
+              'How is it positioned, and does it need an implementation period? If so, how long?',
+            ]}/>
+          </Card>
+          <Card label="The market">
+            <Points items={[
+              'Which markets do you target, by industry and buyer size?',
+              'What is your Ideal Customer Profile (ICP): the customer who gets the most value from the product?',
+              'How big is each market, how fast is it growing or shrinking, and how are the markets prioritized?',
+              'Who are the competitors, and how does your price compare?',
+              'If you’re more expensive, does better functionality justify it?',
+            ]}/>
+          </Card>
+          <InsightCard label="The shortcut">Shadow your AEs on calls with buyers. Those conversations answer most of these questions, and most AEs were SDRs once, so they’ll understand the ask. Aim to have most of the answers <em>within your first couple of weeks.</em></InsightCard>
+          <Prose>Management and employees tend to oversell the product and the market, so balance their view with outside research: user reviews on G2, Capterra and Quora, Glassdoor for the internal picture, and Crunchbase for funding history. Ask these questions again every couple of quarters. At a startup, the answers change fast.</Prose>
+        </>,
+      },
+      {
+        title: 'Know the Account',
+        body: <>
+          <Prose>Before you pursue a company (an account), build a baseline profile of it. Bigger deals deserve more detail: the stakes are higher and more information is public. Use the profile to decide whether to pursue the account at all, and to sharpen your outreach so you stand out from SDRs at competitors. Most of it is on the company’s website, Google and LinkedIn, and all of it belongs in your CRM.</Prose>
+          <Card label="What to capture">
+            <Terms items={[
+              ['About', 'Headquarters and satellite offices, revenue, market cap if it’s public, headcount, and industry-specific numbers (store count for a retailer, say).'],
+              ['Recent news and strategy', 'For a public company, the latest investor presentation in the Investor Relations section of its site. For any company, Google News, and especially quotes from the CEO.'],
+              ['Current solution', 'What they use today, which your team wants to replace. If it’s customer-facing, use it the way a customer would. Brickwork powered store locators and appointment booking for retailers, so the team could try a prospect’s existing tool on its website and spot the pain points.'],
+              ['Contacts', 'Names and titles of the likely decisionmaker and stakeholders: 5–10 for a large account, more for a mega account like a Wall Street bank, fewer for small ones.'],
+            ]}/>
+          </Card>
+        </>,
+      },
+      {
+        title: 'Know the Buyer',
+        body: <>
+          <Prose>There’s usually more than one type of buyer, and many of them can’t approve a purchase but can champion it internally. Each type is a buyer persona. Industry changes the persona, too: a VP of Finance in oil and gas is not a VP of Finance in healthcare.</Prose>
+          <Card label="Build each persona">
+            <Terms items={[
+              ['Role', 'What the job is, the day-to-day, the skills, education, knowledge and tools it needs, and who they report to.'],
+              ['Industry', 'How big the market is, whether it’s growing or shrinking, what customers it serves, and whether the buyer works at a large or small company.'],
+              ['Goals', 'How their performance is measured, and what success looks like in the role.'],
+              ['Networking', 'Their associations, how connected and active they are on LinkedIn, the sites they read for news and best practices, and the events they attend.'],
+              ['Preferences', 'How they like to deal with vendors: email, phone, in person, or something else.'],
+            ]}/>
+          </Card>
+          <InsightCard label="Start with a hypothesis">Treat your team’s answers as the starting hypothesis, because at an early-stage company they may be wrong, and update them as real conversations come in. <em>Understanding the buyer is what gets you more meetings.</em></InsightCard>
+          <Card label="Map how the account buys">
+            <Points items={[
+              'Who makes the final go/no-go decision? If more than one person, who are they?',
+              'Does anyone else need to approve a purchase?',
+              'Who on the buyer’s team leads the evaluation?',
+              'Who will actually use the product, and what are their personas?',
+              'Who could be your internal champion?',
+              'Who reports to whom?',
+            ]}/>
+          </Card>
+        </>,
+      },
+      {
+        title: 'Find the Champion',
+        body: <>
+          <Prose>In a big deal, reaching the decisionmaker first can backfire. They’re often too busy to evaluate the product themselves and hand the diligence to someone who may be a detractor, or simply not interested. That can kill the deal from the start.</Prose>
+          <InsightCard label="Reach the champion first">A champion doesn’t make the decision but advocates for you internally. Ask your team who the champions were in past deals. They’re often <em>one or two levels below the decisionmaker:</em> if you sell a content management system and the CMO decides, look for a VP of Marketing or a Director of Content Marketing.</InsightCard>
+          <Prose>Watch how your best AEs “deputize” champions. They spot the rising star in an organization, build a strong relationship, and work with that person to get the deal over the line. One sign the relationship is strong: they text each other often.</Prose>
+          <Card label="What has worked with each persona">
+            <Points items={[
+              'What results have you had with each persona?',
+              'What price is each willing to pay?',
+              'What’s the best way to get them to respond?',
+              'Which three features do they care about most, and least?',
+              'Which value proposition do they care about most, and least?',
+            ]}/>
+          </Card>
+        </>,
+      },
+      {
+        title: 'Build Your Stack',
+        body: <>
+          <Prose>You could do the job with nothing but email, a phone and Google. It would be slow. Work with whoever owns the budget to get tools that make the most of your time. These are the tools the authors named in 2020; the categories matter more than the brands.</Prose>
+          <Card label="The CRM" intro="The foundation: a record of every interaction with prospects and customers. Without one, account knowledge lives in someone’s head and leaves with them, teammates contact accounts with no context and look disorganized, and leadership can’t see the real health of the business. Most teams graduate from a basic tool to an advanced one.">
+            <Terms items={[
+              ['Google Sheets', 'The bare minimum if there’s no time or budget for a real CRM. Move off it as soon as you can; it doesn’t scale.'],
+              ['HubSpot', 'Well liked and free, though you’ll likely end up buying its paid products, like the Marketing Hub.'],
+              ['Pipedrive', 'A favorite of small and mid-sized businesses, with plans that started at $15 per user per month.'],
+              ['Salesforce', 'Where most companies end up at scale, with a huge ecosystem of products built on top of it.'],
+            ]}/>
+          </Card>
+          <Card label="Data, outreach and the rest">
+            <Terms items={[
+              ['Lead lists', 'LinkedIn Sales Navigator: search 600M+ members by geography, company size, industry and title, and follow a lead’s activity for things to mention in outreach.'],
+              ['Contact details', 'ZoomInfo, Hunter.io, RocketReach and SalesIntel. Accuracy varies. When they fail, the usual email patterns are firstname@, first initial plus last name@, or firstname.lastname@ the company’s domain.'],
+              ['Sales execution', 'SalesLoft and Outreach.io (or HubSpot) to personalize, automate and track outreach, so you and your manager can see what is and isn’t working. Push for one with good analytics.'],
+              ['Account-based marketing', 'Terminus and Engagio, for running personalized campaigns at a set of target accounts together with marketing.'],
+              ['Extras', 'Emissary (talk to an account’s former employees), Calendly (let prospects pick a time), Sendoso (direct mail), Intercom and Drift (chat with visitors on your website).'],
+              ['Community', 'The job can feel lonely. Bravado and Quora for answers from peers; SaaStr and SalesHacker for free sales development content.'],
+            ]}/>
+          </Card>
+        </>,
+      },
+      {
+        title: 'Work With Marketing',
+        body: <>
+          <Prose>Marketing is one of your key partners. Put their collateral (case studies, white papers, brochures, videos explaining the product) into your outreach. Buyers engage more with emails that give them something of value.</Prose>
+          <InsightCard label="Inbound is gold">Good marketing, organic (SEO, blogs, podcasts) and paid (Google Ads), brings in inbound leads. They’re usually <em>worth more than outbound leads:</em> they’ve already shown interest, and many are already in a buying cycle. But they go nowhere until sales qualifies them, and the person taking that first call is often you.</InsightCard>
+          <Card label="Set up the handoff">
+            <Points items={[
+              'Agree with marketing on who qualifies an inbound lead before anyone responds to it.',
+              'Set a response time for leads that meet the criteria. Many teams use 24 hours; the authors suggest never going past 72.',
+              'Stay current on the collateral available for your campaigns.',
+            ]}/>
+          </Card>
+          <PullQuote>Momentum matters enormously in a sales process. Do your part to keep it going.</PullQuote>
+        </>,
+      },
+      {
+        title: 'Campaigns and ABM Tiers',
+        body: <>
+          <Prose>By the time you start outreach, you should already have your first emails and follow-ups drafted and loaded into your sales execution tool, your prospect and contact profiles built, and value points written for each persona and business.</Prose>
+          <Prose>The channels that work haven’t changed much: email, phone (lukewarm and cold calls) and LinkedIn. Events and conferences work too. Meet prospects there, or run campaigns that book meetings for your AEs and leaders in and around the venue. For small businesses, like a local restaurant, a message to their Facebook or Twitter account can be worth trying. Direct mail, especially handwritten notes or swag, can work but is expensive.</Prose>
+          <InsightCard label="Stand out">There are over 4,000 marketing technology vendors alone. Your prospects are flooded with outreach, so <em>yours has to be noticeably better.</em></InsightCard>
+          <Prose>A campaign is a structured effort to spark interest in your product from a pool of leads. Going after thousands of accounts is a different game from going after twenty. For a short, high-stakes list, account-based marketing (ABM) is the method of choice. You, the AE and marketing coordinate closely, often splitting the contacts so the AE takes the most senior people, and each message speaks to the person’s role: pipeline efficiency and close rates for a sales leader, acquisition and conversion for a marketer.</Prose>
+          <Card label="Three tiers (via Engagio)">
+            <Terms items={[
+              ['Tier 1 · fewer than 50 accounts', 'Deep research and one-to-one personalization, coordinated between you, the AE, marketing and sometimes executives. Outreach can run for months.'],
+              ['Tier 2 · up to 200 accounts', 'Pull the key data points, especially numbers. Personalize by industry, solution or persona, working closely with marketing. Runs over several weeks.'],
+              ['Tier 3 · 1,000+ accounts', 'Little room for personalization. Send waves of communication with marketing over a few weeks.'],
+            ]}/>
+          </Card>
+        </>,
+      },
+      {
+        title: 'The Cadence',
+        body: <>
+          <Prose>Every campaign needs a cadence: how often, and through which channels, you “touch” each contact. Opinions vary a lot:</Prose>
+          <Card label="Examples">
+            <Points items={[
+              'A CRO at a company with six-figure contracts had his SDRs touch each contact seven times in two weeks.',
+              'A blogger on Outreach.io’s site suggests 42 touches in 90 days for marquee accounts, and 7 in 20 days for influencers who aren’t decisionmakers.',
+            ]}/>
+          </Card>
+          <Card label="Ian’s favorite (from Engagio)" intro="For high five-figure to low six-figure deals in retail:">
+            <Terms items={[
+              ['Day 0', 'Email in the morning, phone call in the afternoon.'],
+              ['Day 3', 'Phone call in the morning; follow-up email if you reach voicemail.'],
+              ['Day 5', 'LinkedIn message or other social media, in the afternoon.'],
+              ['Day 7', 'Email in the morning.'],
+              ['Day 9', 'Phone call in the morning.'],
+              ['Day 15', 'Phone call and email in the morning.'],
+            ]}/>
+          </Card>
+          <InsightCard label="The breakup email">No reply after Day 15? Send a breakup email. Acknowledge you haven’t heard back and leave a clear next step: <em>“I’ll check back in with you in three months,”</em> or “If it makes sense to connect later, just send me a note.”</InsightCard>
+          <Prose>The right cadence depends on how many accounts are in the campaign, the titles you’re targeting, the industry, any past contact and more. Start by asking your team which cadences they’ve used and how each one performed, and let your sales execution tool organize, automate and log it.</Prose>
+        </>,
+      },
+      {
+        title: 'Seven Campaign Tips',
+        body: <>
+          <Card label="As you plan the program">
+            <Steps items={[
+              <><strong>Time your calls.</strong> Put yourself in the prospect’s week; it’s part of your persona research. Per HubSpot, midweek works best for a first ping, since Mondays are busy and Fridays are slow. Warm calls land best right before lunch or at the end of the day, not first thing in the morning.</>,
+              <><strong>Time your emails.</strong> Aim for the top of the inbox when they have time to think: around 11 AM or 4 PM in their time zone. Many buyers also read email in the evening or early morning, so test those windows too.</>,
+              <><strong>Use two formats on day one.</strong> SalesLoft’s data suggests two touches through different channels on the first day, for example a LinkedIn InMail in the morning and an email in the late afternoon.</>,
+              <><strong>Plan every hour.</strong> Time management is one of the most important skills an SDR can build. Go into each day knowing what each hour, or each two-to-three-hour block, is for.</>,
+              <><strong>Write subject lines that earn the open.</strong> Relevant and attention-catching, using industry or role-specific words that show you know the subject.</>,
+              <><strong>Lead with data.</strong> Relevant, actionable data builds credibility, and can make a prospect glad you reached out and more likely to engage later.</>,
+              <><strong>Disqualify without fear.</strong> It hurts to cut loose someone who agreed to meet and likes the product. But passing a bad-fit lead forward wastes your team’s time. Sales is a numbers game; there are other fish in the sea.</>,
+            ]}/>
+          </Card>
+        </>,
+      },
+      {
+        title: 'Email and LinkedIn',
+        body: <>
+          <Prose>Email is the primary channel for most SDRs. View rates are high because business people don’t ignore their inbox (even if a reply takes a few days), a sales execution tool lets you send many at once, and a cold email feels less intrusive than a cold call. The catch: buyers get hundreds of vendor emails. You need a subject line that earns the open, and a message that shows you know their industry and gives them something of value.</Prose>
+          <Card label="Anatomy of a strong first email (Tier 1)">
+            <Steps items={[
+              <><strong>Break the ice</strong> with a genuine compliment or a mutual connection, instead of rushing to the point.</>,
+              <><strong>Say what you do</strong> in plain words, with a simple value statement.</>,
+              <><strong>Give value:</strong> a case study from a similar-sized company, with a concrete result.</>,
+              <><strong>Show your homework:</strong> one specific detail about their company, like their headcount.</>,
+              <><strong>Make replying easy:</strong> propose a specific day and time.</>,
+            ]}/>
+          </Card>
+          <Prose>LinkedIn InMails are messages to people you aren’t connected with. You need at least LinkedIn Premium, ideally Sales Navigator. Without it you can connect first and message after, but the extra step costs you replies. Every affordable plan caps your InMails, so make each one count. LinkedIn allows 200 characters in the subject and 1,900 in the body. Don’t get anywhere near either: nobody reads a 1,900-character cold message.</Prose>
+          <InsightCard label="The InMail framework"><em>Build rapport</em> (mention something they wrote or did), <em>give context</em> (connect it to what your company does, with one concise proof point), then <em>make a call to action</em> with a suggested time.</InsightCard>
+          <Prose>And invest in your own LinkedIn profile. It’s the public version of you, and a buyer is more likely to reply to someone whose profile follows best practices.</Prose>
+        </>,
+      },
+      {
+        title: 'Phone Calls',
+        body: <>
+          <Card label="Three temperatures">
+            <Terms items={[
+              ['Warm', 'Your company has had prior contact: you met at an event, or spoke before when the timing wasn’t right.'],
+              ['Lukewarm', 'They’ve likely received an email from an earlier step in your campaign.'],
+              ['Cold', 'No context about your company that you know of.'],
+            ]}/>
+          </Card>
+          <Prose>The warmer the prospect, the more receptive they are. So skew your calls warm or lukewarm, and especially at an early-stage company nobody has heard of, don’t make a call your first touch. (Plenty of sales leaders say the opposite; it’s hotly debated.)</Prose>
+          <InsightCard label="Research and rapport">Before you dial, know the company’s focus and recent news, the prospect’s title and career path, recent news about them, and public details like their college, major or something they’ve written. Sales Navigator surfaces most of it. That research is what separates you from the <em>telemarketer who launches into a stiff script and gets hung up on.</em></InsightCard>
+          <Card label="A first call that works">
+            <Steps items={[
+              'Introduce yourself and build rapport with something from your research.',
+              'Explain why you’re calling, framed around a problem they likely have, and ask whether it’s one they’re facing.',
+              'Share what you do, with a proof point and a concrete use case.',
+              'Ask for the next step: time with your AE. On a first call the goal is a follow-up meeting, not a sale.',
+            ]}/>
+          </Card>
+          <Prose>Be ready for basic questions. You won’t know every answer, but you should know where to look. Keep it short: per TOPO, under 10 minutes; the book’s example call takes about five. If they don’t pick up, leave a voicemail that earns a call back.</Prose>
+        </>,
+      },
+      {
+        title: 'Lead Acceptance',
+        body: <>
+          <Prose>Now the AE decides whether to accept your lead, and your company should have a clear framework for that decision. If you’ve qualified well, the acceptance rate should be high. Rejections should come down to accidents, like a key piece of information you still need to get.</Prose>
+          <Card label="What happens next">
+            <Terms items={[
+              ['Rejected', 'Get the missing information that could qualify the lead, or disqualify it politely by email.'],
+              ['Accepted', 'Schedule the meeting as soon as possible to keep the momentum. The AE takes a 30–60 minute call, often with a demo.'],
+              ['Becomes an opportunity', 'If the AE wants to keep talking, the lead becomes an opportunity, and the AE owns all communication from here.'],
+              ['Not a fit, for now', 'You owned the relationship until now, so you send the polite email and update the lead’s status in the CRM.'],
+            ]}/>
+          </Card>
+          <InsightCard label="Learn from every decision">Join the AE’s calls with your leads, and later ones too. That’s how you learn the full sales process, and how the best AEs started learning their job back when they were SDRs. Each time, <em>note the traits of the leads that moved forward and the ones that didn’t.</em> The patterns will sharpen your outreach.</InsightCard>
+        </>,
+      },
+      {
+        title: 'How an SDR Is Measured',
+        body: <>
+          <Prose>Sales leaders disagree on which metrics matter most, and that’s fair. A horizontal SaaS company selling to small businesses cares far more about touches per day than a vertical one selling seven- or eight-figure deals into an industry with 50 accounts. But your job comes down to one thing: getting qualified meetings for your AEs. The authors focus on three metrics.</Prose>
+          <Card label="Three metrics">
+            <Steps items={[
+              <><strong>Meetings generated.</strong> The company’s sales target implies a number of first meetings its AEs need. Early-stage companies are still learning that ratio, but they should give you at least a rough number as your goal.</>,
+              <><strong>Meetings that become closed deals.</strong> This shows whether you’re bringing qualified leads. Some factors are outside your control, and an ineffective AE is one of the biggest.</>,
+              <><strong>Lead efficiency</strong> (borrowed from SalesLoft). How many leads did you contact to get each meeting? Burning through a list for a handful of meetings may mean your pitch or approach is off, and it can permanently damage how those prospects see your company.</>,
+            ]}/>
+          </Card>
+          <PullQuote>Know exactly how you’re being measured. If the measures seem wrong, or the targets too easy or too hard, say so.</PullQuote>
+        </>,
+      },
+      {
+        title: 'A Day in the Life',
+        body: <>
+          <Prose>No two days are the same. This is one of Ian’s:</Prose>
+          <Card label="Ian’s day">
+            <Terms items={[
+              ['8:30 AM', 'Get into the office.'],
+              ['8:45–9:00', 'Answer priority emails: overnight replies from prospects and follow-ups from prospecting calls. Check the day’s schedule so you can prepare for intro calls (last-minute website and persona research) and book a room.'],
+              ['9:00–12:00', 'Structured outreach: calls, emails, connecting with leads. Start with the prospects most likely to convert.'],
+              ['12:00–12:30', 'A quick lunch at your desk.'],
+              ['12:30–3:30', 'Internal meetings and initial calls. Internal meetings take priority, but protect time for the calls.'],
+              ['3:30–5:30', 'Research and planning for tomorrow’s outreach: new accounts and leads, building personas and insights along the way.'],
+            ]}/>
+          </Card>
+        </>,
+      },
+      {
+        title: 'The Little Things',
+        body: <>
+          <Prose>The role isn’t for everyone. It takes grit, a strong work ethic, the ability to work through rejection, professionalism, intelligence, creativity, introspection and time management. Six habits that go a long way:</Prose>
+          <Card label="Six habits">
+            <Steps items={[
+              <><strong>Prepare for every meeting.</strong> Your 1:1 with your manager (15 minutes to an hour) is your platform to recap the week, reflect on your approach and results, plan ahead and raise concerns, and you bring the agenda. For group meetings like the pipeline review, be ready to discuss your campaigns, results, what has and hasn’t worked, what’s coming, and notable calls booked for the AEs. Pull the reports from your CRM and sales execution tool beforehand and look for trends. Leaders promote people they know can handle more.</>,
+              <><strong>Treat sales as a science, not just an art.</strong> Know how the funnel works, your lead sources and the meetings each one produces. Are people opening your emails? If not, change the content, then check whether opens and replies improve.</>,
+              <><strong>Keep your CRM clean.</strong> Record outreach data specifically and promptly, so teammates have context and sales ops can pull accurate metrics. If you’re collecting it, it belongs in the CRM; work with sales ops to add the right fields.</>,
+              <><strong>Plan months ahead.</strong> Many SDRs scramble in the last month of every quarter. Learn the best times of year to reach each kind of account, start conference campaigns weeks or months before the event, and run your campaign calendar by your manager.</>,
+              <><strong>Take initiative.</strong> If a process could be better, or should exist and doesn’t, say so in a 1:1 with whoever owns it. That’s leadership, and communication. If you’re told to be quiet, you may be at the wrong company.</>,
+              <><strong>Network, network, network.</strong> Get to know people across the company (product managers, customer success, support) over 1:1 lunches and coffees; people who put in the work find mentors. Go to conferences, trade shows and meetups, and reach out to peers and sales leaders on LinkedIn or Bravado, ideally through a warm introduction.</>,
+            ]}/>
+          </Card>
+        </>,
+      },
+      {
+        title: 'Where the Role Leads',
+        body: <>
+          <Prose>Expectations for SDRs have never been higher. At many small companies you’re expected to take the first call an AE would have taken, or even run the demo. And as products get more complex, and buyers subscribe to several vendors for different pieces of their stack instead of one big suite, a great SDR becomes an expert on the industry, not just the product.</Prose>
+          <Card label="Why SDRs fail">
+            <Points items={[
+              'The grind: 50–150 touches a day and a lot of “no.” Not everyone is built for it.',
+              'Skipping the preparation, so the outreach falls flat.',
+              'Preparing well but never adjusting when the outreach isn’t working.',
+              'Structural problems: a small market the company has already worked through, a product with a bad reputation, or too few inbound leads.',
+            ]}/>
+          </Card>
+          <InsightCard label="Mostly in your control">There are other reasons too, but when it comes to your own success, <em>most of them are within your control.</em></InsightCard>
+          <Prose>The typical SDR stays in the role less than a year and a half, so look ahead to what you want next. You don’t have to become an AE: SDRs go on to customer success, marketing, or managing SDRs, and from there anything is possible. Many CEOs and heads of sales started exactly where you are.</Prose>
+          <PullQuote>Who knows? You may join their ranks one day.</PullQuote>
+        </>,
+      },
+    ].map((p, i) => ({ ...p, label: `Part ${NUMBERS[i + 1]} · ${SERIES}` }));
+
+    /* ── Completion Screen ──────────────────────────────────────── */
+    function CompletionScreen({ onNext }) {
+      return (
+        <div style={{ background:'#000', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', position:'relative', overflow:'hidden' }} onClick={onNext}>
+          {[0, 1, 2].map(i => (<div key={i} style={{ position:'absolute', top:'50%', left:'50%', width:100+i*90, height:100+i*90, borderRadius:'50%', border:`1px solid ${['rgba(129,140,248,0.35)','rgba(99,102,241,0.25)','rgba(6,182,212,0.18)'][i]}`, animation:`waveExpand 5s ease-out ${i*1.6}s infinite` }}/>))}
+          <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:760 }}>
+            <div style={{ fontSize:'0.62rem', letterSpacing:'0.5em', textTransform:'uppercase', color:'rgba(129,140,248,0.4)', marginBottom:36 }}>Complete · The SDR Playbook</div>
+            <h1 style={{ fontSize:'clamp(2.2rem,8vw,5rem)', fontWeight:700, color:'#e8e8ed', letterSpacing:1, marginBottom:32, animation:'mmm-reveal 2s ease-out 0.5s both', lineHeight:1.1 }}>PREPARE.<br/>REACH OUT.<br/>QUALIFY.</h1>
+            <p style={{ fontStyle:'italic', fontSize:'clamp(1rem,2.4vw,1.25rem)', color:'rgba(210,200,255,0.55)', lineHeight:1.8, marginBottom:44, animation:'mmm-fadeUp 1.5s ease-out 1.5s both' }}>Know the business, the account and the buyer.<br/>Reach out with something of value, on a cadence.<br/>Hand your AEs meetings worth their time.</p>
+            <div style={{ background:'rgba(129,140,248,0.06)', border:'1px solid rgba(129,140,248,0.15)', borderRadius:16, padding:'26px 36px', maxWidth:600, margin:'0 auto 48px', animation:'mmm-fadeUp 1.5s ease-out 2.2s both' }}>
+              <p style={{ fontStyle:'italic', fontSize:'1.05rem', color:'rgba(220,200,255,0.72)', lineHeight:1.8 }}>“You will have to iterate to find solutions that work for you.”</p>
+              <div style={{ fontSize:'0.6rem', letterSpacing:'0.25em', textTransform:'uppercase', color:'rgba(129,140,248,0.3)', marginTop:12 }}>The Early Stage Sales Development Playbook · Kartheek Mulpuri &amp; Ian Grover</div>
+            </div>
+            <div style={{ fontSize:'0.72rem', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(255,255,255,0.18)', animation:'mmm-blink 2.5s ease-in-out 3.5s infinite' }}>*click anywhere to restart*</div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── App ─────────────────────────────────────────────────────── */
+    function App() {
+      const [screen, setScreen] = useState(0);
+      const go = n => setScreen(n);
+      useEffect(() => { window.scrollTo(0, 0); }, [screen]);
+
+      if (screen === 0) return <LandingScreen onNext={() => go(1)}/>;
+      if (screen > PARTS.length) return <CompletionScreen onNext={() => go(0)}/>;
+      const part = PARTS[screen - 1];
+      const next = PARTS[screen];
+      return (
+        <Chapter key={screen} n={screen} label={part.label} title={part.title} nextLabel={next ? next.title : 'Finish'} onBack={() => go(screen - 1)} onNext={() => go(screen + 1)}>
+          {part.body}
+        </Chapter>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+  <script src="../app-nav.js"></script>
+</body>
+</html>
