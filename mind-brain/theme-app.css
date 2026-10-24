@@ -30,7 +30,7 @@ body::after {
 #root > div { background: transparent !important; }
 #root > div > div[style*="inset: 0px"]:not([style*="z-index"]) { display: none !important; }
 #root div[style*="blur(1"] { display: none !important; }
-#root div[style*="waveExpand"] { border-color: rgba(233,227,214,.25) !important; }
+#root div[style*="waveExpand"] { border-color: rgba(233,227,214,.25) !important; background: transparent !important; }
 
 /* type: Cormorant for text, Caveat for headings and buttons */
 #root, #root * {
