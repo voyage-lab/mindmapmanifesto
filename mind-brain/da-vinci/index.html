@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Da Vinci and the Perfect Man — MindMapManifesto</title>
+<meta name="description" content="Leonardo's Vitruvian Man, the measure of the body, and a front and back plate of the organs, drawn the way he drew them.">
+<meta property="og:title" content="Da Vinci and the Perfect Man">
+<meta property="og:description" content="Leonardo's Vitruvian Man, the measure of the body, and a front and back plate of the organs, drawn the way he drew them.">
+<meta property="og:image" content="../../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --char: #1a1918;
+    --paper: #e9e3d6;
+    --paper-dim: #b9b2a3;
+    --glass: rgba(220, 235, 240, .55);
+    --pencil: #6b655b;
+    --sepia: #5a3d2b;
+    --chalk: #a5523a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100svh;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 20px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .bg {
+    position: fixed; inset: 0; z-index: -2;
+    background: url("../../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg") center / cover no-repeat;
+    filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+    transform: scale(1.04);
+  }
+  .bg::after {
+    content: ""; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%);
+  }
+
+  nav { padding: 20px 16px; }
+  nav a { font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--paper-dim); text-decoration: none; }
+  nav a:hover { color: var(--paper); }
+
+  main { max-width: 820px; margin: 0 auto; padding: 1rem 16px 4rem; }
+  main.wide { max-width: 1180px; }
+
+  header { text-align: center; margin-bottom: 3rem; }
+  .num { font-family: "Caveat", cursive; font-size: 1.8rem; color: var(--paper-dim); }
+  h1 {
+    font-family: "Caveat", cursive; font-weight: 700;
+    font-size: clamp(3rem, 10vw, 6rem); line-height: 1;
+    text-shadow: 0 4px 30px rgba(0,0,0,.8);
+  }
+  .sub {
+    margin: .6rem 0 0;
+    font-size: clamp(.85rem, 2vw, 1.1rem);
+    letter-spacing: .5em; text-transform: uppercase; color: var(--paper-dim);
+  }
+
+  /* paper notes, taped under the glass */
+  .note {
+    background: var(--paper); color: var(--char);
+    padding: 2.2rem clamp(1.2rem, 4vw, 2.4rem) 2rem;
+    border-radius: 2px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.75);
+    position: relative;
+    margin-bottom: 3.5rem;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(120,100,70,.12), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(90,75,55,.15), transparent 45%);
+  }
+  .note::before {
+    content: ""; position: absolute; top: -14px; left: 50%;
+    width: 120px; height: 28px; transform: translateX(-50%) rotate(2deg);
+    background: var(--glass); box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  }
+  .note h2 { font-family: "Caveat", cursive; font-size: clamp(2rem, 5vw, 2.6rem); line-height: 1.1; margin-bottom: .8rem; }
+  .note h3 { font-family: "Caveat", cursive; font-size: 1.6rem; line-height: 1.1; margin: 1.6rem 0 .5rem; }
+  .note p { margin-bottom: 1rem; }
+  .note p:last-child { margin-bottom: 0; }
+  .margin { font-family: "Caveat", cursive; font-size: 1.4rem; color: var(--pencil); display: block; }
+  .note blockquote {
+    border-left: 2px solid rgba(26,25,24,.25); padding-left: 1.2rem; margin: 1.4rem 0;
+    font-style: italic; color: #3a3530;
+  }
+  .note blockquote cite { display: block; font-style: normal; font-family: "Caveat", cursive; font-size: 1.2rem; color: var(--pencil); margin-top: .3rem; }
+
+  /* Leonardo wrote right to left; hover or tap to read it the right way round */
+  .mirror {
+    display: inline-block; transform: scaleX(-1);
+    font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--sepia);
+    cursor: help; transition: transform .6s;
+  }
+  .mirror:hover, .mirror:focus { transform: scaleX(1); outline: none; }
+
+  .vitruvian { display: block; width: 100%; max-width: 440px; margin: 1.6rem auto 1.2rem; }
+
+  .measures { list-style: none; columns: 2 260px; column-gap: 2rem; margin: 1rem 0 0; }
+  .measures li { break-inside: avoid; padding: .35rem 0; border-bottom: 1px dashed rgba(26,25,24,.18); line-height: 1.4; }
+  .measures b { font-family: "Caveat", cursive; font-size: 1.35rem; font-weight: 700; color: var(--chalk); margin-right: .3rem; }
+
+  /* the plate: front and back */
+  .plates { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr)); gap: 3.5rem 2rem; }
+  .plates .note { margin-bottom: 0; }
+  .plate-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .plate-head .margin { font-size: 1.25rem; }
+  .figure { display: block; width: 100%; height: auto; margin: .6rem 0 0; touch-action: manipulation; }
+
+  .figure .body { fill: rgba(165, 82, 58, .07); stroke: #6b5442; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .figure .sketch { fill: none; stroke: #8a735e; stroke-width: .8; opacity: .7; vector-effect: non-scaling-stroke; }
+  .figure .organ { cursor: pointer; transition: opacity .25s; }
+  .figure .organ * { stroke: var(--sepia); stroke-width: .8; transition: stroke-width .2s; }
+  .figure .organ .tube { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .figure .organ .detail { fill: none; stroke-width: .6; opacity: .55; pointer-events: none; }
+  .figure .organ .hit { fill: none; stroke: transparent; stroke-width: 12; }
+  .figure.dim .organ { opacity: .28; }
+  .figure.dim .organ.on { opacity: 1; }
+  .figure .organ.on > :not(.hit):not(.tube):not(.detail) { stroke-width: 1.8; }
+  .figure .organ:focus { outline: none; }
+  .figure .organ:focus-visible > :not(.hit) { stroke-width: 2; }
+
+  .figure .lbl { cursor: pointer; }
+  .figure .lbl line, .figure .lbl polyline { fill: none; stroke: var(--sepia); stroke-width: .6; opacity: .6; }
+  .figure .lbl circle { fill: var(--paper); stroke: var(--sepia); stroke-width: .8; }
+  .figure .lbl text { font-family: "Caveat", cursive; fill: var(--char); }
+  .figure .lbl .n { font-size: 11px; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+  .figure .lbl .name { font-size: 16px; dominant-baseline: central; }
+  .figure .lbl .side { font-size: 13px; }
+  .figure .lbl.on circle { fill: var(--chalk); stroke: var(--chalk); }
+  .figure .lbl.on .n { fill: var(--paper); }
+  .figure .lbl.on .name { fill: var(--chalk); font-weight: 700; }
+  .figure .lbl.on polyline { stroke: var(--chalk); opacity: 1; stroke-width: 1; }
+  .figure .tag { font-family: "Caveat", cursive; font-size: 14px; fill: var(--pencil); text-anchor: middle; }
+
+  .caption {
+    min-height: 9.5rem; margin-top: .8rem; padding: 1rem 1.1rem;
+    background: rgba(26,25,24,.05); border-left: 2px solid var(--chalk);
+  }
+  .caption .who { font-family: "Caveat", cursive; font-size: 1.7rem; font-weight: 700; line-height: 1.1; color: var(--chalk); }
+  .caption .where { font-style: italic; color: var(--pencil); font-size: 1rem; margin-bottom: .4rem; }
+  .caption p { font-size: 1.02rem; line-height: 1.5; margin-bottom: .5rem; }
+  .caption .leo { font-size: .98rem; color: #3a3530; }
+  .caption .leo::before { content: "Leonardo — "; font-family: "Caveat", cursive; font-size: 1.15rem; color: var(--sepia); }
+  .caption .hint { font-family: "Caveat", cursive; font-size: 1.35rem; color: var(--pencil); }
+
+  .legend { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .1rem 1rem; margin-top: 1rem; }
+  .legend button {
+    all: unset; cursor: pointer; display: flex; gap: .5rem; align-items: baseline;
+    font-size: 1.02rem; padding: .15rem 0; width: 100%;
+  }
+  .legend button span { font-family: "Caveat", cursive; font-weight: 700; color: var(--chalk); min-width: 1.4rem; }
+  .legend button:hover, .legend button:focus-visible { text-decoration: underline; text-decoration-color: rgba(26,25,24,.35); }
+  .legend button[aria-pressed="true"] { color: var(--chalk); font-weight: 600; }
+
+  .lede { text-align: center; max-width: 640px; margin: 0 auto 2.4rem; color: var(--paper-dim); font-style: italic; }
+  .lede b { font-style: normal; color: var(--paper); }
+  .section-title { font-family: "Caveat", cursive; font-weight: 700; text-align: center; font-size: clamp(2.4rem, 7vw, 3.6rem); line-height: 1; margin-bottom: .6rem; text-shadow: 0 4px 30px rgba(0,0,0,.8); }
+
+  footer { text-align: center; margin-top: 3rem; color: var(--paper-dim); font-size: 1rem; }
+
+  @media (max-width: 560px) {
+    .figure .lbl .name { display: none; }
+    .figure .lbl .n { font-size: 15px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<nav><a href="../index.html">← back to mind x brain</a></nav>
+
+<main>
+  <header>
+    <p class="num">1.</p>
+    <h1>da vinci and the perfect man</h1>
+    <p class="sub">— the measure of the body —</p>
+  </header>
+
+  <section class="note">
+    <span class="margin">Venice · c. 1490 · pen and ink on paper</span>
+    <h2>the perfect man</h2>
+    <p>Around 1490, Leonardo took a sheet of paper and drew a naked man twice over: arms straight out and feet together inside a square, then arms raised and legs spread inside a circle. Above and below it he wrote his notes, the way he wrote everything, backwards, right to left: <span class="mirror" tabindex="0" title="hover or tap to read">the measure of man</span>.</p>
+    <p>The idea wasn't his. Fifteen hundred years earlier, the Roman architect <em>Vitruvius</em> had written that a temple should be built with the same proportions as a well-made human body, and that such a body, arms and legs outstretched, fits exactly into both a circle and a square. Plenty of Renaissance artists tried to draw it. Most gave up or made the man look stretched. Leonardo solved it with one change: he stopped trying to centre both shapes on the same point.</p>
+
+    <svg class="vitruvian" viewBox="0 0 400 400" role="img" aria-labelledby="vit-title">
+      <title id="vit-title">The Vitruvian Man: a figure in two poses, inside a square centred on the groin and a circle centred on the navel</title>
+      <g fill="none" stroke="#5a3d2b" stroke-width="1.2">
+        <circle cx="200" cy="198" r="182"/>
+        <rect x="50" y="80" width="300" height="300"/>
+      </g>
+      <!-- eighths of the height, ticked along the square like Leonardo's scale -->
+      <g stroke="#5a3d2b" stroke-width=".8" opacity=".6">
+        <line x1="350" y1="117.5" x2="358" y2="117.5"/><line x1="350" y1="155" x2="358" y2="155"/>
+        <line x1="350" y1="192.5" x2="358" y2="192.5"/><line x1="350" y1="230" x2="362" y2="230"/>
+        <line x1="350" y1="267.5" x2="358" y2="267.5"/><line x1="350" y1="305" x2="358" y2="305"/>
+        <line x1="350" y1="342.5" x2="358" y2="342.5"/>
+      </g>
+      <!-- the figure, both poses at once: ink pass, then paper pass, so only the outline shows -->
+      <g id="vit-man" stroke-linecap="round" stroke-linejoin="round">
+        <g stroke="#5a3d2b" stroke-width="14.5" fill="#5a3d2b">
+          <path d="M172 140 L52 140 M228 140 L348 140"/>
+          <path d="M172 138 L63 82 M228 138 L337 82"/>
+          <path d="M188 236 L191 377 M212 236 L209 377"/>
+          <path d="M190 236 L137 366 M210 236 L263 366"/>
+          <path d="M193 112 L207 112 L207 130 L193 130 Z" stroke-width="3"/>
+          <path d="M170 132 C 186 126 214 126 230 132 L 224 186 C 222 206 224 220 222 240 L 178 240 C 176 220 178 206 176 186 Z" stroke-width="3"/>
+          <ellipse cx="200" cy="99" rx="15.5" ry="19.5" stroke-width="3"/>
+        </g>
+        <g stroke="#ece5d6" stroke-width="11.5" fill="#ece5d6">
+          <path d="M172 140 L52 140 M228 140 L348 140"/>
+          <path d="M172 138 L63 82 M228 138 L337 82"/>
+          <path d="M188 236 L191 377 M212 236 L209 377"/>
+          <path d="M190 236 L137 366 M210 236 L263 366"/>
+          <path d="M193 112 L207 112 L207 130 L193 130 Z" stroke-width="0"/>
+          <path d="M170 132 C 186 126 214 126 230 132 L 224 186 C 222 206 224 220 222 240 L 178 240 C 176 220 178 206 176 186 Z" stroke-width="0"/>
+          <ellipse cx="200" cy="99" rx="15.5" ry="19.5" stroke-width="0"/>
+        </g>
+        <g fill="none" stroke="#8a735e" stroke-width=".8">
+          <path d="M184 150 C 192 156 208 156 216 150"/>
+          <path d="M190 236 C 196 244 204 244 210 236"/>
+        </g>
+      </g>
+      <g fill="#a5523a">
+        <circle cx="200" cy="198" r="3"/>
+        <circle cx="200" cy="230" r="3"/>
+      </g>
+      <g font-family="Caveat, cursive" font-size="17" fill="#3a3530">
+        <text x="208" y="203">navel</text>
+        <text x="208" y="235">groin</text>
+        <text x="200" y="74" text-anchor="middle">arm span = height</text>
+      </g>
+    </svg>
+    <p style="text-align:center;font-family:Caveat,cursive;font-size:1.3rem;color:var(--pencil)">The circle is centred on the navel, the square on the groin. Two centres, one body.</p>
+
+    <h3>what he wrote around it</h3>
+    <p>The notes under the drawing are a list of ratios, each part of the body a fixed fraction of the whole. Taken together, they are Leonardo's recipe for the "perfect" man:</p>
+    <ul class="measures">
+      <li><b>=</b>the outspread arms equal the height</li>
+      <li><b>¼</b>the shoulders, at their widest</li>
+      <li><b>⅛</b>below the chin to the top of the head</li>
+      <li><b>⅙</b>above the chest to the top of the head</li>
+      <li><b>¼</b>the nipples to the top of the head</li>
+      <li><b>⅒</b>the hairline to the bottom of the chin</li>
+      <li><b>⅕</b>the elbow to the tip of the hand</li>
+      <li><b>⅒</b>the whole hand</li>
+      <li><b>⅐</b>the foot</li>
+      <li><b>½</b>the genitals mark the middle of the man</li>
+      <li><b>¼</b>the sole of the foot to below the knee</li>
+      <li><b>⅓</b>chin to nose, nose to eyebrows, eyebrows to hairline: each a third of the face</li>
+    </ul>
+  </section>
+
+  <section class="note">
+    <span class="margin">Florence · Milan · Rome · c. 1487–1513</span>
+    <h2>under the skin</h2>
+    <p>The proportions told him what the body looked like from outside. That wasn't enough. To paint a body that moved, Leonardo wanted to know what was moving it, so he went inside.</p>
+    <p>By his own count he dissected about thirty human bodies, working at night in hospital mortuaries in Florence, then Milan and Rome, sketching quickly before the corpses decayed. For a while around 1510 he worked with Marcantonio della Torre, a young anatomy professor at Pavia, and the two planned a full treatise on the human body. Della Torre died of plague in 1511, and the book was never finished.</p>
+    <p>He invented much of how anatomy is still drawn: the cutaway, the exploded view, the cross-section, and above all the habit of showing the same part from <em>several sides</em>, turned around on the page as if you were walking around it. The plates below follow that habit: one body, seen from before and from behind.</p>
+    <blockquote>By the ancients man has been called the world in miniature; and certainly this name is well bestowed, because, inasmuch as man is composed of earth, water, air and fire, his body resembles that of the earth.
+      <cite>— Leonardo, in his notebooks</cite>
+    </blockquote>
+    <p>None of it was published in his lifetime. His notebooks passed to his pupil Francesco Melzi and were then scattered; the anatomical sheets ended up in the Royal Collection at Windsor Castle. Anatomists didn't really see them until the late 1800s, by which time medicine had found most of it again on its own.</p>
+  </section>
+</main>
+
+<main class="wide">
+  <h2 class="section-title">the body, front and back</h2>
+  <p class="lede">Tap any organ, number or name to see what it does and what Leonardo found. In the <b>front</b> view the body's right side is on <b>your left</b>; in the <b>back</b> view it's the other way round, as if you were standing behind the person.</p>
+
+  <div class="plates">
+    <section class="note" data-view="front">
+      <div class="plate-head">
+        <h2>from before</h2>
+        <span class="margin">anterior view</span>
+      </div>
+      <svg class="figure" viewBox="-20 22 580 488" role="group" aria-label="The organs of the body seen from the front"></svg>
+      <div class="caption" aria-live="polite"><p class="hint">tap an organ to read about it ↑</p></div>
+      <ul class="legend"></ul>
+    </section>
+
+    <section class="note" data-view="back">
+      <div class="plate-head">
+        <h2>from behind</h2>
+        <span class="margin">posterior view</span>
+      </div>
+      <svg class="figure" viewBox="-20 22 580 488" role="group" aria-label="The organs of the body seen from the back"></svg>
+      <div class="caption" aria-live="polite"><p class="hint">tap an organ to read about it ↑</p></div>
+      <ul class="legend"></ul>
+    </section>
+  </div>
+</main>
+
+<main>
+  <section class="note" style="margin-top:3.5rem">
+    <span class="margin">so what makes him perfect?</span>
+    <h2>a symmetrical outline, a lopsided inside</h2>
+    <p>Look at the two plates again. The outline is mirror-perfect, just as Vitruvius promised. The inside isn't. The heart leans left. The liver fills the right. The right lung has three lobes, the left only two, to leave room for the heart. The right kidney sits lower than the left, pushed down by the liver. The stomach and spleen crowd to one side, the appendix hangs off the other.</p>
+    <p>Leonardo spent years measuring the perfect proportions of the outside, then cut it open and found that nothing inside obeys them, and that this is exactly how it works. The "perfect man" was never the symmetrical one. He's the one whose parts each fit where they're needed.</p>
+    <p>That's a useful thing to remember about a mind, too.</p>
+  </section>
+  <footer>© 2026 MindMapManifesto.com</footer>
+</main>
+
+<script>
+(function () {
+  const NS = 'http://www.w3.org/2000/svg';
+  const TX = 45, K = 1.5; // the figure is drawn in a 300-wide box, then scaled and shifted to leave room for labels
+
+  // Each organ: global number, name, colour, a caption, and its drawing in each view where it can be seen.
+  // Drawing coordinates are in the 300 x 640 figure box. "side" is which margin the label goes to.
+  const ORGANS = [
+    { id: 'brain', name: 'brain', fill: '#d9b8b0',
+      where: 'inside the skull',
+      what: 'About 1.4 kg, around 86 billion neurons. It is only about 2% of your body weight but burns roughly 20% of your energy, awake or asleep.',
+      leo: 'He poured molten wax into the hollow chambers (ventricles) of an ox brain, let it set, then cut the brain away, leaving a cast of their shape. It is the first known use of the technique.',
+      front: { side: 'L', at: [136, 40], d: [
+        'M150 26 C 168 26 177 38 177 50 C 177 62 168 70 150 70 C 132 70 123 62 123 50 C 123 38 132 26 150 26 Z'],
+        detail: ['M150 27 L150 69', 'M130 40 C 136 36 140 44 144 38', 'M128 54 C 134 50 138 58 144 52', 'M134 64 C 138 60 142 66 146 62', 'M156 38 C 160 44 164 36 170 40', 'M156 52 C 162 58 166 50 172 54', 'M154 62 C 158 66 162 60 166 64'] },
+      back: { side: 'L', at: [136, 40], d: [
+        'M150 26 C 168 26 177 38 177 50 C 177 62 168 68 150 68 C 132 68 123 62 123 50 C 123 38 132 26 150 26 Z'],
+        detail: ['M150 27 L150 67', 'M130 42 C 136 38 140 46 144 40', 'M128 56 C 134 52 138 60 144 54', 'M156 40 C 160 46 164 38 170 42', 'M156 54 C 162 60 166 52 172 56'] } },
+
+    { id: 'cerebellum', name: 'cerebellum', fill: '#c99c94',
+      where: 'at the back of the skull, under the brain',
+      what: 'The "little brain" that coordinates movement, balance and timing. It is only about a tenth of the brain\'s volume but holds more than half of its neurons.',
+      back: { side: 'L', at: [140, 74], d: [
+        'M133 73 C 133 66 167 66 167 73 C 167 81 157 84 150 82 C 143 84 133 81 133 73 Z'],
+        detail: ['M136 72 C 145 70 155 70 164 72', 'M138 77 C 146 75 154 75 162 77', 'M150 68 L150 82'] } },
+
+    { id: 'eyes', name: 'eyes', fill: '#f3eee2',
+      where: 'in the eye sockets of the skull',
+      what: 'Each eye focuses light through the cornea and lens onto the retina, which turns it into nerve signals for the brain. Most of what you "see" is the brain filling in.',
+      leo: 'The eye was too soft to cut cleanly, so he boiled it in egg white first to firm it up, then sliced it.',
+      front: { side: 'L', at: [139, 79], d: [
+        'M132 79 C 135 75 143 75 146 79 C 143 83 135 83 132 79 Z',
+        'M154 79 C 157 75 165 75 168 79 C 165 83 157 83 154 79 Z'],
+        detail: ['M139 79 m -2.5 0 a 2.5 2.5 0 1 0 5 0 a 2.5 2.5 0 1 0 -5 0', 'M161 79 m -2.5 0 a 2.5 2.5 0 1 0 5 0 a 2.5 2.5 0 1 0 -5 0'] } },
+
+    { id: 'thyroid', name: 'thyroid', fill: '#c98a6b',
+      where: 'in the front of the neck, around the windpipe',
+      what: 'A butterfly-shaped gland that sets the pace of your metabolism with its hormones. Too much and you race, too little and everything slows.',
+      leo: 'He drew it as two round glands either side of the windpipe and guessed they were there to fill out the space in the neck.',
+      front: { side: 'R', at: [158, 108], d: [
+        'M150 106 C 146 102 140 102 139 108 C 138 114 143 117 147 114 L 153 114 C 157 117 162 114 161 108 C 160 102 154 102 150 106 Z'] } },
+
+    { id: 'trachea', name: 'trachea', fill: '#e8d9c4',
+      where: 'down the front of the neck into the chest',
+      what: 'The windpipe: a tube held open by C-shaped rings of cartilage. In the chest it splits into the two bronchi, one for each lung.',
+      leo: 'He compared the branching airways to the branching of trees and rivers, the same pattern repeating at smaller and smaller sizes.',
+      front: { side: 'L', at: [148, 126], d: [
+        'M147 98 L 153 98 L 153 133 L 166 144 L 163 147 L 150 137 L 137 147 L 134 144 L 147 133 Z'],
+        detail: ['M147 104 L153 104', 'M147 110 L153 110', 'M147 116 L153 116', 'M147 122 L153 122', 'M147 128 L153 128'] } },
+
+    { id: 'esophagus', name: 'esophagus', fill: 'none', tube: { color: '#b8735a', w: 3, dash: '2 5' },
+      where: 'behind the windpipe and heart, down to the stomach',
+      what: 'A muscular tube about 25 cm long. Food doesn\'t fall down it: waves of muscle squeeze it along, which is why you can swallow upside down.',
+      front: { side: 'R', at: [156, 124], d: [
+        'M154 98 C 155 150 156 182 163 201'] } },
+
+    { id: 'spinal', name: 'spinal cord', fill: '#efe3c8',
+      where: 'inside the spine, from the base of the brain to the lower back',
+      what: 'The main cable between brain and body, about 45 cm long. It stops around the top of the lower back; below that, a bundle of nerve roots (the cauda equina, "horse\'s tail") carries on down.',
+      leo: 'He made the first accurate drawing of the spine with its natural double-S curve, and counted and drew each vertebra.',
+      back: { side: 'R', at: [152, 132], d: [
+        'M147.5 82 L 152.5 82 L 152 238 L 150 246 L 148 238 Z'],
+        detail: ['M149 244 L145 300', 'M150 246 L148 304', 'M150 246 L152 304', 'M151 244 L155 300'] } },
+
+    { id: 'lungs', name: 'lungs', fill: '#e3a99a',
+      where: 'filling most of the chest, either side of the heart',
+      what: 'Hundreds of millions of tiny air sacs with a surface area roughly the size of a tennis court. The right lung has three lobes; the left has two, leaving room for the heart.',
+      leo: 'He inflated lungs with bellows to watch how they filled, and drew the airways branching all the way down.',
+      front: { side: 'L', at: [116, 162], d: [
+        'M128 112 C 138 111 145 122 146 138 L 146 186 C 146 192 144 196 140 197 C 128 200 116 206 106 212 C 102 188 102 150 110 128 C 114 118 120 112 128 112 Z',
+        'M172 112 C 162 111 155 122 154 138 L 154 152 C 164 156 170 166 170 178 C 170 188 166 194 162 198 C 174 200 184 206 194 212 C 198 188 198 150 190 128 C 186 118 180 112 172 112 Z'],
+        detail: ['M104 162 L146 156', 'M110 128 C 120 158 132 184 140 197', 'M190 128 C 182 158 172 184 166 199'] },
+      back: { side: 'L', at: [116, 160], d: [
+        'M128 108 C 138 107 144 118 145 134 L 145 214 C 136 222 120 228 104 232 C 100 200 100 150 108 126 C 112 115 120 108 128 108 Z',
+        'M172 108 C 162 107 156 118 155 134 L 155 214 C 164 222 180 228 196 232 C 200 200 200 150 192 126 C 188 115 180 108 172 108 Z'],
+        detail: ['M108 130 C 118 165 130 200 140 220', 'M192 130 C 182 165 170 200 160 220'] } },
+
+    { id: 'heart', name: 'heart', fill: '#a8433a',
+      where: 'in the middle of the chest, tilted to the left',
+      what: 'A fist-sized pump that beats about 100,000 times a day, moving around 7,000 litres of blood. It sits in the centre, but its tip points left.',
+      leo: 'He showed it has four chambers, not two as taught since Galen, and built a glass model of the aorta to watch blood swirl behind the valve. He said the swirls help close it. Cardiologists confirmed this with scans almost 500 years later.',
+      front: { side: 'R', at: [168, 170], d: [
+        'M142 162 C 144 154 154 152 160 156 C 168 152 178 156 177 168 C 176 182 172 192 168 199 C 160 196 150 190 145 183 C 140 176 140 168 142 162 Z'],
+        extra: [['M153 156 C 150 144 160 138 168 143', '#a8433a', 4]],
+        detail: ['M160 157 C 156 172 158 186 166 198'] } },
+
+    { id: 'liver', name: 'liver', fill: '#8a3b2e',
+      where: 'upper right of the abdomen, under the ribs',
+      what: 'The largest internal organ, about 1.5 kg. It clears toxins, makes bile, stores sugar and handles hundreds of other jobs, and it can regrow from a fraction of itself.',
+      leo: 'In the winter of 1507–08 he dissected an old man who said he was over a hundred and had died peacefully in front of him. He found a dry, shrunken liver and narrowed, twisted blood vessels, often called the first descriptions of cirrhosis and hardened arteries.',
+      front: { side: 'L', at: [116, 222], d: [
+        'M104 210 C 118 194 138 190 152 196 C 166 192 178 192 186 198 C 188 202 184 206 178 210 C 164 220 150 228 134 234 C 122 238 110 236 106 228 C 103 222 103 216 104 210 Z'],
+        detail: ['M152 197 C 150 206 146 214 140 222'] },
+      back: { side: 'R', at: [192, 226], d: [
+        'M154 212 C 166 204 186 204 197 212 C 199 222 197 234 190 240 C 178 246 162 244 156 238 C 152 230 152 220 154 212 Z'] } },
+
+    { id: 'gallbladder', name: 'gallbladder', fill: '#7b8a4a',
+      where: 'tucked under the liver, on the right',
+      what: 'A small pouch that stores and concentrates bile from the liver, then squeezes it into the gut when you eat something fatty.',
+      front: { side: 'L', at: [132, 239], d: [
+        'M128 228 C 126 234 128 242 133 242 C 138 242 139 234 136 228 Z'] } },
+
+    { id: 'stomach', name: 'stomach', fill: '#e2b48f',
+      where: 'upper left of the abdomen, under the diaphragm',
+      what: 'A stretchy J-shaped bag that holds a litre or more. It churns food in acid strong enough to dissolve metal, and its lining replaces itself every few days so it doesn\'t digest itself.',
+      front: { side: 'R', at: [186, 226], d: [
+        'M162 200 C 172 194 186 196 191 206 C 195 218 192 232 183 240 C 174 248 160 248 150 242 C 146 238 148 234 154 234 C 164 234 172 228 175 220 C 176 212 170 207 162 207 Z'] } },
+
+    { id: 'spleen', name: 'spleen', fill: '#7d3f52',
+      where: 'upper left of the abdomen, behind the stomach',
+      what: 'A blood filter about the size of a fist. It recycles worn-out red blood cells and keeps a store of immune cells. You can live without it, but you\'re more open to infection.',
+      front: { side: 'R', at: [193, 210], d: [
+        'M186 196 C 193 194 197 202 196 212 C 195 220 191 224 186 222 C 188 214 188 204 186 196 Z'] },
+      back: { side: 'L', at: [106, 222], d: [
+        'M104 214 C 112 208 120 212 120 222 C 120 232 112 238 106 236 C 102 230 102 220 104 214 Z'] } },
+
+    { id: 'pancreas', name: 'pancreas', fill: '#e3c27a',
+      where: 'deep in the upper abdomen, behind the stomach',
+      what: 'Two organs in one: it pours digestive enzymes into the gut, and it releases insulin and glucagon into the blood to keep your blood sugar steady.',
+      front: { side: 'R', at: [163, 227], d: [
+        'M140 226 C 150 220 166 222 178 216 C 186 212 192 214 190 220 C 186 226 172 230 160 232 C 150 234 140 234 140 226 Z'] } },
+
+    { id: 'adrenals', name: 'adrenal glands', fill: '#d8a24a',
+      where: 'one on top of each kidney',
+      what: 'Small glands that make adrenaline and cortisol, the hormones of fight, flight and stress. When your mind sees a threat, these are what make your body believe it.',
+      back: { side: 'R', at: [172, 209], d: [
+        'M120 206 L 128 196 L 136 204 C 130 206 124 207 120 206 Z',
+        'M164 214 L 172 204 L 180 212 C 174 214 168 215 164 214 Z'] } },
+
+    { id: 'kidneys', name: 'kidneys', fill: '#93453b',
+      where: 'against the back wall of the abdomen, either side of the spine',
+      what: 'Together they filter about 180 litres of blood plasma a day and keep only what you need, about 1.5 litres leaving as urine. The right one sits a little lower than the left, pushed down by the liver.',
+      leo: 'He drew the whole urinary system, kidneys, ureters and bladder, as one connected network in his large study of the female body.',
+      back: { side: 'L', at: [124, 232], d: [
+        'M128 204 C 138 202 142 212 141 222 C 140 230 136 232 137 236 C 138 242 134 248 126 248 C 118 246 114 236 115 226 C 116 214 120 205 128 204 Z',
+        'M172 212 C 162 210 158 220 159 230 C 160 238 164 240 163 244 C 162 250 166 256 174 256 C 182 254 186 244 185 234 C 184 222 180 213 172 212 Z'] } },
+
+    { id: 'small', name: 'small intestine', fill: '#e8c1a0',
+      where: 'coiled in the middle of the abdomen',
+      what: 'About 3 to 5 metres long in a living body. Its lining is folded into millions of tiny fingers (villi), and this is where almost all the nutrients from food are absorbed.',
+      front: { side: 'R', at: [162, 282], d: [
+        'M130 262 C 145 256 165 258 176 264 C 180 280 178 296 170 300 C 156 304 140 304 130 298 C 124 286 124 272 130 262 Z'],
+        detail: ['M134 268 C 142 262 150 274 158 266 C 164 262 170 270 172 268', 'M132 278 C 140 272 148 286 156 278 C 162 272 168 282 174 278', 'M132 288 C 140 282 146 296 154 288 C 160 282 166 294 172 288', 'M140 298 C 146 292 152 300 160 296'] } },
+
+    { id: 'large', name: 'large intestine', fill: 'none', tube: { color: '#d19d79', w: 10, haustra: true },
+      where: 'framing the small intestine: up the right, across, and down the left',
+      what: 'About 1.5 metres long. It soaks water back out of what\'s left of your food and is home to trillions of gut bacteria that make vitamins and even talk to your brain.',
+      front: { side: 'L', at: [114, 268], d: [
+        'M118 298 C 114 280 112 262 118 246 C 124 238 136 246 150 250 C 164 254 176 240 184 238 C 188 252 186 274 184 290 C 182 304 168 300 160 302 C 154 304 150 308 150 316'] } },
+
+    { id: 'appendix', name: 'appendix', fill: 'none', tube: { color: '#c08a66', w: 3 },
+      where: 'lower right of the abdomen, hanging off the large intestine',
+      what: 'A finger-like pouch long thought useless. It now seems to act as a safe house for good gut bacteria, restocking the gut after an illness.',
+      leo: 'His anatomical sketches are often cited as the earliest known drawing of it.',
+      front: { side: 'L', at: [124, 312], d: [
+        'M118 300 C 116 308 120 314 126 314'] } },
+
+    { id: 'ureters', name: 'ureters', fill: 'none', tube: { color: '#b07a50', w: 2 },
+      where: 'from each kidney down to the bladder',
+      what: 'Two thin muscular tubes, about 25 to 30 cm long. Like the esophagus, they push urine along in waves rather than letting it drip.',
+      back: { side: 'R', at: [159, 272], d: [
+        'M139 232 C 142 260 140 285 146 301', 'M161 240 C 158 265 160 287 154 301'] } },
+
+    { id: 'bladder', name: 'bladder', fill: '#e9d58c',
+      where: 'low in the pelvis, behind the pubic bone',
+      what: 'A muscular bag that stretches to hold around 400 to 600 ml. Stretch sensors in its wall tell your brain when it\'s time to go.',
+      front: { side: 'R', at: [157, 312], d: [
+        'M138 306 C 138 300 162 300 162 306 C 162 316 156 320 150 320 C 144 320 138 316 138 306 Z'] },
+      back: { side: 'L', at: [141, 310], dashed: true, d: [
+        'M138 306 C 138 300 162 300 162 306 C 162 316 156 320 150 320 C 144 320 138 316 138 306 Z'] } },
+
+    { id: 'rectum', name: 'rectum', fill: '#b9785a',
+      where: 'the last part of the large intestine, in front of the tailbone',
+      what: 'About 12 cm long. It holds waste until the time is right; its sensors tell gas from solid, which is a remarkably clever piece of engineering.',
+      back: { side: 'R', at: [154, 314], d: [
+        'M146 290 L 154 290 L 155 318 C 155 323 145 323 145 318 Z'] } },
+  ];
+  ORGANS.forEach((o, i) => o.n = i + 1);
+
+  // Body outline: the right half (x > 150), mirrored to make the left, smoothed into one closed curve.
+  const HALF = [
+    [163,92],[165,112],[186,120],[208,126],[222,136],[228,156],[230,190],[232,240],
+    [238,280],[242,318],[248,336],[250,362],[244,380],[234,376],[232,352],[228,330],
+    [220,284],[214,248],[210,200],[206,162],[204,195],[200,225],[198,245],[202,270],
+    [207,295],[206,322],[202,380],[194,440],[188,470],[192,510],[186,560],[178,598],
+    [184,612],[176,621],[160,620],[158,606],[160,580],[164,540],[160,500],[162,470],
+    [160,420],[156,360],[150,334]
+  ];
+  const OUTLINE = HALF.concat(HALF.slice(0, -1).reverse().map(([x, y]) => [300 - x, y]));
+
+  function smooth(pts) { // closed Catmull-Rom through every point, as cubic Béziers
+    const n = pts.length, p = i => pts[(i + n) % n];
+    let d = `M${p(0)[0]} ${p(0)[1]}`;
+    for (let i = 0; i < n; i++) {
+      const [a, b, c, e] = [p(i - 1), p(i), p(i + 1), p(i + 2)];
+      d += ` C ${(b[0] + (c[0] - a[0]) / 6).toFixed(1)} ${(b[1] + (c[1] - a[1]) / 6).toFixed(1)}`
+         + ` ${(c[0] - (e[0] - b[0]) / 6).toFixed(1)} ${(c[1] - (e[1] - b[1]) / 6).toFixed(1)} ${c[0]} ${c[1]}`;
+    }
+    return d + ' Z';
+  }
+
+  const SKETCH = {
+    front: ['M126 122 C 134 126 142 124 148 120', 'M174 122 C 166 126 158 124 152 120',
+            'M104 214 C 120 228 138 210 150 196 C 162 210 180 228 196 214',
+            'M150 256 m -2 0 a 2 2 0 1 0 4 0 a 2 2 0 1 0 -4 0',
+            'M168 470 C 172 476 178 476 182 470', 'M132 470 C 128 476 122 476 118 470'],
+    back:  ['M110 134 C 122 128 134 128 140 132 C 138 150 132 168 126 182 C 118 168 112 150 110 134 Z',
+            'M190 134 C 178 128 166 128 160 132 C 162 150 168 168 174 182 C 182 168 188 150 190 134 Z',
+            'M150 324 L150 344', 'M116 334 C 128 346 140 346 150 340', 'M184 334 C 172 346 160 346 150 340',
+            'M168 470 C 172 466 178 466 182 470', 'M132 470 C 128 466 122 466 118 470'],
+  };
+  const VERTEBRAE = []; // faint spine behind the back view
+  for (let y = 96; y < 300; y += 9) VERTEBRAE.push(`M144 ${y} L156 ${y} L156 ${y + 6} L144 ${y + 6} Z`);
+
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  const views = {};
+
+  function build(section) {
+    const view = section.dataset.view;
+    const svg = section.querySelector('svg');
+    const defs = el('defs', {}, svg);
+    const grad = el('linearGradient', { id: 'fade', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+    el('stop', { offset: 0, 'stop-color': '#e6dfd1', 'stop-opacity': 0 }, grad);
+    el('stop', { offset: .7, 'stop-color': '#e6dfd1', 'stop-opacity': 1 }, grad);
+    const fig = el('g', { transform: `translate(${TX} 0) scale(${K})` }, svg);
+
+    el('path', { class: 'body', d: smooth(OUTLINE) }, fig);
+    el('ellipse', { class: 'body', cx: 150, cy: 58, rx: 30, ry: 38 }, fig);
+    if (view === 'back') VERTEBRAE.forEach(d => el('path', { class: 'sketch', d }, fig));
+    SKETCH[view].forEach(d => el('path', { class: 'sketch', d }, fig));
+
+    // body-side markers, so nobody mixes up left and right
+    const [l, r] = view === 'front' ? ['R', 'L'] : ['L', 'R'];
+    el('text', { class: 'tag', x: 60, y: 120 }, fig).textContent = l;
+    el('text', { class: 'tag', x: 240, y: 120 }, fig).textContent = r;
+    el('rect', { x: 40, y: 280, width: 220, height: 62, fill: 'url(#fade)', 'pointer-events': 'none' }, fig);
+    el('text', { class: 'tag', x: 150, y: 334 }, fig).textContent = view === 'front' ? 'facing you' : 'facing away';
+
+    const groups = {}, labels = {};
+    const here = ORGANS.filter(o => o[view]);
+    here.forEach(o => {
+      const v = o[view];
+      const g = el('g', { class: 'organ', 'data-id': o.id, tabindex: 0, role: 'button', 'aria-label': `${o.n}. ${o.name}` }, fig);
+      v.d.forEach(d => {
+        if (o.tube) {
+          el('path', { class: 'tube', d, style: `stroke:${o.tube.color};stroke-width:${o.tube.w};stroke-dasharray:${o.tube.dash || 'none'};stroke-linecap:${o.tube.dash ? 'butt' : 'round'}` }, g);
+          if (o.tube.haustra) el('path', { class: 'tube detail', d, style: 'stroke:#5a3d2b;stroke-width:' + o.tube.w + ';stroke-dasharray:1 6;opacity:.35' }, g);
+        } else {
+          el('path', { d, fill: o.fill, 'stroke-dasharray': v.dashed ? '3 2' : 'none', 'fill-opacity': v.dashed ? .45 : 1 }, g);
+        }
+        el('path', { class: 'hit', d }, g);
+      });
+      (v.extra || []).forEach(([d, c, w]) => el('path', { class: 'tube', d, style: `stroke:${c};stroke-width:${w}` }, g));
+      (v.detail || []).forEach(d => el('path', { class: 'detail', d }, g));
+      groups[o.id] = g;
+    });
+
+    // leader labels down each margin, spaced so they never overlap
+    ['L', 'R'].forEach(side => {
+      let last = -Infinity;
+      here.filter(o => o[view].side === side)
+          .sort((a, b) => a[view].at[1] - b[view].at[1])
+          .forEach(o => {
+            const ax = TX + K * o[view].at[0], ay = K * o[view].at[1];
+            const y = Math.max(ay, last + 25); last = y;
+            const x0 = ax, cx = side === 'L' ? 102 : 438, knee = side === 'L' ? 112 : 428;
+            const g = el('g', { class: 'lbl', 'data-id': o.id }, svg);
+            el('polyline', { points: `${x0},${ay} ${knee},${y} ${cx},${y}` }, g);
+            el('circle', { cx: x0, cy: ay, r: 1.6, style: 'fill:#5a3d2b;stroke:none' }, g);
+            el('circle', { cx, cy: y, r: 9 }, g);
+            el('text', { class: 'n', x: cx, y }, g).textContent = o.n;
+            el('text', { class: 'name', x: side === 'L' ? cx - 14 : cx + 14, y, 'text-anchor': side === 'L' ? 'end' : 'start' }, g).textContent = o.name;
+            labels[o.id] = g;
+          });
+    });
+
+    // the legend under the plate
+    const ul = section.querySelector('.legend');
+    const buttons = {};
+    here.forEach(o => {
+      const li = document.createElement('li');
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-pressed', 'false');
+      b.innerHTML = `<span>${o.n}</span>${o.name}`;
+      b.addEventListener('click', () => select(o.id, view));
+      li.appendChild(b); ul.appendChild(li);
+      buttons[o.id] = b;
+    });
+
+    svg.addEventListener('click', e => {
+      const t = e.target.closest('[data-id]');
+      if (t) select(t.dataset.id, view);
+    });
+    svg.addEventListener('keydown', e => {
+      const t = e.target.closest('.organ');
+      if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); select(t.dataset.id, view); }
+    });
+
+    views[view] = { svg, groups, labels, buttons, caption: section.querySelector('.caption') };
+  }
+
+  let current = null;
+
+  function select(id, from) {
+    current = current === id ? null : id; // tapping the same organ again clears it
+    const o = ORGANS.find(x => x.id === id);
+    Object.entries(views).forEach(([view, v]) => {
+      v.svg.classList.toggle('dim', !!current);
+      for (const k in v.groups) v.groups[k].classList.toggle('on', k === current);
+      for (const k in v.labels) v.labels[k].classList.toggle('on', k === current);
+      for (const k in v.buttons) v.buttons[k].setAttribute('aria-pressed', String(k === current));
+      if (!current) { v.caption.innerHTML = '<p class="hint">tap an organ to read about it ↑</p>'; return; }
+      if (o[view]) v.caption.innerHTML =
+        `<div class="who">${o.n}. ${o.name}</div><div class="where">${o.where}</div><p>${o.what}</p>` +
+        (o.leo ? `<p class="leo">${o.leo}</p>` : '');
+      else v.caption.innerHTML =
+        `<div class="who">${o.n}. ${o.name}</div><p class="hint">can't be seen from ${view === 'back' ? 'behind' : 'the front'}, see the other view</p>`;
+    });
+  }
+
+  document.querySelectorAll('[data-view]').forEach(build);
+})();
+</script>
+</body>
+</html>
