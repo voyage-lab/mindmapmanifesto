@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>The Sales Development Playbook — MindMapManifesto</title>
-  <meta name="description" content="Notes on The Early Stage Sales Development Playbook by Kartheek Mulpuri and Ian Grover: preparation, outreach, lead acceptance, and the little things that make a new SDR succeed."/>
-  <meta property="og:title" content="The Sales Development Playbook"/>
-  <meta property="og:description" content="Notes on The Early Stage Sales Development Playbook by Kartheek Mulpuri and Ian Grover: preparation, outreach, lead acceptance, and the little things that make a new SDR succeed."/>
+  <title>The Keys to Early-Stage Sales — MindMapManifesto</title>
+  <meta name="description" content="Every key from The Early Stage Sales Development Playbook by Kartheek Mulpuri and Ian Grover: preparation, outreach, lead acceptance, and the little things that make a new SDR succeed."/>
+  <meta property="og:title" content="The Keys to Early-Stage Sales"/>
+  <meta property="og:description" content="Every key from The Early Stage Sales Development Playbook by Kartheek Mulpuri and Ian Grover: preparation, outreach, lead acceptance, and the little things that make a new SDR succeed."/>
   <meta property="og:image" content="../../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <style>
@@ -198,19 +198,30 @@
       );
     }
 
+    /* one key: a numbered paper note */
+    function Key({ n, title, children }) {
+      return (
+        <div style={{ background:'#0d0d12', border:`1px solid ${ACCENT}2e`, borderRadius:16, padding:'24px 28px', marginBottom:28 }}>
+          <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:`${ACCENT}99`, marginBottom:6, fontWeight:600 }}>Key {String(n).padStart(2, '0')}</div>
+          <h3 style={{ fontSize:'1.35rem', fontWeight:700, color:'#e8e8ed', marginBottom:10 }}>{title}</h3>
+          {typeof children === 'string' ? <p style={{ fontSize:'1rem', lineHeight:1.65, color:'#b8b8c8' }}>{children}</p> : children}
+        </div>
+      );
+    }
+
     /* ── Screen 0: Landing ───────────────────────────────────────── */
     function LandingScreen({ onNext }) {
       return (
         <div style={{ background:'#000', minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden' }}>
           <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:820, display:'flex', flexDirection:'column', alignItems:'center', gap:36, animation:'mmm-reveal 1.5s cubic-bezier(0.16,1,0.3,1) forwards' }}>
-            <div style={{ fontSize:'0.65rem', letterSpacing:'0.6em', color:'rgba(129,140,248,0.5)', textTransform:'uppercase', fontWeight:700 }}>Notes on the book by Kartheek Mulpuri &amp; Ian Grover</div>
+            <div style={{ fontSize:'0.65rem', letterSpacing:'0.6em', color:'rgba(129,140,248,0.5)', textTransform:'uppercase', fontWeight:700 }}>From the book by Kartheek Mulpuri &amp; Ian Grover</div>
             <div>
-              <h1 style={{ fontSize:'clamp(2.8rem,10vw,6rem)', fontWeight:700, letterSpacing:'-0.02em', color:'white', marginBottom:10 }}>The Sales Development Playbook</h1>
-              <div style={{ fontSize:'clamp(0.9rem,2.2vw,1.3rem)', fontWeight:300, color:'rgba(255,255,255,0.4)', letterSpacing:'0.1em' }}>A Guide for the Newly Hired SDR · Nineteen Parts</div>
+              <h1 style={{ fontSize:'clamp(2.8rem,10vw,6rem)', fontWeight:700, letterSpacing:'-0.02em', color:'white', marginBottom:10 }}>The Keys to Early-Stage Sales</h1>
+              <div style={{ fontSize:'clamp(0.9rem,2.2vw,1.3rem)', fontWeight:300, color:'rgba(255,255,255,0.4)', letterSpacing:'0.1em' }}>{KEY_COUNT} Keys · {PARTS.length} Parts · The Sales Development Playbook</div>
             </div>
             <div style={{ maxWidth:600, borderLeft:'2px solid rgba(129,140,248,0.3)', paddingLeft:26, textAlign:'left' }}>
               <p style={{ fontStyle:'italic', fontSize:'clamp(0.95rem,1.9vw,1.13rem)', lineHeight:1.8, color:'rgba(255,255,255,0.55)' }}>
-                “The material here is intended to serve as a framework. Every company is different and every SDR has their own style. You will have to iterate to find solutions that work for you.”
+                Every key a newly hired SDR needs: preparation, outreach, lead acceptance, and the little things. “The material here is intended to serve as a framework. You will have to iterate to find solutions that work for you.”
               </p>
             </div>
             <button onClick={onNext}
@@ -222,373 +233,318 @@
       );
     }
 
-    /* ── Parts ───────────────────────────────────────────────────── */
+    /* ── Parts: each is a list of keys, numbered straight through ── */
     const PARTS = [
       {
         title: 'Why This Playbook Exists',
-        body: <>
-          <Prose>Kartheek Mulpuri spent ten years in tech: he ran sales operations at an early-stage company that went on to an exit, built a lead-generation strategy that brought American consumer electronics brands to the Middle East, and saw dozens of sales development methods up close as a venture capitalist. Ian Grover has prospected 4- to 7-figure deals at early-, mid- and late-stage companies, and had to rebuild much of his playbook moving from Yelp, a public company, to Brickwork, a 19-person SaaS startup.</Prose>
-          <Prose>They found plenty of good blog posts, but no complete guide for an SDR (a sales development representative) at an early-stage company. So they wrote one.</Prose>
-          <InsightCard label="The problem">There have never been more early-stage SaaS companies: 11,288 as of November 2018, per Crunchbase, and growing. That means more new SDRs than ever are hired into imperfect situations, with no structured training, few tools and little process. Hundreds of them <em>burn out and churn within their first year.</em></InsightCard>
-          <PullQuote>Treat everything here as a framework, not a script. Adapt it to your company, your buyers and your own style, and keep iterating.</PullQuote>
-        </>,
+        intro: 'Kartheek Mulpuri spent ten years in tech: sales operations at an early-stage company that exited, a lead-generation strategy that brought American consumer electronics brands to the Middle East, and a view of dozens of sales development methods as a venture capitalist. Ian Grover has prospected 4- to 7-figure deals and had to rebuild his playbook moving from Yelp to Brickwork, a 19-person SaaS startup. They wrote the guide they couldn’t find.',
+        keys: [
+          ['It’s a framework, not a script', 'Every company is different and every SDR has their own style. Adapt everything here to your situation, and keep iterating until it works for you.'],
+          ['Know why new SDRs burn out', 'There have never been more early-stage SaaS companies (11,288 as of November 2018, per Crunchbase). More SDRs than ever are hired into imperfect situations with no structured training, few tools and little process, and hundreds churn within their first year. Go in expecting it, and build your own system.'],
+        ],
       },
       {
-        title: 'The Team and the SDR’s Job',
-        body: <>
-          <Prose>Early stage here means pre-Series B, or fewer than 30 people. At that size, a sales team usually looks like this:</Prose>
-          <Card label="Who’s on the team">
-            <Terms items={[
-              ['The leader', 'The CEO or a Head of Sales runs the team.'],
-              ['Account executives (AEs)', 'Usually one to three. They work to close leads once a lead looks like a fit for the product.'],
-              ['Marketing', 'Maybe one person, likely junior or mid-level.'],
-              ['Customer success managers (CSMs)', 'One or two. They take over the day-to-day relationship once the AEs close a customer.'],
-              ['Sales development reps (SDRs)', 'One or two. That’s you: you own the lead qualification process.'],
-            ]}/>
-          </Card>
-          <Prose>Owning qualification means every lead passes through your hands before an AE spends time on it. This is the whole path:</Prose>
-          <Card label="How a lead moves">
+        title: 'The Team and Your Job',
+        keys: [
+          ['Know who’s on an early-stage sales team', <Terms items={[
+            ['Early stage', 'Pre-Series B, or fewer than 30 people.'],
+            ['The leader', 'The CEO or a Head of Sales.'],
+            ['Account executives (AEs)', 'One to three. They close leads that look like a fit.'],
+            ['Marketing', 'Maybe one person, junior or mid-level.'],
+            ['Customer success managers (CSMs)', 'One or two. They run the relationship after the AEs close.'],
+            ['SDRs', 'One or two. That’s you.'],
+          ]}/>],
+          ['You own lead qualification', <>
+            <p style={{ fontSize:'1rem', lineHeight:1.65, marginBottom:16 }}>Every lead passes through your hands before an AE spends time on it:</p>
             <FlowRow>
-              <FlowBox><strong>Inbound:</strong> someone at a business shows interest in your product, usually by leaving their contact details.</FlowBox>
-              <FlowBox><strong>Outbound:</strong> you or marketing build a list of people at companies that could be a fit.</FlowBox>
+              <FlowBox><strong>Inbound:</strong> someone shows interest, usually by leaving their contact details.</FlowBox>
+              <FlowBox><strong>Outbound:</strong> you or marketing list people at companies that could be a fit.</FlowBox>
             </FlowRow>
             <Down/>
-            <FlowBox>You engage the lead through a <strong>campaign</strong>: a planned string of emails, calls, LinkedIn messages and other touches.</FlowBox>
+            <FlowBox>You engage the lead through a <strong>campaign</strong>: emails, calls, LinkedIn messages and other touches.</FlowBox>
             <Down/>
             <FlowRow>
-              <FlowBox><strong>Interested:</strong> the lead takes an initial call with you, and you schedule a call for the AE.</FlowBox>
-              <FlowBox><strong>Not interested:</strong> the lead comes out of the active pipeline. Try to re-engage in 6–8 weeks.</FlowBox>
+              <FlowBox><strong>Interested:</strong> they take a first call with you, and you book a call for the AE.</FlowBox>
+              <FlowBox><strong>Not interested:</strong> out of the active pipeline; try again in 6–8 weeks.</FlowBox>
             </FlowRow>
             <Down/>
             <FlowRow>
-              <FlowBox><strong>AE accepts:</strong> the AE takes the first call. If they want to keep talking, the lead becomes an <strong>opportunity.</strong></FlowBox>
-              <FlowBox><strong>AE rejects:</strong> you mark the lead disqualified in the CRM and email them that the team won’t move forward.</FlowBox>
+              <FlowBox><strong>AE accepts:</strong> if the conversation continues, the lead becomes an <strong>opportunity.</strong></FlowBox>
+              <FlowBox><strong>AE rejects:</strong> you mark it disqualified in the CRM and email them the news.</FlowBox>
             </FlowRow>
-          </Card>
-          <InsightCard label="Three stages">The book splits the SDR’s work into <em>preparation, outreach and lead acceptance.</em> These notes follow the same order.</InsightCard>
-        </>,
+          </>],
+          ['Your work has three stages', 'Preparation, outreach and lead acceptance. Get the first one right and the other two get easier.'],
+        ],
       },
       {
         title: 'Onboarding: Learn the Business',
-        body: <>
-          <Prose>Onboarding can make or break you in this role. It may be your first full-time job, your first sales job, or your first job in this industry, and at an early-stage company the team often hasn’t worked out or written down how qualification works. Expect to train yourself, test which techniques work, and figure out why they work in the industries you prospect.</Prose>
-          <InsightCard label="Ramp faster">Per TOPO, the average SDR takes about <em>three months</em> to ramp to full productivity. Working through it systematically gets you there much sooner.</InsightCard>
-          <Card label="Start with the company">
-            <Points items={[
-              'What does the whole team look like today, and who leads it?',
-              'What are the short-term and long-term goals?',
-              'What milestones has the company hit recently?',
-              'Is the culture engineer-driven or sales-driven?',
-              'Who manages sales, who does your manager report to, and what does the sales org chart look like?',
-              'Who are your go-to people for questions?',
-              'How are decisions made in sales, and how should you work with marketing?',
-              'What have lead-generation results looked like so far, and what has been hard?',
-              'How is reporting done, and which metrics do the company and the sales team track?',
-              'Are there regular meetings on the status of leads and opportunities? How often, and when?',
-            ]}/>
-          </Card>
-        </>,
+        keys: [
+          ['Onboarding makes or breaks you', 'It may be your first full-time job, first sales job or first job in the industry, and at an early-stage company nobody may have written down how qualification works. Expect to train yourself, test which techniques work, and figure out why they work in your industries.'],
+          ['Beat the three-month ramp', 'Per TOPO, the average SDR takes about three months to reach full productivity. A systematic onboarding gets you there much faster.'],
+          ['Interview the company', <Points items={[
+            'What does the whole team look like, and who leads it?',
+            'What are the short-term and long-term goals?',
+            'What milestones has the company hit recently?',
+            'Is the culture engineer-driven or sales-driven?',
+            'Who manages sales, who does your manager report to, and what’s the sales org chart?',
+            'Who are your go-to people for questions?',
+            'How are sales decisions made, and how should you work with marketing?',
+            'What have lead-generation results looked like, and what’s been hard?',
+            'How is reporting done, and which metrics do the company and the sales team track?',
+            'Are there regular meetings on leads and opportunities? How often, and when?',
+          ]}/>],
+        ],
       },
       {
         title: 'Learn the Product and the Market',
-        body: <>
-          <Prose>Next, learn the product the way a customer would. Get a full demo from an AE or someone else on the team, because it’s hard to really understand a product without one. Then keep up with new features and modules as they ship.</Prose>
-          <Card label="The product">
-            <Points items={[
-              'What does it do, and what is it meant to do? What’s the long-term vision?',
-              'What’s in development, and where does it fall short today?',
-              'Why wouldn’t a company buy it?',
-              'What value does it deliver, how do customers measure success, and how do they calculate their ROI?',
-              'How satisfied are customers? What’s the Net Promoter Score?',
-              'What makes it unique? Is it a must-have or a luxury?',
-              'How is it positioned, and does it need an implementation period? If so, how long?',
-            ]}/>
-          </Card>
-          <Card label="The market">
-            <Points items={[
-              'Which markets do you target, by industry and buyer size?',
-              'What is your Ideal Customer Profile (ICP): the customer who gets the most value from the product?',
-              'How big is each market, how fast is it growing or shrinking, and how are the markets prioritized?',
-              'Who are the competitors, and how does your price compare?',
-              'If you’re more expensive, does better functionality justify it?',
-            ]}/>
-          </Card>
-          <InsightCard label="The shortcut">Shadow your AEs on calls with buyers. Those conversations answer most of these questions, and most AEs were SDRs once, so they’ll understand the ask. Aim to have most of the answers <em>within your first couple of weeks.</em></InsightCard>
-          <Prose>Management and employees tend to oversell the product and the market, so balance their view with outside research: user reviews on G2, Capterra and Quora, Glassdoor for the internal picture, and Crunchbase for funding history. Ask these questions again every couple of quarters. At a startup, the answers change fast.</Prose>
-        </>,
+        keys: [
+          ['Get a full demo, and keep up', 'Ask an AE or someone on the team for a complete demo; it’s hard to understand a product without one. Then follow every new feature and module as it ships.'],
+          ['Know the product cold', <Points items={[
+            'What does it do, what is it meant to do, and what’s the long-term vision?',
+            'What’s in development, and where does it fall short today?',
+            'Why wouldn’t a company buy it?',
+            'What value does it deliver, how do customers measure success, and how do they calculate ROI?',
+            'How satisfied are customers? What’s the Net Promoter Score?',
+            'What makes it unique? Is it a must-have or a luxury?',
+            'How is it positioned? Does it need an implementation period, and how long?',
+          ]}/>],
+          ['Know the market', <Points items={[
+            'Which markets do you target, by industry and buyer size?',
+            'What’s your Ideal Customer Profile (ICP): the customer who gets the most value?',
+            'How big is each market, is it growing or shrinking, and how are they prioritized?',
+            'Who are the competitors, and how does your price compare?',
+            'If you’re more expensive, does better functionality justify it?',
+          ]}/>],
+          ['Shadow the AEs', 'Sit in on AE calls with buyers. Those conversations answer most of these questions, and most AEs were SDRs once, so they’ll get it. Aim to have most answers within your first couple of weeks.'],
+          ['Fact-check the hype', 'Management tends to oversell the product and market. Balance it with real user reviews on G2, Capterra and Quora, Glassdoor for the internal picture, and Crunchbase for funding history.'],
+          ['Ask again every couple of quarters', 'At a startup, the answers change fast.'],
+        ],
       },
       {
         title: 'Know the Account',
-        body: <>
-          <Prose>Before you pursue a company (an account), build a baseline profile of it. Bigger deals deserve more detail: the stakes are higher and more information is public. Use the profile to decide whether to pursue the account at all, and to sharpen your outreach so you stand out from SDRs at competitors. Most of it is on the company’s website, Google and LinkedIn, and all of it belongs in your CRM.</Prose>
-          <Card label="What to capture">
-            <Terms items={[
-              ['About', 'Headquarters and satellite offices, revenue, market cap if it’s public, headcount, and industry-specific numbers (store count for a retailer, say).'],
-              ['Recent news and strategy', 'For a public company, the latest investor presentation in the Investor Relations section of its site. For any company, Google News, and especially quotes from the CEO.'],
-              ['Current solution', 'What they use today, which your team wants to replace. If it’s customer-facing, use it the way a customer would. Brickwork powered store locators and appointment booking for retailers, so the team could try a prospect’s existing tool on its website and spot the pain points.'],
-              ['Contacts', 'Names and titles of the likely decisionmaker and stakeholders: 5–10 for a large account, more for a mega account like a Wall Street bank, fewer for small ones.'],
-            ]}/>
-          </Card>
-        </>,
+        keys: [
+          ['Profile every account before you chase it', 'Use the profile to decide whether to pursue the account at all, and to stand out from SDRs at competitors. Go deeper on bigger deals, where the stakes and the public information are greater. Most of it is on the company’s website, Google and LinkedIn, and all of it goes in the CRM.'],
+          ['Capture the basics', 'Headquarters and satellite offices, revenue, market cap if public, headcount, and industry-specific numbers like store count for a retailer.'],
+          ['Read their news and strategy', 'For public companies, the latest investor presentation in Investor Relations. For everyone, Google News, especially quotes from the CEO.'],
+          ['Use their current solution like a customer', 'Your team wants to replace what they use today. If it’s customer-facing, try it yourself and find the pain points. Brickwork, which powered store locators and appointment booking for retailers, tested prospects’ existing tools right on their websites.'],
+          ['List every contact', 'Names and titles of the likely decisionmaker and stakeholders: 5–10 for a large account, more for a mega account like a Wall Street bank, fewer for small ones.'],
+        ],
       },
       {
         title: 'Know the Buyer',
-        body: <>
-          <Prose>There’s usually more than one type of buyer, and many of them can’t approve a purchase but can champion it internally. Each type is a buyer persona. Industry changes the persona, too: a VP of Finance in oil and gas is not a VP of Finance in healthcare.</Prose>
-          <Card label="Build each persona">
-            <Terms items={[
-              ['Role', 'What the job is, the day-to-day, the skills, education, knowledge and tools it needs, and who they report to.'],
-              ['Industry', 'How big the market is, whether it’s growing or shrinking, what customers it serves, and whether the buyer works at a large or small company.'],
-              ['Goals', 'How their performance is measured, and what success looks like in the role.'],
-              ['Networking', 'Their associations, how connected and active they are on LinkedIn, the sites they read for news and best practices, and the events they attend.'],
-              ['Preferences', 'How they like to deal with vendors: email, phone, in person, or something else.'],
-            ]}/>
-          </Card>
-          <InsightCard label="Start with a hypothesis">Treat your team’s answers as the starting hypothesis, because at an early-stage company they may be wrong, and update them as real conversations come in. <em>Understanding the buyer is what gets you more meetings.</em></InsightCard>
-          <Card label="Map how the account buys">
-            <Points items={[
-              'Who makes the final go/no-go decision? If more than one person, who are they?',
-              'Does anyone else need to approve a purchase?',
-              'Who on the buyer’s team leads the evaluation?',
-              'Who will actually use the product, and what are their personas?',
-              'Who could be your internal champion?',
-              'Who reports to whom?',
-            ]}/>
-          </Card>
-        </>,
+        keys: [
+          ['Build a persona for every buyer type', 'Many people involved can’t approve a purchase but can champion it. And industry changes the persona: a VP of Finance in oil and gas isn’t a VP of Finance in healthcare.'],
+          ['Fill in five fields per persona', <Terms items={[
+            ['Role', 'The job, the day-to-day, the skills, education, knowledge and tools, and who they report to.'],
+            ['Industry', 'Market size, growth or decline, the customers it serves, and the size of the buyer’s company.'],
+            ['Goals', 'How they’re measured, and what success looks like.'],
+            ['Networking', 'Associations, LinkedIn activity, the sites they read, and the events they attend.'],
+            ['Preferences', 'How they like to deal with vendors: email, phone, in person or something else.'],
+          ]}/>],
+          ['Treat your team’s answers as a hypothesis', 'At an early-stage company they may be wrong. Start with them, then update as real conversations come in. Understanding the buyer is what gets you more meetings.'],
+          ['Map how the account buys', <Points items={[
+            'Who makes the final go/no-go decision? If several people, who?',
+            'Does anyone else need to approve a purchase?',
+            'Who leads the evaluation?',
+            'Who will actually use the product, and what are their personas?',
+            'Who could be your internal champion?',
+            'Who reports to whom?',
+          ]}/>],
+        ],
       },
       {
         title: 'Find the Champion',
-        body: <>
-          <Prose>In a big deal, reaching the decisionmaker first can backfire. They’re often too busy to evaluate the product themselves and hand the diligence to someone who may be a detractor, or simply not interested. That can kill the deal from the start.</Prose>
-          <InsightCard label="Reach the champion first">A champion doesn’t make the decision but advocates for you internally. Ask your team who the champions were in past deals. They’re often <em>one or two levels below the decisionmaker:</em> if you sell a content management system and the CMO decides, look for a VP of Marketing or a Director of Content Marketing.</InsightCard>
-          <Prose>Watch how your best AEs “deputize” champions. They spot the rising star in an organization, build a strong relationship, and work with that person to get the deal over the line. One sign the relationship is strong: they text each other often.</Prose>
-          <Card label="What has worked with each persona">
-            <Points items={[
-              'What results have you had with each persona?',
-              'What price is each willing to pay?',
-              'What’s the best way to get them to respond?',
-              'Which three features do they care about most, and least?',
-              'Which value proposition do they care about most, and least?',
-            ]}/>
-          </Card>
-        </>,
+        keys: [
+          ['In big deals, go to the champion first', 'A busy decisionmaker often hands the evaluation to someone who may be a detractor or uninterested, and the deal dies before it starts. A champion doesn’t decide, but advocates for you internally.'],
+          ['Look one or two levels down', 'Ask your team who the champions were in past deals. Selling a content management system where the CMO decides? Look for a VP of Marketing or a Director of Content Marketing.'],
+          ['Learn to deputize champions', 'The best AEs spot the rising star in an account, build a strong relationship, and work the deal with that person. A sign it’s strong: they text each other often.'],
+          ['Know what’s worked with each persona', <Points items={[
+            'What results have you had with each one?',
+            'What price is each willing to pay?',
+            'What’s the best way to get them to respond?',
+            'Which three features do they care about most, and least?',
+            'Which value proposition do they care about most, and least?',
+          ]}/>],
+        ],
       },
       {
         title: 'Build Your Stack',
-        body: <>
-          <Prose>You could do the job with nothing but email, a phone and Google. It would be slow. Work with whoever owns the budget to get tools that make the most of your time. These are the tools the authors named in 2020; the categories matter more than the brands.</Prose>
-          <Card label="The CRM" intro="The foundation: a record of every interaction with prospects and customers. Without one, account knowledge lives in someone’s head and leaves with them, teammates contact accounts with no context and look disorganized, and leadership can’t see the real health of the business. Most teams graduate from a basic tool to an advanced one.">
-            <Terms items={[
-              ['Google Sheets', 'The bare minimum if there’s no time or budget for a real CRM. Move off it as soon as you can; it doesn’t scale.'],
-              ['HubSpot', 'Well liked and free, though you’ll likely end up buying its paid products, like the Marketing Hub.'],
-              ['Pipedrive', 'A favorite of small and mid-sized businesses, with plans that started at $15 per user per month.'],
-              ['Salesforce', 'Where most companies end up at scale, with a huge ecosystem of products built on top of it.'],
-            ]}/>
-          </Card>
-          <Card label="Data, outreach and the rest">
-            <Terms items={[
-              ['Lead lists', 'LinkedIn Sales Navigator: search 600M+ members by geography, company size, industry and title, and follow a lead’s activity for things to mention in outreach.'],
-              ['Contact details', 'ZoomInfo, Hunter.io, RocketReach and SalesIntel. Accuracy varies. When they fail, the usual email patterns are firstname@, first initial plus last name@, or firstname.lastname@ the company’s domain.'],
-              ['Sales execution', 'SalesLoft and Outreach.io (or HubSpot) to personalize, automate and track outreach, so you and your manager can see what is and isn’t working. Push for one with good analytics.'],
-              ['Account-based marketing', 'Terminus and Engagio, for running personalized campaigns at a set of target accounts together with marketing.'],
-              ['Extras', 'Emissary (talk to an account’s former employees), Calendly (let prospects pick a time), Sendoso (direct mail), Intercom and Drift (chat with visitors on your website).'],
-              ['Community', 'The job can feel lonely. Bravado and Quora for answers from peers; SaaStr and SalesHacker for free sales development content.'],
-            ]}/>
-          </Card>
-        </>,
+        intro: 'These are the tools the authors named in 2020; the categories matter more than the brands.',
+        keys: [
+          ['Get real tools', 'You could work with email, a phone and Google. It would be slow. Work with your budget owner on tools that make the most of your time.'],
+          ['Make the CRM your foundation', 'It records every interaction with prospects and customers. Without it, account knowledge lives in someone’s head and leaves with them, teammates contact accounts with no context, and leadership can’t see the health of the business.'],
+          ['Pick the CRM for your stage', <Terms items={[
+            ['Google Sheets', 'The bare minimum. Move off it fast; it doesn’t scale.'],
+            ['HubSpot', 'Well liked and free, though you’ll likely buy its paid hubs.'],
+            ['Pipedrive', 'A small-business favorite, from $15 per user per month.'],
+            ['Salesforce', 'Where most companies land at scale.'],
+          ]}/>],
+          ['Build lead lists with Sales Navigator', 'Search LinkedIn’s 600M+ members by geography, company size, industry and title, and follow a lead’s activity for things to mention in outreach.'],
+          ['Find contact details, then verify', 'ZoomInfo, Hunter.io, RocketReach and SalesIntel vary in accuracy. When they fail, try firstname@, first initial plus last name@, or firstname.lastname@ the company’s domain.'],
+          ['Run outreach through a platform with analytics', 'SalesLoft, Outreach.io or HubSpot let you personalize, automate and track outreach so you can see what works. If yours lacks analytics, push for a tool that fills the gap.'],
+          ['Use ABM tools for target accounts', 'Terminus and Engagio help you and marketing run personalized campaigns at a set of key accounts.'],
+          ['Add the extras that save time', 'Emissary to talk to an account’s former employees, Calendly so prospects can pick a time, Sendoso for direct mail, and Intercom or Drift to chat with website visitors.'],
+          ['Don’t do it alone', 'The job can feel lonely. Ask peers on Bravado and Quora, and learn from SaaStr and SalesHacker for free.'],
+        ],
       },
       {
         title: 'Work With Marketing',
-        body: <>
-          <Prose>Marketing is one of your key partners. Put their collateral (case studies, white papers, brochures, videos explaining the product) into your outreach. Buyers engage more with emails that give them something of value.</Prose>
-          <InsightCard label="Inbound is gold">Good marketing, organic (SEO, blogs, podcasts) and paid (Google Ads), brings in inbound leads. They’re usually <em>worth more than outbound leads:</em> they’ve already shown interest, and many are already in a buying cycle. But they go nowhere until sales qualifies them, and the person taking that first call is often you.</InsightCard>
-          <Card label="Set up the handoff">
-            <Points items={[
-              'Agree with marketing on who qualifies an inbound lead before anyone responds to it.',
-              'Set a response time for leads that meet the criteria. Many teams use 24 hours; the authors suggest never going past 72.',
-              'Stay current on the collateral available for your campaigns.',
-            ]}/>
-          </Card>
-          <PullQuote>Momentum matters enormously in a sales process. Do your part to keep it going.</PullQuote>
-        </>,
+        keys: [
+          ['Put marketing’s collateral in your outreach', 'Case studies, white papers, brochures and product videos. Buyers engage more with emails that give them something of value.'],
+          ['Treat inbound leads as gold', 'Leads from SEO, blogs, podcasts and ads have already shown interest, and many are mid-buying-cycle. They’re worth more than outbound leads, but go nowhere until someone qualifies them, usually you.'],
+          ['Agree who qualifies before anyone responds', 'Set the handoff with whoever runs demand generation, and stay current on the collateral available.'],
+          ['Respond fast', 'Set a response time for qualified inbound leads. Many teams use 24 hours; never go past 72. Momentum is everything.'],
+        ],
       },
       {
         title: 'Campaigns and ABM Tiers',
-        body: <>
-          <Prose>By the time you start outreach, you should already have your first emails and follow-ups drafted and loaded into your sales execution tool, your prospect and contact profiles built, and value points written for each persona and business.</Prose>
-          <Prose>The channels that work haven’t changed much: email, phone (lukewarm and cold calls) and LinkedIn. Events and conferences work too. Meet prospects there, or run campaigns that book meetings for your AEs and leaders in and around the venue. For small businesses, like a local restaurant, a message to their Facebook or Twitter account can be worth trying. Direct mail, especially handwritten notes or swag, can work but is expensive.</Prose>
-          <InsightCard label="Stand out">There are over 4,000 marketing technology vendors alone. Your prospects are flooded with outreach, so <em>yours has to be noticeably better.</em></InsightCard>
-          <Prose>A campaign is a structured effort to spark interest in your product from a pool of leads. Going after thousands of accounts is a different game from going after twenty. For a short, high-stakes list, account-based marketing (ABM) is the method of choice. You, the AE and marketing coordinate closely, often splitting the contacts so the AE takes the most senior people, and each message speaks to the person’s role: pipeline efficiency and close rates for a sales leader, acquisition and conversion for a marketer.</Prose>
-          <Card label="Three tiers (via Engagio)">
-            <Terms items={[
-              ['Tier 1 · fewer than 50 accounts', 'Deep research and one-to-one personalization, coordinated between you, the AE, marketing and sometimes executives. Outreach can run for months.'],
-              ['Tier 2 · up to 200 accounts', 'Pull the key data points, especially numbers. Personalize by industry, solution or persona, working closely with marketing. Runs over several weeks.'],
-              ['Tier 3 · 1,000+ accounts', 'Little room for personalization. Send waves of communication with marketing over a few weeks.'],
-            ]}/>
-          </Card>
-        </>,
+        keys: [
+          ['Be ready before outreach starts', 'First emails and follow-ups drafted and loaded into your sales execution tool, prospect and contact profiles built, and value points written for each persona and business.'],
+          ['Use the channels that work', 'Email, phone (lukewarm and cold) and LinkedIn. Events and conferences, including meetings booked around the venue. Facebook and Twitter messages for small businesses like restaurants. Direct mail with handwritten notes or swag, if the budget allows.'],
+          ['Stand out', 'There are over 4,000 marketing technology vendors alone. Your prospects are flooded, so your outreach has to be noticeably better.'],
+          ['Match the campaign to the list', 'Thousands of accounts and twenty accounts are different games. For a short, high-stakes list, account-based marketing (ABM) is the method of choice.'],
+          ['Run ABM as a team', 'You, the AE and marketing coordinate closely. Often you split the contacts and the AE takes the senior ones. Tailor every message to the role: pipeline efficiency and close rates for sales, acquisition and conversion for marketing.'],
+          ['Tier your accounts', <Terms items={[
+            ['Tier 1 · under 50 accounts', 'Deep research, one-to-one personalization, coordinated with the AE, marketing and sometimes executives. Runs for months.'],
+            ['Tier 2 · up to 200', 'Key data points, especially numbers. Personalize by industry, solution or persona with marketing. Runs for weeks.'],
+            ['Tier 3 · 1,000+', 'Little personalization; waves of communication with marketing over a few weeks.'],
+          ]}/>],
+        ],
       },
       {
         title: 'The Cadence',
-        body: <>
-          <Prose>Every campaign needs a cadence: how often, and through which channels, you “touch” each contact. Opinions vary a lot:</Prose>
-          <Card label="Examples">
-            <Points items={[
-              'A CRO at a company with six-figure contracts had his SDRs touch each contact seven times in two weeks.',
-              'A blogger on Outreach.io’s site suggests 42 touches in 90 days for marquee accounts, and 7 in 20 days for influencers who aren’t decisionmakers.',
-            ]}/>
-          </Card>
-          <Card label="Ian’s favorite (from Engagio)" intro="For high five-figure to low six-figure deals in retail:">
+        keys: [
+          ['Set a cadence for every campaign', 'How often, and through which channels, you touch each contact. Examples: 7 touches in 2 weeks for six-figure deals; 42 touches in 90 days for marquee accounts; 7 in 20 days for influencers who don’t decide.'],
+          ['Start from a proven sequence', <>
+            <p style={{ fontSize:'1rem', lineHeight:1.65, marginBottom:14 }}>Ian’s favorite, from Engagio, for high five- to low six-figure retail deals:</p>
             <Terms items={[
-              ['Day 0', 'Email in the morning, phone call in the afternoon.'],
-              ['Day 3', 'Phone call in the morning; follow-up email if you reach voicemail.'],
-              ['Day 5', 'LinkedIn message or other social media, in the afternoon.'],
+              ['Day 0', 'Email in the morning, call in the afternoon.'],
+              ['Day 3', 'Call in the morning; follow-up email if you get voicemail.'],
+              ['Day 5', 'LinkedIn or other social message in the afternoon.'],
               ['Day 7', 'Email in the morning.'],
-              ['Day 9', 'Phone call in the morning.'],
-              ['Day 15', 'Phone call and email in the morning.'],
+              ['Day 9', 'Call in the morning.'],
+              ['Day 15', 'Call and email in the morning.'],
             ]}/>
-          </Card>
-          <InsightCard label="The breakup email">No reply after Day 15? Send a breakup email. Acknowledge you haven’t heard back and leave a clear next step: <em>“I’ll check back in with you in three months,”</em> or “If it makes sense to connect later, just send me a note.”</InsightCard>
-          <Prose>The right cadence depends on how many accounts are in the campaign, the titles you’re targeting, the industry, any past contact and more. Start by asking your team which cadences they’ve used and how each one performed, and let your sales execution tool organize, automate and log it.</Prose>
-        </>,
+          </>],
+          ['Send the breakup email', 'No reply after day 15? Say you haven’t heard back and leave a clear next step: “I’ll check back in three months,” or “If it makes sense to connect later, send me a note.”'],
+          ['Borrow what already worked', 'The right cadence depends on account count, titles, industry and past contact. Ask your team which cadences they’ve run and how each performed, and let your tool automate and log it.'],
+        ],
       },
       {
         title: 'Seven Campaign Tips',
-        body: <>
-          <Card label="As you plan the program">
-            <Steps items={[
-              <><strong>Time your calls.</strong> Put yourself in the prospect’s week; it’s part of your persona research. Per HubSpot, midweek works best for a first ping, since Mondays are busy and Fridays are slow. Warm calls land best right before lunch or at the end of the day, not first thing in the morning.</>,
-              <><strong>Time your emails.</strong> Aim for the top of the inbox when they have time to think: around 11 AM or 4 PM in their time zone. Many buyers also read email in the evening or early morning, so test those windows too.</>,
-              <><strong>Use two formats on day one.</strong> SalesLoft’s data suggests two touches through different channels on the first day, for example a LinkedIn InMail in the morning and an email in the late afternoon.</>,
-              <><strong>Plan every hour.</strong> Time management is one of the most important skills an SDR can build. Go into each day knowing what each hour, or each two-to-three-hour block, is for.</>,
-              <><strong>Write subject lines that earn the open.</strong> Relevant and attention-catching, using industry or role-specific words that show you know the subject.</>,
-              <><strong>Lead with data.</strong> Relevant, actionable data builds credibility, and can make a prospect glad you reached out and more likely to engage later.</>,
-              <><strong>Disqualify without fear.</strong> It hurts to cut loose someone who agreed to meet and likes the product. But passing a bad-fit lead forward wastes your team’s time. Sales is a numbers game; there are other fish in the sea.</>,
-            ]}/>
-          </Card>
-        </>,
+        keys: [
+          ['Time your calls', 'Midweek is best for a first ping (busy Mondays, slow Fridays). Warm calls land best just before lunch or at the end of the day, never first thing in the morning.'],
+          ['Time your emails', 'Aim for the top of the inbox when they can think: around 11 AM or 4 PM their time. Test evenings and early mornings too.'],
+          ['Use two formats on day one', 'Two touches through different channels on the first day, like a LinkedIn InMail in the morning and an email in the late afternoon.'],
+          ['Plan every hour', 'Know what each hour, or each two-to-three-hour block, is for before the day starts.'],
+          ['Write subject lines that earn the open', 'Relevant and attention-catching, with industry or role-specific words that show you know the subject.'],
+          ['Lead with data', 'Relevant, actionable data builds credibility and can make a prospect glad you reached out.'],
+          ['Disqualify without fear', 'Passing a bad-fit lead forward wastes your team’s time, even if they liked you. Sales is a numbers game.'],
+        ],
       },
       {
         title: 'Email and LinkedIn',
-        body: <>
-          <Prose>Email is the primary channel for most SDRs. View rates are high because business people don’t ignore their inbox (even if a reply takes a few days), a sales execution tool lets you send many at once, and a cold email feels less intrusive than a cold call. The catch: buyers get hundreds of vendor emails. You need a subject line that earns the open, and a message that shows you know their industry and gives them something of value.</Prose>
-          <Card label="Anatomy of a strong first email (Tier 1)">
-            <Steps items={[
-              <><strong>Break the ice</strong> with a genuine compliment or a mutual connection, instead of rushing to the point.</>,
-              <><strong>Say what you do</strong> in plain words, with a simple value statement.</>,
-              <><strong>Give value:</strong> a case study from a similar-sized company, with a concrete result.</>,
-              <><strong>Show your homework:</strong> one specific detail about their company, like their headcount.</>,
-              <><strong>Make replying easy:</strong> propose a specific day and time.</>,
-            ]}/>
-          </Card>
-          <Prose>LinkedIn InMails are messages to people you aren’t connected with. You need at least LinkedIn Premium, ideally Sales Navigator. Without it you can connect first and message after, but the extra step costs you replies. Every affordable plan caps your InMails, so make each one count. LinkedIn allows 200 characters in the subject and 1,900 in the body. Don’t get anywhere near either: nobody reads a 1,900-character cold message.</Prose>
-          <InsightCard label="The InMail framework"><em>Build rapport</em> (mention something they wrote or did), <em>give context</em> (connect it to what your company does, with one concise proof point), then <em>make a call to action</em> with a suggested time.</InsightCard>
-          <Prose>And invest in your own LinkedIn profile. It’s the public version of you, and a buyer is more likely to reply to someone whose profile follows best practices.</Prose>
-        </>,
+        keys: [
+          ['Make email your main channel', 'View rates are high, you can reach many people at once, and a cold email feels less intrusive than a cold call. But buyers get hundreds of vendor emails, so earn the open and show you know their industry.'],
+          ['Build the first email in five moves', <Steps items={[
+            'Break the ice with a genuine compliment or a mutual connection.',
+            'Say what you do in plain words, with a simple value statement.',
+            'Give value: a case study from a similar company, with a concrete result.',
+            'Show your homework: one specific detail about their company.',
+            'Make replying easy: propose a specific day and time.',
+          ]}/>],
+          ['Get the right LinkedIn plan, and ration InMails', 'You need Premium at least, ideally Sales Navigator; connecting first and messaging later costs replies. InMails are capped, so make each count. The limits are 200 characters for the subject and 1,900 for the body; stay far below both.'],
+          ['Write InMails as rapport, context, call to action', 'Mention something they wrote or did, connect it to what you do with one proof point, then suggest a time.'],
+          ['Polish your own profile', 'It’s the public version of you. Buyers reply more to someone whose profile follows best practices.'],
+        ],
       },
       {
         title: 'Phone Calls',
-        body: <>
-          <Card label="Three temperatures">
-            <Terms items={[
-              ['Warm', 'Your company has had prior contact: you met at an event, or spoke before when the timing wasn’t right.'],
-              ['Lukewarm', 'They’ve likely received an email from an earlier step in your campaign.'],
-              ['Cold', 'No context about your company that you know of.'],
-            ]}/>
-          </Card>
-          <Prose>The warmer the prospect, the more receptive they are. So skew your calls warm or lukewarm, and especially at an early-stage company nobody has heard of, don’t make a call your first touch. (Plenty of sales leaders say the opposite; it’s hotly debated.)</Prose>
-          <InsightCard label="Research and rapport">Before you dial, know the company’s focus and recent news, the prospect’s title and career path, recent news about them, and public details like their college, major or something they’ve written. Sales Navigator surfaces most of it. That research is what separates you from the <em>telemarketer who launches into a stiff script and gets hung up on.</em></InsightCard>
-          <Card label="A first call that works">
-            <Steps items={[
-              'Introduce yourself and build rapport with something from your research.',
-              'Explain why you’re calling, framed around a problem they likely have, and ask whether it’s one they’re facing.',
-              'Share what you do, with a proof point and a concrete use case.',
-              'Ask for the next step: time with your AE. On a first call the goal is a follow-up meeting, not a sale.',
-            ]}/>
-          </Card>
-          <Prose>Be ready for basic questions. You won’t know every answer, but you should know where to look. Keep it short: per TOPO, under 10 minutes; the book’s example call takes about five. If they don’t pick up, leave a voicemail that earns a call back.</Prose>
-        </>,
+        keys: [
+          ['Know the temperature of the call', <Terms items={[
+            ['Warm', 'Prior contact: you met at an event or spoke before.'],
+            ['Lukewarm', 'They’ve likely seen an email from your campaign.'],
+            ['Cold', 'No context about your company.'],
+          ]}/>],
+          ['Skew your calls warm', 'The warmer the prospect, the more receptive. At an early-stage company nobody’s heard of, don’t make a call your first touch. (Many sales leaders disagree; it’s debated.)'],
+          ['Research before you dial', 'Their company’s focus and recent news, their title and career path, news about them, and public details like their college or something they wrote. That’s what separates you from a telemarketer reading a stiff script.'],
+          ['Know where the answers are', 'You won’t know everything, but you should be able to answer basic questions and know where to look for the rest.'],
+          ['Follow the first-call framework', <Steps items={[
+            'Introduce yourself and build rapport from your research.',
+            'Say why you’re calling, framed around a likely problem, and ask if they have it.',
+            'Share what you do, with a proof point and a use case.',
+            'Ask for time with your AE. The goal is a meeting, not a sale.',
+          ]}/>],
+          ['Keep it under ten minutes', 'Per TOPO, under 10 minutes; a good one takes about five. If they don’t pick up, leave a voicemail that earns a callback.'],
+        ],
       },
       {
         title: 'Lead Acceptance',
-        body: <>
-          <Prose>Now the AE decides whether to accept your lead, and your company should have a clear framework for that decision. If you’ve qualified well, the acceptance rate should be high. Rejections should come down to accidents, like a key piece of information you still need to get.</Prose>
-          <Card label="What happens next">
-            <Terms items={[
-              ['Rejected', 'Get the missing information that could qualify the lead, or disqualify it politely by email.'],
-              ['Accepted', 'Schedule the meeting as soon as possible to keep the momentum. The AE takes a 30–60 minute call, often with a demo.'],
-              ['Becomes an opportunity', 'If the AE wants to keep talking, the lead becomes an opportunity, and the AE owns all communication from here.'],
-              ['Not a fit, for now', 'You owned the relationship until now, so you send the polite email and update the lead’s status in the CRM.'],
-            ]}/>
-          </Card>
-          <InsightCard label="Learn from every decision">Join the AE’s calls with your leads, and later ones too. That’s how you learn the full sales process, and how the best AEs started learning their job back when they were SDRs. Each time, <em>note the traits of the leads that moved forward and the ones that didn’t.</em> The patterns will sharpen your outreach.</InsightCard>
-        </>,
+        keys: [
+          ['Qualify so well that AEs accept', 'Your company should have a clear acceptance framework. If you’ve done the work, acceptance should be high and rejections should come down to missing information.'],
+          ['Handle rejections', 'Get the missing information that could qualify the lead, or disqualify it politely by email.'],
+          ['Book accepted meetings immediately', 'Schedule the AE’s 30–60 minute call, often with a demo, as soon as possible to keep momentum.'],
+          ['Sit in on the AE’s calls', 'Join that call and later ones. It’s how you learn the full sales process, and how the best AEs started learning their job.'],
+          ['Close the loop on “not a fit”', 'If the AE passes, you owned the relationship, so you send the polite email and update the CRM. If they continue, the lead becomes an opportunity and the AE owns it.'],
+          ['Log what separates yes from no', 'Each time, note the traits of the leads that moved forward and the ones that didn’t. Apply the patterns to your outreach.'],
+        ],
       },
       {
-        title: 'How an SDR Is Measured',
-        body: <>
-          <Prose>Sales leaders disagree on which metrics matter most, and that’s fair. A horizontal SaaS company selling to small businesses cares far more about touches per day than a vertical one selling seven- or eight-figure deals into an industry with 50 accounts. But your job comes down to one thing: getting qualified meetings for your AEs. The authors focus on three metrics.</Prose>
-          <Card label="Three metrics">
-            <Steps items={[
-              <><strong>Meetings generated.</strong> The company’s sales target implies a number of first meetings its AEs need. Early-stage companies are still learning that ratio, but they should give you at least a rough number as your goal.</>,
-              <><strong>Meetings that become closed deals.</strong> This shows whether you’re bringing qualified leads. Some factors are outside your control, and an ineffective AE is one of the biggest.</>,
-              <><strong>Lead efficiency</strong> (borrowed from SalesLoft). How many leads did you contact to get each meeting? Burning through a list for a handful of meetings may mean your pitch or approach is off, and it can permanently damage how those prospects see your company.</>,
-            ]}/>
-          </Card>
-          <PullQuote>Know exactly how you’re being measured. If the measures seem wrong, or the targets too easy or too hard, say so.</PullQuote>
-        </>,
+        title: 'How You’re Measured',
+        keys: [
+          ['Metrics depend on the business', 'A horizontal SaaS company selling to small businesses cares about touches per day; a vertical one selling eight-figure deals to 50 accounts doesn’t. Either way, the job is qualified meetings for your AEs.'],
+          ['Count meetings generated', 'The sales target implies a number of first meetings. Get at least a rough goal from your leaders.'],
+          ['Track meetings that close', 'It shows whether your leads are qualified, though some factors, like an ineffective AE, are out of your control.'],
+          ['Watch your lead efficiency', 'How many leads did you contact per meeting? Burning through a list for a few meetings means something in your pitch is off, and it can permanently damage how those prospects see your company.'],
+          ['Know your measures, and speak up', 'Know exactly how you’re measured. If the measures seem wrong or the targets too easy or too hard, say so.'],
+        ],
       },
       {
         title: 'A Day in the Life',
-        body: <>
-          <Prose>No two days are the same. This is one of Ian’s:</Prose>
-          <Card label="Ian’s day">
-            <Terms items={[
-              ['8:30 AM', 'Get into the office.'],
-              ['8:45–9:00', 'Answer priority emails: overnight replies from prospects and follow-ups from prospecting calls. Check the day’s schedule so you can prepare for intro calls (last-minute website and persona research) and book a room.'],
-              ['9:00–12:00', 'Structured outreach: calls, emails, connecting with leads. Start with the prospects most likely to convert.'],
-              ['12:00–12:30', 'A quick lunch at your desk.'],
-              ['12:30–3:30', 'Internal meetings and initial calls. Internal meetings take priority, but protect time for the calls.'],
-              ['3:30–5:30', 'Research and planning for tomorrow’s outreach: new accounts and leads, building personas and insights along the way.'],
-            ]}/>
-          </Card>
-        </>,
+        keys: [
+          ['Give every block of the day a job', <Terms items={[
+            ['8:30', 'Arrive.'],
+            ['8:45–9:00', 'Priority emails (overnight replies, follow-ups); check the day’s schedule and prep for intro calls.'],
+            ['9:00–12:00', 'Structured outreach: calls, emails, connecting with leads.'],
+            ['12:00–12:30', 'A quick lunch at your desk.'],
+            ['12:30–3:30', 'Internal meetings and first calls; protect time for the calls.'],
+            ['3:30–5:30', 'Research and plan tomorrow’s outreach: new accounts, leads, personas.'],
+          ]}/>],
+          ['Hit the hottest prospects first', 'In your outreach block, start with the prospects most likely to convert.'],
+        ],
       },
       {
         title: 'The Little Things',
-        body: <>
-          <Prose>The role isn’t for everyone. It takes grit, a strong work ethic, the ability to work through rejection, professionalism, intelligence, creativity, introspection and time management. Six habits that go a long way:</Prose>
-          <Card label="Six habits">
-            <Steps items={[
-              <><strong>Prepare for every meeting.</strong> Your 1:1 with your manager (15 minutes to an hour) is your platform to recap the week, reflect on your approach and results, plan ahead and raise concerns, and you bring the agenda. For group meetings like the pipeline review, be ready to discuss your campaigns, results, what has and hasn’t worked, what’s coming, and notable calls booked for the AEs. Pull the reports from your CRM and sales execution tool beforehand and look for trends. Leaders promote people they know can handle more.</>,
-              <><strong>Treat sales as a science, not just an art.</strong> Know how the funnel works, your lead sources and the meetings each one produces. Are people opening your emails? If not, change the content, then check whether opens and replies improve.</>,
-              <><strong>Keep your CRM clean.</strong> Record outreach data specifically and promptly, so teammates have context and sales ops can pull accurate metrics. If you’re collecting it, it belongs in the CRM; work with sales ops to add the right fields.</>,
-              <><strong>Plan months ahead.</strong> Many SDRs scramble in the last month of every quarter. Learn the best times of year to reach each kind of account, start conference campaigns weeks or months before the event, and run your campaign calendar by your manager.</>,
-              <><strong>Take initiative.</strong> If a process could be better, or should exist and doesn’t, say so in a 1:1 with whoever owns it. That’s leadership, and communication. If you’re told to be quiet, you may be at the wrong company.</>,
-              <><strong>Network, network, network.</strong> Get to know people across the company (product managers, customer success, support) over 1:1 lunches and coffees; people who put in the work find mentors. Go to conferences, trade shows and meetups, and reach out to peers and sales leaders on LinkedIn or Bravado, ideally through a warm introduction.</>,
-            ]}/>
-          </Card>
-        </>,
+        intro: 'The role takes grit, work ethic, resilience to rejection, professionalism, intelligence, creativity, introspection and time management. These habits go a long way:',
+        keys: [
+          ['Own the agenda of your 1:1', 'Your manager won’t bring one. Use it to recap the week, reflect on your approach and results, plan ahead and raise concerns. Agree on the structure early.'],
+          ['Come prepared to every group meeting', 'For the pipeline review, be ready on your campaigns, results, what has and hasn’t worked, what’s next, and notable calls booked for AEs. Pull reports from the CRM and your outreach tool beforehand and look for trends. Leaders promote people they know can handle more.'],
+          ['Treat sales as a science', 'Know the funnel, your lead sources and the meetings each produces. Low opens? Change the content, then check whether opens and replies improve.'],
+          ['Keep your CRM clean', 'Record outreach specifically and promptly, so teammates have context and sales ops gets accurate metrics. If you collect it, it belongs in the CRM.'],
+          ['Plan months ahead', 'Avoid the end-of-quarter scramble. Learn the best times of year to reach each account type, start conference campaigns weeks or months early, and run your calendar by your manager.'],
+          ['Take initiative', 'If a process could be better or should exist, say so in a 1:1 with its owner. That’s leadership. If you’re told to be quiet, you may be at the wrong company.'],
+          ['Network inside the company', 'Get to know product, customer success and support over 1:1 lunches and coffees. People who put in the work find mentors.'],
+          ['Network outside it', 'Go to conferences, trade shows and meetups, and reach peers and sales leaders on LinkedIn or Bravado, ideally through a warm introduction.'],
+        ],
       },
       {
         title: 'Where the Role Leads',
-        body: <>
-          <Prose>Expectations for SDRs have never been higher. At many small companies you’re expected to take the first call an AE would have taken, or even run the demo. And as products get more complex, and buyers subscribe to several vendors for different pieces of their stack instead of one big suite, a great SDR becomes an expert on the industry, not just the product.</Prose>
-          <Card label="Why SDRs fail">
-            <Points items={[
-              'The grind: 50–150 touches a day and a lot of “no.” Not everyone is built for it.',
-              'Skipping the preparation, so the outreach falls flat.',
-              'Preparing well but never adjusting when the outreach isn’t working.',
-              'Structural problems: a small market the company has already worked through, a product with a bad reputation, or too few inbound leads.',
-            ]}/>
-          </Card>
-          <InsightCard label="Mostly in your control">There are other reasons too, but when it comes to your own success, <em>most of them are within your control.</em></InsightCard>
-          <Prose>The typical SDR stays in the role less than a year and a half, so look ahead to what you want next. You don’t have to become an AE: SDRs go on to customer success, marketing, or managing SDRs, and from there anything is possible. Many CEOs and heads of sales started exactly where you are.</Prose>
-          <PullQuote>Who knows? You may join their ranks one day.</PullQuote>
-        </>,
+        keys: [
+          ['Expect more than qualifying', 'At many small companies SDRs take the first call or run the demo. As products get more complex, become an expert on the industry, not just the product.'],
+          ['Know why SDRs fail', <Points items={[
+            'The grind: 50–150 touches a day and a lot of “no.”',
+            'Skipping preparation, so outreach falls flat.',
+            'Never adjusting when outreach isn’t working.',
+            'Structural problems: a small market already worked through, a product with a bad reputation, or too few inbound leads.',
+          ]}/>],
+          ['Most of it is in your control', 'Of all the reasons SDRs fail, most are within the SDR’s control.'],
+          ['Plan your next move', 'The typical SDR stays under a year and a half. Paths lead to AE, customer success, marketing or managing SDRs, and many CEOs and heads of sales started as SDRs. Who knows? You may join their ranks one day.'],
+        ],
       },
     ].map((p, i) => ({ ...p, label: `Part ${NUMBERS[i + 1]} · ${SERIES}` }));
+
+    const KEY_COUNT = PARTS.reduce((sum, p) => sum + p.keys.length, 0);
+    const keyStart = i => PARTS.slice(0, i).reduce((sum, p) => sum + p.keys.length, 0) + 1;
 
     /* ── Completion Screen ──────────────────────────────────────── */
     function CompletionScreen({ onNext }) {
@@ -596,8 +552,8 @@
         <div style={{ background:'#000', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', position:'relative', overflow:'hidden' }} onClick={onNext}>
           {[0, 1, 2].map(i => (<div key={i} style={{ position:'absolute', top:'50%', left:'50%', width:100+i*90, height:100+i*90, borderRadius:'50%', border:`1px solid ${['rgba(129,140,248,0.35)','rgba(99,102,241,0.25)','rgba(6,182,212,0.18)'][i]}`, animation:`waveExpand 5s ease-out ${i*1.6}s infinite` }}/>))}
           <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:760 }}>
-            <div style={{ fontSize:'0.62rem', letterSpacing:'0.5em', textTransform:'uppercase', color:'rgba(129,140,248,0.4)', marginBottom:36 }}>Complete · The SDR Playbook</div>
-            <h1 style={{ fontSize:'clamp(2.2rem,8vw,5rem)', fontWeight:700, color:'#e8e8ed', letterSpacing:1, marginBottom:32, animation:'mmm-reveal 2s ease-out 0.5s both', lineHeight:1.1 }}>PREPARE.<br/>REACH OUT.<br/>QUALIFY.</h1>
+            <div style={{ fontSize:'0.62rem', letterSpacing:'0.5em', textTransform:'uppercase', color:'rgba(129,140,248,0.4)', marginBottom:36 }}>Complete · All {KEY_COUNT} Keys</div>
+            <h1 style={{ fontSize:'clamp(2.2rem,8vw,5rem)', fontWeight:700, color:'#e8e8ed', letterSpacing:1, marginBottom:32, animation:'mmm-reveal 2s ease-out 0.5s both', lineHeight:1.1 }}>YOU HAVE<br/>THE KEYS</h1>
             <p style={{ fontStyle:'italic', fontSize:'clamp(1rem,2.4vw,1.25rem)', color:'rgba(210,200,255,0.55)', lineHeight:1.8, marginBottom:44, animation:'mmm-fadeUp 1.5s ease-out 1.5s both' }}>Know the business, the account and the buyer.<br/>Reach out with something of value, on a cadence.<br/>Hand your AEs meetings worth their time.</p>
             <div style={{ background:'rgba(129,140,248,0.06)', border:'1px solid rgba(129,140,248,0.15)', borderRadius:16, padding:'26px 36px', maxWidth:600, margin:'0 auto 48px', animation:'mmm-fadeUp 1.5s ease-out 2.2s both' }}>
               <p style={{ fontStyle:'italic', fontSize:'1.05rem', color:'rgba(220,200,255,0.72)', lineHeight:1.8 }}>“You will have to iterate to find solutions that work for you.”</p>
@@ -619,9 +575,11 @@
       if (screen > PARTS.length) return <CompletionScreen onNext={() => go(0)}/>;
       const part = PARTS[screen - 1];
       const next = PARTS[screen];
+      const first = keyStart(screen - 1);
       return (
         <Chapter key={screen} n={screen} label={part.label} title={part.title} nextLabel={next ? next.title : 'Finish'} onBack={() => go(screen - 1)} onNext={() => go(screen + 1)}>
-          {part.body}
+          {part.intro && <Prose>{part.intro}</Prose>}
+          {part.keys.map(([t, body], i) => <Key key={i} n={first + i} title={t}>{body}</Key>)}
         </Chapter>
       );
     }
