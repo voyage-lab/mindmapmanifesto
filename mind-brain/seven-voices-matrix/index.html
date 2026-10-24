@@ -317,7 +317,18 @@
       { cell:[5,1], title:'The Ultimate Deception', moment:'“You forgot to pay… it’s 450.” A bill for a shot that was already paid.' },
       { cell:[6,5], title:'The Observer Awakens', moment:'I paid my actual bill and walked away. No drama, no anger.' },
     ];
-    const stepAt = (r, c) => INHA.findIndex(s => s.cell[0] === r && s.cell[1] === c) + 1;
+    /* David’s day (a story): the same seven steps, every one taken through a virtue, each virtue once */
+    const DAVID = [
+      { cell:[0,4], title:'The Disciplined Morning', moment:'Cold shower at 5:30, no breakfast, and “not for me, thanks” to the birthday cake.' },
+      { cell:[1,1], title:'The Favour Bank', moment:'“Happy to take the Henderson account again this weekend.” Three weekends, banked.' },
+      { cell:[2,5], title:'It’s Fine', moment:'Clapped the loudest for Marc’s promotion, shook in the bathroom, and never asked why.' },
+      { cell:[3,0], title:'I Didn’t Even Want It', moment:'“I didn’t even want it. I’m not a title person.”' },
+      { cell:[4,6], title:'Midnight at the Office', moment:'Rebuilt Marc’s deck until 1:40 a.m., with three missed calls from Lena.' },
+      { cell:[5,3], title:'The Ledger', moment:'“Do you know how much I do for everyone? The least I deserve is someone on my side.”' },
+      { cell:[6,2], title:'David Sees It', moment:'“I wanted it. I really wanted it. And I’m hurt.”' },
+    ];
+    const PATHS = { Inha: INHA, David: DAVID };
+    const stepAt = (r, c, path = INHA) => path.findIndex(s => s.cell[0] === r && s.cell[1] === c) + 1;
 
     /* ── The matrix: components ──────────────────────────────────── */
 
@@ -341,10 +352,10 @@
       );
     }
 
-    function CellCard({ r, c, label, moment = true }) {
+    function CellCard({ r, c, label, moment = true, who = 'Inha' }) {
       const w = WAYS[c];
       const [state, question, dest] = SHADOW[c][r];
-      const step = stepAt(r, c);
+      const path = PATHS[who], step = stepAt(r, c, path);
       return (
         <Card label={label || `${VOICES[r]} × ${w.sin} ↔ ${w.virtue} · ${w.principle}`}>
           <Faces r={r} c={c}/>
@@ -352,7 +363,7 @@
             <strong>Mindmap geo.</strong> {state} asks: “{question}” <a href={`../15-brain-waves/${DEST[dest][0]}.html`}>{DEST[dest][1]} →</a>
           </p>
           {moment && step > 0 && (
-            <p style={{ fontSize:'1rem', lineHeight:1.65, marginTop:12 }}><strong>{step === 7 ? 'Step 7, the observer.' : `Inha, step ${step}.`}</strong> {INHA[step - 1].moment}</p>
+            <p style={{ fontSize:'1rem', lineHeight:1.65, marginTop:12 }}><strong>{who === 'Inha' && step === 7 ? 'Step 7, the observer.' : `${who}, step ${step}.`}</strong> {path[step - 1].moment}</p>
           )}
         </Card>
       );
@@ -370,9 +381,14 @@
     }
 
     function Matrix() {
+      const [who, setWho] = useState('Inha');
       const [[r, c], setSel] = useState(INHA[0].cell);
+      const choose = name => { setWho(name); setSel(PATHS[name][0].cell); };
       return (
         <div>
+          <div className="vx-chips">
+            {Object.keys(PATHS).map(name => <button key={name} className={`vx-chip${name === who ? ' on' : ''}`} aria-pressed={name === who} onClick={() => choose(name)}>{name}’s path</button>)}
+          </div>
           <div className="mx-grid" role="group" aria-label="The seven voices matrix: seven voices down, seven ways across">
             <div/>
             {WAYS.map(w => <div key={w.sin} className="mx-colhead"><span>{w.sin}</span><small>{w.virtue}</small><small>{w.principle}</small></div>)}
@@ -380,7 +396,7 @@
               <React.Fragment key={v}>
                 <div className="mx-rowhead"><b>{ri + 1}</b>{v}</div>
                 {WAYS.map((w, ci) => {
-                  const step = stepAt(ri, ci);
+                  const step = stepAt(ri, ci, PATHS[who]);
                   const on = ri === r && ci === c;
                   const cls = ['mx-cell', ri === 6 && 'obs', step && 'inha', on && 'sel'].filter(Boolean).join(' ');
                   return (
@@ -397,10 +413,10 @@
             ))}
           </div>
           <div className="mx-key">
-            <span><i className="mx-swatch inha"/>Inha’s path, by step</span>
+            <span><i className="mx-swatch inha"/>{who}’s path, by step</span>
             <span><i className="mx-swatch obs"/>The observer row</span>
           </div>
-          <CellCard r={r} c={c}/>
+          <CellCard r={r} c={c} who={who}/>
         </div>
       );
     }
@@ -498,7 +514,7 @@
           {col != null && <rect x={x0 + col * s} y={y0} width={s} height={7 * s} fill={WAYS[col].color} fillOpacity="0.14"/>}
           {VOICES.map((v, r) => WAYS.map((w, c) => {
             const k = cells[`${r},${c}`];
-            return <rect key={`${r},${c}`} x={x0 + c * s + 2} y={y0 + r * s + 2} width={s - 4} height={s - 4} rx="2" fill={k ? k.fill : w.color} fillOpacity={k ? 1 : (r === 6 ? 0.24 : 0.1)}/>;
+            return <rect key={`${r},${c}`} x={x0 + c * s + 2} y={y0 + r * s + 2} width={s - 4} height={s - 4} rx="2" fill={k ? k.fill : w.color} fillOpacity={k ? 1 : (r === 6 ? 0.24 : 0.1)} stroke={k && k.stroke} strokeWidth="3"/>;
           }))}
           {path.length > 1 && <polyline points={path.map(([r, c]) => `${cx(c)},${cy(r)}`).join(' ')} fill="none" stroke="#e9e3d6" strokeWidth="2" strokeDasharray="4 3" strokeLinejoin="round"/>}
           {Object.keys(cells).map(key => {
@@ -633,21 +649,30 @@
       );
     }
 
-    /* ── Visual 4: Inha’s path through the matrix ────────────────── */
+    /* ── Visual 4: two paths through the matrix ─────────────────── */
     function NightPath() {
-      const [step, pick, seen] = useExplore(1);
+      const [who, setWho] = useState('Inha');
+      const [step, pick, seen, reset] = useExplore(1);
+      const path = PATHS[who];
+      const choose = name => { setWho(name); reset(); };
       const cells = {};
-      INHA.slice(0, step).forEach(({ cell:[r, c] }, i) => { cells[`${r},${c}`] = { fill: WAYS[c].color, text: String(i + 1) }; });
-      const { cell:[r, c], moment } = INHA[step - 1];
+      path.slice(0, step).forEach(({ cell:[r, c] }, i) => {
+        cells[`${r},${c}`] = who === 'Inha' ? { fill: WAYS[c].color, text: String(i + 1) } : { fill: '#e9e3d6', stroke: WAYS[c].color, text: String(i + 1) };
+      });
+      const { cell:[r, c], moment } = path[step - 1];
+      const title = who === 'Inha' ? `${WAYS[c].sin}: ${SHADOW[c][r][0]}` : `${WAYS[c].virtue}: ${VIRTUE[r][c]}`;
       return (
         <div>
-          <Ask>Tap 1 to 7 to walk her night</Ask>
+          <Ask>Pick a path, then tap 1 to 7</Ask>
           <div className="vx-chips">
-            {INHA.map((_, i) => <button key={i} className={`vx-chip num${i + 1 === step ? ' on' : ''}`} aria-pressed={i + 1 === step} onClick={() => pick(i + 1)}>{i + 1}</button>)}
+            {Object.keys(PATHS).map(name => <button key={name} className={`vx-chip${name === who ? ' on' : ''}`} aria-pressed={name === who} onClick={() => choose(name)}>{name}</button>)}
           </div>
-          <MiniGrid cells={cells} path={INHA.slice(0, step).map(s => s.cell)} label={`Inha’s path through the matrix, up to step ${step}`}/>
+          <div className="vx-chips">
+            {path.map((_, i) => <button key={i} className={`vx-chip num${i + 1 === step ? ' on' : ''}`} aria-pressed={i + 1 === step} onClick={() => pick(i + 1)}>{i + 1}</button>)}
+          </div>
+          <MiniGrid cells={cells} path={path.slice(0, step).map(s => s.cell)} label={`${who}’s path through the matrix, up to step ${step}`}/>
           <Explored count={seen.size}/>
-          <Reveal k={step} label={`Step ${step} · ${VOICES[r]}`} title={`${WAYS[c].sin}: ${SHADOW[c][r][0]}`}>
+          <Reveal k={`${who}-${step}`} label={`${who}, step ${step} · ${VOICES[r]}`} title={title}>
             <Line>{moment}</Line>
           </Reveal>
         </div>
@@ -850,7 +875,7 @@
       {
         label: 'The map', title: 'The Matrix',
         body: <>
-          <Prose>Seven voices down, seven ways across. Every cell holds a sin, a virtue and a principle, and together the sins and virtues make the 98 states of <a href="../../mindmapgeo/index.html">mindmap geo</a>. Inha’s path is numbered. Open any cell.</Prose>
+          <Prose>Seven voices down, seven ways across. Every cell holds a sin, a virtue and a principle, and together the sins and virtues make the 98 states of <a href="../../mindmapgeo/index.html">mindmap geo</a>. Inha’s path is numbered, and you can switch to David’s. Open any cell.</Prose>
           <Matrix/>
           <Prose>Each sin is also a question someone types into an AI, and each question leads to the <a href="../15-brain-waves/index.html">brain-wave</a> piece that answers it.</Prose>
         </>,
@@ -1009,10 +1034,11 @@
         </>,
       },
       {
-        label:'Picture 4 · The night', title:'Inha’s Path',
+        label:'Picture 4 · The paths', title:'Two Paths',
         body: <>
           <NightPath/>
-          <InsightCard label="Notice">Seven steps, six columns. <em>Greed appears twice:</em> as panic at step three, and as identity at step six.</InsightCard>
+          <InsightCard label="Notice">Inha’s night runs through the sins; David’s day takes one virtue at each step. <em>At steps four and five they stand in the very same cells,</em> on opposite faces.</InsightCard>
+          <Prose>David’s day, in full: <a href="../story-of-david/index.html">the story of david</a>.</Prose>
         </>,
       },
       {
