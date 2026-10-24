@@ -228,13 +228,13 @@
 
     /* the seven ways: each deadly sin, its heavenly virtue, and the principle of Leonardo’s that bridges them */
     const WAYS = [
-      { sin:'Pride',    virtue:'Humility',   principle:'Dimostrazione',  why:'Pride can’t be wrong. Dimostrazione is the habit of letting experience prove you wrong.' },
-      { sin:'Greed',    virtue:'Charity',    principle:'Connessione',    why:'Greed sees separate pieces to take. Connessione sees one web, where whatever you take, you take from the whole.' },
-      { sin:'Lust',     virtue:'Chastity',   principle:'Corporalità',    why:'Lust uses the body as currency. Corporalità lives in it with grace.' },
-      { sin:'Envy',     virtue:'Kindness',   principle:'Curiosità',      why:'Envy compares. Curiosity asks.' },
-      { sin:'Gluttony', virtue:'Temperance', principle:'Sensazione',     why:'Gluttony swallows without tasting. A sharpened sense is satisfied with less.' },
-      { sin:'Wrath',    virtue:'Patience',   principle:'Sfumato',        why:'Wrath forces an answer now. Sfumato lets the smoke clear.' },
-      { sin:'Sloth',    virtue:'Diligence',  principle:'Arte / Scienza', why:'Sloth is a dream without a method, or a method without a dream. Arte / Scienza joins the two.' },
+      { sin:'Pride',    virtue:'Humility',   principle:'Dimostrazione (demonstration)',  why:'Pride can’t be wrong. Dimostrazione (demonstration) is the habit of letting experience prove you wrong.' },
+      { sin:'Greed',    virtue:'Charity',    principle:'Connessione (connection)',    why:'Greed sees separate pieces to take. Connessione (connection) sees one web, where whatever you take, you take from the whole.' },
+      { sin:'Lust',     virtue:'Chastity',   principle:'Corporalità (physicality)',    why:'Lust uses the body as currency. Corporalità (physicality) lives in it with grace.' },
+      { sin:'Envy',     virtue:'Kindness',   principle:'Curiosità (curiosity)',      why:'Envy compares. Curiosity asks.' },
+      { sin:'Gluttony', virtue:'Temperance', principle:'Sensazione (sensation)',     why:'Gluttony swallows without tasting. A sharpened sense is satisfied with less.' },
+      { sin:'Wrath',    virtue:'Patience',   principle:'Sfumato (up in smoke)',        why:'Wrath forces an answer now. Sfumato (up in smoke) lets the smoke clear.' },
+      { sin:'Sloth',    virtue:'Diligence',  principle:'Arte (art) / Scienza (science)', why:'Sloth is a dream without a method, or a method without a dream. Arte (art) / Scienza (science) joins the two.' },
     ];
 
     /* the 49 shadow states of mindmap geo, by way then voice: [state, the question it asks, the brain-wave piece that answers it] */
@@ -442,7 +442,7 @@
           <Card label="The seven ways">
             <Terms items={WAYS.map(w => [`${w.sin} ↔ ${w.virtue} · ${w.principle}`, w.why])}/>
           </Card>
-          <InsightCard label="The rule of the matrix">The voice decides, not the column. Taken by the con man, even purity is a deal: “selective purity for better deals.” Leonardo’s principles follow the same rule: taken by fear, sfumato is not patience but fog. <em>Only the bottom row, the observer, lives a virtue or a principle as itself.</em></InsightCard>
+          <InsightCard label="The rule of the matrix">The voice decides, not the column. Taken by the con man, even purity is a deal: “selective purity for better deals.” Leonardo’s principles follow the same rule: taken by fear, sfumato (up in smoke) is not patience but fog. <em>Only the bottom row, the observer, lives a virtue or a principle as itself.</em></InsightCard>
         </>,
       },
       {
@@ -460,7 +460,7 @@
           <Prose>She lived in the world of appearance: selfies, and a picture of herself on her own phone. When she tried on my yellow glasses, she reached straight for the camera.</Prose>
           <PullQuote>“They’re sexy. Make me look like a pornstar.” Then she offered me a deal on hookah for 500.</PullQuote>
           <Prose>The story names this level in its own words: status obsessed, constantly comparing, appearance as currency. In the matrix that is the <strong>envy</strong> column, and its state at this step is comparison.</Prose>
-          <CellCard r={0} c={3} label="Her cell · Conscious mind × Envy ↔ Kindness · Curiosità" moment={false}/>
+          <CellCard r={0} c={3} label="Her cell · Conscious mind × Envy ↔ Kindness · Curiosità (curiosity)" moment={false}/>
           <InsightCard label="Three faces, one voice">The charm was kindness, taken from the surface: <em>being nice to gain social approval.</em> Even the curiosity faced the mirror: curious how the glasses looked on camera, not what they were.</InsightCard>
           <ObserverCard c={3}>From the observer, the glasses are just glasses, and the man across the table is a person, not a mirror.</ObserverCard>
         </>,
@@ -472,8 +472,8 @@
           <Prose>When charm wasn’t enough, the calculation started. She moved closer and rubbed my shoulder: looks and proximity, used as leverage.</Prose>
           <PullQuote>“Look, I’m just chilling, not spending much, don’t need to spend.”</PullQuote>
           <Prose>New voice, new column: <strong>lust</strong>, the body as currency. Its state at this step is seduction.</Prose>
-          <CellCard r={1} c={2} label="Her cell · Con man × Lust ↔ Chastity · Corporalità" moment={false}/>
-          <InsightCard label="The con man’s rule">From the con man, every face of the cell is a tool. The sin is seduction, the virtue becomes <em>selective purity for better deals</em>, and Leonardo’s corporalità turns into looks and touch as leverage.</InsightCard>
+          <CellCard r={1} c={2} label="Her cell · Con man × Lust ↔ Chastity · Corporalità (physicality)" moment={false}/>
+          <InsightCard label="The con man’s rule">From the con man, every face of the cell is a tool. The sin is seduction, the virtue becomes <em>selective purity for better deals</em>, and Leonardo’s corporalità (physicality) turns into looks and touch as leverage.</InsightCard>
           <ObserverCard c={2}>The story says the laughter and the chemistry were real. The observer’s way keeps the connection and drops the invoice.</ObserverCard>
         </>,
       },
@@ -484,7 +484,7 @@
           <Prose>When charm and touch both failed, the stakes went up. Suddenly it was about survival.</Prose>
           <PullQuote>“My documents to stay in the country are expiring next week. I need money or they will kick me out of the country.”</PullQuote>
           <Prose>She had 15,000 and needed 25,000 more. This is the <strong>greed</strong> column, taken by fear: scarcity panic.</Prose>
-          <CellCard r={2} c={1} label="Her cell · Fear-driven × Greed ↔ Charity · Connessione" moment={false}/>
+          <CellCard r={2} c={1} label="Her cell · Fear-driven × Greed ↔ Charity · Connessione (connection)" moment={false}/>
           <InsightCard label="What her fear asked of me">Look at the virtue in her cell: <em>giving to avoid feelings of guilt.</em> That was the charity on offer that night. Her fear was asking for mine.</InsightCard>
           <ObserverCard c={1}>Seen whole, the numbers were already there: my contact charged 10,000–16,000, and she had 15,000.</ObserverCard>
         </>,
@@ -496,8 +496,8 @@
           <Prose>I offered a real solution: a contact for her documents who charged 10,000–16,000. She had enough.</Prose>
           <PullQuote>“No… it won’t work. No… it won’t work.”</PullQuote>
           <Prose>Zero details, zero consideration. She admitted she had never even called. This is the <strong>pride</strong> column, taken by ego defense: knowing better without checking.</Prose>
-          <CellCard r={3} c={0} label="Her cell · Ego defense × Pride ↔ Humility · Dimostrazione" moment={false}/>
-          <InsightCard label="One phone call">Leonardo checked Vitruvius against real bodies, and reality won. Dimostrazione at this step needed one phone call. From ego defense it turned into its opposite: <em>ruling it out without ever trying it.</em></InsightCard>
+          <CellCard r={3} c={0} label="Her cell · Ego defense × Pride ↔ Humility · Dimostrazione (demonstration)" moment={false}/>
+          <InsightCard label="One phone call">Leonardo checked Vitruvius against real bodies, and reality won. Dimostrazione (demonstration) at this step needed one phone call. From ego defense it turned into its opposite: <em>ruling it out without ever trying it.</em></InsightCard>
           <ObserverCard c={0}>From the observer, “it won’t work” is a guess, and a guess gets tested before it gets believed.</ObserverCard>
         </>,
       },
@@ -508,7 +508,7 @@
           <Prose>Now she was sick, working nights “like a dog,” popping cold and flu medicine and pushing through. Meanwhile the manager complained in Turkish that she and the other girls were just sitting there smoking.</Prose>
           <PullQuote>She was literally destroying her health, her job performance, her situation, but she couldn’t stop the pattern.</PullQuote>
           <Prose>This is the <strong>sloth</strong> column, and the saboteur takes both halves of it at once.</Prose>
-          <CellCard r={4} c={6} label="Her cell · Self-saboteur × Sloth ↔ Diligence · Arte / Scienza" moment={false}/>
+          <CellCard r={4} c={6} label="Her cell · Self-saboteur × Sloth ↔ Diligence · Arte (art) / Scienza (science)" moment={false}/>
           <InsightCard label="Both halves at once">Too tired to work, too afraid to stop. The sin is apathy: sitting and smoking. The virtue is <em>exhaustion from unsustainable effort</em>: working like a dog while sick. And Leonardo’s balance of imagination and method collapses into all effort, no method, until you break.</InsightCard>
           <ObserverCard c={6}>From the observer, the work and the rest both get done: recover first, then work to a plan.</ObserverCard>
         </>,
@@ -521,8 +521,8 @@
           <PullQuote>“Hey, remember that night your phone died and you had a shot of raki? You forgot to pay… it’s 450.”</PullQuote>
           <Prose>I had paid: we had all left together to go eat, and she was there when I paid everything. “No no, you didn’t pay, there’s a bill for 450. The bartender told me, but you know what, I’ll just cancel it.”</Prose>
           <Prose>Greed is back. Same column as step three, three voices deeper: at fear it was panic, at the ego it has become identity. <strong>I AM Mine.</strong></Prose>
-          <CellCard r={5} c={1} label="Her cell · The ego × Greed ↔ Charity · Connessione" moment={false}/>
-          <InsightCard label="Generosity with a debt that never existed">“I’ll just cancel it” is the virtue in her cell, acted out: <em>my generosity proves my moral worth.</em> And connessione, taken by the ego, stitches a night long past into a debt today: everything connects back to me.</InsightCard>
+          <CellCard r={5} c={1} label="Her cell · The ego × Greed ↔ Charity · Connessione (connection)" moment={false}/>
+          <InsightCard label="Generosity with a debt that never existed">“I’ll just cancel it” is the virtue in her cell, acted out: <em>my generosity proves my moral worth.</em> And connessione (connection), taken by the ego, stitches a night long past into a debt today: everything connects back to me.</InsightCard>
           <ObserverCard c={1}>From the observer there is nothing to cancel: the bill was paid, and everyone at the table was part of the same night.</ObserverCard>
         </>,
       },
@@ -533,8 +533,8 @@
           <Prose>Throughout the whole progression, I kept my awareness. I could see each level activate, each fallback deployed exactly as the framework predicted.</Prose>
           <PullQuote>I finished my beer, paid my actual bill, and walked away.</PullQuote>
           <Prose>Later I blocked her everywhere, with a polite goodbye, a hug and a smile. No drama, no anger. Step seven was the one Inha didn’t take that night. It was the observer’s, and it sits in the <strong>wrath</strong> column: the anger is witnessed, not acted on.</Prose>
-          <CellCard r={6} c={5} label="The observer’s cell · Observer × Wrath ↔ Patience · Sfumato" moment={false}/>
-          <InsightCard label="Sfumato">“I never lived a day in her shoes, and she never lived a day in mine. Maybe we have, but we don’t know.” <em>That is sfumato:</em> resting calmly in not knowing.</InsightCard>
+          <CellCard r={6} c={5} label="The observer’s cell · Observer × Wrath ↔ Patience · Sfumato (up in smoke)" moment={false}/>
+          <InsightCard label="Sfumato (up in smoke)">“I never lived a day in her shoes, and she never lived a day in mine. Maybe we have, but we don’t know.” <em>That is sfumato (up in smoke):</em> resting calmly in not knowing.</InsightCard>
           <Prose>The observer row is the exit from every column, and it was open to her at every step. The cards marked “the observer’s way” show what each of her steps looked like from there.</Prose>
         </>,
       },
@@ -565,20 +565,20 @@
           <Card label="What the matrix shows">
             <Points items={[
               'The voice decides, not the column. Switching from a sin to its virtue inside the same voice changes the costume, not the step.',
-              'Leonardo’s principles follow the same rule. Taken by fear, sfumato is fog; taken by the ego, curiosity is a pose.',
+              'Leonardo’s principles follow the same rule. Taken by fear, sfumato (up in smoke) is fog; taken by the ego, curiosity is a pose.',
               'Only the observer row lives each virtue and each principle as itself, and every column ends there.',
               'The observer was there the whole night. That is why each step could be seen, named and declined.',
             ]}/>
           </Card>
           <Card label="Seven observer questions" intro="When you catch yourself on a step, name the voice first. Then ask the observer’s question for the column you’re in.">
             <Terms items={[
-              ['Pride · Dimostrazione', 'What would prove me wrong?'],
-              ['Greed · Connessione', 'What does the whole picture look like?'],
-              ['Lust · Corporalità', 'What does my body actually need?'],
-              ['Envy · Curiosità', 'What is really going on with them?'],
-              ['Gluttony · Sensazione', 'What am I actually tasting, seeing, feeling?'],
-              ['Wrath · Sfumato', 'Can I leave this open a little longer?'],
-              ['Sloth · Arte / Scienza', 'What is the vision, and what is the next step?'],
+              ['Pride · Dimostrazione (demonstration)', 'What would prove me wrong?'],
+              ['Greed · Connessione (connection)', 'What does the whole picture look like?'],
+              ['Lust · Corporalità (physicality)', 'What does my body actually need?'],
+              ['Envy · Curiosità (curiosity)', 'What is really going on with them?'],
+              ['Gluttony · Sensazione (sensation)', 'What am I actually tasting, seeing, feeling?'],
+              ['Wrath · Sfumato (up in smoke)', 'Can I leave this open a little longer?'],
+              ['Sloth · Arte (art) / Scienza (science)', 'What is the vision, and what is the next step?'],
             ]}/>
           </Card>
           <Prose>The full night is in <a href="../story-of-inha/index.html">the story of inha</a>, and Leonardo’s seven are in <a href="../davinci-perfect-man/index.html">da Vinci and the perfect man</a>.</Prose>
