@@ -87,6 +87,14 @@
   .enter { margin-top: auto; padding-top: 1rem; font-family: "Caveat", cursive; font-size: 1.6rem; }
   @media (max-width: 760px) { a.note:nth-child(n) { transform: none; } }
 
+  .sound {
+    display: block; margin: 0 auto 3rem;
+    background: rgba(0,0,0,.55); color: var(--paper);
+    border: 1px solid var(--glass); border-radius: 999px;
+    padding: .5rem 1.6rem; font-family: "Caveat", cursive; font-size: 1.4rem; cursor: pointer;
+  }
+  .sound:hover { background: #000; }
+
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
@@ -101,7 +109,40 @@
     <p class="sub">— mind x brain —</p>
   </header>
 
+  <button class="sound" id="sound" aria-pressed="false">▶ play Under the Glass</button>
+  <audio id="track" src="../Under_the_Glass.mp3" loop preload="none"></audio>
+
   <div class="series">
+    <a class="note" href="../fate-will/index.html">
+      <span class="margin">tool</span>
+      <h2>fate x will</h2>
+      <p>Turn a birth date into a fate vs. will graph.</p>
+      <span class="enter">Enter →</span>
+    </a>
+    <a class="note" href="../divination/index.html">
+      <span class="margin">tool</span>
+      <h2>divination</h2>
+      <p>Ask, shuffle, draw a tarot spread.</p>
+      <span class="enter">Enter →</span>
+    </a>
+    <a class="note" href="../success/success.html">
+      <span class="margin">stories</span>
+      <h2>success stories x hypnosis</h2>
+      <p>Real change, under the glass.</p>
+      <span class="enter">Enter →</span>
+    </a>
+    <a class="note" href="../mindmapgeo/index.html">
+      <span class="margin">business</span>
+      <h2>mindmap x geo</h2>
+      <p>Make money with MindMap.</p>
+      <span class="enter">Enter →</span>
+    </a>
+    <a class="note" href="../contact-me/index.html">
+      <span class="margin">get in touch</span>
+      <h2>contact me</h2>
+      <p>Reach out — questions, sessions, collaborations.</p>
+      <span class="enter">Enter →</span>
+    </a>
     <a class="note" href="15-brain-waves/index.html">
       <span class="margin">15 parts</span>
       <h2>the brain waves</h2>
@@ -194,5 +235,13 @@
     </a>
   </div>
 </main>
+<script>
+  const a = document.getElementById('track'), b = document.getElementById('sound');
+  b.addEventListener('click', () => {
+    if (a.paused) a.play(); else a.pause();
+    b.textContent = a.paused ? '▶ play Under the Glass' : '❚❚ pause';
+    b.setAttribute('aria-pressed', String(!a.paused));
+  });
+</script>
 </body>
 </html>
