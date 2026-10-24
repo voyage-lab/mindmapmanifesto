@@ -4,9 +4,9 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The Seven Voices Matrix — MindMapManifesto</title>
-  <meta name="description" content="Inha’s night as a matrix: her seven steps (the seven voices) crossed with the seven deadly sins, the seven heavenly virtues and Leonardo da Vinci’s seven principles, with the mindmap geo question behind every cell."/>
+  <meta name="description" content="Inha’s night as a matrix: her seven steps (the seven voices) crossed with the seven deadly sins, the seven heavenly virtues and Leonardo da Vinci’s seven principles, with the mindmap geo question behind every cell, and eight pictures to tap through."/>
   <meta property="og:title" content="The Seven Voices Matrix"/>
-  <meta property="og:description" content="Inha’s night as a matrix: her seven steps (the seven voices) crossed with the seven deadly sins, the seven heavenly virtues and Leonardo da Vinci’s seven principles, with the mindmap geo question behind every cell."/>
+  <meta property="og:description" content="Inha’s night as a matrix: her seven steps (the seven voices) crossed with the seven deadly sins, the seven heavenly virtues and Leonardo da Vinci’s seven principles, with the mindmap geo question behind every cell, and eight pictures to tap through."/>
   <meta property="og:image" content="../../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <style>
@@ -50,6 +50,24 @@
       #root .mx-name { display: block; }
       #root .mx-step { position: absolute; top: 2px; left: 5px; font-size: 1.05rem; }
     }
+    /* the visuals; classes beat theme-app.css's #root * overrides */
+    .vx-svg { display: block; width: 100%; max-width: 540px; margin: 0 auto 6px; overflow: visible; -webkit-user-select: none; user-select: none; }
+    #root .vx-hit { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    #root .vx-hit:focus { outline: none; }
+    #root .vx-hit:focus-visible { outline: 2px dashed #e9e3d6; outline-offset: 2px; }
+    #root .vx-hand { font-family: "Caveat", cursive !important; }
+    #root .vx-ask { text-align: center; font-family: "Caveat", cursive !important; font-size: 1.55rem !important; line-height: 1.2; color: var(--paper-dim) !important; margin: 0 0 16px; }
+    #root .vx-explored { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 0 24px; font-size: .95rem !important; }
+    #root .vx-explored span { margin-left: 8px; color: var(--paper-dim) !important; }
+    #root .vx-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: rgba(233,227,214,.18) !important; transition: background .3s; }
+    #root .vx-dot.on { background: #e9e3d6 !important; }
+    #root .vx-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 20px; }
+    #root .vx-chip { font-family: "Cormorant Garamond", Georgia, serif !important; font-size: 1.02rem !important; font-weight: 600 !important; letter-spacing: 0 !important; line-height: 1.2; min-width: 44px; min-height: 44px; padding: 6px 12px !important; border-radius: 4px !important; border: 1px solid rgba(233,227,214,.3) !important; background: #1c1a17 !important; color: #b9b2a3 !important; cursor: pointer; transition: background .2s; }
+    #root .vx-chip.num { min-width: 40px; padding: 6px 0 !important; }
+    #root .vx-chip.way { border-color: var(--c) !important; box-shadow: inset 4px 0 0 var(--c) !important; }
+    #root .vx-chip.on { background: #e9e3d6 !important; color: #1a1918 !important; }
+    #root .vx-chip:focus-visible { outline: 2px dashed #e9e3d6; outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { #root .vx-svg * { transition: none !important; animation: none !important; } }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
   </style>
@@ -228,13 +246,13 @@
 
     /* the seven ways: each deadly sin, its heavenly virtue, and the principle of Leonardo’s that bridges them */
     const WAYS = [
-      { sin:'Pride',    virtue:'Humility',   principle:'Dimostrazione (demonstration)',  why:'Pride can’t be wrong. Dimostrazione (demonstration) is the habit of letting experience prove you wrong.' },
-      { sin:'Greed',    virtue:'Charity',    principle:'Connessione (connection)',    why:'Greed sees separate pieces to take. Connessione (connection) sees one web, where whatever you take, you take from the whole.' },
-      { sin:'Lust',     virtue:'Chastity',   principle:'Corporalità (physicality)',    why:'Lust uses the body as currency. Corporalità (physicality) lives in it with grace.' },
-      { sin:'Envy',     virtue:'Kindness',   principle:'Curiosità (curiosity)',      why:'Envy compares. Curiosity asks.' },
-      { sin:'Gluttony', virtue:'Temperance', principle:'Sensazione (sensation)',     why:'Gluttony swallows without tasting. A sharpened sense is satisfied with less.' },
-      { sin:'Wrath',    virtue:'Patience',   principle:'Sfumato (up in smoke)',        why:'Wrath forces an answer now. Sfumato (up in smoke) lets the smoke clear.' },
-      { sin:'Sloth',    virtue:'Diligence',  principle:'Arte (art) / Scienza (science)', why:'Sloth is a dream without a method, or a method without a dream. Arte (art) / Scienza (science) joins the two.' },
+      { sin:'Pride',    virtue:'Humility',   principle:'Dimostrazione (demonstration)',  color:'#c084fc', icon:'flask', gist:'Test knowledge through experience and be willing to learn from mistakes.', ask:'What would prove me wrong?', why:'Pride can’t be wrong. Dimostrazione (demonstration) is the habit of letting experience prove you wrong.' },
+      { sin:'Greed',    virtue:'Charity',    principle:'Connessione (connection)',    color:'#fbbf24', icon:'web', gist:'Recognise that everything connects to everything else: systems thinking.', ask:'What does the whole picture look like?', why:'Greed sees separate pieces to take. Connessione (connection) sees one web, where whatever you take, you take from the whole.' },
+      { sin:'Lust',     virtue:'Chastity',   principle:'Corporalità (physicality)',    color:'#f472b6', icon:'body', gist:'Cultivate grace, fitness and poise.', ask:'What does my body actually need?', why:'Lust uses the body as currency. Corporalità (physicality) lives in it with grace.' },
+      { sin:'Envy',     virtue:'Kindness',   principle:'Curiosità (curiosity)',      color:'#4ade80', icon:'ask', gist:'An insatiable curiosity: keep asking questions, especially the ones that seem childish.', ask:'What is really going on with them?', why:'Envy compares. Curiosity asks.' },
+      { sin:'Gluttony', virtue:'Temperance', principle:'Sensazione (sensation)',     color:'#fb923c', icon:'eye', gist:'Sharpen the senses, above all sight. Leonardo complained that people “look without seeing.”', ask:'What am I actually tasting, seeing, feeling?', why:'Gluttony swallows without tasting. A sharpened sense is satisfied with less.' },
+      { sin:'Wrath',    virtue:'Patience',   principle:'Sfumato (up in smoke)',        color:'#f87171', icon:'smoke', gist:'The willingness to sit with ambiguity and uncertainty without forcing an answer.', ask:'Can I leave this open a little longer?', why:'Wrath forces an answer now. Sfumato (up in smoke) lets the smoke clear.' },
+      { sin:'Sloth',    virtue:'Diligence',  principle:'Arte (art) / Scienza (science)', color:'#60a5fa', icon:'compass', gist:'Balance logic and imagination; whole-brain thinking.', ask:'What is the vision, and what is the next step?', why:'Sloth is a dream without a method, or a method without a dream. Arte (art) / Scienza (science) joins the two.' },
     ];
 
     /* the 49 shadow states of mindmap geo, by way then voice: [state, the question it asks, the brain-wave piece that answers it] */
@@ -396,6 +414,390 @@
               {i + 1 === current ? `${i + 1} · ${v}` : i + 1}
             </div>
           ))}
+        </div>
+      );
+    }
+
+    /* ── The visuals: the same map in eight pictures ─────────── */
+
+    const SHORT = ['Conscious','Con man','Fear','Defense','Saboteur','Ego','Observer'];
+
+    /* what each voice wants, and how it showed up that night */
+    const VOICE_INFO = [
+      { wants:'To be seen: status, image, appearance as currency.', night:'Inha tried on my yellow glasses and reached for her phone.' },
+      { wants:'An angle: people as a means to an end.', night:'Inha moved closer, a hand on my shoulder.' },
+      { wants:'Safety, now: never enough, always urgent.', night:'“My documents are expiring next week.”' },
+      { wants:'To never be wrong: the wall goes up.', night:'“No… it won’t work.” She never even called.' },
+      { wants:'To fall before anyone can stop it.', night:'Sick, working nights “like a dog,” still pushing.' },
+      { wants:'To be the story: it manufactures reality.', night:'“You forgot to pay… it’s 450.”' },
+      { wants:'Nothing. It sees every step and takes none of them.', night:'I paid my actual bill and walked away.' },
+    ];
+
+    /* Leonardo’s own order of the seven, as indexes into WAYS */
+    const GELB = [3, 0, 4, 5, 6, 2, 1];
+
+    /* ── Shared bits for the visuals ─────────────────────────────── */
+
+    /* makes an svg shape act as a button: click, Enter or Space */
+    const tap = (fn, label, pressed) => ({
+      role:'button', tabIndex:0, 'aria-label':label, 'aria-pressed':pressed, onClick:fn,
+      onKeyDown:e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } },
+    });
+
+    /* the selected item, plus every item tapped so far */
+    function useExplore(first) {
+      const [sel, setSel] = useState(first);
+      const [seen, setSeen] = useState(() => new Set(first == null ? [] : [first]));
+      const pick = i => { setSel(i); setSeen(s => new Set(s).add(i)); };
+      const reset = () => { setSel(first); setSeen(new Set(first == null ? [] : [first])); };
+      return [sel, pick, seen, reset];
+    }
+
+    function Ask({ children }) { return <div className="vx-ask">{children}</div>; }
+
+    function Explored({ count, total = 7 }) {
+      return (
+        <div className="vx-explored" aria-live="polite">
+          {Array.from({ length: total }, (_, i) => <i key={i} className={`vx-dot${i < count ? ' on' : ''}`}/>)}
+          <span>{count >= total ? 'All seen' : `Seen ${count} of ${total}`}</span>
+        </div>
+      );
+    }
+
+    /* the paper note under each picture; re-mounts (and fades in) when k changes */
+    function Reveal({ k, label, title, children }) {
+      return <div key={k} style={{ animation:'mmm-fadeUp 0.45s ease-out' }}><Card label={label} title={title}>{children}</Card></div>;
+    }
+
+    function Line({ children }) { return <p style={{ fontSize:'1.05rem', lineHeight:1.6, marginBottom:8 }}>{children}</p>; }
+
+    /* small line drawings for Leonardo’s seven */
+    function Icon({ name, color }) {
+      const p = { fill:'none', stroke:color, strokeWidth:1.8, strokeLinecap:'round', strokeLinejoin:'round' };
+      switch (name) {
+        case 'ask': return <text x="0" y="9" textAnchor="middle" fontSize="27" fontWeight="700" fill={color} className="vx-hand">?</text>;
+        case 'flask': return <path {...p} d="M-5,-11 L5,-11 M-3,-11 L-3,-3 L-10,10 L10,10 L3,-3 L3,-11 M-7,5 L7,5"/>;
+        case 'eye': return <g {...p}><path d="M-13,0 Q0,-11 13,0 Q0,11 -13,0 Z"/><circle r="4"/></g>;
+        case 'smoke': return <g {...p}><path d="M-11,7 q5.5,-5 11,0 t11,0"/><path d="M-9,0 q4.5,-5 9,0 t9,0"/><path d="M-6,-7 q3,-4 6,0 t6,0"/></g>;
+        case 'compass': return <g {...p}><circle cy="-10" r="2.5"/><path d="M-1,-8 L-8,11 M1,-8 L8,11 M-5,3 Q0,6 5,3"/></g>;
+        case 'body': return <g {...p}><circle cy="-9" r="3.2"/><path d="M0,-5.5 L0,4 M-11,-2 L11,-2 M0,4 L-7,12 M0,4 L7,12"/></g>;
+        case 'web': return <g {...p}><path d="M-9,-7 L9,-8 L8,8 L-7,9 Z M-9,-7 L8,8 M9,-8 L-7,9"/>{[[-9,-7],[9,-8],[8,8],[-7,9],[0,0]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r="2.2" fill={color}/>)}</g>;
+        default: return null;
+      }
+    }
+
+    /* the 7×7 matrix in miniature: coloured columns, voice rows, optional bands, path and marked cells */
+    function MiniGrid({ cells = {}, path = [], row, col, label }) {
+      const x0 = 80, y0 = 66, s = 36;
+      const cx = c => x0 + c * s + s / 2, cy = r => y0 + r * s + s / 2;
+      return (
+        <svg viewBox="0 0 360 330" className="vx-svg" role="img" aria-label={label}>
+          {WAYS.map((w, c) => <text key={w.sin} transform={`translate(${cx(c) + 4} ${y0 - 6}) rotate(-90)`} fontSize="12" fontWeight="700" fill={w.color}>{w.sin}</text>)}
+          {VOICES.map((v, r) => <text key={v} x={x0 - 8} y={cy(r) + 4} fontSize="12" textAnchor="end" fill={r === 6 ? '#e9e3d6' : '#b9b2a3'}>{r + 1} {SHORT[r]}</text>)}
+          {row != null && <rect x={x0} y={y0 + row * s} width={7 * s} height={s} fill="#e9e3d6" fillOpacity="0.1"/>}
+          {col != null && <rect x={x0 + col * s} y={y0} width={s} height={7 * s} fill={WAYS[col].color} fillOpacity="0.14"/>}
+          {VOICES.map((v, r) => WAYS.map((w, c) => {
+            const k = cells[`${r},${c}`];
+            return <rect key={`${r},${c}`} x={x0 + c * s + 2} y={y0 + r * s + 2} width={s - 4} height={s - 4} rx="2" fill={k ? k.fill : w.color} fillOpacity={k ? 1 : (r === 6 ? 0.24 : 0.1)}/>;
+          }))}
+          {path.length > 1 && <polyline points={path.map(([r, c]) => `${cx(c)},${cy(r)}`).join(' ')} fill="none" stroke="#e9e3d6" strokeWidth="2" strokeDasharray="4 3" strokeLinejoin="round"/>}
+          {Object.keys(cells).map(key => {
+            const [r, c] = key.split(',').map(Number);
+            return cells[key].text ? <text key={key} x={cx(c)} y={cy(r) + 6} textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1918" className="vx-hand">{cells[key].text}</text> : null;
+          })}
+        </svg>
+      );
+    }
+
+    /* ── Visual 1: six steps down, one eye above ─────────────────── */
+    function Stairs() {
+      const [sel, pick, seen] = useExplore(0);
+      const shades = ['#e2d8c6','#c9bca6','#ad9f88','#8f816b','#716552','#54493b'];
+      const steps = shades.map((_, i) => ({ x: 14 + i * 38, y: 92 + i * 34 }));
+      const eye = { x: 296, y: 46 };
+      const info = VOICE_INFO[sel];
+      return (
+        <div>
+          <Ask>Tap each step, then the eye</Ask>
+          <svg viewBox="0 0 360 312" className="vx-svg" role="group" aria-label="Six steps going down, and an eye above them">
+            {steps.map((s, i) => <line key={i} x1={eye.x} y1={eye.y + 14} x2={s.x + 136} y2={s.y + 14} stroke="#e9e3d6" strokeOpacity={sel === 6 ? 0.6 : 0.14} strokeDasharray="3 4" style={{ transition:'stroke-opacity .5s' }}/>)}
+            <text x="14" y="80" fontSize="17" fill="#b9b2a3" className="vx-hand">the surface</text>
+            <text x="340" y="308" fontSize="17" fill="#b9b2a3" textAnchor="end" className="vx-hand">deepest</text>
+            {steps.map((s, i) => (
+              <g key={i} className="vx-hit" {...tap(() => pick(i), `Step ${i + 1}: ${VOICES[i]}`, sel === i)}>
+                <rect x={s.x} y={s.y} width="136" height="28" rx="3" fill={shades[i]} stroke={sel === i ? '#ffffff' : 'none'} strokeWidth="2.5"/>
+                <text x={s.x + 10} y={s.y + 19} fontSize="13.5" fontWeight="600" fill={i < 3 ? '#1a1918' : '#f3eee4'}>{i + 1} · {VOICES[i]}</text>
+                {seen.has(i) && sel !== i && <circle cx={s.x + 126} cy={s.y + 14} r="3" fill={i < 3 ? '#1a1918' : '#f3eee4'}/>}
+              </g>
+            ))}
+            <g className="vx-hit" {...tap(() => pick(6), 'Step 7: Observer, the eye above', sel === 6)}>
+              <circle cx={eye.x} cy={eye.y} r="36" fill="#000" fillOpacity="0.001"/>
+              <path d={`M${eye.x - 28},${eye.y} Q${eye.x},${eye.y - 24} ${eye.x + 28},${eye.y} Q${eye.x},${eye.y + 24} ${eye.x - 28},${eye.y} Z`} fill={sel === 6 ? '#e9e3d6' : 'none'} fillOpacity="0.12" stroke={sel === 6 ? '#ffffff' : '#e9e3d6'} strokeWidth={sel === 6 ? 2.5 : 1.8}/>
+              <circle cx={eye.x} cy={eye.y} r="8.5" fill="#e9e3d6"/>
+              <circle cx={eye.x} cy={eye.y} r="3.6" fill="#0d0d0d"/>
+              <text x={eye.x} y={eye.y + 40} textAnchor="middle" fontSize="13.5" fontWeight="600" fill="#e9e3d6">7 · Observer</text>
+            </g>
+          </svg>
+          <Explored count={seen.size}/>
+          <Reveal k={sel} label={sel === 6 ? 'Step 7 · not a step: the eye above' : `Step ${sel + 1} of 6, going down`} title={VOICES[sel]}>
+            <Line><strong>Wants:</strong> {info.wants}</Line>
+            <Line><strong>That night:</strong> {info.night}</Line>
+          </Reveal>
+        </div>
+      );
+    }
+
+    /* ── Visual 2: seven seesaws, sin on the left, virtue on the right, Leonardo as the pivot ── */
+    function Seesaws() {
+      const [sel, setSel] = useState(null);
+      const [tipped, setTipped] = useState(() => new Set());
+      const [seen, setSeen] = useState(() => new Set());
+      const flip = j => {
+        setSel(j);
+        setSeen(s => new Set(s).add(j));
+        setTipped(t => { const n = new Set(t); if (n.has(j)) n.delete(j); else n.add(j); return n; });
+      };
+      const w = sel == null ? null : WAYS[sel];
+      return (
+        <div>
+          <Ask>Tap each seesaw to tip it</Ask>
+          <svg viewBox="0 0 360 512" className="vx-svg" role="group" aria-label="Seven seesaws: each sin on the left, its virtue on the right, Leonardo’s principle as the pivot">
+            {WAYS.map((W, j) => {
+              const cy = 48 + j * 70, on = tipped.has(j);
+              return (
+                <g key={W.sin} className="vx-hit" {...tap(() => flip(j), `${W.sin} or ${W.virtue}, pivot ${W.principle}`, on)}>
+                  <rect x="8" y={cy - 44} width="344" height="70" fill="#000" fillOpacity="0.001"/>
+                  <g style={{ transform:`rotate(${on ? 6 : -6}deg)`, transformOrigin:`180px ${cy}px`, transition:'transform .8s cubic-bezier(.34,1.56,.64,1)' }}>
+                    <line x1="44" y1={cy} x2="316" y2={cy} stroke="#b9b2a3" strokeWidth="3" strokeLinecap="round"/>
+                    <circle cx="58" cy={cy - 10} r="9" fill={W.color} fillOpacity={on ? 0.3 : 1}/>
+                    <circle cx="302" cy={cy - 10} r="9" fill="#e9e3d6" fillOpacity={on ? 1 : 0.3}/>
+                    <text x="44" y={cy - 25} fontSize="15" fontWeight="700" fill={W.color} fillOpacity={on ? 0.45 : 1}>{W.sin}</text>
+                    <text x="316" y={cy - 25} fontSize="15" fontWeight="700" textAnchor="end" fill="#e9e3d6" fillOpacity={on ? 1 : 0.45}>{W.virtue}</text>
+                  </g>
+                  <path d={`M180,${cy + 2} L170,${cy + 17} L190,${cy + 17} Z`} fill={on ? W.color : '#6b655b'} style={{ transition:'fill .5s' }}/>
+                  <text x="180" y={cy + 30} fontSize="11.5" fontStyle="italic" textAnchor="middle" fill="#b9b2a3">{W.principle}</text>
+                </g>
+              );
+            })}
+          </svg>
+          <Explored count={seen.size}/>
+          {w ? (
+            <Reveal k={`${sel}-${tipped.has(sel)}`} label={`${w.sin} ↔ ${w.virtue}`} title={`The pivot: ${w.principle}`}>
+              <Line>{w.why}</Line>
+              <Line><strong>{tipped.has(sel) ? `Tipped to ${w.virtue}.` : `Back on ${w.sin}.`}</strong> Tap again to tip it back.</Line>
+            </Reveal>
+          ) : (
+            <Reveal k="none" label="The pivot" title="Seven seesaws">
+              <Line>Each sin sits on the left, its virtue on the right, and one of Leonardo’s principles is the pivot in the middle. Tap one to tip it.</Line>
+            </Reveal>
+          )}
+        </div>
+      );
+    }
+
+    /* ── Visual 3: Leonardo’s seven around the Vitruvian circle ──── */
+    function Wheel() {
+      const [sel, pick, seen] = useExplore(0);
+      const w = WAYS[GELB[sel]];
+      const lines = w.principle.includes(' / ')
+        ? w.principle.split(' / ').map((t, i) => [i === 0 ? `${t} /` : t, 21])
+        : [[w.principle.slice(0, w.principle.indexOf(' (')), 30], [w.principle.slice(w.principle.indexOf(' (') + 1), 17]];
+      return (
+        <div>
+          <Ask>Tap each symbol on the circle</Ask>
+          <svg viewBox="0 0 360 360" className="vx-svg" role="group" aria-label="Leonardo’s seven principles around a circle">
+            <rect x="62" y="62" width="236" height="236" fill="none" stroke="#e9e3d6" strokeOpacity="0.1"/>
+            <circle cx="180" cy="180" r="128" fill="none" stroke="#e9e3d6" strokeOpacity="0.18"/>
+            {GELB.map((wi, k) => {
+              const t = (-90 + k * 360 / 7) * Math.PI / 180;
+              const x = 180 + 128 * Math.cos(t), y = 180 + 128 * Math.sin(t);
+              const W = WAYS[wi], on = k === sel;
+              return (
+                <g key={k} className="vx-hit" transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`} {...tap(() => pick(k), W.principle, on)}>
+                  <circle r="27" fill={on ? W.color : '#1c1a17'} stroke={W.color} strokeWidth="2"/>
+                  <Icon name={W.icon} color={on ? '#1a1918' : '#e9e3d6'}/>
+                  {seen.has(k) && !on && <circle cx="19" cy="-19" r="4" fill={W.color}/>}
+                </g>
+              );
+            })}
+            <g key={sel} style={{ animation:'mmm-fadeUp .4s ease-out' }}>
+              {lines.map(([t, size], i) => <text key={i} x="180" y={166 + i * 30} textAnchor="middle" fontSize={size} fontWeight="700" fill={w.color} className="vx-hand">{t}</text>)}
+              <text x="180" y="222" textAnchor="middle" fontSize="13" fill="#b9b2a3">tips {w.sin} into {w.virtue}</text>
+            </g>
+          </svg>
+          <Explored count={seen.size}/>
+          <Reveal k={sel} label={`Leonardo’s ${sel + 1} of 7`} title={w.principle}>
+            <Line>{w.gist}</Line>
+          </Reveal>
+        </div>
+      );
+    }
+
+    /* ── Visual 4: Inha’s path through the matrix ────────────────── */
+    function NightPath() {
+      const [step, pick, seen] = useExplore(1);
+      const cells = {};
+      INHA.slice(0, step).forEach(({ cell:[r, c] }, i) => { cells[`${r},${c}`] = { fill: WAYS[c].color, text: String(i + 1) }; });
+      const { cell:[r, c], moment } = INHA[step - 1];
+      return (
+        <div>
+          <Ask>Tap 1 to 7 to walk her night</Ask>
+          <div className="vx-chips">
+            {INHA.map((_, i) => <button key={i} className={`vx-chip num${i + 1 === step ? ' on' : ''}`} aria-pressed={i + 1 === step} onClick={() => pick(i + 1)}>{i + 1}</button>)}
+          </div>
+          <MiniGrid cells={cells} path={INHA.slice(0, step).map(s => s.cell)} label={`Inha’s path through the matrix, up to step ${step}`}/>
+          <Explored count={seen.size}/>
+          <Reveal k={step} label={`Step ${step} · ${VOICES[r]}`} title={`${WAYS[c].sin}: ${SHADOW[c][r][0]}`}>
+            <Line>{moment}</Line>
+          </Reveal>
+        </div>
+      );
+    }
+
+    /* ── Visual 5: one cell, three faces ─────────────────────────── */
+    function ThreeFaces() {
+      const [step, setStep] = useState(2);
+      const [face, pick, seen, reset] = useExplore(0);
+      const choose = n => { setStep(n); reset(); };
+      const [r, c] = INHA[step - 1].cell, w = WAYS[c];
+      const faces = [
+        { name:'Sin', sub:w.sin, text:SHADOW[c][r][0], x:62, y:258, fill:w.color, ink:'#1a1918' },
+        { name:'Virtue', sub:w.virtue, text:VIRTUE[r][c], x:298, y:258, fill:'#e9e3d6', ink:'#1a1918' },
+        { name:'Leonardo', sub:w.principle, text:LEO[r][c], x:180, y:52, fill:'#1c1a17', ink:'#e9e3d6' },
+      ];
+      const f = faces[face];
+      return (
+        <div>
+          <Ask>Pick a step, then tap each corner</Ask>
+          <div className="vx-chips">
+            {INHA.map((_, i) => <button key={i} className={`vx-chip num${i + 1 === step ? ' on' : ''}`} aria-pressed={i + 1 === step} onClick={() => choose(i + 1)}>{i + 1}</button>)}
+          </div>
+          <svg viewBox="0 0 360 300" className="vx-svg" role="group" aria-label={`Three faces of ${VOICES[r]} × ${w.sin}`}>
+            <polygon points={faces.map(F => `${F.x},${F.y}`).join(' ')} fill={w.color} fillOpacity="0.06" stroke="#e9e3d6" strokeOpacity="0.25" strokeWidth="1.5"/>
+            <text x="180" y="178" textAnchor="middle" fontSize="26" fontWeight="700" fill="#e9e3d6" className="vx-hand">{VOICES[r]}</text>
+            <text x="180" y="202" textAnchor="middle" fontSize="14" fontWeight="600" fill={w.color}>× {w.sin} ↔ {w.virtue}</text>
+            {faces.map((F, i) => (
+              <g key={F.name} className="vx-hit" {...tap(() => pick(i), `${F.name}: ${F.sub}`, face === i)}>
+                <circle cx={F.x} cy={F.y} r="35" fill={F.fill} stroke={face === i ? '#ffffff' : (i === 2 ? w.color : 'none')} strokeWidth={face === i ? 3 : 2}/>
+                <text x={F.x} y={F.y + 5} textAnchor="middle" fontSize="14" fontWeight="700" fill={F.ink}>{F.name}</text>
+                {seen.has(i) && face !== i && <circle cx={F.x + 27} cy={F.y - 27} r="4" fill="#e9e3d6"/>}
+              </g>
+            ))}
+          </svg>
+          <Explored count={seen.size} total={3}/>
+          <Reveal k={`${step}-${face}`} label={`${f.name} · ${f.sub}`} title={f.text}>
+            <Line>Step {step}: {VOICES[r]} × {w.sin}.</Line>
+          </Reveal>
+        </div>
+      );
+    }
+
+    /* ── Visual 6: same virtue, seven floors ─────────────────────── */
+    const FLOORS = [6, 0, 1, 2, 3, 4, 5]; // top to bottom: the observer above, then the surface down to the deepest
+    function Elevator() {
+      const [way, setWay] = useState(1);
+      const [floor, ride, seen] = useExplore(2);
+      const w = WAYS[way];
+      const x = 30, y0 = 14, h = 41, wd = 236;
+      const pos = FLOORS.indexOf(floor);
+      return (
+        <div>
+          <Ask>Pick a virtue, then ride the floors</Ask>
+          <div className="vx-chips">
+            {WAYS.map((W, i) => <button key={W.sin} className={`vx-chip way${i === way ? ' on' : ''}`} style={{ '--c': W.color }} aria-pressed={i === way} onClick={() => setWay(i)}>{W.virtue}</button>)}
+          </div>
+          <svg viewBox="0 0 360 310" className="vx-svg" role="group" aria-label={`${w.virtue} on seven floors`}>
+            {FLOORS.map((v, i) => <rect key={v} x={x} y={y0 + i * h} width={wd} height={h - 4} fill={v === 6 ? '#1f2b23' : '#1c1a17'} stroke="#e9e3d6" strokeOpacity="0.15"/>)}
+            <rect x={x} y={y0} width={wd} height={h - 4} fill={w.color} style={{ transform:`translateY(${pos * h}px)`, transition:'transform .7s cubic-bezier(.65,0,.35,1), fill .3s' }}/>
+            {FLOORS.map((v, i) => (
+              <g key={v} className="vx-hit" {...tap(() => ride(v), `${VOICES[v]} floor`, v === floor)}>
+                <rect x={x} y={y0 + i * h} width={wd} height={h - 4} fill="#000" fillOpacity="0.001"/>
+                <text x={x + 12} y={y0 + i * h + 24} fontSize="14" fontWeight="600" fill={v === floor ? '#1a1918' : '#b9b2a3'}>{v + 1} · {VOICES[v]}</text>
+                {seen.has(v) && v !== floor && <circle cx={x + wd - 14} cy={y0 + i * h + 18} r="3.5" fill={w.color}/>}
+              </g>
+            ))}
+            <text x="276" y={y0 + 25} fontSize="17" fill="#e9e3d6" className="vx-hand">above it all</text>
+            <text x="276" y={y0 + h + 25} fontSize="17" fill="#b9b2a3" className="vx-hand">surface</text>
+            <line x1="290" y1={y0 + h + 36} x2="290" y2={y0 + 6 * h - 4} stroke="#b9b2a3" strokeOpacity="0.5" strokeDasharray="3 4"/>
+            <path d={`M285,${y0 + 6 * h - 10} L290,${y0 + 6 * h - 2} L295,${y0 + 6 * h - 10}`} fill="none" stroke="#b9b2a3" strokeOpacity="0.6"/>
+            <text x="276" y={y0 + 6 * h + 25} fontSize="17" fill="#b9b2a3" className="vx-hand">deepest</text>
+          </svg>
+          <Explored count={seen.size}/>
+          <Reveal k={`${way}-${floor}`} label={`${VOICES[floor]} floor · ${w.virtue}`} title={VIRTUE[floor][way]}>
+            <Line><strong>{w.principle}:</strong> {LEO[floor][way]}</Line>
+            <Line>{floor === 6 ? 'Only on this floor is the virtue itself.' : 'Ride up to the observer to see it clean.'}</Line>
+          </Reveal>
+        </div>
+      );
+    }
+
+    /* ── Visual 7: seven doors, seven questions ──────────────────── */
+    function Doors() {
+      const [sel, pick, open] = useExplore(null);
+      const W = 42, G = 8, X0 = 9, TOP = 64, BOT = 186;
+      const info = sel == null ? null : (() => { const [r, c] = INHA[sel].cell; return { r, c, s: SHADOW[c][r] }; })();
+      return (
+        <div>
+          <Ask>Tap each door to open it</Ask>
+          <svg viewBox="0 0 360 200" className="vx-svg" role="group" aria-label="Seven doors, one for each step of Inha’s night">
+            {INHA.map(({ cell:[r, c] }, k) => {
+              const x = X0 + k * (W + G), o = open.has(k), col = WAYS[c].color;
+              const d = `M${x},${BOT} L${x},${TOP} A${W / 2},${W / 2} 0 0,1 ${x + W},${TOP} L${x + W},${BOT} Z`;
+              return (
+                <g key={k} className="vx-hit" {...tap(() => pick(k), `Door ${k + 1}: ${VOICES[r]}`, sel === k)}>
+                  <path d={d} fill="#e9e3d6" fillOpacity={o ? 0.9 : 0.04} style={{ transition:'fill-opacity .8s' }}/>
+                  <g style={{ transform: o ? 'scaleX(0.14)' : 'none', transformOrigin:`${x}px ${BOT}px`, transition:'transform .8s ease' }}>
+                    <path d={d} fill="#2a2520"/>
+                    <circle cx={x + W - 9} cy={(TOP + BOT) / 2} r="2.6" fill={col}/>
+                  </g>
+                  <path d={d} fill="none" stroke={col} strokeWidth={sel === k ? 3.2 : 1.6}/>
+                  <text x={x + W / 2} y={TOP - W / 2 - 8} textAnchor="middle" fontSize="16" fontWeight="700" fill={col}>{k + 1}</text>
+                </g>
+              );
+            })}
+          </svg>
+          <Explored count={open.size}/>
+          {info ? (
+            <Reveal k={sel} label={`Door ${sel + 1} · ${VOICES[info.r]} × ${WAYS[info.c].sin} · ${info.s[0]}`} title={`“${info.s[1]}”`}>
+              <Line>Answered by <a href={`../15-brain-waves/${DEST[info.s[2]][0]}.html`}>{DEST[info.s[2]][1]} →</a></Line>
+            </Reveal>
+          ) : (
+            <Reveal k="none" label="Mindmap geo" title="Seven doors">
+              <Line>Behind each door is the question Inha’s state at that step would type into an AI.</Line>
+            </Reveal>
+          )}
+        </div>
+      );
+    }
+
+    /* ── Visual 8: find your own cell ────────────────────────────── */
+    function YourCell() {
+      const [r, setR] = useState(null);
+      const [c, setC] = useState(null);
+      const both = r != null && c != null, w = c == null ? null : WAYS[c];
+      return (
+        <div>
+          <Ask>Which voice is speaking?</Ask>
+          <div className="vx-chips">
+            {VOICES.map((v, i) => <button key={v} className={`vx-chip${i === r ? ' on' : ''}`} aria-pressed={i === r} onClick={() => setR(i)}>{v}</button>)}
+          </div>
+          <Ask>Which way is it pulling?</Ask>
+          <div className="vx-chips">
+            {WAYS.map((W, i) => <button key={W.sin} className={`vx-chip way${i === c ? ' on' : ''}`} style={{ '--c': W.color }} aria-pressed={i === c} onClick={() => setC(i)}>{W.sin}</button>)}
+          </div>
+          <MiniGrid row={r} col={c} cells={both ? { [`${r},${c}`]: { fill: w.color, text: '✦' } } : {}} label={both ? `Your cell: ${VOICES[r]} × ${w.sin}` : 'The matrix'}/>
+          {both ? (
+            <Reveal k={`${r}-${c}`} label={`Your cell · ${VOICES[r]} × ${w.sin} ↔ ${w.virtue}`} title={SHADOW[c][r][0]}>
+              <Line><strong>The virtue, from here:</strong> {VIRTUE[r][c]}</Line>
+              <Line><strong>{w.principle}, from here:</strong> {LEO[r][c]}</Line>
+              <Line><strong>The observer’s question:</strong> {w.ask}</Line>
+              {r !== 6 && <Line><strong>From the observer:</strong> {VIRTUE[6][c]}. {LEO[6][c]}.</Line>}
+            </Reveal>
+          ) : (
+            <Reveal k="none" label="Your cell" title="Pick one of each">
+              <Line>Choose the voice that is speaking in you right now, and the way it is pulling. Your cell lights up.</Line>
+            </Reveal>
+          )}
         </div>
       );
     }
@@ -582,6 +984,64 @@
             ]}/>
           </Card>
           <Prose>The full night is in <a href="../story-of-inha/index.html">the story of inha</a>, and Leonardo’s seven are in <a href="../davinci-perfect-man/index.html">da Vinci and the perfect man</a>.</Prose>
+          <InsightCard label="Next: see it">The same map, drawn instead of written: <em>eight pictures, a few things to tap on each,</em> and one colour for each of the seven ways all the way through.</InsightCard>
+        </>,
+      },
+      {
+        label:'Picture 1 · The steps', title:'Seven Steps Down',
+        body: <>
+          <Stairs/>
+          <InsightCard label="Notice">Six voices go down, one step at a time, from the surface to the deepest. <em>The seventh is not a step at all:</em> it is the eye above the stairs.</InsightCard>
+        </>,
+      },
+      {
+        label:'Picture 2 · The ways', title:'Fourteen Ways',
+        body: <>
+          <Seesaws/>
+          <InsightCard label="Notice">Every step can be taken through a sin or through its virtue. <em>Leonardo’s principle is the pivot</em> that tips one into the other.</InsightCard>
+        </>,
+      },
+      {
+        label:'Picture 3 · The pivots', title:'Leonardo’s Seven',
+        body: <>
+          <Wheel/>
+          <InsightCard label="Notice">Each symbol wears the colour of the sin it tips. <em>The same colours run through every picture.</em></InsightCard>
+        </>,
+      },
+      {
+        label:'Picture 4 · The night', title:'Inha’s Path',
+        body: <>
+          <NightPath/>
+          <InsightCard label="Notice">Seven steps, six columns. <em>Greed appears twice:</em> as panic at step three, and as identity at step six.</InsightCard>
+        </>,
+      },
+      {
+        label:'Picture 5 · One cell', title:'Three Faces',
+        body: <>
+          <ThreeFaces/>
+          <InsightCard label="Notice">Sin, virtue and genius all speak in the same voice. <em>From the con man, all three are cons.</em></InsightCard>
+        </>,
+      },
+      {
+        label:'Picture 6 · The rule', title:'The Voice Decides',
+        body: <>
+          <Elevator/>
+          <InsightCard label="Notice">Same virtue, seven floors. <em>The floor decides what the virtue becomes,</em> and only the top floor is clean.</InsightCard>
+        </>,
+      },
+      {
+        label:'Picture 7 · Mindmap geo', title:'Seven Doors',
+        body: <>
+          <Doors/>
+          <InsightCard label="Notice">One person, one night, seven different questions. <em>Mindmap geo writes a door for every state.</em></InsightCard>
+          <Prose>The method: <a href="../../mindmapgeo/index.html">mindmap x geo</a>.</Prose>
+        </>,
+      },
+      {
+        label:'Picture 8 · You', title:'Your Cell',
+        body: <>
+          <YourCell/>
+          <Prose>The night itself: <a href="../story-of-inha/index.html">the story of inha</a>. Leonardo’s seven: <a href="../davinci-perfect-man/index.html">da Vinci and the perfect man</a>.</Prose>
         </>,
       },
     ].map((p, i) => ({ ...p, label: p.label || stepLabel(i - 1) }));
