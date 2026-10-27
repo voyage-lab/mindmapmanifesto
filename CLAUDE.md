@@ -3,8 +3,8 @@
 Static site served by GitHub Pages at mindmapmanifesto.com. No framework: every page is a plain HTML file.
 
 ## Layout
-- `index.html`: the front page, with one card per section (fate x will, divination, success stories, mindmap x geo, mind x brain, contact me) and the "Under the Glass" player.
-- `mind-brain/index.html`: the mind x brain hub. It lists only the mind x brain topics, grouped under headings. Add a new topic here, not on the front page.
+- `index.html`: the front page and the only hub. It lists everything, grouped under headings (projects, the mind, stories, the body, people x business, tools), with jump links at the top, the "Under the Glass" player and a contact link. Add every new page here.
+- `mind-brain/index.html`: just a redirect to the front page, kept so old links still work. Every page's "← back to the map" link goes to the front page.
 - `mind-brain/15-brain-waves/`, `mind-brain/21-rules-mind/`: slide decks. Both run on `mind-brain/deck.js`, and `mind-brain/theme.css` gives them the site look.
 - The other `mind-brain/*` topics are small React apps styled by `mind-brain/theme-app.css`.
 - `notes/`: source notes and transcripts. They stay in the repo but are not published (see `_config.yml`).
