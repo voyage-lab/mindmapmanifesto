@@ -9,23 +9,11 @@
 <style>
 :root{--w:rgba(238,240,255,0.92);--a:rgba(130,200,255,1);--a2:rgba(130,200,255,0.42);--v:rgba(180,120,255,0.85);--glass:rgba(12,16,38,0.46)}
 
-/* Navigation & Progress Bar width calculation (6 slides) */
-#r0:checked~#bar{width:16.67%}
-#r1:checked~#bar{width:33.33%}
-#r2:checked~#bar{width:50.00%}
-#r3:checked~#bar{width:66.67%}
-#r4:checked~#bar{width:83.33%}
-#r5:checked~#bar{width:100.00%}
-#r0:checked~#stage #s0, #r1:checked~#stage #s1, #r2:checked~#stage #s2, #r3:checked~#stage #s3, #r4:checked~#stage #s4, #r5:checked~#stage #s5{opacity:1;clip-path:inset(0);pointer-events:all}
-#r0:checked~#dnav label:nth-child(1), #r1:checked~#dnav label:nth-child(2), #r2:checked~#dnav label:nth-child(3), #r3:checked~#dnav label:nth-child(4), #r4:checked~#dnav label:nth-child(5), #r5:checked~#dnav label:nth-child(6){width:22px;border-radius:3px;background:var(--a2);box-shadow:0 0 12px rgba(130,200,255,.3)}
+.slide.on{opacity:1;clip-path:inset(0);pointer-events:all}
+.dot.on{width:22px;border-radius:3px;background:var(--a2);box-shadow:0 0 12px rgba(130,200,255,.3)}
 
 :root {
   --w:rgba(238,240,255,0.92);--a:rgba(130,200,255,1);--a2:rgba(130,200,255,0.42);--v:rgba(180,120,255,0.85);--glass:rgba(12,16,38,0.46)
-}
-
-/* Navigation & Progress Bar width calculation (6 slides) */
-#r0:checked~#bar {
-  width:16.67%
 }
 
 :root {
@@ -34,14 +22,6 @@
 
 @keyframes ob {
   0%,100%{transform:translate(0,0)}40%{transform:translate(35px,25px)}70%{transform:translate(-20px,35px)}
-}
-
-#pts {
-  position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden
-}
-
-.pt {
-  position:absolute;border-radius:50%;animation:rise linear infinite;opacity:0
 }
 
 @keyframes rise {
@@ -205,45 +185,15 @@
   <a href="06-the-core-belief-behind-every-problem.html" rel="prev">← 06</a>
   <a href="08-the-fear-running-you-since-childhood.html" rel="next">08 →</a>
 </nav>
-<input type="radio" name="s" id="r0" checked>
-<input type="radio" name="s" id="r1">
-<input type="radio" name="s" id="r2">
-<input type="radio" name="s" id="r3">
-<input type="radio" name="s" id="r4">
-<input type="radio" name="s" id="r5">
 
 <div id="bg"></div>
 <div class="sc"></div>
 <div class="orb oa"></div>
 <div class="orb ob"></div>
-<div id="pts">
-  <div class="pt" style="width:1.64px;height:1.64px;left:56.40%;background:rgba(130,200,255,0.30);box-shadow:0 0 6.57px rgba(130,200,255,0.22);animation-duration:13.92s;animation-delay:-15.39s;"></div>
-  <div class="pt" style="width:3.88px;height:3.88px;left:60.72%;background:rgba(180,120,255,0.13);box-shadow:0 0 15.54px rgba(180,120,255,0.22);animation-duration:23.46s;animation-delay:-2.52s;"></div>
-  <div class="pt" style="width:4.07px;height:4.07px;left:10.81%;background:rgba(160,220,255,0.41);box-shadow:0 0 16.27px rgba(160,220,255,0.22);animation-duration:10.46s;animation-delay:-6.86s;"></div>
-  <div class="pt" style="width:3.57px;height:3.57px;left:39.67%;background:rgba(130,200,255,0.41);box-shadow:0 0 14.28px rgba(130,200,255,0.22);animation-duration:22.87s;animation-delay:-1.67s;"></div>
-  <div class="pt" style="width:3.62px;height:3.62px;left:10.19%;background:rgba(180,120,255,0.29);box-shadow:0 0 14.47px rgba(180,120,255,0.22);animation-duration:23.90s;animation-delay:-18.71s;"></div>
-  <div class="pt" style="width:3.30px;height:3.30px;left:98.38%;background:rgba(160,220,255,0.11);box-shadow:0 0 13.21px rgba(160,220,255,0.22);animation-duration:24.09s;animation-delay:-7.64s;"></div>
-  <div class="pt" style="width:2.70px;height:2.70px;left:50.60%;background:rgba(130,200,255,0.20);box-shadow:0 0 10.80px rgba(130,200,255,0.22);animation-duration:16.14s;animation-delay:-18.69s;"></div>
-  <div class="pt" style="width:4.08px;height:4.08px;left:96.08%;background:rgba(180,120,255,0.11);box-shadow:0 0 16.31px rgba(180,120,255,0.22);animation-duration:21.44s;animation-delay:-18.23s;"></div>
-  <div class="pt" style="width:3.68px;height:3.68px;left:73.38%;background:rgba(160,220,255,0.22);box-shadow:0 0 14.70px rgba(160,220,255,0.22);animation-duration:27.38s;animation-delay:-5.94s;"></div>
-  <div class="pt" style="width:4.03px;height:4.03px;left:48.35%;background:rgba(130,200,255,0.26);box-shadow:0 0 16.11px rgba(130,200,255,0.22);animation-duration:17.84s;animation-delay:-16.08s;"></div>
-  <div class="pt" style="width:2.14px;height:2.14px;left:83.07%;background:rgba(180,120,255,0.37);box-shadow:0 0 8.56px rgba(180,120,255,0.22);animation-duration:11.56s;animation-delay:-19.40s;"></div>
-  <div class="pt" style="width:2.05px;height:2.05px;left:61.03%;background:rgba(160,220,255,0.23);box-shadow:0 0 8.21px rgba(160,220,255,0.22);animation-duration:16.82s;animation-delay:-0.63s;"></div>
-  <div class="pt" style="width:4.18px;height:4.18px;left:21.21%;background:rgba(130,200,255,0.13);box-shadow:0 0 16.71px rgba(130,200,255,0.22);animation-duration:24.36s;animation-delay:-7.49s;"></div>
-  <div class="pt" style="width:4.28px;height:4.28px;left:27.63%;background:rgba(180,120,255,0.32);box-shadow:0 0 17.12px rgba(180,120,255,0.22);animation-duration:10.18s;animation-delay:-20.86s;"></div>
-  <div class="pt" style="width:1.50px;height:1.50px;left:48.86%;background:rgba(160,220,255,0.32);box-shadow:0 0 6.00px rgba(160,220,255,0.22);animation-duration:23.65s;animation-delay:-15.19s;"></div>
-  <div class="pt" style="width:3.46px;height:3.46px;left:79.29%;background:rgba(130,200,255,0.24);box-shadow:0 0 13.84px rgba(130,200,255,0.22);animation-duration:11.67s;animation-delay:-4.88s;"></div>
-  <div class="pt" style="width:3.62px;height:3.62px;left:58.16%;background:rgba(180,120,255,0.18);box-shadow:0 0 14.49px rgba(180,120,255,0.22);animation-duration:18.52s;animation-delay:-11.68s;"></div>
-  <div class="pt" style="width:2.69px;height:2.69px;left:33.08%;background:rgba(160,220,255,0.33);box-shadow:0 0 10.76px rgba(160,220,255,0.22);animation-duration:22.65s;animation-delay:-5.96s;"></div>
-  <div class="pt" style="width:2.08px;height:2.08px;left:19.26%;background:rgba(130,200,255,0.11);box-shadow:0 0 8.32px rgba(130,200,255,0.22);animation-duration:12.15s;animation-delay:-11.79s;"></div>
-  <div class="pt" style="width:3.87px;height:3.87px;left:21.64%;background:rgba(180,120,255,0.13);box-shadow:0 0 15.47px rgba(180,120,255,0.22);animation-duration:18.72s;animation-delay:-15.94s;"></div>
-  <div class="pt" style="width:4.62px;height:4.62px;left:28.30%;background:rgba(160,220,255,0.25);box-shadow:0 0 18.47px rgba(160,220,255,0.22);animation-duration:11.81s;animation-delay:-4.27s;"></div>
-  <div class="pt" style="width:2.00px;height:2.00px;left:1.41%;background:rgba(130,200,255,0.13);box-shadow:0 0 7.98px rgba(130,200,255,0.22);animation-duration:19.61s;animation-delay:-6.03s;"></div>
-</div>
 <div id="bar"></div>
 
 <div id="stage">
-<section class="slide" id="s0">
+<section class="slide on" id="s0">
  <p class="lbl">
   01 — 06
  </p>
@@ -475,18 +425,13 @@
 
 </div>
 
-<nav id="dnav">
-  <div class="dots">
-    <label for="r0" class="dot"></label>
-    <label for="r1" class="dot"></label>
-    <label for="r2" class="dot"></label>
-    <label for="r3" class="dot"></label>
-    <label for="r4" class="dot"></label>
-    <label for="r5" class="dot"></label>
-  </div>
+<nav id="dnav" aria-label="Slide navigation">
+  <button class="nb" onclick="go(-1)" aria-label="Previous slide"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+  <div id="dots" class="dots" role="tablist" aria-label="Slides"></div>
+  <button class="nb" onclick="go(1)" aria-label="Next slide"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
 </nav>
 <p class="hint">← → keys or swipe</p>
 
-<script src="slides.js"></script>
+<script src="../deck.js"></script>
 </body>
 </html>

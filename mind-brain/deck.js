@@ -1,34 +1,9 @@
-// Shared runtime for the 15 Brain Waves deck series.
-// This logic was previously duplicated verbatim inside a <script> tag in
-// every one of the 15 HTML files (confirmed byte-identical across all of
-// them before extraction) — one copy here replaces all 15.
+// Shared slide-deck runtime for the mind x brain decks (the brain waves and
+// the rules of the mind). Each deck page loads it with ../deck.js and needs
+// .slide sections (the first one with class "on"), #bar, #dots and #nav or
+// #dnav prev/next buttons calling go(-1) / go(1).
 
 (function () {
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // custom cursor (desktop only; CSS hides #cur under 700px)
-  const cur = document.getElementById('cur');
-  if (cur) {
-    document.addEventListener('mousemove', e => {
-      cur.style.left = e.clientX + 'px';
-      cur.style.top = e.clientY + 'px';
-    });
-  }
-
-  // ambient rising particles
-  if (!reduceMotion) {
-    const pts = document.getElementById('pts');
-    if (pts) {
-      for (let i = 0; i < 22; i++) {
-        const p = document.createElement('div');
-        p.className = 'pt';
-        const sz = Math.random() * 2.5 + 1;
-        p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random() * 100}%;background:rgba(160,198,248,${(Math.random() * .18 + .06).toFixed(2)});animation-duration:${Math.random() * 18 + 12}s;animation-delay:${Math.random() * 12}s`;
-        pts.appendChild(p);
-      }
-    }
-  }
-
   // slide deck navigation
   const slides = Array.from(document.querySelectorAll('.slide'));
   const N = slides.length;

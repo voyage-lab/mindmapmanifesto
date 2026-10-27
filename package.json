@@ -1,0 +1,11 @@
+{
+  "name": "mindmapmanifesto",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-jsx.mjs",
+    "check": "node scripts/build-jsx.mjs --check"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.2"
+  }
+}

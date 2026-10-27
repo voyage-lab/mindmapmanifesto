@@ -17,7 +17,7 @@
 body { background: var(--ink) !important; color: var(--paper) !important; }
 body::before {
   content: ""; position: fixed; inset: -2%; z-index: -2;
-  background: url("../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg") center / cover no-repeat;
+  background: url("../background.jpg") center / cover no-repeat;
   filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
 }
 body::after {

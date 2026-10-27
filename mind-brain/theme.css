@@ -19,12 +19,12 @@
 }
 
 body { background: var(--ink) !important; cursor: auto !important; }
-#cur, .orb, #pts, .pt, .particle { display: none !important; }
+.orb { display: none !important; }
 .nb, .dot { cursor: pointer !important; }
 
 /* background: the site image, dimmed and blurred like the other sub-pages */
 #bg {
-  background: url("../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg") center / cover no-repeat !important;
+  background: url("../background.jpg") center / cover no-repeat !important;
   filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
   transform: scale(1.04) !important;
 }
@@ -116,10 +116,6 @@ body { background: var(--ink) !important; cursor: auto !important; }
 .nb:hover { background: #000 !important; }
 .dot { background: rgba(233,227,214,.3) !important; box-shadow: none !important; }
 .dot.on { background: var(--paper) !important; }
-#r0:checked ~ #dnav .dot[for="r0"], #r1:checked ~ #dnav .dot[for="r1"], #r2:checked ~ #dnav .dot[for="r2"],
-#r3:checked ~ #dnav .dot[for="r3"], #r4:checked ~ #dnav .dot[for="r4"], #r5:checked ~ #dnav .dot[for="r5"],
-#r6:checked ~ #dnav .dot[for="r6"], #r7:checked ~ #dnav .dot[for="r7"],
-#r8:checked ~ #dnav .dot[for="r8"], #r9:checked ~ #dnav .dot[for="r9"] { background: var(--paper) !important; }
 .hint { font-family: "Caveat", cursive !important; font-size: 1.1rem !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--paper-dim) !important; }
 
 /* series nav: "back to the map" style links */

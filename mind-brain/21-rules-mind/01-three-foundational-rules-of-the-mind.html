@@ -7,27 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <style>
-/* Navigation & Progress Bar width calculation (6 slides) */
-#r0:checked~#bar{width:16.67%}
-#r1:checked~#bar{width:33.33%}
-#r2:checked~#bar{width:50.00%}
-#r3:checked~#bar{width:66.67%}
-#r4:checked~#bar{width:83.33%}
-#r5:checked~#bar{width:100.00%}
 
-#r0:checked~#stage #s0,
-#r1:checked~#stage #s1,
-#r2:checked~#stage #s2,
-#r3:checked~#stage #s3,
-#r4:checked~#stage #s4,
-#r5:checked~#stage #s5{opacity:1;clip-path:inset(0);pointer-events:all}
+.slide.on{opacity:1;clip-path:inset(0);pointer-events:all}
 
-#r0:checked~#dnav label:nth-child(1),
-#r1:checked~#dnav label:nth-child(2),
-#r2:checked~#dnav label:nth-child(3),
-#r3:checked~#dnav label:nth-child(4),
-#r4:checked~#dnav label:nth-child(5),
-#r5:checked~#dnav label:nth-child(6){width:22px;border-radius:3px;background:var(--s2);box-shadow:0 0 12px rgba(80,130,220,.3)}
+.dot.on{width:22px;border-radius:3px;background:var(--s2);box-shadow:0 0 12px rgba(80,130,220,.3)}
 
 /* Rule-specific styles for Rule 01 */
 .examples{display:flex;flex-direction:column;gap:8px;margin-top:14px}
@@ -53,12 +36,6 @@
   <a href="index.html">← back to the rules of the mind</a>
   <a href="02-your-mind-only-responds-to-two-things.html" rel="next">02 →</a>
 </nav>
-<input type="radio" name="s" id="r0" checked>
-<input type="radio" name="s" id="r1">
-<input type="radio" name="s" id="r2">
-<input type="radio" name="s" id="r3">
-<input type="radio" name="s" id="r4">
-<input type="radio" name="s" id="r5">
 
 <div id="bg"></div>
 <div class="sc"></div>
@@ -68,7 +45,7 @@
 
 <div id="stage">
   <!-- 01 title -->
-  <section class="slide" id="s0">
+  <section class="slide on" id="s0">
     <p class="lbl">01 — 06</p>
     <div class="tri"><div class="tri-bar"></div><div class="tri-bar"></div><div class="tri-bar"></div></div>
     <h1 class="h1">The <em>3 Foundational</em><br>Rules of the Mind</h1>
@@ -162,18 +139,13 @@
   </section>
 </div>
 
-<nav id="dnav">
-  <div class="dots">
-    <label for="r0" class="dot"></label>
-    <label for="r1" class="dot"></label>
-    <label for="r2" class="dot"></label>
-    <label for="r3" class="dot"></label>
-    <label for="r4" class="dot"></label>
-    <label for="r5" class="dot"></label>
-  </div>
+<nav id="dnav" aria-label="Slide navigation">
+  <button class="nb" onclick="go(-1)" aria-label="Previous slide"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+  <div id="dots" class="dots" role="tablist" aria-label="Slides"></div>
+  <button class="nb" onclick="go(1)" aria-label="Next slide"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
 </nav>
 <p class="hint">← → keys or swipe</p>
 
-<script src="slides.js"></script>
+<script src="../deck.js"></script>
 </body>
 </html>

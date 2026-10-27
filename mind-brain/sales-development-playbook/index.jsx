@@ -1,0 +1,668 @@
+const { useState, useEffect } = React;
+
+const SERIES = 'The SDR Playbook';
+const ACCENT = '#818cf8';
+const NUMBERS = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen','Twenty','Twenty-One','Twenty-Two','Twenty-Three','Twenty-Four','Twenty-Five','Twenty-Six'];
+
+/* ── Shared Components ───────────────────────────────────────── */
+
+function ProgressBar({ pct }) {
+  return (
+    <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:50, height:3, background:'#14141c' }}>
+      <div style={{ height:'100%', width:`${pct}%`, background:ACCENT, transition:'width 0.5s ease' }}/>
+    </div>
+  );
+}
+
+function Eyebrow({ children }) {
+  return (
+    <div style={{ fontSize:'0.7rem', letterSpacing:'0.2em', textTransform:'uppercase', color:ACCENT, marginBottom:16, display:'flex', alignItems:'center', gap:10, fontWeight:500 }}>
+      <span style={{ width:28, height:1, background:ACCENT, opacity:0.5, flexShrink:0, display:'block' }}/>
+      {children}
+    </div>
+  );
+}
+
+function StepIndicator({ current, total }) {
+  return (
+    <div style={{ fontSize:'0.72rem', letterSpacing:'0.2em', textTransform:'uppercase', color:'#8888a0' }}>
+      Part <span style={{ color:ACCENT, fontWeight:600 }}>{current}</span> of {total}
+    </div>
+  );
+}
+
+function ArrowRight({ size = 16 }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>);
+}
+
+function ArrowLeft({ size = 16 }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>);
+}
+
+function BackBtn({ onClick }) {
+  return (
+    <button onClick={onClick} style={{ display:'flex', alignItems:'center', gap:6, color:'#8888a0', background:'none', border:'none', cursor:'pointer', fontSize:'0.82rem' }}>
+      <ArrowLeft size={15}/> Back
+    </button>
+  );
+}
+
+function BottomNav({ onBack, onNext, nextLabel = 'Continue' }) {
+  return (
+    <div style={{ display:'flex', justifyContent: onBack ? 'space-between' : 'flex-end', alignItems:'center', gap:16, marginTop:64, paddingTop:32, borderTop:'1px solid #1e1e2a' }}>
+      {onBack && <BackBtn onClick={onBack}/>}
+      <button onClick={onNext}
+        style={{ display:'inline-flex', alignItems:'center', gap:9, padding:'13px 26px', borderRadius:12, fontSize:'0.875rem', fontWeight:600, border:'none', cursor:'pointer', background:`linear-gradient(135deg,${ACCENT},#4f46e5)`, color:'#fff', textAlign:'left' }}>
+        {nextLabel} <ArrowRight/>
+      </button>
+    </div>
+  );
+}
+
+function InsightCard({ label = 'Key Insight', children }) {
+  return (
+    <div style={{ background:'#0d0d12', border:`1px solid ${ACCENT}33`, borderRadius:18, padding:34, marginBottom:36, position:'relative' }}>
+      <div style={{ fontSize:'0.68rem', letterSpacing:'0.2em', textTransform:'uppercase', color:ACCENT, marginBottom:14, fontWeight:600 }}>{label}</div>
+      <p style={{ fontSize:'clamp(1.05rem,2.4vw,1.3rem)', lineHeight:1.72, color:'#e8e8ed', position:'relative' }}>{children}</p>
+    </div>
+  );
+}
+
+function Footer() { return <footer style={{ textAlign:'center', marginTop:56, color:'#8888a0', fontSize:'0.75rem' }}>© 2026 MindMapManifesto.com</footer>; }
+function PageWrapper({ children, maxWidth = 820 }) { return <div style={{ position:'relative', zIndex:1, maxWidth, margin:'0 auto', padding:'60px 24px 100px' }}>{children}</div>; }
+
+function Prose({ children }) {
+  return <p style={{ fontSize:'clamp(0.95rem,2.1vw,1.1rem)', lineHeight:1.88, color:'rgba(220,215,240,0.72)', marginBottom:22 }}>{children}</p>;
+}
+
+function PullQuote({ children }) {
+  return (
+    <div style={{ borderLeft:`2px solid ${ACCENT}40`, paddingLeft:24, marginBottom:30, marginTop:4 }}>
+      <p style={{ fontStyle:'italic', fontSize:'clamp(1rem,2.2vw,1.18rem)', lineHeight:1.78, color:`${ACCENT}a0` }}>{children}</p>
+    </div>
+  );
+}
+
+/* a paper note with an optional label, title and intro line */
+function Card({ label, title, intro, children }) {
+  return (
+    <div style={{ background:'#0d0d12', border:`1px solid ${ACCENT}2e`, borderRadius:16, padding:'26px 28px', marginBottom:30 }}>
+      {label && <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:`${ACCENT}99`, marginBottom: title ? 8 : 16, fontWeight:600 }}>{label}</div>}
+      {title && <h3 style={{ fontSize:'1.35rem', fontWeight:700, color:'#e8e8ed', marginBottom:14 }}>{title}</h3>}
+      {intro && <p style={{ fontSize:'1rem', lineHeight:1.65, color:'#b8b8c8', marginBottom:16 }}>{intro}</p>}
+      {children}
+    </div>
+  );
+}
+
+function Points({ items }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+      {items.map((t, i) => (
+        <div key={i} style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+          <div style={{ width:5, height:5, borderRadius:'50%', background:ACCENT, flexShrink:0, opacity:0.6, marginTop:12 }}/>
+          <p style={{ fontSize:'1rem', lineHeight:1.65, color:'rgba(220,215,240,0.78)' }}>{t}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Steps({ items }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+      {items.map((t, i) => (
+        <div key={i} style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+          <div style={{ width:28, height:28, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, border:`1px solid ${ACCENT}55`, fontSize:'0.78rem', marginTop:1 }}>{i + 1}</div>
+          <p style={{ fontSize:'1rem', lineHeight:1.65, color:'rgba(220,215,240,0.78)' }}>{t}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Terms({ items }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+      {items.map(([t, d], i) => (
+        <div key={i} style={{ borderLeft:`2px solid ${ACCENT}4d`, paddingLeft:14 }}>
+          <div style={{ fontWeight:700, fontSize:'1.1rem', color:'#e8e8ed', marginBottom:2 }}>{t}</div>
+          <p style={{ fontSize:'0.95rem', color:'#8888a0', lineHeight:1.6 }}>{d}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* lead qualification flow */
+function FlowBox({ children }) {
+  return <div style={{ background:'rgba(129,140,248,0.06)', border:`1px solid ${ACCENT}33`, borderRadius:10, padding:'12px 16px', fontSize:'0.95rem', lineHeight:1.55, textAlign:'center' }}>{children}</div>;
+}
+function FlowRow({ children }) {
+  return <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>{children}</div>;
+}
+function Down() {
+  return <div aria-hidden="true" style={{ textAlign:'center', fontSize:'1.2rem', lineHeight:1, margin:'10px 0', color:ACCENT }}>↓</div>;
+}
+
+function Chapter({ children, n, label, title, nextLabel, onBack, onNext }) {
+  return (
+    <div style={{ background:'#050507', minHeight:'100vh', position:'relative' }}>
+      <ProgressBar pct={n / PARTS.length * 100}/>
+      <PageWrapper>
+        <nav style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:56 }}>
+          <BackBtn onClick={onBack}/>
+          <StepIndicator current={n} total={PARTS.length}/>
+        </nav>
+        <div style={{ marginBottom:36, animation:'mmm-fadeUp 0.7s ease-out' }}>
+          <Eyebrow>{label}</Eyebrow>
+          <h1 style={{ fontSize:'clamp(1.9rem,4.6vw,2.95rem)', fontWeight:700, lineHeight:1.18, marginBottom:8, color:'#e8e8ed' }}>{title}</h1>
+        </div>
+        {children}
+        <BottomNav onBack={onBack} onNext={onNext} nextLabel={nextLabel}/>
+        <Footer/>
+      </PageWrapper>
+    </div>
+  );
+}
+
+/* one key: a numbered paper note */
+function Key({ n, title, children }) {
+  return (
+    <div style={{ background:'#0d0d12', border:`1px solid ${ACCENT}2e`, borderRadius:16, padding:'24px 28px', marginBottom:28 }}>
+      <div style={{ fontSize:'0.63rem', letterSpacing:'0.22em', textTransform:'uppercase', color:`${ACCENT}99`, marginBottom:6, fontWeight:600 }}>Key {String(n).padStart(2, '0')}</div>
+      <h3 style={{ fontSize:'1.35rem', fontWeight:700, color:'#e8e8ed', marginBottom:10 }}>{title}</h3>
+      {typeof children === 'string' ? <p style={{ fontSize:'1rem', lineHeight:1.65, color:'#b8b8c8' }}>{children}</p> : children}
+    </div>
+  );
+}
+
+/* ── Screen 0: Landing ───────────────────────────────────────── */
+function LandingScreen({ onNext }) {
+  return (
+    <div style={{ background:'#000', minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:820, display:'flex', flexDirection:'column', alignItems:'center', gap:36, animation:'mmm-reveal 1.5s cubic-bezier(0.16,1,0.3,1) forwards' }}>
+        <div style={{ fontSize:'0.65rem', letterSpacing:'0.6em', color:'rgba(129,140,248,0.5)', textTransform:'uppercase', fontWeight:700 }}>Two books, one playbook</div>
+        <div>
+          <h1 style={{ fontSize:'clamp(2.8rem,10vw,6rem)', fontWeight:700, letterSpacing:'-0.02em', color:'white', marginBottom:10 }}>The Keys to Prospecting</h1>
+          <div style={{ fontSize:'clamp(0.9rem,2.2vw,1.3rem)', fontWeight:300, color:'rgba(255,255,255,0.4)', letterSpacing:'0.1em' }}>{KEY_COUNT} Keys · {PARTS.length} Parts</div>
+        </div>
+        <div style={{ maxWidth:600, borderLeft:'2px solid rgba(129,140,248,0.3)', paddingLeft:26, textAlign:'left' }}>
+          <p style={{ fontStyle:'italic', fontSize:'clamp(0.95rem,1.9vw,1.13rem)', lineHeight:1.8, color:'rgba(255,255,255,0.55)' }}>
+            The best of <em>Predictable Prospecting</em> (Marylou Tyler &amp; Jeremey Donovan) and <em>The Early Stage Sales Development Playbook</em> (Kartheek Mulpuri &amp; Ian Grover): who to target, how to engage, how to qualify, how to measure, and the habits of the SDRs who win.
+          </p>
+        </div>
+        <button onClick={onNext}
+          style={{ background:'rgba(129,140,248,0.08)', border:'1px solid rgba(129,140,248,0.28)', borderRadius:9999, padding:'18px 52px', fontSize:'0.8rem', fontWeight:700, letterSpacing:'0.4em', textTransform:'uppercase', color:'white', cursor:'pointer' }}>
+          Begin
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ── Parts: each is a list of keys, numbered straight through ── */
+const PARTS = [
+  {
+    stage: 'Start',
+    title: 'Why Prospecting Must Be Predictable',
+    keys: [
+      ['Never stop hunting', 'Most salespeople hunt hard for two years, fill their book, then drift into farming. Around year three or four accounts churn, the pipeline is dry and quota slips. The fix is a process for the top of the funnel that runs no matter how busy you get.'],
+      ['Without a process there is no predictability', 'Training covers clients, product, selling skills and the CRM. What almost nobody teaches is the repeatable process for filling the funnel. That process is what these keys are.'],
+      ['It’s a framework, not a script', 'Prospecting depends on context: your product, your buyers, your territory. Adapt every key to your situation, and keep split-testing to see what works. Treat each day as a game.'],
+      ['Expect an imperfect start', 'More SDRs than ever are hired into early-stage companies with no training, few tools and no written process, and many burn out within a year. Go in knowing you’ll have to build your own system.'],
+    ],
+  },
+  {
+    stage: 'Start',
+    title: 'The Team and Your Job',
+    keys: [
+      ['Know who’s on the team', <Terms items={[
+        ['Early stage', 'Pre-Series B, or fewer than 30 people.'],
+        ['The leader', 'The CEO or a Head of Sales.'],
+        ['Account executives (AEs)', 'One to three. They close the leads you qualify. The norm is about one SDR for every four AEs.'],
+        ['Marketing', 'Often one junior or mid-level person.'],
+        ['Customer success (CSMs)', 'One or two. They own the relationship after the close.'],
+        ['SDRs', 'You. You own lead qualification.'],
+      ]}/>],
+      ['Know how a lead moves', <>
+        <FlowRow>
+          <FlowBox><strong>Inbound:</strong> someone shows interest and leaves their details.</FlowBox>
+          <FlowBox><strong>Outbound:</strong> you build a list of people who could be a fit.</FlowBox>
+        </FlowRow>
+        <Down/>
+        <FlowBox><strong>New → Working:</strong> you accept the lead and run a campaign of emails, calls and messages.</FlowBox>
+        <Down/>
+        <FlowRow>
+          <FlowBox><strong>Meeting booked → Qualifying:</strong> “are we a fit?”, then budget, authority, need and timing.</FlowBox>
+          <FlowBox><strong>No response or interest:</strong> back to slow nurturing; try again in 6–8 weeks.</FlowBox>
+        </FlowRow>
+        <Down/>
+        <FlowRow>
+          <FlowBox><strong>Qualified → Closing:</strong> the AE takes it; it becomes an <strong>opportunity.</strong></FlowBox>
+          <FlowBox><strong>Disqualified:</strong> mark it in the CRM, send a polite note, return it to nurturing.</FlowBox>
+        </FlowRow>
+      </>],
+      ['Keep the stages simple', 'Only add a new lead status if it helps move deals faster, never just for prettier reports. When in doubt, choose simplicity; you can add detail later.'],
+      ['Work contacts, not loose leads', 'Attach every accepted lead to its account in the CRM right away, so you see everything happening inside that company in one place.'],
+    ],
+  },
+  {
+    stage: 'Target',
+    title: 'Know Your Company Cold',
+    keys: [
+      ['Beat the three-month ramp', 'The average SDR takes three to four months to reach full speed. A systematic onboarding gets you there much faster. Most of it is on you.'],
+      ['Interview the business', <Points items={[
+        'Who leads the company, and what are its short- and long-term goals?',
+        'Is the culture sales-driven or engineering-driven?',
+        'Who manages sales, and how are decisions made?',
+        'What has worked in lead generation so far, and what hasn’t?',
+        'Which metrics do the company and the sales team track?',
+      ]}/>],
+      ['Know the product like a customer', 'Get a full demo. Know what it does, where it falls short, why someone wouldn’t buy it, how customers measure ROI, the Net Promoter Score, and whether it’s a must-have or a luxury.'],
+      ['Build your own six-factor SWOT', <>
+        <p style={{ fontSize:'1rem', lineHeight:1.65, marginBottom:14 }}>Don’t brainstorm strengths, then weaknesses; you’ll get blind spots and run out of steam. Go factor by factor and ask strengths, weaknesses, opportunities and threats for each:</p>
+        <Terms items={[
+          ['The 4 Ps', 'Product, price, promotion, place.'],
+          ['Reputation', 'With customers (renewals, NPS) and with partners.'],
+          ['Internal resources', 'Money, intellectual property, people, physical assets.'],
+          ['External forces', 'Buyer power, competitors and substitutes, supplier power.'],
+          ['Trends', 'Long-term social and technology shifts.'],
+          ['VUCA', 'Volatile, uncertain, complex, ambiguous shocks.'],
+        ]}/>
+      </>],
+      ['Shrink it to one page', 'Score every item high, medium or low impact in competitive deals. Keep only the high ones in a two-by-two: three to five per box. That’s what you need to pitch value and handle most objections. Refresh it every quarter with your team.'],
+      ['Shadow the AEs and fact-check the hype', 'Sit in on AE calls; they answer most of your questions in the first couple of weeks. Then balance what management says with G2, Capterra, Quora, Glassdoor and Crunchbase.'],
+    ],
+  },
+  {
+    stage: 'Target',
+    title: 'The Ideal Account Profile',
+    keys: [
+      ['You can’t be all things to all people', 'Target the accounts with the highest lifetime value and the highest chance of buying. Skipping this step is one of the most expensive mistakes in sales: endless time on accounts that never buy.'],
+      ['Use segments that are actually usable', 'The right number of target companies, measurable with reasonable effort, distinct needs you can message to, and stable for a year or more.'],
+      ['Start with firmographic fit', 'Industry (a list of about 10 plus “other”), company size (bands by employees or whatever unit matters, like locations or square footage), and geography (language, service, tax). This gets you about 80% of the way for 20% of the effort.'],
+      ['Smaller is often easier', 'Huge enterprises are risk-averse, have more hoops, more competition, and one “no” kills the deal. Salesforce won early with sub-30-person tech companies in its own backyard, then grew outward niche by niche.'],
+      ['Add operational fit when needed', 'Their current equipment and technology (sell where you integrate), their purchasing policies, and whether buying is centralized or decentralized.'],
+      ['Use situational fit as the trigger', 'Strategic initiatives in annual reports, whether they insource or outsource, financial health, new executives (every new leader brings new initiatives), and shared values.'],
+      ['Model it on your best customers', 'Compare your most profitable customers with your worst and look for what they share. No customer base yet? Look up who is already visiting your website.'],
+      ['Profile every account you chase', 'Headquarters, revenue, headcount, industry numbers, recent news and CEO quotes, the solution they use today (try it like a customer would), and every likely contact: 5–10 for a large account.'],
+    ],
+  },
+  {
+    stage: 'Target',
+    title: 'Ideal Prospect Personas',
+    keys: [
+      ['Three personas, maximum', 'Teams that define fifteen personas remember none. One must be the decision maker; the others are key influencers or people who can give you a warm referral.'],
+      ['Skip the consumer fluff', 'Age, hobbies and archetypes don’t belong in a B2B persona. Job title, objectives and influence do. Use personal details only to build rapport in a specific deal, and tread lightly.'],
+      ['Know every version of the title', 'One persona can be “Chief Learning Officer,” “VP Talent Development” or “Director of Training.” Match the titles to the ones your data tools use.'],
+      ['Pull their objectives from job postings', 'Job ads from your ideal accounts, for your target title, spell out what the role is measured on. Boil it down to two or three objectives that fit on one page, without bias toward what you sell.'],
+      ['Map the influence', 'Picture a target: the decision maker in the bull’s-eye; direct influencers and gatekeepers (assistants, lawyers, procurement, their boss and team) in the inner ring; indirect influencers (peers, partners, the publications they trust) in the outer ring. The outer ring is where warm referrals come from.'],
+      ['Answer “why change, why now, why us?”', <Terms items={[
+        ['Why change (need)', 'Give the rational mind proof and numbers, give the emotional side a reason it feels right, and make the path easy.'],
+        ['Why you (trust)', 'Social proof: references, case studies with similar companies, credible publications.'],
+        ['Why now (urgency)', 'Not fake scarcity. Tie your product to their strategic objectives and their competition.'],
+      ]}/>],
+      ['Verify, then refresh yearly', 'Check the persona against interviews with your best customers and hottest prospects, LinkedIn, analysts and partners, then everyone in-house who talks to customers. Update it at least once a year.'],
+    ],
+  },
+  {
+    stage: 'Target',
+    title: 'Map the Account and Find the Champion',
+    keys: [
+      ['Expect a committee', 'The average B2B purchase involves about 5.4 people. Know who decides, who must approve, who evaluates, who will use it, and who reports to whom.'],
+      ['In big deals, reach the champion first', 'A busy decision maker often hands your pitch to someone who kills it. A champion doesn’t decide, but sells you internally, and usually sits one or two levels below the decision maker.'],
+      ['Sell the shared goal, not each person’s wish', 'Pitching speed to marketing, easy setup to IT and savings to finance backfires when they meet. Find the business outcome they all want, like profit, and prove you’re the best route to it.'],
+      ['Learn to deputize champions', 'Watch your best AEs build a strong relationship with the rising star in an account and close the deal together. A tell: they text each other.'],
+    ],
+  },
+  {
+    stage: 'Engage',
+    title: 'Find the Pain',
+    keys: [
+      ['Build an issue tree', 'Start with their biggest question (“How can we increase marketing ROI?”), then split it into separate sub-questions (revenue vs. cost; volume × win rate × deal size). Go deeper for junior contacts, stop early for executives.'],
+      ['Validate the pain in their words', 'Read what your prospects ask on Quora, LinkedIn groups and industry forums, sorted by most upvoted. Check keyword tools like Google’s Keyword Planner for the terms they search. Fight the urge to see only what you want to sell.'],
+      ['Plan every message in four blanks', 'For whom? To do what? In order to? By what means?'],
+    ],
+  },
+  {
+    stage: 'Engage',
+    title: 'Craft the Right Message',
+    keys: [
+      ['Meet prospects where they are', 'Buyers move from unaware → aware → interested → evaluating → purchase. Cold outbound prospects are almost always unaware, so don’t ask for a meeting yet. Move them one stage at a time.'],
+      ['Match the content to the stage', <Terms items={[
+        ['Unaware → aware', 'Short, educational, product-agnostic: a blog post, infographic, video clip. Emotional.'],
+        ['Aware → interested', 'Reports, trend pieces, neutral webinars, diagnostic tools. Mostly emotional.'],
+        ['Interested → evaluating', 'Case studies, reviews, demo videos, comparison charts, a discovery call. More rational.'],
+        ['Evaluating → purchase', 'Trials, ROI calculators, references, proposals. Fully personalized and rational.'],
+      ]}/>],
+      ['Tell it in three Os', 'Obstacle: one problem, from their side. Outcome: how you solved it for someone like them. Opportunity: back to them, with one call to action.'],
+      ['One email, one pain, one ask', 'Never cram several calls to action into one message. You have many touches to test different problems and asks.'],
+      ['Personalize as much as the deal deserves', 'Never fully generic. Mass-personalized works for early stages and big lists. Hyperpersonalize for short target lists and everyone in later stages. Personalized emails get about three times the replies.'],
+      ['Write like a real person', 'A real sender address, plain text, no images, a normal signature, about 100 words. In the authors’ sample of 281 sales emails the average was 253 words; a third came from no-reply-style senders and went straight to trash.'],
+      ['Subject lines that work', <Points items={[
+        'Describe what’s inside; don’t sell it.',
+        'Urgency works; length barely matters (just stay under 100 characters).',
+        '“New,” “fastest,” “easiest” help; price words like “free,” “sale,” “cheapest” hurt.',
+        'Skip clickbait and announcements (“introducing,” “I,” “our”). “Steps” and “ways” beat “how to.”',
+        'Questions perform well. Capitalize Each Word; never ALL CAPS or exclamation marks.',
+        'Always test: what works for one audience flops for another.',
+      ]}/>],
+      ['Build the first email in five moves', <Steps items={[
+        'Open with value or a genuine compliment, not “My name is…”',
+        'Name the problem in one line.',
+        'Say what you do in plain words, with one proof point from a similar company.',
+        'Show your homework: one specific detail about them.',
+        'Make replying easy: one ask, or a specific day and time.',
+      ]}/>],
+    ],
+  },
+  {
+    stage: 'Engage',
+    title: 'Fill the New Queue',
+    keys: [
+      ['Respond to inbound in five minutes', 'You’re 100 times more likely to reach an inbound lead in the first 5 minutes than at 30 minutes, and 21 times more likely to qualify them. Most companies never respond at all.'],
+      ['Know which sources are best', <Steps items={[
+        '“Become a client” requests',
+        'Reactivated former clients',
+        'Referrals',
+        'Webinar attendees',
+        'Targeted lists you build in-house',
+        'White paper and e-book downloads',
+        'Trade show lists',
+        'Targeted lists from third parties',
+      ]}/>],
+      ['Mine your house list first', 'Former clients, then deals lost after qualifying, then disqualified prospects, then past non-responders. Add ideal prospects from LinkedIn.'],
+      ['Rent lists; never buy them', 'Rented lists from trade publications are fresh and opted-in; pilot a small sample and check the ROI. A list someone will sell you has been spammed to death.'],
+      ['Clean every record', 'Verify email, phone and LinkedIn URL before anyone touches a lead. Get the direct dial: it’s 46% more likely to reach a director and 147% more likely to reach a VP than the switchboard.'],
+      ['Keep refilling', 'Of every 100 records, about 3 are actively looking, 7 are open, 30 don’t want it, 30 aren’t sure and 30 don’t know they need it. Expect to replace about 40% of your list every cycle.'],
+      ['Work with marketing', 'Use their collateral in your outreach, agree who qualifies inbound leads before anyone replies, and never let a qualified lead wait more than 24–72 hours.'],
+    ],
+  },
+  {
+    stage: 'Engage',
+    title: 'Referrals',
+    keys: [
+      ['Referred leads close twice as often', 'They win more, move faster and are worth more, and customers who refer tend to stay longer.'],
+      ['Be referable', 'Delight customers first. Deliver value before you ask.'],
+      ['Ask at the peak or the end', 'Send a Net Promoter survey at the high point or the end of the service. Anyone who answers 9 or 10, ask for a referral right then. Anyone at 0–2 gets service recovery.'],
+      ['Name the people you want', 'Don’t ask “who do you know?” Find three to five of their LinkedIn connections you want to meet and ask permission to mention them.'],
+      ['Follow your customers to new jobs', 'Former customers who change jobs are the easiest new deals. Track bounced emails and find where they went.'],
+      ['Go indirect too', 'Ask customers to introduce you to their favorite vendors, trade leads with complementary suppliers, and run an employee referral program.'],
+      ['Keep the program simple and clean', 'Easy forms, updates to the referrer at every step, and small or non-cash thank-yous (usually under $100, or perks and charity) that never look like a bribe.'],
+    ],
+  },
+  {
+    stage: 'Engage',
+    title: 'The Cadence',
+    keys: [
+      ['Persistence wins, and almost nobody persists', 'Most companies reply to a lead with one email and give up after two calls. Six calls instead of one lifts the chance of contact from the mid-30s to as high as 90%.'],
+      ['Run 8–12 touches over about a month', 'Mix email and phone. Most companies stop at five; that’s where you start to stand out.'],
+      ['Use a proven sequence', <Terms items={[
+        ['Touch 1 · day 1 · email', 'Find the right person: a short note asking for an internal referral. Close with “Please advise.”'],
+        ['Touch 2 · day 3 · email', '“Re:” follow-up (use “Re:” only once, and only genuinely) with one insight, same ask.'],
+        ['Touch 3 · day 6 · email', 'A short, neutral asset (infographic, video) to make them aware.'],
+        ['Touch 4 · day 8 · email', 'Now ask for 15 minutes; mention companies like theirs you work with.'],
+        ['Touch 5 · day 8 · call', 'Same day, right after the email, so your name is familiar.'],
+        ['Touches 6–7 · days 11–13 · email', 'Deeper content: a report or webinar, then case studies and reviews.'],
+        ['Touches 8–9 · days 18–20 · email + call', 'The breakup: a last chance to reply, two days apart.'],
+      ]}/>],
+      ['Or the lighter sequence', 'Ian Grover’s favorite for mid-size retail deals: day 0 email + call, day 3 call, day 5 LinkedIn, day 7 email, day 9 call, day 15 call + email, then the breakup.'],
+      ['Send the breakup email', 'Say you haven’t heard back and leave a clear next step (“I’ll check back in three months”). A touch of humor and a reply-with-1-2-or-3 option makes it effortless to answer.'],
+      ['Time it right', 'Midweek for first touches. Calls before lunch or at the end of the day, never first thing. Emails around 11 AM or 4 PM their time; test evenings and early mornings.'],
+      ['No reply? Back to nurture', 'Move silent contacts to “no response” and back into slow-drip nurturing. Don’t let them clog your working queue.'],
+    ],
+  },
+  {
+    stage: 'Engage',
+    title: 'Precadence Planning',
+    keys: [
+      ['Personalize, because it triples replies', 'In SalesLoft’s data, prospects replied to 2.7% of generic emails and 8.0% of personalized ones.'],
+      ['Two facts in ten minutes', 'One about the person (LinkedIn, Twitter, news), one about their company (press releases, annual reports, investor decks, a strategic initiative tied to your solution). Stop at two facts or ten minutes, whichever comes first.'],
+      ['Log it', 'Put what you found in the CRM so you, or the next SDR, never research the same person twice.'],
+      ['Go wide, carefully', 'Contact two or three people per account at a time, mention the others you’ve reached, and never blast the whole company.'],
+    ],
+  },
+  {
+    stage: 'Engage',
+    title: 'The Cold Call',
+    keys: [
+      ['Call after you’ve given value', 'Find the right person and offer something useful before you dial. That earns the call and makes the prospect feel they owe you a little.'],
+      ['Skew warm', 'Warm and lukewarm calls get far better reactions than cold ones. At a company nobody has heard of, don’t make a call your very first touch.'],
+      ['Cover four points', <Steps items={[
+        <><strong>Introduction.</strong> “Hi, Betty?” then straight to “I’m Wilma from SalesCo. I lead our practice serving product managers at financial services companies.” Ask to borrow two minutes; they decide if it’s worth more.</>,
+        <><strong>Show me that you know me.</strong> One real insight: something from their earnings call, a press release, or the email you sent. “Did I understand that right?”</>,
+        <><strong>Value pitch.</strong> The benefit at their level, how you deliver it, and one proof point from a similar company.</>,
+        <><strong>Objective.</strong> Ask for a 10-minute call to discuss their business and share ideas. Don’t try to close or fully qualify on the spot.</>,
+      ]}/>],
+      ['Break the pattern', 'Skip “How are you today?” Try fresh openers like “I’m guessing I caught you at a bad time. What were you doing?” Today’s killer opener is tomorrow’s cliché, so keep testing.'],
+      ['Leave short, human voicemails', 'Bullet points, not a script: a personal greeting, one benefit, and “reply to my email” as the ask. Stand up and smile when you record.'],
+      ['Be honest about local numbers', 'People are up to 58% likelier to answer a local area code. If you use it, be ready to explain it truthfully.'],
+      ['Keep it under ten minutes', 'You’ll reach a live person 20–30% of the time. A good first call takes about five minutes and ends with a booked meeting.'],
+    ],
+  },
+  {
+    stage: 'Engage',
+    title: 'Handle Objections',
+    keys: [
+      ['Use the five-step pattern', <Steps items={[
+        'Pause to think.',
+        'Acknowledge it with empathy (understand, not necessarily agree).',
+        'Ask a question to isolate the real issue: “Why do you feel that way?”',
+        'Answer it, ideally with a story of a similar client who had the same worry.',
+        'Confirm: “Did I answer that fully?” Then pause.',
+      ]}/>],
+      ['Have answers ready', <Terms items={[
+        ['“I’m busy.”', '“I know, so I’ll be brief.”'],
+        ['“Call me next month.”', '“Sure, let’s put a time on the calendar now. Does Tuesday at 10 work?”'],
+        ['“Send me some information.”', '“Happy to. What would be most helpful? And let’s book a quick follow-up so I can tailor it.”'],
+        ['“We already have a solution.”', '“Great. Many clients use us alongside what they have. Which are you using?”'],
+        ['“No budget.”', '“I don’t expect you to have one yet. I just want to understand your needs.”'],
+        ['“Sounds expensive.”', '“Let’s first see if it’s valuable, then talk price. Is this a value question or a budget question?”'],
+      ]}/>],
+      ['Three pushbacks, then ask for a referral', '“It sounds like you’re really busy, or I haven’t explained this well. Is there someone on your team I could speak with?”'],
+    ],
+  },
+  {
+    stage: 'Engage',
+    title: 'LinkedIn and Social',
+    keys: [
+      ['Use social to research, not to pitch', 'LinkedIn is gold for finding interests and mutual connections. Cold pitches there irritate most people.'],
+      ['Connect after they reply', 'Wait until they’ve answered an email or a call, then send a personalized invitation, never the default text.'],
+      ['Make InMails count', 'They’re capped, so keep them short: build rapport with something they wrote or did, give one line of context and proof, then suggest a time.'],
+      ['Build your presence daily', 'Spend 30–60 minutes a day posting, answering and commenting thoughtfully, especially on your ideal prospects’ posts.'],
+      ['Polish your profile', 'Prospects check you before they trust you. A good photo, a headline about the value you bring (not your sales prowess), and recommendations. Give recommendations and you’ll get them.'],
+    ],
+  },
+  {
+    stage: 'Qualify',
+    title: 'Are We a Fit?',
+    keys: [
+      ['Your goal is to disqualify', 'After all that work, the first meeting is about finding out fast whether it’s worth more time. Chasing bad fits wastes months, and signing a customer who won’t get value creates a detractor.'],
+      ['Set five must-haves, at most', 'Base them on what your bad prospects and bad customers had in common: infrastructure, regulations, culture. Anything you couldn’t have researched beforehand.'],
+      ['Do it in 15 minutes', 'Guide the conversation naturally: confirm first, then open questions. Don’t read the list like a script, and don’t leave without clear answers to every must-have.'],
+      ['Keep the deck to six slides', <Steps items={[
+        'The main benefit, plus the agenda.',
+        'Their top challenges (only if you really know them).',
+        'Solutions as one to six use cases.',
+        'How the value is delivered: features and attributes.',
+        'The recommended setup, or a demo.',
+        'Proof: logos, testimonials, reviews.',
+      ]}/>],
+      ['Make every slide answer the last one’s question', 'Each slide should raise the question the next slide answers. Cut company bragging and taglines; put the deep feature slides in an appendix.'],
+      ['Always close for the next step', 'If they’re a fit, end by booking the next, deeper meeting.'],
+    ],
+  },
+  {
+    stage: 'Qualify',
+    title: 'Need, Timing, Authority, Budget',
+    keys: [
+      ['BANT is a dance, not a checklist', 'Budget, authority, need, timing (or authority, need, urgency, money). The conversation moves in and out of all four; take it in one or two meetings of up to an hour.'],
+      ['Start with need, the SPIN way', <Terms items={[
+        ['Before the call', 'Write down three problems they probably have that you solve.'],
+        ['Situation', 'Facts you couldn’t find in research: “What process are you using now?”'],
+        ['Problem', '“What are your biggest challenges in meeting your goals?”'],
+        ['Implication', '“How long has this been going on? What happens if it isn’t solved?”'],
+        ['Need-payoff', '“How would solving this help you hit your goal?”'],
+      ]}/>],
+      ['Confirm the time frame', <Points items={[
+        'Rate urgency: immediate, high, medium or low. Short on time? Only immediate and high qualify.',
+        'Know three clocks: time to sign, time to deploy, and time to see results.',
+        '“When does your current contract renew?” “Who else are you considering?” “Where does this rank in your priorities?” “What happens if you wait?”',
+      ]}/>],
+      ['Map authority gently', '“Who else is responsible for solving this?” “What does the decision process look like for something like this?” “Who else will need to be involved?”'],
+      ['Ask how funding gets decided', 'If a group shares a need and urgency, they’ll find budget. Ask how funding will be determined, and bring up the CFO if nobody else does.'],
+      ['Not yet? Back to nurture, with notes', 'Leads that fall short go back to nurturing with a short note on why. Don’t demand detailed reason codes nobody will use.'],
+    ],
+  },
+  {
+    stage: 'Qualify',
+    title: 'The Handoff',
+    keys: [
+      ['Qualify so well that AEs say yes', 'Acceptance should be high. A rejection should only mean a missing piece of information you can go get.'],
+      ['Book accepted meetings immediately', 'Momentum is everything. Get the AE’s call on the calendar right away.'],
+      ['Own the no-show', 'You’re not done until the meeting happens. If the prospect no-shows, rebook it.'],
+      ['Sit in on the AE’s calls', 'It’s how you learn the full sale, and how great AEs started learning the job as SDRs.'],
+      ['Close the loop on “not a fit”', 'Send the polite email yourself and update the CRM. Note what separated accepted leads from rejected ones and feed it back into your targeting.'],
+    ],
+  },
+  {
+    stage: 'Optimize',
+    title: 'The Numbers That Matter',
+    keys: [
+      ['Watch three SDR metrics', <Steps items={[
+        'Meetings generated (held, not just set).',
+        'Meetings that turn into closed deals.',
+        'Lead efficiency: how many leads you burned per meeting.',
+      ]}/>],
+      ['Know the benchmarks', <Terms items={[
+        ['Appointments', 'An average SDR sets about 1 a day; great ones set 2 or more.'],
+        ['Phone', 'About 12 direct dials per connect, about 90 dials per appointment. A typical day is 50 dials and 8 connects.'],
+        ['Email', 'Open rate around 21%, click-to-open around 12.6%, positive reply around 3%. Watch unsubscribes (0.13%) and spam complaints (0.03%).'],
+        ['SalesLoft’s own SDRs', '35–40 outbound leads a day, 6 touches per first meeting, 3.7% of outbound and 12.4% of inbound leads become a meeting; 95% of outbound conversions happen in the first 30 days.'],
+      ]}/>],
+      ['Count meaningful conversations, not dials', 'A meaningful conversation moves a prospect forward or out. Rewarding dials makes reps rush calls; rewarding talk time gets you long voicemails.'],
+      ['Peel the onion', 'Start with sales vs. target and appointments held per rep per day; set the quota so 60–80% of SDRs hit it. Then check lead-to-customer rate, then the stage-to-stage rates, then the details.'],
+      ['Tag every lead with its source', 'Then you can see which sources actually become customers, which is the only measure of lead quality that matters.'],
+      ['Optimize like an engineer', 'Find where leads get stuck, measure, brainstorm fixes, rank them by impact and difficulty, pilot the easy high-impact ones, then scale what works.'],
+    ],
+  },
+  {
+    stage: 'Optimize',
+    title: 'Your Tools',
+    keys: [
+      ['Tools serve the process', 'Pick tools that help you sell more, faster, never ones that let you blast impersonal email.'],
+      ['Make the CRM your foundation', 'Google Sheets only until you can afford better; then HubSpot, Pipedrive or Salesforce. If knowledge isn’t in the CRM, it leaves when people do.'],
+      ['Stack it by stage', <Terms items={[
+        ['Finding people', 'LinkedIn Sales Navigator first, then verified databases, then crowd-sourced ones (test their accuracy before buying).'],
+        ['Running cadences', 'Sales workflow tools like SalesLoft or Outreach, with built-in dialing and email tracking.'],
+        ['Email hygiene', 'Run a spam checker before campaigns, and remove addresses a verifier rejects so your domain never gets blacklisted.'],
+        ['Meetings', 'A scheduling link like Calendly and a web conferencing tool with document tracking.'],
+      ]}/>],
+      ['Find emails smartly', 'When tools fail, try firstname@, first initial + lastname@, or firstname.lastname@ the company domain.'],
+    ],
+  },
+  {
+    stage: 'Optimize',
+    title: 'Your Day',
+    keys: [
+      ['Prospect in blocks of two hours or more', 'Schedule them at your most productive time, usually first thing in the morning, and protect them like meetings.'],
+      ['Kill distractions', 'Multitasking measurably hurts performance, millennials included. Turn off notifications and use a blocker if you need one.'],
+      ['Break goals into days', '20 appointments a month is 5 a week is 1 a day. Daily wins keep you going.'],
+      ['Give every block a job', <Terms items={[
+        ['8:45–9:00', 'Priority replies; check the day and prep for intro calls.'],
+        ['9:00–12:00', 'Outreach, starting with the most likely to convert.'],
+        ['12:30–3:30', 'Internal meetings and first calls.'],
+        ['3:30–5:30', 'Research and plan tomorrow’s outreach.'],
+      ]}/>],
+      ['Delegate what doesn’t need you', 'Hand off tasks that don’t serve your goals and that you’re not uniquely qualified for. If it takes under five minutes and only you can do it, just do it.'],
+    ],
+  },
+  {
+    stage: 'Optimize',
+    title: 'Twelve Habits of Top SDRs',
+    keys: [
+      ['Focus', 'Set SMART goals, and remove every distraction from the activities that drive results.'],
+      ['Schedule', 'Batch tasks into calendar blocks; prospecting first.'],
+      ['Plan', 'Turn monthly goals into weekly and daily ones.'],
+      ['Delegate', 'Use product, marketing, sales ops and virtual assistants.'],
+      ['Smile', 'Authentic warmth changes how people feel about you. Project a positive attitude through a job that is mostly rejection.'],
+      ['Ask, and listen', 'Great listeners sell more. Focus, take notes, ask follow-up questions, paraphrase, don’t interrupt, answer in full sentences.'],
+      ['Respond', 'Follow up fast on every request.'],
+      ['Record', 'Treat the CRM as an ally: current contacts, detailed notes, tasks and reminders.'],
+      ['Persist and personalize', 'Eight, ten, twenty touches, but delicate ones, each showing you did your homework.'],
+      ['Expand', 'Don’t slide into pure account management. Ask customers for referrals into other parts of their business, and give referrals too.'],
+      ['Protect your reputation', 'It’s your most valuable selling asset. If you’re told to sell in a way that feels wrong, speak up, or find an employer that gets it.'],
+      ['Learn, forever', 'Customers, product, competitors, sales process and communication. Keep sharpening all five.'],
+    ],
+  },
+  {
+    stage: 'Lead',
+    title: 'Building an SDR Team',
+    keys: [
+      ['Keep sales development in-house', 'Outsourcers can’t match the product and customer knowledge your own SDRs build, and you lose your best pipeline of future AEs.'],
+      ['Hire through referrals', 'Referred hires cost less and stay about 20% longer.'],
+      ['Hire for brains, conscientiousness and selling knowledge', 'Mental ability is the best single predictor; casual interviews are among the worst. Add a conscientiousness test and a work sample. Extraversion doesn’t predict sales.'],
+      ['Run the Kobayashi Maru', 'Have candidates call you to book a meeting while you throw objection after objection. You’re testing whether they push through at least three and stay articulate.'],
+      ['Hire and train in cohorts', 'Groups learn from each other, compete and benchmark. Train weekly: role-plays, call reviews, best and worst calls in every 1:1.'],
+      ['Write the playbook down', 'Account and prospect profiles, qualification criteria, cadences, voicemail points, objection handling, templates, tool guides, hiring criteria and career paths.'],
+      ['Promote a trusted manager from within', 'Not automatically the top performer; the one other SDRs go to for answers. Six to eight SDRs per manager.'],
+      ['Pay for results, not activity', 'Pay on opportunities or leads accepted by AEs, never dials or emails. Keep the plan simple, celebrate SDRs like rainmakers, and give them as much autonomy as you can.'],
+    ],
+  },
+  {
+    stage: 'Lead',
+    title: 'Where the Role Leads',
+    keys: [
+      ['Own your 1:1s and meetings', 'Bring the agenda to your 1:1. Before pipeline reviews, pull the reports and know your campaigns, results and what’s next. Leaders promote people who are ready.'],
+      ['Plan months ahead', 'Avoid the end-of-quarter scramble: know the best seasons for each account type and start conference campaigns weeks early.'],
+      ['Take initiative', 'See a broken process? Raise it with whoever owns it. That’s leadership.'],
+      ['Network inside and out', 'Coffee with product, success and support; conferences and meetups; peers on LinkedIn, ideally through warm introductions.'],
+      ['Know why SDRs fail, and that most of it is yours to fix', 'The grind of 50–150 touches a day, skipped preparation, never adjusting, or a market too small. Most of it is within your control.'],
+      ['Plan your next move', 'The typical SDR moves on within 12–18 months: to AE, customer success, marketing or management. Many CEOs and heads of sales started exactly here.'],
+    ],
+  },
+].map((p, i) => ({ ...p, label: `${p.stage} · Part ${NUMBERS[i + 1]}` }));
+
+const KEY_COUNT = PARTS.reduce((sum, p) => sum + p.keys.length, 0);
+const keyStart = i => PARTS.slice(0, i).reduce((sum, p) => sum + p.keys.length, 0) + 1;
+
+/* ── Completion Screen ──────────────────────────────────────── */
+function CompletionScreen({ onNext }) {
+  return (
+    <div style={{ background:'#000', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', position:'relative', overflow:'hidden' }} onClick={onNext}>
+      {[0, 1, 2].map(i => (<div key={i} style={{ position:'absolute', top:'50%', left:'50%', width:100+i*90, height:100+i*90, borderRadius:'50%', border:`1px solid ${['rgba(129,140,248,0.35)','rgba(99,102,241,0.25)','rgba(6,182,212,0.18)'][i]}`, animation:`waveExpand 5s ease-out ${i*1.6}s infinite` }}/>))}
+      <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'40px 24px', maxWidth:760 }}>
+        <div style={{ fontSize:'0.62rem', letterSpacing:'0.5em', textTransform:'uppercase', color:'rgba(129,140,248,0.4)', marginBottom:36 }}>Complete · All {KEY_COUNT} Keys</div>
+        <h1 style={{ fontSize:'clamp(2.2rem,8vw,5rem)', fontWeight:700, color:'#e8e8ed', letterSpacing:1, marginBottom:32, animation:'mmm-reveal 2s ease-out 0.5s both', lineHeight:1.1 }}>YOU HAVE<br/>THE KEYS</h1>
+        <p style={{ fontStyle:'italic', fontSize:'clamp(1rem,2.4vw,1.25rem)', color:'rgba(210,200,255,0.55)', lineHeight:1.8, marginBottom:44, animation:'mmm-fadeUp 1.5s ease-out 1.5s both' }}>Target the right accounts and people.<br/>Engage one stage at a time, and persist.<br/>Qualify fast, measure what matters, keep learning.</p>
+        <div style={{ background:'rgba(129,140,248,0.06)', border:'1px solid rgba(129,140,248,0.15)', borderRadius:16, padding:'26px 36px', maxWidth:600, margin:'0 auto 48px', animation:'mmm-fadeUp 1.5s ease-out 2.2s both' }}>
+          <p style={{ fontStyle:'italic', fontSize:'1.05rem', color:'rgba(220,200,255,0.72)', lineHeight:1.8 }}>“You can have everything in life you want, if you will just help other people get what they want.” — Zig Ziglar</p>
+          <div style={{ fontSize:'0.6rem', letterSpacing:'0.25em', textTransform:'uppercase', color:'rgba(129,140,248,0.3)', marginTop:12 }}>Predictable Prospecting · The Early Stage Sales Development Playbook</div>
+        </div>
+        <div style={{ fontSize:'0.72rem', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(255,255,255,0.18)', animation:'mmm-blink 2.5s ease-in-out 3.5s infinite' }}>*click anywhere to restart*</div>
+      </div>
+    </div>
+  );
+}
+
+/* ── App ─────────────────────────────────────────────────────── */
+function App() {
+  const [screen, setScreen] = useState(0);
+  const go = n => setScreen(n);
+  useEffect(() => { window.scrollTo(0, 0); }, [screen]);
+
+  if (screen === 0) return <LandingScreen onNext={() => go(1)}/>;
+  if (screen > PARTS.length) return <CompletionScreen onNext={() => go(0)}/>;
+  const part = PARTS[screen - 1];
+  const next = PARTS[screen];
+  const first = keyStart(screen - 1);
+  return (
+    <Chapter key={screen} n={screen} label={part.label} title={part.title} nextLabel={next ? next.title : 'Finish'} onBack={() => go(screen - 1)} onNext={() => go(screen + 1)}>
+      {part.intro && <Prose>{part.intro}</Prose>}
+      {part.keys.map(([t, body], i) => <Key key={i} n={first + i} title={t}>{body}</Key>)}
+    </Chapter>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);

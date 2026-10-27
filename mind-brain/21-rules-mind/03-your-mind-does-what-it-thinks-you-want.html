@@ -16,15 +16,8 @@
   --gl: rgba(20,8,4,0.52);
 }
 
-/* Navigation & Progress Bar width calculation (6 slides) */
-#r0:checked~#bar{width:16.67%}
-#r1:checked~#bar{width:33.33%}
-#r2:checked~#bar{width:50.00%}
-#r3:checked~#bar{width:66.67%}
-#r4:checked~#bar{width:83.33%}
-#r5:checked~#bar{width:100.00%}
-#r0:checked~#stage #s0, #r1:checked~#stage #s1, #r2:checked~#stage #s2, #r3:checked~#stage #s3, #r4:checked~#stage #s4, #r5:checked~#stage #s5{opacity:1;clip-path:inset(0);pointer-events:all}
-#r0:checked~#dnav label:nth-child(1), #r1:checked~#dnav label:nth-child(2), #r2:checked~#dnav label:nth-child(3), #r3:checked~#dnav label:nth-child(4), #r4:checked~#dnav label:nth-child(5), #r5:checked~#dnav label:nth-child(6){width:22px;border-radius:3px;background:var(--c2);box-shadow:0 0 12px rgba(220,100,80,.3)}
+.slide.on{opacity:1;clip-path:inset(0);pointer-events:all}
+.dot.on{width:22px;border-radius:3px;background:var(--c2);box-shadow:0 0 12px rgba(220,100,80,.3)}
 
 :root {
   --w:  rgba(255,248,244,0.93);
@@ -35,11 +28,6 @@
   --gl: rgba(20,8,4,0.52);
 }
 
-/* Navigation & Progress Bar width calculation (6 slides) */
-#r0:checked~#bar {
-  width:16.67%
-}
-
 :root {
   --w:  rgba(255,248,244,0.93);
   --c:  rgba(255,158,130,1);
@@ -47,14 +35,6 @@
   --c3: rgba(255,158,130,0.12);
   --r:  rgba(220,100,80,0.8);
   --gl: rgba(20,8,4,0.52);
-}
-
-#pts {
-  position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden
-}
-
-.pt {
-  position:absolute;border-radius:50%;animation:pr linear infinite;opacity:0
 }
 
 @keyframes pr {
@@ -353,45 +333,15 @@
   <a href="02-your-mind-only-responds-to-two-things.html" rel="prev">← 02</a>
   <a href="04-imagination-is-more-powerful-than-logic.html" rel="next">04 →</a>
 </nav>
-<input type="radio" name="s" id="r0" checked>
-<input type="radio" name="s" id="r1">
-<input type="radio" name="s" id="r2">
-<input type="radio" name="s" id="r3">
-<input type="radio" name="s" id="r4">
-<input type="radio" name="s" id="r5">
 
 <div id="bg"></div>
 <div class="sc"></div>
 <div class="orb oa"></div>
 <div class="orb ob"></div>
-<div id="pts">
-  <div class="pt" style="width:4.27px;height:4.27px;left:50.06%;background:rgba(255,158,130,0.16);box-shadow:0 0 17.06px rgba(255,158,130,0.22);animation-duration:13.22s;animation-delay:-20.08s;"></div>
-  <div class="pt" style="width:4.25px;height:4.25px;left:63.89%;background:rgba(220,100,80,0.17);box-shadow:0 0 16.99px rgba(220,100,80,0.22);animation-duration:20.96s;animation-delay:-3.36s;"></div>
-  <div class="pt" style="width:3.87px;height:3.87px;left:77.86%;background:rgba(255,180,150,0.26);box-shadow:0 0 15.48px rgba(255,180,150,0.22);animation-duration:19.55s;animation-delay:-0.01s;"></div>
-  <div class="pt" style="width:2.33px;height:2.33px;left:92.91%;background:rgba(255,158,130,0.08);box-shadow:0 0 9.34px rgba(255,158,130,0.22);animation-duration:25.82s;animation-delay:-18.30s;"></div>
-  <div class="pt" style="width:2.28px;height:2.28px;left:87.80%;background:rgba(220,100,80,0.09);box-shadow:0 0 9.11px rgba(220,100,80,0.22);animation-duration:27.05s;animation-delay:-1.88s;"></div>
-  <div class="pt" style="width:2.90px;height:2.90px;left:76.06%;background:rgba(255,180,150,0.09);box-shadow:0 0 11.60px rgba(255,180,150,0.22);animation-duration:23.79s;animation-delay:-2.82s;"></div>
-  <div class="pt" style="width:2.86px;height:2.86px;left:26.51%;background:rgba(255,158,130,0.26);box-shadow:0 0 11.45px rgba(255,158,130,0.22);animation-duration:25.70s;animation-delay:-9.31s;"></div>
-  <div class="pt" style="width:1.94px;height:1.94px;left:72.99%;background:rgba(220,100,80,0.26);box-shadow:0 0 7.77px rgba(220,100,80,0.22);animation-duration:13.62s;animation-delay:-6.86s;"></div>
-  <div class="pt" style="width:4.68px;height:4.68px;left:43.81%;background:rgba(255,180,150,0.30);box-shadow:0 0 18.73px rgba(255,180,150,0.22);animation-duration:19.32s;animation-delay:-2.66s;"></div>
-  <div class="pt" style="width:1.99px;height:1.99px;left:58.83%;background:rgba(255,158,130,0.19);box-shadow:0 0 7.95px rgba(255,158,130,0.22);animation-duration:14.14s;animation-delay:-4.84s;"></div>
-  <div class="pt" style="width:1.45px;height:1.45px;left:22.89%;background:rgba(220,100,80,0.29);box-shadow:0 0 5.79px rgba(220,100,80,0.22);animation-duration:26.30s;animation-delay:-18.91s;"></div>
-  <div class="pt" style="width:1.45px;height:1.45px;left:66.90%;background:rgba(255,180,150,0.15);box-shadow:0 0 5.79px rgba(255,180,150,0.22);animation-duration:13.86s;animation-delay:-2.91s;"></div>
-  <div class="pt" style="width:4.47px;height:4.47px;left:47.27%;background:rgba(255,158,130,0.27);box-shadow:0 0 17.90px rgba(255,158,130,0.22);animation-duration:24.12s;animation-delay:-17.76s;"></div>
-  <div class="pt" style="width:1.87px;height:1.87px;left:43.11%;background:rgba(220,100,80,0.10);box-shadow:0 0 7.47px rgba(220,100,80,0.22);animation-duration:17.62s;animation-delay:-10.27s;"></div>
-  <div class="pt" style="width:3.75px;height:3.75px;left:98.42%;background:rgba(255,180,150,0.31);box-shadow:0 0 15.01px rgba(255,180,150,0.22);animation-duration:11.77s;animation-delay:-8.86s;"></div>
-  <div class="pt" style="width:2.39px;height:2.39px;left:24.87%;background:rgba(255,158,130,0.37);box-shadow:0 0 9.55px rgba(255,158,130,0.22);animation-duration:13.42s;animation-delay:-9.87s;"></div>
-  <div class="pt" style="width:2.68px;height:2.68px;left:24.98%;background:rgba(220,100,80,0.17);box-shadow:0 0 10.71px rgba(220,100,80,0.22);animation-duration:26.62s;animation-delay:-9.75s;"></div>
-  <div class="pt" style="width:4.21px;height:4.21px;left:5.06%;background:rgba(255,180,150,0.26);box-shadow:0 0 16.86px rgba(255,180,150,0.22);animation-duration:27.99s;animation-delay:-18.39s;"></div>
-  <div class="pt" style="width:4.59px;height:4.59px;left:84.87%;background:rgba(255,158,130,0.39);box-shadow:0 0 18.37px rgba(255,158,130,0.22);animation-duration:12.99s;animation-delay:-10.68s;"></div>
-  <div class="pt" style="width:1.95px;height:1.95px;left:5.86%;background:rgba(220,100,80,0.21);box-shadow:0 0 7.79px rgba(220,100,80,0.22);animation-duration:16.82s;animation-delay:-21.68s;"></div>
-  <div class="pt" style="width:2.13px;height:2.13px;left:45.50%;background:rgba(255,180,150,0.34);box-shadow:0 0 8.51px rgba(255,180,150,0.22);animation-duration:17.61s;animation-delay:-21.06s;"></div>
-  <div class="pt" style="width:4.68px;height:4.68px;left:71.84%;background:rgba(255,158,130,0.26);box-shadow:0 0 18.74px rgba(255,158,130,0.22);animation-duration:12.79s;animation-delay:-6.53s;"></div>
-</div>
 <div id="bar"></div>
 
 <div id="stage">
-<section class="slide" id="s0">
+<section class="slide on" id="s0">
  <p class="lbl">
   01 — 06
  </p>
@@ -705,18 +655,13 @@
 
 </div>
 
-<nav id="dnav">
-  <div class="dots">
-    <label for="r0" class="dot"></label>
-    <label for="r1" class="dot"></label>
-    <label for="r2" class="dot"></label>
-    <label for="r3" class="dot"></label>
-    <label for="r4" class="dot"></label>
-    <label for="r5" class="dot"></label>
-  </div>
+<nav id="dnav" aria-label="Slide navigation">
+  <button class="nb" onclick="go(-1)" aria-label="Previous slide"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+  <div id="dots" class="dots" role="tablist" aria-label="Slides"></div>
+  <button class="nb" onclick="go(1)" aria-label="Next slide"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
 </nav>
 <p class="hint">← → keys or swipe</p>
 
-<script src="slides.js"></script>
+<script src="../deck.js"></script>
 </body>
 </html>

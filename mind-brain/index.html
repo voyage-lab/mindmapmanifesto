@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mind × Brain — MindMapManifesto</title>
-<meta name="description" content="Fourteen series on how you work inside — brain waves, the rules of the mind, creative visualization, words as spells, the story of Inha, the keys to prospecting, Vanessa Van Edwards and Alex Hormozi on The Diary of a CEO, dopamine, sunflowers x flow, da Vinci and the perfect man, the seven voices matrix, the story of david, and the body, front and back.">
+<meta name="description" content="Series on how you work inside — the mind, stories, the body, and people x business: brain waves, the rules of the mind, creative visualization, words as spells, dopamine, the story of Inha, da Vinci and the perfect man, Vanessa Van Edwards and Alex Hormozi, and more.">
 <meta property="og:title" content="Mind × Brain">
-<meta property="og:description" content="Fourteen series on how you work inside — brain waves, the rules of the mind, creative visualization, words as spells, the story of Inha, the keys to prospecting, Vanessa Van Edwards and Alex Hormozi on The Diary of a CEO, dopamine, sunflowers x flow, da Vinci and the perfect man, the seven voices matrix, the story of david, and the body, front and back.">
-<meta property="og:image" content="../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg">
+<meta property="og:description" content="Series on how you work inside — the mind, stories, the body, and people x business: brain waves, the rules of the mind, creative visualization, words as spells, dopamine, the story of Inha, da Vinci and the perfect man, Vanessa Van Edwards and Alex Hormozi, and more.">
+<meta property="og:image" content="https://mindmapmanifesto.com/background.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
@@ -31,7 +31,7 @@
   }
   .bg {
     position: fixed; inset: 0; z-index: -2;
-    background: url("../Gemini_Generated_Image_9y8q49y8q49y8q49.jpg") center / cover no-repeat;
+    background: url("../background.jpg") center / cover no-repeat;
     filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
     transform: scale(1.04);
   }
@@ -87,13 +87,12 @@
   .enter { margin-top: auto; padding-top: 1rem; font-family: "Caveat", cursive; font-size: 1.6rem; }
   @media (max-width: 760px) { a.note:nth-child(n) { transform: none; } }
 
-  .sound {
-    display: block; margin: 0 auto 3rem;
-    background: rgba(0,0,0,.55); color: var(--paper);
-    border: 1px solid var(--glass); border-radius: 999px;
-    padding: .5rem 1.6rem; font-family: "Caveat", cursive; font-size: 1.4rem; cursor: pointer;
+  section + section { margin-top: 4.5rem; }
+  .group {
+    font-family: "Caveat", cursive; font-weight: 700; font-size: clamp(1.8rem, 5vw, 2.4rem);
+    color: var(--paper-dim); text-align: center; margin-bottom: 2.2rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,.8);
   }
-  .sound:hover { background: #000; }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
@@ -109,139 +108,125 @@
     <p class="sub">— mind x brain —</p>
   </header>
 
-  <button class="sound" id="sound" aria-pressed="false">▶ play Under the Glass</button>
-  <audio id="track" src="../Under_the_Glass.mp3" loop preload="none"></audio>
+  <section>
+    <h2 class="group">the mind</h2>
+    <div class="series">
+      <a class="note" href="15-brain-waves/index.html">
+        <span class="margin">15 parts</span>
+        <h2>the brain waves</h2>
+        <p>Gamma, beta, alpha, theta, delta — what hypnosis actually does, and why some states are more open to change.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="21-rules-mind/index.html">
+        <span class="margin">21 parts</span>
+        <h2>the rules of the mind</h2>
+        <p>How your mind takes orders, the beliefs it runs on, fight, flight and freeze — and how to tell it better things.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="creative-visualization/index.html">
+        <span class="margin">5 parts</span>
+        <h2>creative visualization</h2>
+        <p>Using your imagination on purpose — the practice, the meditations, the techniques, and living creatively.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="words-spells/index.html">
+        <span class="margin">20 parts</span>
+        <h2>words as spells</h2>
+        <p>Every word you speak creates coherence or chaos. The language of reality, and what you're casting with it.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="dopamine/index.html">
+        <span class="margin">11 parts</span>
+        <h2>dopamine</h2>
+        <p>What hooks you, ranked — sex, games, shorts, gambling, sugar — why it works, the crash after, and how to take your brain back.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="sunflowers-flow/index.html">
+        <span class="margin">9 parts</span>
+        <h2>sunflowers x flow</h2>
+        <p>Crack, spit, eat — why a handful of seeds hits almost every condition for flow, what it's missing, and how it turns into autopilot.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      </div>
+  </section>
 
-  <div class="series">
-    <a class="note" href="../fate-will/index.html">
-      <span class="margin">tool</span>
-      <h2>fate x will</h2>
-      <p>Turn a birth date into a fate vs. will graph.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="../divination/index.html">
-      <span class="margin">tool</span>
-      <h2>divination</h2>
-      <p>Ask, shuffle, draw a tarot spread.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="../success/success.html">
-      <span class="margin">stories</span>
-      <h2>success stories x hypnosis</h2>
-      <p>Real change, under the glass.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="../mindmapgeo/index.html">
-      <span class="margin">business</span>
-      <h2>mindmap x geo</h2>
-      <p>Make money with MindMap.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="../contact-me/index.html">
-      <span class="margin">get in touch</span>
-      <h2>contact me</h2>
-      <p>Reach out — questions, sessions, collaborations.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="15-brain-waves/index.html">
-      <span class="margin">15 parts</span>
-      <h2>the brain waves</h2>
-      <p>Gamma, beta, alpha, theta, delta — what hypnosis actually does, and why some states are more open to change.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="21-rules-mind/index.html">
-      <span class="margin">21 parts</span>
-      <h2>the rules of the mind</h2>
-      <p>How your mind takes orders, the beliefs it runs on, fight, flight and freeze — and how to tell it better things.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="creative-visualization/index.html">
-      <span class="margin">5 parts</span>
-      <h2>creative visualization</h2>
-      <p>Using your imagination on purpose — the practice, the meditations, the techniques, and living creatively.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="words-spells/index.html">
-      <span class="margin">20 parts</span>
-      <h2>words as spells</h2>
-      <p>Every word you speak creates coherence or chaos. The language of reality, and what you're casting with it.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="story-of-inha/index.html">
-      <span class="margin">13 parts</span>
-      <h2>the story of inha</h2>
-      <p>One night at the bar, and the seven levels of self-sabotage playing out in perfect sequence — a real-world case study.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="sales-development-playbook/index.html">
-      <span class="margin">142 keys</span>
-      <h2>the keys to prospecting</h2>
-      <p>The best of Predictable Prospecting and the Sales Development Playbook in one — target, engage, qualify, measure, and the habits of top SDRs.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="vanessa-van-edwards/index.html">
-      <span class="margin">22 parts</span>
-      <h2>vanessa van edwards</h2>
-      <p>Conversations, on The Diary of a CEO — the three levels, the nine questions, and how to be someone people want to be around.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="alex-hormozi/index.html">
-      <span class="margin">32 parts</span>
-      <h2>alex hormozi</h2>
-      <p>On The Diary of a CEO — courage over tactics, leverage, A-players, focus, and far more volume than seems reasonable.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="dopamine/index.html">
-      <span class="margin">11 parts</span>
-      <h2>dopamine</h2>
-      <p>What hooks you, ranked — sex, games, shorts, gambling, sugar — why it works, the crash after, and how to take your brain back.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="sunflowers-flow/index.html">
-      <span class="margin">9 parts</span>
-      <h2>sunflowers x flow</h2>
-      <p>Crack, spit, eat — why a handful of seeds hits almost every condition for flow, what it's missing, and how it turns into autopilot.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="davinci-perfect-man/index.html">
-      <span class="margin">9 parts</span>
-      <h2>da vinci and the perfect man</h2>
-      <p>The Vitruvian Man, the circle and the square, the measures of the body — and the habits of the universal man who drew it.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="da-vinci-anatomy/index.html">
-      <span class="margin">22 organs</span>
-      <h2>the body, front and back</h2>
-      <p>Leonardo's anatomy: every major organ drawn from the front and from behind, with what each one does and what he found inside it.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="seven-voices-matrix/index.html">
-      <span class="margin">19 parts</span>
-      <h2>the seven voices matrix</h2>
-      <p>Inha’s seven steps crossed with the seven sins, the seven virtues and Leonardo’s seven — 49 cells, one clean row, and eight pictures to tap through.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="story-of-david/index.html">
-      <span class="margin">10 parts</span>
-      <h2>the story of david</h2>
-      <p>A story: one day at the office, and a good man who takes every one of the seven steps through a virtue — and still goes down the same stairs.</p>
-      <span class="enter">Enter →</span>
-    </a>
-    <a class="note" href="local-ai-guide/index.html">
-      <span class="margin">1 page</span>
-      <h2>local ai guide</h2>
-      <p>A private, fully offline AI setup — Ollama, the models, and OpenCode as a terminal coding agent. Nothing leaves your computer.</p>
-      <span class="enter">Enter →</span>
-    </a>
-  </div>
+  <section>
+    <h2 class="group">stories</h2>
+    <div class="series">
+      <a class="note" href="story-of-inha/index.html">
+        <span class="margin">13 parts</span>
+        <h2>the story of inha</h2>
+        <p>One night at the bar, and the seven levels of self-sabotage playing out in perfect sequence — a real-world case study.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="story-of-david/index.html">
+        <span class="margin">10 parts</span>
+        <h2>the story of david</h2>
+        <p>A story: one day at the office, and a good man who takes every one of the seven steps through a virtue — and still goes down the same stairs.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="seven-voices-matrix/index.html">
+        <span class="margin">19 parts</span>
+        <h2>the seven voices matrix</h2>
+        <p>Inha’s seven steps crossed with the seven sins, the seven virtues and Leonardo’s seven — 49 cells, one clean row, and eight pictures to tap through.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      </div>
+  </section>
+
+  <section>
+    <h2 class="group">the body</h2>
+    <div class="series">
+      <a class="note" href="davinci-perfect-man/index.html">
+        <span class="margin">9 parts</span>
+        <h2>da vinci and the perfect man</h2>
+        <p>The Vitruvian Man, the circle and the square, the measures of the body — and the habits of the universal man who drew it.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="da-vinci-anatomy/index.html">
+        <span class="margin">22 organs</span>
+        <h2>the body, front and back</h2>
+        <p>Leonardo's anatomy: every major organ drawn from the front and from behind, with what each one does and what he found inside it.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      </div>
+  </section>
+
+  <section>
+    <h2 class="group">people x business</h2>
+    <div class="series">
+      <a class="note" href="vanessa-van-edwards/index.html">
+        <span class="margin">22 parts</span>
+        <h2>vanessa van edwards</h2>
+        <p>Conversations, on The Diary of a CEO — the three levels, the nine questions, and how to be someone people want to be around.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="alex-hormozi/index.html">
+        <span class="margin">32 parts</span>
+        <h2>alex hormozi</h2>
+        <p>On The Diary of a CEO — courage over tactics, leverage, A-players, focus, and far more volume than seems reasonable.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      <a class="note" href="sales-development-playbook/index.html">
+        <span class="margin">142 keys</span>
+        <h2>the keys to prospecting</h2>
+        <p>The best of Predictable Prospecting and the Sales Development Playbook in one — target, engage, qualify, measure, and the habits of top SDRs.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      </div>
+  </section>
+
+  <section>
+    <h2 class="group">tools</h2>
+    <div class="series">
+      <a class="note" href="local-ai-guide/index.html">
+        <span class="margin">1 page</span>
+        <h2>local ai guide</h2>
+        <p>A private, fully offline AI setup — Ollama, the models, and OpenCode as a terminal coding agent. Nothing leaves your computer.</p>
+        <span class="enter">Enter →</span>
+      </a>
+      </div>
+  </section>
 </main>
-<script>
-  const a = document.getElementById('track'), b = document.getElementById('sound');
-  b.addEventListener('click', () => {
-    if (a.paused) a.play(); else a.pause();
-    b.textContent = a.paused ? '▶ play Under the Glass' : '❚❚ pause';
-    b.setAttribute('aria-pressed', String(!a.paused));
-  });
-</script>
 </body>
 </html>
