@@ -12,5 +12,7 @@ mind-brain/creative-visualization/part*-a.html
 mind-brain/creative-visualization/part5.html
 mind-brain/creative-visualization/*.md
 mind-brain/creative-visualization/*.jsx
+!mind-brain/creative-visualization/part*-b.jsx
 mind-brain/creative-visualization/shared.css
 mind-brain/creative-visualization/slides.js
+node_modules/

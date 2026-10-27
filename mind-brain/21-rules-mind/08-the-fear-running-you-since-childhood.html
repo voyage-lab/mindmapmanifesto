@@ -15,16 +15,8 @@
     --glow:     0 0 40px rgba(110,175,255,0.18);
   }
 
-/* Navigation & Progress Bar width calculation (7 slides) */
-#r0:checked~#bar{width:14.29%}
-#r1:checked~#bar{width:28.57%}
-#r2:checked~#bar{width:42.86%}
-#r3:checked~#bar{width:57.14%}
-#r4:checked~#bar{width:71.43%}
-#r5:checked~#bar{width:85.71%}
-#r6:checked~#bar{width:100.00%}
-#r0:checked~#stage #s0, #r1:checked~#stage #s1, #r2:checked~#stage #s2, #r3:checked~#stage #s3, #r4:checked~#stage #s4, #r5:checked~#stage #s5, #r6:checked~#stage #s6{opacity:1;clip-path:inset(0);pointer-events:all}
-#r0:checked~#dnav label:nth-child(1), #r1:checked~#dnav label:nth-child(2), #r2:checked~#dnav label:nth-child(3), #r3:checked~#dnav label:nth-child(4), #r4:checked~#dnav label:nth-child(5), #r5:checked~#dnav label:nth-child(6), #r6:checked~#dnav label:nth-child(7){width:22px;border-radius:3px;background:var(--blue-dim);box-shadow:0 0 12px rgba(110,175,255,.3)}
+.slide.on{opacity:1;clip-path:inset(0);pointer-events:all}
+.dot.on{width:22px;border-radius:3px;background:var(--blue-dim);box-shadow:0 0 12px rgba(110,175,255,.3)}
 
 :root {
   --cream:    rgba(240, 235, 255, 0.92);
@@ -32,11 +24,6 @@
     --blue-dim: rgba(110, 175, 255, 0.45);
     --purple:   rgba(160, 100, 255, 0.9);
     --glow:     0 0 40px rgba(110,175,255,0.18);
-}
-
-/* Navigation & Progress Bar width calculation (7 slides) */
-#r0:checked~#bar {
-  width:14.29%
 }
 
 :root {
@@ -88,9 +75,6 @@
 }
 
 /* Particles */
-  #particles {
-  position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden;
-}
 
 .p {
   position: absolute; border-radius: 50%;
@@ -373,42 +357,15 @@
   <a href="07-why-what-you-want-is-not-available.html" rel="prev">← 07</a>
   <a href="09-why-change-feels-so-hard.html" rel="next">09 →</a>
 </nav>
-<input type="radio" name="s" id="r0" checked>
-<input type="radio" name="s" id="r1">
-<input type="radio" name="s" id="r2">
-<input type="radio" name="s" id="r3">
-<input type="radio" name="s" id="r4">
-<input type="radio" name="s" id="r5">
-<input type="radio" name="s" id="r6">
 
 <div id="bg"></div>
 <div class="sc"></div>
 <div class="orb oa"></div>
 <div class="orb ob"></div>
-<div id="particles">
-  <div class="particle" style="width:5.40px;height:5.40px;left:69.74%;background:rgba(110,175,255,0.32);box-shadow:0 0 16.19px rgba(110,175,255,0.3);animation-duration:14.53s;animation-delay:-17.37s;"></div>
-  <div class="particle" style="width:3.46px;height:3.46px;left:57.41%;background:rgba(160,100,255,0.45);box-shadow:0 0 10.39px rgba(160,100,255,0.3);animation-duration:21.39s;animation-delay:-8.81s;"></div>
-  <div class="particle" style="width:2.24px;height:2.24px;left:94.11%;background:rgba(140,140,255,0.12);box-shadow:0 0 6.71px rgba(140,140,255,0.3);animation-duration:21.55s;animation-delay:-16.44s;"></div>
-  <div class="particle" style="width:3.10px;height:3.10px;left:62.94%;background:rgba(110,175,255,0.13);box-shadow:0 0 9.31px rgba(110,175,255,0.3);animation-duration:13.07s;animation-delay:-2.98s;"></div>
-  <div class="particle" style="width:3.75px;height:3.75px;left:99.39%;background:rgba(160,100,255,0.22);box-shadow:0 0 11.25px rgba(160,100,255,0.3);animation-duration:14.37s;animation-delay:-15.29s;"></div>
-  <div class="particle" style="width:3.93px;height:3.93px;left:22.57%;background:rgba(140,140,255,0.42);box-shadow:0 0 11.78px rgba(140,140,255,0.3);animation-duration:22.45s;animation-delay:-9.01s;"></div>
-  <div class="particle" style="width:3.27px;height:3.27px;left:99.00%;background:rgba(110,175,255,0.44);box-shadow:0 0 9.81px rgba(110,175,255,0.3);animation-duration:18.11s;animation-delay:-12.42s;"></div>
-  <div class="particle" style="width:3.94px;height:3.94px;left:94.76%;background:rgba(160,100,255,0.40);box-shadow:0 0 11.82px rgba(160,100,255,0.3);animation-duration:16.16s;animation-delay:-4.22s;"></div>
-  <div class="particle" style="width:4.14px;height:4.14px;left:17.38%;background:rgba(140,140,255,0.16);box-shadow:0 0 12.43px rgba(140,140,255,0.3);animation-duration:13.50s;animation-delay:-0.05s;"></div>
-  <div class="particle" style="width:3.30px;height:3.30px;left:29.13%;background:rgba(110,175,255,0.34);box-shadow:0 0 9.91px rgba(110,175,255,0.3);animation-duration:16.63s;animation-delay:-14.14s;"></div>
-  <div class="particle" style="width:4.31px;height:4.31px;left:68.74%;background:rgba(160,100,255,0.28);box-shadow:0 0 12.94px rgba(160,100,255,0.3);animation-duration:30.48s;animation-delay:-15.76s;"></div>
-  <div class="particle" style="width:4.00px;height:4.00px;left:93.37%;background:rgba(140,140,255,0.36);box-shadow:0 0 12.00px rgba(140,140,255,0.3);animation-duration:20.50s;animation-delay:-10.89s;"></div>
-  <div class="particle" style="width:4.09px;height:4.09px;left:82.66%;background:rgba(110,175,255,0.46);box-shadow:0 0 12.27px rgba(110,175,255,0.3);animation-duration:13.43s;animation-delay:-3.32s;"></div>
-  <div class="particle" style="width:2.73px;height:2.73px;left:56.92%;background:rgba(160,100,255,0.40);box-shadow:0 0 8.19px rgba(160,100,255,0.3);animation-duration:17.77s;animation-delay:-2.49s;"></div>
-  <div class="particle" style="width:4.25px;height:4.25px;left:94.27%;background:rgba(140,140,255,0.38);box-shadow:0 0 12.76px rgba(140,140,255,0.3);animation-duration:22.01s;animation-delay:-9.88s;"></div>
-  <div class="particle" style="width:1.82px;height:1.82px;left:43.20%;background:rgba(110,175,255,0.12);box-shadow:0 0 5.47px rgba(110,175,255,0.3);animation-duration:18.45s;animation-delay:-5.01s;"></div>
-  <div class="particle" style="width:1.87px;height:1.87px;left:83.60%;background:rgba(160,100,255,0.48);box-shadow:0 0 5.60px rgba(160,100,255,0.3);animation-duration:23.50s;animation-delay:-19.02s;"></div>
-  <div class="particle" style="width:5.50px;height:5.50px;left:26.95%;background:rgba(140,140,255,0.37);box-shadow:0 0 16.49px rgba(140,140,255,0.3);animation-duration:12.80s;animation-delay:-15.13s;"></div>
-</div>
 <div id="bar"></div>
 
 <div id="stage">
-<section class="slide" id="s0">
+<section class="slide on" id="s0">
  <p class="idx">
   01 — 07
  </p>
@@ -621,19 +578,13 @@
 
 </div>
 
-<nav id="dnav">
-  <div class="dots">
-    <label for="r0" class="dot"></label>
-    <label for="r1" class="dot"></label>
-    <label for="r2" class="dot"></label>
-    <label for="r3" class="dot"></label>
-    <label for="r4" class="dot"></label>
-    <label for="r5" class="dot"></label>
-    <label for="r6" class="dot"></label>
-  </div>
+<nav id="dnav" aria-label="Slide navigation">
+  <button class="nb" onclick="go(-1)" aria-label="Previous slide"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+  <div id="dots" class="dots" role="tablist" aria-label="Slides"></div>
+  <button class="nb" onclick="go(1)" aria-label="Next slide"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
 </nav>
 <p class="hint">← → keys or swipe</p>
 
-<script src="slides.js"></script>
+<script src="../deck.js"></script>
 </body>
 </html>

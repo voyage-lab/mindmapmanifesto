@@ -10,11 +10,7 @@
 :root{--w:rgba(238,244,255,0.93);--s:rgba(160,198,248,1);--s2:rgba(160,198,248,0.36);--r:rgba(100,155,230,0.8)}
 body{font-family:'Work Sans',sans-serif;background:#03060f;overflow:hidden;width:100vw;height:100vh;cursor:none;user-select:none}
 
-#cur{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%)}
-#cd{width:7px;height:7px;border-radius:50%;background:var(--s);box-shadow:0 0 18px rgba(160,198,248,.58)}
-#cr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;border-radius:50%;border:1px solid rgba(160,198,248,.2);transition:all .25s}
-
-#bg{position:fixed;inset:0;z-index:0;background-image:url('./bg.jpg');background-size:cover;background-position:center;transform:scale(1.07);will-change:transform}
+#bg{position:fixed;inset:0;z-index:0;background-image:url('../../background.jpg');background-size:cover;background-position:center;transform:scale(1.07);will-change:transform}
 .sc{position:fixed;inset:0;z-index:1;background:radial-gradient(ellipse 78% 62% at 50% 48%,rgba(4,8,20,.5),rgba(3,6,16,.86)),linear-gradient(180deg,rgba(4,8,20,.28),rgba(3,6,16,.68))}
 
 #bar{position:fixed;top:0;left:0;z-index:500;height:2px;background:linear-gradient(90deg,var(--r),var(--s));box-shadow:0 0 16px rgba(160,198,248,.38);transition:width .75s cubic-bezier(.4,0,.2,1)}
@@ -23,10 +19,6 @@ body{font-family:'Work Sans',sans-serif;background:#03060f;overflow:hidden;width
 .oa{width:500px;height:500px;top:-170px;right:-120px;background:radial-gradient(circle,rgba(40,70,160,.1),transparent 70%);animation:od 25s ease-in-out infinite}
 .ob{width:420px;height:420px;bottom:-120px;left:-90px;background:radial-gradient(circle,rgba(30,55,140,.09),transparent 70%);animation:od 20s ease-in-out infinite reverse}
 @keyframes od{0%,100%{transform:translate(0,0)}38%{transform:translate(26px,18px)}72%{transform:translate(-16px,28px)}}
-
-#pts{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
-.pt{position:absolute;border-radius:50%;animation:pr linear infinite;opacity:0}
-@keyframes pr{0%{transform:translateY(108vh) scale(0);opacity:0}8%{opacity:.42}90%{opacity:.15}100%{transform:translateY(-8vh) scale(1.4);opacity:0}}
 
 .tri{display:flex;flex-direction:column;align-items:center;gap:5px;margin:0 auto 28px}
 .tri-bar{height:1.5px;border-radius:1px;background:var(--s2)}
@@ -117,7 +109,6 @@ body{font-family:'Work Sans',sans-serif;background:#03060f;overflow:hidden;width
 
 @media(max-width:700px){
   body{cursor:auto}
-  #cur{display:none}
   .hint{display:none}
   #series{top:10px;right:12px;gap:10px;font-size:8px}
   .slide{padding:38px 20px 90px}
@@ -152,7 +143,6 @@ body{font-family:'Work Sans',sans-serif;background:#03060f;overflow:hidden;width
    asked their system to reduce it. */
 @media(prefers-reduced-motion:reduce){
   .orb{animation:none;opacity:.6}
-  .pt{display:none}
   .slide,.slide.on,.slide.off{transition:opacity .25s linear;clip-path:none!important}
   #bar{transition:width .25s linear}
   .tri-bar,.dot,.nb,.cta{transition:none}

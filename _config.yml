@@ -1,0 +1,10 @@
+# GitHub Pages settings. Everything listed here stays in the repository
+# but is not published on the site.
+exclude:
+  - notes/
+  - scripts/
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - CLAUDE.md
+  - README.md
