@@ -954,7 +954,6 @@ const PARTS = [
     body: <>
       <NightPath/>
       <InsightCard label="Notice">Inha’s night runs through the sins; David’s day takes one virtue at each step. <em>At steps four and five they stand in the very same cells,</em> on opposite faces.</InsightCard>
-      <Prose>David’s day, in full: <a href="../story-of-david/index.html">the story of david</a>.</Prose>
     </>,
   },
   {
