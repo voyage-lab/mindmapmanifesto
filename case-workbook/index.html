@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Workbook — MindMapManifesto</title>
+<meta name="description" content="How an RTT session finds the root: the investigation method step by step, and 38 anonymised sessions worked through it — each scored against the final-review skills, with an inference, a conclusion and a solution.">
+<meta name="theme-color" content="#0d0d0d">
+<meta property="og:title" content="Case Workbook">
+<meta property="og:description" content="How an RTT session finds the root: the investigation method step by step, and 38 anonymised sessions worked through it.">
+<meta property="og:image" content="https://mindmapmanifesto.com/background.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --char: #1a1918;
+    --paper: #e9e3d6;
+    --paper-dim: #b9b2a3;
+    --paper-2: #ddd6c6;
+    --glass: rgba(220, 235, 240, .55);
+    --pencil: #6b655b;
+    /* inks for the marks on paper */
+    --ok: #3e5e43;
+    --part: #8a5e12;
+    --miss: #8a3a32;
+    --none: #8d877b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100svh;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 20px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    font-variant-numeric: lining-nums;   /* Cormorant's old-style 1 reads as a capital I; this page is full of counts */
+  }
+  .bg {
+    position: fixed; inset: 0; z-index: -2;
+    background: url("../background.jpg") center / cover no-repeat;
+    filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+    transform: scale(1.04);
+  }
+  .bg::after {
+    content: ""; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%);
+  }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  button { font: inherit; color: inherit; }
+
+  /* ---- top row: back link + search ---- */
+  .top { padding: 20px 16px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .top a { font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--paper-dim); text-decoration: none; }
+  .top a:hover { color: var(--paper); }
+  .find input {
+    width: min(100%, 300px);
+    font-family: "Caveat", cursive; font-size: 1.45rem; line-height: 1.3;
+    color: var(--paper); background: transparent; border: 0;
+    border-bottom: 1px solid rgba(233,227,214,.4); padding: .1rem .15rem; border-radius: 0;
+  }
+  .find input::placeholder { color: var(--paper-dim); opacity: .85; }
+  .find input:focus { border-bottom-color: var(--paper); outline: none; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 1rem 16px 4rem; }
+  .mast { text-align: center; margin-bottom: 2.4rem; }
+  h1 {
+    font-family: "Caveat", cursive; font-weight: 700;
+    font-size: clamp(2.6rem, 7vw, 4.2rem); line-height: 1; overflow-wrap: anywhere;
+    text-shadow: 0 4px 30px rgba(0,0,0,.8);
+  }
+  .sub {
+    margin: .6rem 0 0;
+    font-size: clamp(.85rem, 2vw, 1.1rem);
+    letter-spacing: .5em; text-transform: uppercase; color: var(--paper-dim);
+  }
+  .jump { margin-top: 1.2rem; font-family: "Caveat", cursive; font-size: 1.45rem; color: var(--paper-dim); }
+  .jump a { color: var(--paper-dim); text-decoration: none; }
+  .jump a:hover { color: var(--paper); }
+  .jump a[aria-current] { color: var(--paper); text-decoration: underline; text-underline-offset: .2em; text-decoration-color: rgba(233,227,214,.5); }
+
+  .view { animation: rise .45s ease-out; }
+  .view:focus { outline: none; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  .group {
+    font-family: "Caveat", cursive; font-weight: 700; font-size: clamp(1.8rem, 5vw, 2.4rem);
+    color: var(--paper-dim); text-align: center; margin: 3.4rem 0 2.2rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,.8);
+  }
+
+  /* ---- paper notes, taped under the glass ---- */
+  .note {
+    background: var(--paper); color: var(--char);
+    padding: 2.2rem clamp(1.2rem, 4vw, 2.4rem) 2rem;
+    border-radius: 2px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.75);
+    position: relative;
+    margin: 0 0 3rem;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(120,100,70,.12), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(90,75,55,.15), transparent 45%);
+  }
+  .note::before {
+    content: ""; position: absolute; top: -14px; left: 50%;
+    width: 120px; height: 28px; transform: translateX(-50%) rotate(2deg);
+    background: var(--glass); box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  }
+  .note h2 { font-family: "Caveat", cursive; font-size: clamp(2rem, 5vw, 2.5rem); line-height: 1.1; margin-bottom: .6rem; }
+  .note h3 { font-family: "Caveat", cursive; font-size: 1.75rem; line-height: 1.1; margin: 1.7rem 0 .4rem; }
+  .note h3:first-child { margin-top: 0; }
+  .note p + p { margin-top: .8rem; }
+  .note ul, .note ol { padding-left: 1.25rem; margin: .4rem 0 .8rem; }
+  .note li { margin: .3rem 0; }
+  .note strong, .note b { font-weight: 600; }
+  .margin { font-family: "Caveat", cursive; font-size: 1.4rem; line-height: 1.2; color: var(--pencil); }
+  .lede { font-style: italic; font-size: 1.15rem; margin-bottom: 1.2rem; max-width: 62ch; }
+  .tilt:nth-of-type(odd) { transform: rotate(-.6deg); }
+  .tilt:nth-of-type(even) { transform: rotate(.5deg); }
+
+  /* tools list, ruled like the site's loops */
+  .note .mlist { list-style: none; padding: 0; margin: .6rem 0 1rem; }
+  .note .mlist li { margin: 0; padding: .7rem 0; border-bottom: 1px dashed rgba(26,25,24,.18); }
+  .note .mlist li:last-child { border-bottom: 0; }
+  .note .mlist li b { font-family: "Caveat", cursive; font-size: 1.5rem; font-weight: 700; line-height: 1.1; }
+  .note .callout { margin: 1.6rem 0 0; padding: 1rem 1.2rem; border: 1px dashed var(--pencil); background: rgba(26,25,24,.04); }
+  .note .callout .label { display: block; font-family: "Caveat", cursive; font-size: 1.4rem; line-height: 1.2; color: var(--pencil); }
+  .note .callout p { margin: 0; }
+  .note table.dt { width: 100%; border-collapse: collapse; margin: .6rem 0 0; font-size: 1.05rem; }
+  .note .dt th { font-family: "Caveat", cursive; font-size: 1.45rem; text-align: left; color: var(--pencil); font-weight: 700; padding: .2rem .8rem .4rem 0; border-bottom: 1px solid rgba(26,25,24,.3); }
+  .note .dt td { padding: .55rem .8rem .55rem 0; border-bottom: 1px dashed rgba(26,25,24,.18); vertical-align: top; }
+  .note .dt tr:last-child td { border-bottom: 0; }
+
+  /* ---- the method map ---- */
+  .map { --m-line: rgba(233,227,214,.22); --m-ink: var(--paper); --m-dim: var(--paper-dim); --m-bg: rgba(0,0,0,.35); margin: 0 0 2.4rem; }
+  .note .map { --m-line: rgba(26,25,24,.28); --m-ink: var(--char); --m-dim: var(--pencil); --m-bg: transparent; margin: 1.2rem 0 1.6rem; }
+  .map .edges { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .8rem; }
+  .map a { font-family: "Caveat", cursive; color: var(--m-ink); text-decoration: none; }
+  .map a:hover { text-decoration: underline; text-underline-offset: .2em; }
+  .map a[aria-current] { text-decoration: underline; text-underline-offset: .2em; font-weight: 700; }
+  .map .edges a { font-size: 1.35rem; color: var(--m-dim); text-decoration: underline; text-decoration-style: dotted; text-underline-offset: .2em; }
+  .map .edges a:hover, .map .edges a[aria-current] { color: var(--m-ink); text-decoration-style: solid; }
+  .map .stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; align-items: start; }
+  .map .stage { border: 1px solid var(--m-line); background: var(--m-bg); padding: .8rem 1rem 1rem; }
+  .map .stage.on { border-color: var(--m-ink); }
+  .map .num { font-family: "Caveat", cursive; font-size: 1.35rem; line-height: 1; color: var(--m-dim); }
+  .map .name { display: block; font-size: .85rem; letter-spacing: .3em; text-transform: uppercase; color: var(--m-dim); margin: .1rem 0 .5rem; }
+  .map .stage a { display: block; font-size: 1.35rem; line-height: 1.25; padding: .05rem 0; }
+  @media (max-width: 760px) { .map .stages { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 460px) { .map .stages { grid-template-columns: 1fr; } }
+
+  /* ---- buttons / tabs / chips ---- */
+  .cta { margin-top: 1.4rem; }
+  .cta a {
+    display: inline-block; padding: .7rem 2rem;
+    font-family: "Caveat", cursive; font-size: 1.7rem;
+    color: var(--paper); background: var(--char); border: 1px solid var(--char);
+    text-decoration: none; transition: transform .3s, background .3s;
+  }
+  .cta a:hover { transform: translateY(-2px); background: #000; }
+  .sheetbar { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem 1.5rem; margin: .4rem 0 1rem; }
+  .tab {
+    font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.2; color: var(--pencil);
+    background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; padding: 0 .1rem;
+  }
+  .tab:hover { color: var(--char); }
+  .tab[aria-pressed="true"] { color: var(--char); border-bottom-color: var(--char); }
+  .chips { margin: 0 0 1rem; }
+  .chip {
+    font-family: inherit; font-size: 1rem; font-style: italic; color: var(--char);
+    background: none; border: 1px solid rgba(26,25,24,.3); border-radius: 2px;
+    padding: 0 .55rem; margin: 0 .35rem .4rem 0; cursor: pointer; line-height: 1.5;
+  }
+  .chip:hover { border-color: var(--char); }
+  .chip[aria-pressed="true"] { background: var(--char); color: var(--paper); border-color: var(--char); }
+  .legend { display: flex; flex-wrap: wrap; gap: .2rem 1.3rem; font-size: 1rem; color: var(--pencil); margin: .2rem 0 1rem; align-items: center; }
+  .legend span { display: inline-flex; align-items: center; gap: .45rem; }
+  .hint { font-family: "Caveat", cursive; font-size: 1.3rem; color: var(--pencil); margin: 0 0 .6rem; }
+  .hint.dark { color: var(--paper-dim); text-align: center; margin: -1.2rem auto 2.6rem; max-width: 52ch; line-height: 1.25; }
+
+  /* ---- the marks ---- */
+  .mk { display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 1.6px solid var(--c); position: relative; flex: none; vertical-align: middle; }
+  .mk.yes { --c: var(--ok); background: var(--ok); }
+  .mk.partial { --c: var(--part); background: linear-gradient(90deg, var(--part) 50%, transparent 50%); }
+  .mk.na { --c: var(--none); border-style: dashed; }
+  .mk.no { --c: var(--miss); }
+  .mk.no::after { content: "×"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 17px; line-height: 1; color: var(--miss); font-weight: 600; }
+  .bar { display: inline-block; width: 4px; height: 16px; background: var(--c); vertical-align: middle; }
+  .o-full { --c: var(--ok); } .o-partial { --c: var(--part); } .o-unavailable { --c: var(--miss); }
+
+  /* ---- coverage matrix ---- */
+  /* position:relative makes the scroller the containing block for the cells' screen-reader labels (.vh),
+     so they scroll and clip with the table instead of widening the whole page */
+  .heatwrap { position: relative; overflow-x: auto; margin: 0 -.3rem; }
+  @media (min-width: 900px) { .heatwrap { overflow: auto; max-height: 72vh; } }
+  table.heat { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 680px; }
+  .heat th, .heat td { text-align: center; padding: 0; border-bottom: 1px dashed rgba(26,25,24,.18); }
+  .heat thead th {
+    position: sticky; top: 0; z-index: 2; background: var(--paper);
+    font-weight: 600; font-size: .9rem; letter-spacing: .08em; padding: .3rem .1rem .5rem;
+    border-bottom: 1px solid rgba(26,25,24,.3);
+  }
+  .heat thead th button { background: none; border: 0; cursor: pointer; letter-spacing: inherit; color: var(--pencil); padding: .15rem .2rem; }
+  .heat thead th button:hover, .heat thead th button[aria-pressed="true"] { color: var(--char); text-decoration: underline; text-underline-offset: .25em; }
+  .heat thead th.focus, .heat td.focus { background: var(--paper-2); }
+  .heat .rowhead { position: sticky; left: 0; z-index: 1; background: var(--paper); text-align: left; min-width: 9.5rem; max-width: 15rem; padding: .3rem .8rem .3rem .7rem; box-shadow: inset 3px 0 0 var(--c, transparent); }
+  .heat thead .rowhead { z-index: 3; font-family: "Caveat", cursive; font-size: 1.3rem; letter-spacing: 0; color: var(--pencil); font-weight: 700; box-shadow: none; }
+  .heat tbody .rowhead a { display: flex; align-items: baseline; line-height: 1.25; color: var(--char); text-decoration: none; }
+  .heat tbody .rowhead a .n { flex: none; }
+  .heat tbody .rowhead a:hover { text-decoration: underline; text-underline-offset: .2em; }
+  .heat .n { font-family: "Caveat", cursive; font-size: 1.4rem; color: var(--pencil); display: inline-block; width: 1.9rem; }
+  .heat td { width: 36px; height: 38px; }
+  .heat td .mk { display: block; margin: auto; }
+  .heat tbody tr:hover td, .heat tbody tr:hover .rowhead { background: var(--paper-2); }
+  .empty { padding: 1.4rem 0; font-style: italic; }
+
+  /* ---- case cards (like the front page) ---- */
+  .series { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 2.4rem 1.6rem; }
+  a.note.case { display: flex; flex-direction: column; margin: 0; padding: 1.8rem clamp(1.1rem, 3vw, 1.8rem) 1.5rem; text-decoration: none; color: var(--char); transition: transform .3s; }
+  a.note.case:nth-child(odd) { transform: rotate(-.8deg); }
+  a.note.case:nth-child(even) { transform: rotate(.7deg); }
+  a.note.case:hover { transform: rotate(0) translateY(-4px); }
+  .case h2 { font-size: clamp(1.8rem, 4.5vw, 2.1rem); margin-bottom: .1rem; }
+  .case .tag { font-style: italic; color: var(--pencil); font-size: 1rem; margin-bottom: .5rem; }
+  .case p { line-height: 1.45; font-size: 1.05rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .case .enter { margin-top: auto; padding-top: 1rem; font-family: "Caveat", cursive; font-size: 1.6rem; }
+  .cov { display: flex; gap: 4px; margin-top: .9rem; }
+  .cov i { flex: 1; height: 4px; background: rgba(26,25,24,.14); position: relative; }
+  .cov i b { position: absolute; inset: 0 auto 0 0; background: var(--char); width: var(--w, 0); opacity: .7; }
+  .cov i.na { background: none; border-top: 1px dashed rgba(26,25,24,.35); height: 0; margin-top: 2px; }
+
+  /* ---- one case ---- */
+  .back { font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--paper-dim); text-decoration: none; display: inline-block; margin-bottom: 1rem; }
+  .back:hover { color: var(--paper); }
+  .casehead { text-align: center; margin: 0 0 2.6rem; }
+  .casehead .margin { color: var(--paper-dim); font-size: 1.5rem; }
+  .casehead h1 { font-size: clamp(2.4rem, 7vw, 4rem); }
+  .casehead .sub { letter-spacing: .3em; }
+  .snap { display: grid; gap: 1.2rem 2.2rem; grid-template-columns: 1fr 1fr; }
+  .snap dt { font-family: "Caveat", cursive; font-size: 1.45rem; line-height: 1.2; color: var(--pencil); }
+  .snap dd { font-size: 1.1rem; line-height: 1.45; }
+  @media (max-width: 640px) { .snap { grid-template-columns: 1fr; } }
+  .unit { display: flex; align-items: baseline; gap: .9rem; margin: 2rem 0 .1rem; }
+  .unit h3 { margin: 0; }
+  .unit::after { content: ""; flex: 1; border-bottom: 1px solid rgba(26,25,24,.25); transform: translateY(-.35rem); }
+  .skill { display: grid; grid-template-columns: 1.6rem 1fr; gap: .8rem; padding: .75rem 0; border-bottom: 1px dashed rgba(26,25,24,.18); }
+  .skill:last-child { border-bottom: 0; }
+  .skill .mk { margin-top: .5rem; }
+  .skill .nm { font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.15; display: block; }
+  .skill .ev { font-size: 1.08rem; line-height: 1.5; }
+  .skill.na .ev, .skill.no .ev { color: var(--pencil); }
+  .ics { display: grid; gap: 3.4rem; margin: 3.6rem 0 3rem; }
+  .ics .note { margin: 0 auto; width: 100%; max-width: 720px; }
+  .ics .note p:not(.margin) { font-size: 1.12rem; line-height: 1.6; }
+  .slip { max-width: 680px; margin: 0 auto 3rem; padding: 1.8rem 1.6rem 1.5rem; transform: rotate(-.4deg); }
+  .slip h2 { font-size: 1.9rem; }
+  .pager { display: flex; justify-content: space-between; gap: 1.5rem; margin-top: 3rem; }
+  .pager a { font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.2; color: var(--paper-dim); text-decoration: none; max-width: 48%; }
+  .pager a:hover { color: var(--paper); }
+  .pager .r { text-align: right; margin-left: auto; }
+  .pager small { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-size: .8rem; letter-spacing: .3em; text-transform: uppercase; color: var(--paper-dim); }
+
+  .mb-hint { position: fixed; right: 16px; bottom: 12px; z-index: 60; pointer-events: none; font-family: "Caveat", cursive; font-size: 1.1rem; color: var(--paper-dim); opacity: .8; }
+
+  footer { text-align: center; padding: 2rem 16px; border-top: 1px solid #2a2a2a; color: var(--paper-dim); font-size: 1rem; background: rgba(0,0,0,.6); }
+  footer .hand { font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--paper); }
+  footer .fine { max-width: 62ch; margin: .6rem auto 0; font-size: .95rem; line-height: 1.5; }
+
+  @media (max-width: 760px) {
+    a.note.case:nth-child(n), .tilt:nth-of-type(n), .slip { transform: none; }
+    .mb-hint { display: none; }
+    .pager a { max-width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<nav class="top">
+  <a href="../index.html">← back to the map</a>
+  <label class="find"><span class="vh">Search the cases</span><input id="q" type="search" placeholder="search the cases…" autocomplete="off"></label>
+</nav>
+
+<main>
+  <header class="mast">
+    <h1>case workbook</h1>
+    <p class="sub">— finding the root —</p>
+    <p class="jump" id="jump"><a href="#overview" data-g="overview">how to use</a> · <a href="#m-a0" data-g="method">the method</a> · <a href="#cases" data-g="cases">the cases</a></p>
+  </header>
+  <div id="view" class="view" tabindex="-1"></div>
+</main>
+
+<footer>
+  <p class="hand">— under the glass —</p>
+  <p>© <span id="yr"></span> MindMapManifesto · mindmapmanifesto.com</p>
+  <p class="fine">Study notes on Marisa Peer’s Rapid Transformational Therapy® (RTT®). Independent — not affiliated with or endorsed by Marisa Peer or RTT®. Every case is anonymised. A study aid, not therapy or medical advice.</p>
+</footer>
+<p class="mb-hint" id="hint" aria-hidden="true" hidden>← → keys</p>
+
+<script src="data.js"></script>
+<script>
+"use strict";
+(function () {
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const view = $("#view"), hint = $("#hint"), q = $("#q");
+  $("#yr").textContent = new Date().getFullYear();
+
+  /* ------------------------------------------------------------ vocabulary */
+  const SKILLS = [
+    ["intake", "INT", "intake / discovery call"],
+    ["induction", "IND", "the induction"],
+    ["citr", "CIR", "child in the room"],
+    ["detective", "DET", "the detective work"],
+    ["lhrh", "LHR", "left hand / right hand"],
+    ["rfpi", "RFP", "RFPI"],
+    ["inm", "INM", "it’s not me"],
+    ["interrupt", "TLS", "interrupt tools"],
+    ["reframe", "REF", "the reframe"],
+    ["cct", "CCT", "command cell therapy / healing vortex"],
+    ["transformation", "TFM", "the transformation"],
+    ["awareness", "AWR", "return to full awareness"],
+    ["presence", "PRE", "professional presence"]
+  ];
+  const SK = Object.fromEntries(SKILLS.map(s => [s[0], s]));
+  const UNITS = [
+    ["I", "investigate", ["intake", "induction", "citr", "detective"]],
+    ["II", "interpret", ["lhrh", "rfpi"]],
+    ["III", "interrupt", ["inm", "interrupt", "reframe"]],
+    ["IV", "install", ["cct", "transformation", "awareness"]],
+    ["", "professional presence", ["presence"]]
+  ];
+  const MARK = { yes: "shown", partial: "partial", na: "not used", no: "not shown" };
+  const OUTCOME = { full: "full arc", partial: "partial", unavailable: "not assessable" };
+  const MAP = [
+    ["I", "investigate", [["m-a1", "intake"], ["m-a2", "induction"], ["m-a3", "detective work"], ["m-a4", "child in the room"]]],
+    ["II", "interpret", [["m-a5", "left / right hand"], ["m-a6", "RFPI"]]],
+    ["III", "interrupt", [["m-a7", "interrupt tools"]]],
+    ["IV", "install", [["m-a8", "install"]]]
+  ];
+  const ORDER = Object.keys(METHOD);           // m-a0 … m-a9
+
+  const state = { q: "", outcome: "all", tags: new Set(), skill: null };
+  const mk = s => `<span class="mk ${s}" aria-hidden="true"></span>`;
+
+  function splitTitle(issue) {
+    const m = issue.match(/^(.*?)(?:\s+—\s+|\s+\(|;\s+)(.+?)\)?$/);
+    return m ? { t: m[1].trim(), sub: m[2].trim() } : { t: issue, sub: "" };
+  }
+  function cover(c) {
+    return UNITS.slice(0, 4).map(u => {
+      let tot = 0, val = 0;
+      for (const k of u[2]) { const s = c.skills[k].s; if (s === "na") continue; tot++; val += s === "yes" ? 1 : s === "partial" ? .5 : 0; }
+      return tot ? Math.round(val / tot * 100) : null;
+    });
+  }
+  const eyebrow = e => e.replace(/^Part A · /, "").toLowerCase();
+
+  /* ------------------------------------------------------------ the method map */
+  function mapHTML(cur) {
+    const link = (id, label) => `<a href="#${id}"${cur === id ? ' aria-current="page"' : ""}>${esc(label)}</a>`;
+    return `<nav class="map" aria-label="The method">
+      <div class="edges">${link("m-a0", "the lens")}${link("m-a9", "when it doesn’t run straight")}</div>
+      <div class="stages">${MAP.map(([n, name, items]) => `
+        <div class="stage${items.some(i => i[0] === cur) ? " on" : ""}">
+          <span class="num">${n}</span><span class="name">${name}</span>
+          ${items.map(i => link(i[0], i[1])).join("")}
+        </div>`).join("")}
+      </div></nav>`;
+  }
+
+  /* ------------------------------------------------------------ views */
+  function renderOverview() {
+    view.innerHTML = `
+    <section class="note">
+      <p class="margin">start here</p>
+      <h2>the idea</h2>
+      <p>The problem a client brings is rarely the problem. Underneath it is a belief, made early, from something a child saw and couldn’t make sense of. A session goes back to that moment and changes what it means.</p>
+      <p>The method has four steps — <em>investigate, interpret, interrupt, install</em>. This workbook lays them out, then follows ${CASES.length} sessions through them.</p>
+    </section>
+
+    <h2 class="group">the method</h2>
+    <section class="note">
+      <p class="margin">ten short sections</p>
+      <h2>read it in order</h2>
+      <p>Start with the lens — how every scene gets read — then the steps as they happen, then what to do when a session doesn’t run straight.</p>
+      ${mapHTML("")}
+      <p class="cta"><a href="#m-a0">start with the lens →</a></p>
+    </section>
+
+    <h2 class="group">the cases</h2>
+    <section class="note">
+      <p class="margin">${CASES.length} sessions · ${SKILLS.length} skills</p>
+      <h2>see how it was done</h2>
+      <p>One row per session, one column per skill the final review looks for. Tap a column to rank the sessions that show it best. Tap a row to open the case.</p>
+      <p>Each case ends the same way:</p>
+      <ul class="mlist">
+        <li><b>inference</b> — what the therapist reads in the scenes and in the client’s own words.</li>
+        <li><b>conclusion</b> — the root belief, and how it turns into the symptom.</li>
+        <li><b>solution</b> — the tools used, the reframe, and what gets installed.</li>
+      </ul>
+      <p class="cta"><a href="#cases">open the matrix →</a></p>
+    </section>
+
+    <section class="note">
+      <p class="margin">reading the marks</p>
+      <h2>what the circles mean</h2>
+      <div class="legend" style="font-size:1.1rem;gap:.5rem 1.6rem">
+        <span>${mk("yes")} shown in the session</span>
+        <span>${mk("partial")} partial — compressed, or the recording cuts off</span>
+        <span>${mk("na")} left out on purpose</span>
+        <span>${mk("no")} not shown</span>
+      </div>
+      <div class="legend" style="font-size:1.1rem;gap:.5rem 1.6rem">
+        <span><i class="bar o-full"></i> full arc</span>
+        <span><i class="bar o-partial"></i> partial</span>
+        <span><i class="bar o-unavailable"></i> not assessable</span>
+      </div>
+    </section>
+
+    <section class="note slip tilt">
+      <p class="margin">a word on privacy</p>
+      <p>Every case is anonymised. Names, places, addresses and exact ages are removed or blurred. What’s left is the pattern — which is the point.</p>
+    </section>`;
+  }
+
+  function renderMethod(id) {
+    const m = METHOD[id];
+    if (!m) { location.hash = "#overview"; return; }
+    const i = ORDER.indexOf(id), prev = METHOD[ORDER[i - 1]], next = METHOD[ORDER[i + 1]];
+    view.innerHTML = `
+      ${mapHTML(id)}
+      <section class="note">
+        <p class="margin">${esc(eyebrow(m.eyebrow))}</p>
+        <h2>${esc(m.title)}</h2>
+        <p class="lede">${esc(m.sub)}</p>
+        ${m.html}
+      </section>
+      <nav class="pager" aria-label="Previous and next section">
+        ${prev ? `<a href="#${ORDER[i - 1]}"><small>before</small>← ${esc(prev.title)}</a>` : "<span></span>"}
+        ${next ? `<a class="r" href="#${ORDER[i + 1]}"><small>next</small>${esc(next.title)} →</a>` : ""}
+      </nav>`;
+  }
+
+  function filtered() {
+    let list = CASES.slice();
+    if (state.outcome !== "all") list = list.filter(c => c.status === state.outcome);
+    if (state.tags.size) list = list.filter(c => c.tags.some(t => state.tags.has(t)));
+    if (state.q) {
+      const needle = state.q.toLowerCase();
+      list = list.filter(c => [c.issue, c.belief, c.wand, c.rfpi, c.tags.join(" "), c.inference, c.conclusion].join(" ").toLowerCase().includes(needle));
+    }
+    if (state.skill) {
+      const rank = { yes: 0, partial: 1, na: 2, no: 3 };
+      list.sort((a, b) => rank[a.skills[state.skill].s] - rank[b.skills[state.skill].s] || a.id.localeCompare(b.id));
+    }
+    return list;
+  }
+
+  function renderCases() {
+    const list = filtered();
+    const tags = [...new Set(CASES.flatMap(c => c.tags))].sort();
+    const count = list.length === CASES.length ? `${CASES.length} sessions · ${SKILLS.length} skills` : `${list.length} of ${CASES.length} sessions`;
+    const sk = state.skill ? SK[state.skill][2] : "";
+    const rows = list.map(c => {
+      const { t } = splitTitle(c.issue);
+      return `<tr>
+        <th scope="row" class="rowhead o-${c.status}"><a href="#${c.id}" title="${esc(c.issue)}"><span class="n">${c.no}</span>${esc(t)}</a></th>
+        ${SKILLS.map(([k, , name]) => {
+          const s = c.skills[k].s;
+          return `<td class="${state.skill === k ? "focus" : ""}">${mk(s)}<span class="vh">${esc(name)}: ${MARK[s]}</span></td>`;
+        }).join("")}
+      </tr>`;
+    }).join("");
+    const cards = list.map(c => {
+      const { t, sub } = splitTitle(c.issue);
+      const bars = cover(c).map((p, i) => `<i class="${p === null ? "na" : ""}" title="${UNITS[i][1]}: ${p === null ? "n/a" : p + "%"}"><b style="--w:${p || 0}%"></b></i>`).join("");
+      return `<a class="note case" href="#${c.id}">
+        <span class="margin">case ${c.no} · ${OUTCOME[c.status]}</span>
+        <h2>${esc(t)}</h2>
+        ${sub ? `<span class="tag">${esc(sub)}</span>` : ""}
+        <p>${esc(c.belief)}</p>
+        <div class="cov" aria-hidden="true">${bars}</div>
+        <span class="enter">Open →</span>
+      </a>`;
+    }).join("");
+    const none = `<p class="empty">Nothing matches. <button class="tab" data-clear>clear the filters</button></p>`;
+
+    view.innerHTML = `
+    <section class="note">
+      <p class="margin">${count}</p>
+      <h2>the cases</h2>
+      <p class="lede">One row per session, one column per skill. Tap a column to rank the sessions that show it best; tap a row to open the case.</p>
+      <div class="sheetbar" role="group" aria-label="Filter by outcome">
+        ${["all", "full", "partial", "unavailable"].map(v => `<button class="tab" data-outcome="${v}" aria-pressed="${state.outcome === v}">${v === "all" ? "all" : OUTCOME[v]}</button>`).join("")}
+        ${state.skill ? `<button class="tab" data-skill="${state.skill}" aria-pressed="true" title="Clear ranking">ranked by ${esc(sk)} ×</button>` : ""}
+      </div>
+      <div class="chips" role="group" aria-label="Filter by theme">
+        ${tags.map(t => `<button class="chip" data-tag="${esc(t)}" aria-pressed="${state.tags.has(t)}">${esc(t)}</button>`).join("")}
+      </div>
+      <div class="legend">
+        <span>${mk("yes")} shown</span><span>${mk("partial")} partial</span><span>${mk("na")} left out</span><span>${mk("no")} not shown</span>
+        <span><i class="bar o-full"></i> full arc</span><span><i class="bar o-partial"></i> partial</span><span><i class="bar o-unavailable"></i> not assessable</span>
+      </div>
+      ${list.length ? `<div class="heatwrap" tabindex="0" role="region" aria-label="Coverage matrix; scrolls sideways on small screens">
+        <table class="heat">
+          <caption class="vh">Sessions by final-review skill</caption>
+          <thead><tr><th scope="col" class="rowhead">case</th>
+            ${SKILLS.map(([k, code, name]) => `<th scope="col" class="${state.skill === k ? "focus" : ""}"><button data-skill="${k}" aria-pressed="${state.skill === k}" title="${esc(name)} — rank cases by this skill">${code}</button></th>`).join("")}
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table></div>` : none}
+    </section>
+
+    <h2 class="group">case by case</h2>
+    <p class="hint dark">the four lines on each note show how much of investigate · interpret · interrupt · install the session covers</p>
+    ${list.length ? `<div class="series">${cards}</div>` : ""}`;
+  }
+
+  function renderCase(id) {
+    const i = CASES.findIndex(c => c.id === id);
+    if (i < 0) { location.hash = "#cases"; return; }
+    const c = CASES[i], prev = CASES[i - 1], next = CASES[i + 1];
+    const { t, sub } = splitTitle(c.issue);
+    const units = UNITS.map(([n, name, keys]) => `
+      <div class="unit"><h3>${n ? n + " · " : ""}${name}</h3></div>
+      ${keys.map(k => {
+        const d = c.skills[k];
+        return `<div class="skill ${d.s}">${mk(d.s)}<div><span class="nm">${esc(SK[k][2])}</span><span class="ev">${d.e ? esc(d.e) : "—"}</span></div></div>`;
+      }).join("")}`).join("");
+    const pt = x => `<a${x ? "" : ""} href="#${x.id}">${x.no} · ${esc(splitTitle(x.issue).t)}</a>`;
+    view.innerHTML = `
+      <a class="back" href="#cases">← all cases</a>
+      <header class="casehead">
+        <p class="margin">case ${c.no} · ${OUTCOME[c.status]}</p>
+        <h1>${esc(t)}</h1>
+        ${sub ? `<p class="sub">${esc(sub)}</p>` : ""}
+      </header>
+
+      <section class="note">
+        <dl class="snap">
+          <div><dt>came for</dt><dd>${esc(c.issue)}</dd></div>
+          <div><dt>the wish</dt><dd><em>${esc(c.wand)}</em></dd></div>
+          <div><dt>root belief</dt><dd>${esc(c.belief)}</dd></div>
+          <div><dt>the part (RFPI)</dt><dd>${esc(c.rfpi)}</dd></div>
+        </dl>
+      </section>
+
+      <section class="note">
+        <p class="margin">the final review</p>
+        <h2>skill by skill</h2>
+        <p class="lede">What was shown, and how.</p>
+        ${units}
+      </section>
+
+      <div class="ics">
+        <section class="note tilt"><p class="margin">what the therapist reads</p><h2>inference</h2><p>${esc(c.inference)}</p></section>
+        <section class="note tilt"><p class="margin">what it adds up to</p><h2>conclusion</h2><p>${esc(c.conclusion)}</p></section>
+        <section class="note tilt"><p class="margin">what resolves it</p><h2>solution</h2><p>${esc(c.solution)}</p></section>
+      </div>
+
+      <section class="note slip tilt">
+        <p class="margin">assessor’s note</p>
+        <p>${esc(c.assessment)}</p>
+      </section>
+
+      <nav class="pager" aria-label="Previous and next case">
+        ${prev ? `<a href="#${prev.id}"><small>previous</small>← ${prev.no} · ${esc(splitTitle(prev.issue).t)}</a>` : "<span></span>"}
+        ${next ? `<a class="r" href="#${next.id}"><small>next</small>${next.no} · ${esc(splitTitle(next.issue).t)} →</a>` : ""}
+      </nav>`;
+  }
+
+  /* ------------------------------------------------------------ router */
+  const BASE = "Case Workbook — MindMapManifesto";
+  let current = { kind: "overview", id: "overview" };
+  function route() {
+    const h = (location.hash || "#overview").slice(1);
+    let group = "overview", title = BASE;
+    if (h.startsWith("m-")) {
+      if (!METHOD[h]) return void (location.hash = "#overview");
+      current = { kind: "method", id: h }; group = "method";
+      renderMethod(h); title = `${METHOD[h].title} — ${BASE}`;
+    } else if (h === "cases") {
+      current = { kind: "cases", id: h }; group = "cases"; renderCases(); title = `The cases — ${BASE}`;
+    } else if (/^c\d\d$/.test(h)) {
+      const c = CASES.find(x => x.id === h);
+      if (!c) return void (location.hash = "#cases");
+      current = { kind: "case", id: h }; group = "cases"; renderCase(h);
+      title = `Case ${c.no}: ${splitTitle(c.issue).t} — ${BASE}`;
+    } else { current = { kind: "overview", id: "overview" }; renderOverview(); }
+    $$("#jump a").forEach(a => a.toggleAttribute("aria-current", a.dataset.g === group));
+    document.title = title;
+    hint.hidden = !(current.kind === "method" || current.kind === "case");
+    view.style.animation = "none"; void view.offsetWidth; view.style.animation = "";   // replay the fade on every page
+    window.scrollTo(0, 0);
+    view.focus({ preventScroll: true });
+  }
+  window.addEventListener("hashchange", route);
+
+  /* ------------------------------------------------------------ interaction */
+  view.addEventListener("click", e => {
+    const b = e.target.closest("[data-outcome],[data-tag],[data-skill],[data-clear]");
+    if (!b || current.kind !== "cases") return;
+    let again = null;
+    if (b.dataset.outcome) { state.outcome = b.dataset.outcome; again = `[data-outcome="${b.dataset.outcome}"]`; }
+    else if (b.dataset.tag) { const t = b.dataset.tag; state.tags.has(t) ? state.tags.delete(t) : state.tags.add(t); again = `[data-tag="${CSS.escape(t)}"]`; }
+    else if (b.dataset.skill) { state.skill = state.skill === b.dataset.skill ? null : b.dataset.skill; again = state.skill ? `.heat [data-skill="${state.skill}"]` : null; }
+    else { state.outcome = "all"; state.tags.clear(); state.skill = null; state.q = ""; q.value = ""; }
+    renderCases();
+    if (again) { const n = $(again, view); if (n) n.focus({ preventScroll: true }); }
+  });
+
+  q.addEventListener("input", () => {
+    state.q = q.value.trim();
+    if (current.kind !== "cases") location.hash = "#cases"; else renderCases();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable]")) return;
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    const d = e.key === "ArrowRight" ? 1 : -1;
+    let list = null, i = -1;
+    if (current.kind === "method") { list = ORDER; i = ORDER.indexOf(current.id); }
+    else if (current.kind === "case") { list = CASES.map(c => c.id); i = list.indexOf(current.id); }
+    if (list && list[i + d]) { e.preventDefault(); location.hash = "#" + list[i + d]; }
+  });
+
+  route();
+})();
+</script>
+</body>
+</html>

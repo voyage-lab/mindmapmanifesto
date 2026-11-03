@@ -8,6 +8,7 @@ Static site served by GitHub Pages at mindmapmanifesto.com. No framework: every 
 - `mind-brain/15-brain-waves/`, `mind-brain/21-rules-mind/`: slide decks. Both run on `mind-brain/deck.js`, and `mind-brain/theme.css` gives them the site look.
 - The other `mind-brain/*` topics are small React apps styled by `mind-brain/theme-app.css`.
 - `notes/`: source notes and transcripts. They stay in the repo but are not published (see `_config.yml`).
+- `case-workbook/`: the case workbook (mindmapmanifesto.com/case-workbook). `index.html` is the page (plain HTML and vanilla JS, no build step) and `data.js` holds the method text and the 38 cases. Edit them directly. The cases are anonymised on purpose: never add client names, places, exact ages or addresses.
 
 ## React pages: edit the .jsx, then build
 Each React page's code lives in a `.jsx` file next to its HTML, e.g. `mind-brain/dopamine/index.jsx`.
