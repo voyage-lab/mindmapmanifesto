@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Five Tibetan Rites — MindMapManifesto</title>
+<meta name="description" content="Five movements, one breath: the Five Tibetan Rites drawn in pen and ink, with the breath and the extension for each.">
+<meta property="og:title" content="The Five Tibetan Rites">
+<meta property="og:description" content="Five movements, one breath: the Five Tibetan Rites drawn in pen and ink, with the breath and the extension for each.">
+<meta property="og:image" content="https://mindmapmanifesto.com/background.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* MindMapManifesto look: paper notes taped under glass over a dark, blurred photo.
+     One column of plates, each a pen-and-ink study of a rite with its breath and extension. */
+  :root {
+    --ink: #0d0d0d;
+    --char: #1a1918;
+    --paper: #e9e3d6;
+    --paper-dim: #b9b2a3;
+    --glass: rgba(220, 235, 240, .55);
+    --pencil: #6b655b;
+    --sepia: #5a3d2b;
+    --chalk: #a5523a;
+    --skin: #e2d6c1;
+    --display: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+    --body: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100svh;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--body);
+    font-size: 20px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .bg {
+    position: fixed; inset: 0; z-index: -2;
+    background: var(--ink) url("../../background.jpg") center / cover no-repeat;
+    filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+    transform: scale(1.04);
+  }
+  .bg::after {
+    content: ""; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%);
+  }
+  .wrap {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  nav { padding-block: 20px; }
+  nav a { font-family: var(--display); font-size: 1.5rem; color: var(--paper-dim); text-decoration: none; }
+  nav a:hover, nav a:focus-visible { color: var(--paper); }
+
+  main { max-width: 820px; margin: 0 auto; padding-block: 1rem 4rem; }
+
+  header { text-align: center; margin-bottom: 3rem; }
+  h1 {
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(3rem, 10vw, 6rem); line-height: 1;
+    text-shadow: 0 4px 30px rgba(0,0,0,.8);
+    text-wrap: balance;
+  }
+  .sub {
+    margin-top: .6rem;
+    font-size: clamp(.85rem, 2vw, 1.1rem);
+    letter-spacing: .5em; text-transform: uppercase; color: var(--paper-dim);
+  }
+  .jump { margin-top: 1.4rem; font-family: var(--display); font-size: 1.35rem; color: var(--paper-dim); }
+  .jump a { color: var(--paper); text-decoration: none; }
+  .jump a:hover, .jump a:focus-visible { text-decoration: underline; }
+
+  /* paper notes, taped under the glass */
+  .note {
+    background: var(--paper); color: var(--char);
+    padding: 2.2rem clamp(1.1rem, 4vw, 2.4rem) 2rem;
+    border-radius: 2px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.75);
+    position: relative;
+    margin-bottom: 3.5rem;
+    scroll-margin-top: 2rem;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(120,100,70,.12), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(90,75,55,.15), transparent 45%);
+  }
+  .note::before {
+    content: ""; position: absolute; top: -14px; left: 50%;
+    width: 120px; height: 28px; transform: translateX(-50%) rotate(2deg);
+    background: var(--glass); box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  }
+  .note:nth-of-type(even)::before { transform: translateX(-50%) rotate(-2.5deg); }
+  .note h2 { font-family: var(--display); font-size: clamp(2rem, 5vw, 2.6rem); line-height: 1.1; margin-bottom: .6rem; text-wrap: balance; }
+  .note p { margin-bottom: 1rem; }
+  .note p:last-child { margin-bottom: 0; }
+  .margin { font-family: var(--display); font-size: 1.4rem; color: var(--pencil); display: block; }
+
+  .rule-list { list-style: none; display: grid; gap: .5rem; margin-top: .4rem; }
+  .rule-list li { display: grid; grid-template-columns: 2.4rem 1fr; gap: .4rem; line-height: 1.45; }
+  .rule-list b { font-family: var(--display); font-size: 1.45rem; font-weight: 700; color: var(--chalk); line-height: 1.1; }
+
+  /* the plate */
+  .plate-head { display: flex; justify-content: space-between; align-items: baseline; gap: .2rem 1rem; flex-wrap: wrap; }
+  .reps { font-family: var(--display); font-size: 1.3rem; color: var(--chalk); }
+  .figure { display: block; width: 100%; max-width: 100%; height: auto; margin: .4rem 0 0; }
+  .figure text { font-family: var(--display); }
+  .figure .tag { font-size: 17px; fill: var(--pencil); }
+  .figure .tag.in { fill: var(--chalk); font-weight: 700; }
+  .figure .arrow { fill: none; stroke: var(--chalk); stroke-width: 1.5; stroke-linecap: round; }
+  .figure .ground { fill: none; stroke: var(--pencil); stroke-width: .8; opacity: .55; stroke-linecap: round; }
+  .figure .hatch { stroke: var(--pencil); stroke-width: .7; opacity: .35; stroke-linecap: round; }
+
+  .breath {
+    display: flex; align-items: center; gap: .6rem 1rem; flex-wrap: wrap;
+    margin: .6rem 0 1.4rem; min-height: 2.6rem;
+  }
+  .breath button {
+    font-family: var(--display); font-size: 1.3rem; line-height: 1;
+    background: transparent; color: var(--char);
+    border: 1px solid rgba(26,25,24,.35); border-radius: 999px;
+    padding: .45rem 1.1rem; cursor: pointer;
+  }
+  .breath button:hover { border-color: var(--sepia); color: var(--sepia); }
+  .breath button:focus-visible { outline: 2px solid var(--chalk); outline-offset: 2px; }
+  .breath button[aria-pressed="true"] { background: var(--char); color: var(--paper); border-color: var(--char); }
+  .breath .now { font-family: var(--display); font-size: 1.5rem; color: var(--chalk); font-weight: 700; }
+
+  .how { font-size: 1.05rem; margin-bottom: 1.4rem; }
+  .how b { font-weight: 600; }
+
+  .cues { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem 1.6rem; }
+  .cue { min-width: 0; padding: .8rem 1rem .9rem; border-left: 2px solid rgba(26,25,24,.2); background: rgba(26,25,24,.035); }
+  .cue.breathe, .cue.extend { border-left-color: var(--chalk); }
+  .cue h3 { font-family: var(--display); font-size: 1.55rem; line-height: 1.05; margin-bottom: .3rem; }
+  .cue.breathe h3, .cue.extend h3 { color: var(--chalk); }
+  .cue p { font-size: 1.02rem; line-height: 1.5; margin-bottom: .45rem; }
+  .cue p:last-child { margin-bottom: 0; }
+  .cue .phase { font-family: var(--display); font-size: 1.25rem; color: var(--sepia); margin-right: .25rem; }
+
+  .lede { text-align: center; max-width: 640px; margin: 0 auto 2.4rem; color: var(--paper-dim); font-style: italic; }
+  footer { text-align: center; margin-top: 1rem; color: var(--paper-dim); font-size: 1rem; }
+  footer p + p { margin-top: .4rem; }
+
+  @media (max-width: 760px) {
+    body { font-size: 19px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true"></div>
+
+<div class="wrap">
+<nav><a href="../../index.html">← back to the map</a></nav>
+
+<main>
+  <header>
+    <h1>the five tibetan rites</h1>
+    <p class="sub">— five movements, one breath —</p>
+    <p class="jump"><a href="#rite-1">spin</a> · <a href="#rite-2">lift</a> · <a href="#rite-3">arch</a> · <a href="#rite-4">table</a> · <a href="#rite-5">wave</a></p>
+  </header>
+
+  <section class="note">
+    <span class="margin">morning · 10 to 20 minutes · a mat and a clear floor</span>
+    <h2>how the practice runs</h2>
+    <p>Five movements, done in order, each repeated the same number of times. The breath sets the pace: every rite rises on an in-breath and returns on an out-breath, so you never hold it and never rush it.</p>
+    <ul class="rule-list">
+      <li><b>3</b><span>Start with three repetitions of each rite.</span></li>
+      <li><b>+2</b><span>Add two repetitions a week, as long as the last ones still feel clean.</span></li>
+      <li><b>21</b><span>Stop at twenty-one. That is the full practice.</span></li>
+      <li><b>2×</b><span>Between rites, stand with your hands on your hips and take two slow, full breaths.</span></li>
+    </ul>
+  </section>
+
+  <p class="lede">In each drawing the pencil figure is where the breath goes out, and the ink figure is where it comes in. Press <i>breathe with it</i> to watch one move.</p>
+
+  <!-- RITE 1 -->
+  <section class="note" id="rite-1">
+    <div class="plate-head">
+      <span class="margin">rite one · standing · seen from the front</span>
+      <span class="reps">3 → 21 turns</span>
+    </div>
+    <h2>the spin</h2>
+    <svg class="figure" data-rite="1" viewBox="0 0 400 310" role="img" aria-label="A figure standing with arms straight out to the sides at shoulder height, palms down, with an arrow showing the body turning to its right."></svg>
+    <div class="breath">
+      <button type="button" id="play-1" aria-pressed="false" data-for="1">▶ breathe with it</button>
+      <span class="now" id="now-1"></span>
+    </div>
+    <p class="how">Stand tall with your arms straight out to the sides, palms down, level with your shoulders. <b>Turn to your right</b>, clockwise, at a steady walking pace. Count each full turn.</p>
+    <div class="cues">
+      <div class="cue breathe">
+        <h3>breathe</h3>
+        <p>Breathe evenly through the nose while you turn, about one breath for every two turns. Don't hold it to steady yourself.</p>
+        <p><span class="phase">after</span>Stop, hands on hips, and take two full breaths before you lie down.</p>
+      </div>
+      <div class="cue extend">
+        <h3>extend</h3>
+        <p>Reach out through the fingertips as if someone were pulling each hand away from you. The crown of the head lifts. Shoulders stay down, away from the ears.</p>
+      </div>
+      <div class="cue">
+        <h3>easier</h3>
+        <p>Turn slowly and do fewer turns. Stop at the first sign of dizziness, even if that is two.</p>
+      </div>
+      <div class="cue">
+        <h3>deeper</h3>
+        <p>Spot like a dancer: hold your eyes on one point and whip the head round last. That is what lets you reach 21 without spinning out.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RITE 2 -->
+  <section class="note" id="rite-2">
+    <div class="plate-head">
+      <span class="margin">rite two · lying on the back · seen from the side</span>
+      <span class="reps">3 → 21 lifts</span>
+    </div>
+    <h2>the leg lift</h2>
+    <svg class="figure" data-rite="2" viewBox="0 0 400 310" role="img" aria-label="A figure lying flat on its back, and the same figure with chin tucked and both straight legs raised to vertical."></svg>
+    <div class="breath">
+      <button type="button" id="play-2" aria-pressed="false" data-for="2">▶ breathe with it</button>
+      <span class="now" id="now-2"></span>
+    </div>
+    <p class="how">Lie flat on your back, arms along your sides, palms pressing the floor. Lift your head and tuck your chin to your chest while you raise <b>both straight legs</b> to vertical. Lower head and legs together, slowly, all the way down.</p>
+    <div class="cues">
+      <div class="cue breathe">
+        <h3>breathe</h3>
+        <p><span class="phase">in</span>through the nose as the head and legs rise, filling the belly first.</p>
+        <p><span class="phase">out</span>fully as they lower. Let the whole body go soft on the floor before the next lift.</p>
+      </div>
+      <div class="cue extend">
+        <h3>extend</h3>
+        <p>Push the heels toward the ceiling with the knees straight and the toes softly flexed. The back of the neck lengthens as the chin tucks. The low back stays pressed into the floor.</p>
+      </div>
+      <div class="cue">
+        <h3>easier</h3>
+        <p>Bend the knees as you lift, or raise one leg at a time with the other foot flat. Keep the head down if the neck strains.</p>
+      </div>
+      <div class="cue">
+        <h3>deeper</h3>
+        <p>Let the legs travel a little past vertical, toward the face, without the hips leaving the floor. Take twice as long to lower as to lift.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RITE 3 -->
+  <section class="note" id="rite-3">
+    <div class="plate-head">
+      <span class="margin">rite three · kneeling · seen from the side</span>
+      <span class="reps">3 → 21 arches</span>
+    </div>
+    <h2>the kneeling arch</h2>
+    <svg class="figure" data-rite="3" viewBox="0 0 400 310" role="img" aria-label="A figure kneeling upright with chin tucked and hands on the backs of the thighs, and the same figure arching backward with the head dropped back."></svg>
+    <div class="breath">
+      <button type="button" id="play-3" aria-pressed="false" data-for="3">▶ breathe with it</button>
+      <span class="now" id="now-3"></span>
+    </div>
+    <p class="how">Kneel with the knees hip-width apart, toes tucked under, torso upright. Rest your hands on the backs of your thighs, just under the buttocks. Tuck your chin, then <b>arch backward</b>, letting the head drop back. Come up to upright and tuck the chin again.</p>
+    <div class="cues">
+      <div class="cue breathe">
+        <h3>breathe</h3>
+        <p><span class="phase">in</span>as you arch back and the chest opens to the ceiling.</p>
+        <p><span class="phase">out</span>as you come up and the chin returns to the chest.</p>
+      </div>
+      <div class="cue extend">
+        <h3>extend</h3>
+        <p>The whole front of the body lengthens: the fronts of the hips, the belly, the chest and the throat. Press the hips forward first so the arch comes from the upper back, not by folding at the waist.</p>
+      </div>
+      <div class="cue">
+        <h3>easier</h3>
+        <p>Fold a blanket under the knees. Make a small arch and keep the head in line with the spine instead of dropping it.</p>
+      </div>
+      <div class="cue">
+        <h3>deeper</h3>
+        <p>Slide the hands down the backs of the thighs as you arch. Hold the top of the arch for one extra breath before rising.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RITE 4 -->
+  <section class="note" id="rite-4">
+    <div class="plate-head">
+      <span class="margin">rite four · seated · seen from the side</span>
+      <span class="reps">3 → 21 lifts</span>
+    </div>
+    <h2>the tabletop</h2>
+    <svg class="figure" data-rite="4" viewBox="0 0 400 310" role="img" aria-label="A figure sitting upright with legs straight out and hands beside the hips, and the same figure lifted into a tabletop with knees bent, torso and thighs level and head tipped back."></svg>
+    <div class="breath">
+      <button type="button" id="play-4" aria-pressed="false" data-for="4">▶ breathe with it</button>
+      <span class="now" id="now-4"></span>
+    </div>
+    <p class="how">Sit with your legs straight out, feet about hip-width apart, palms flat beside your hips with the fingers pointing toward your feet. Tuck your chin. Then press through hands and feet and <b>lift the hips</b> until torso and thighs make a flat table, knees bent over the ankles and head gently back. Lower back to sitting.</p>
+    <div class="cues">
+      <div class="cue breathe">
+        <h3>breathe</h3>
+        <p><span class="phase">in</span>as the hips rise into the table.</p>
+        <p><span class="phase">out</span>as you sit back down and the chin tucks.</p>
+      </div>
+      <div class="cue extend">
+        <h3>extend</h3>
+        <p>Open the fronts of the shoulders and the hips. Squeeze the buttocks to bring the hips level with the knees, and let the throat lengthen as the head tips back.</p>
+      </div>
+      <div class="cue">
+        <h3>easier</h3>
+        <p>Start with the knees already bent and the feet flat. Lift the hips only partway, and keep the chin level instead of tipping the head.</p>
+      </div>
+      <div class="cue">
+        <h3>deeper</h3>
+        <p>Hold the table for two or three breaths at the top, tightening every muscle in the body, then release on the out-breath.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RITE 5 -->
+  <section class="note" id="rite-5">
+    <div class="plate-head">
+      <span class="margin">rite five · hands and feet · seen from the side</span>
+      <span class="reps">3 → 21 waves</span>
+    </div>
+    <h2>the wave</h2>
+    <svg class="figure" data-rite="5" viewBox="0 0 400 310" role="img" aria-label="A figure in an upward-facing position with hips low, chest forward and head up, and the same figure pushed back into an inverted V with hips high and head between the arms."></svg>
+    <div class="breath">
+      <button type="button" id="play-5" aria-pressed="false" data-for="5">▶ breathe with it</button>
+      <span class="now" id="now-5"></span>
+    </div>
+    <p class="how">Start face down, supported on your hands and the balls of your feet, hands under the shoulders, hips low and head up. Push the hips up and back into an <b>inverted V</b>, chin toward the chest. Then lower the hips again, swinging the chest forward and the head up. Only the hands and feet touch the floor.</p>
+    <div class="cues">
+      <div class="cue breathe">
+        <h3>breathe</h3>
+        <p><span class="phase">in</span>deeply as the hips rise into the V.</p>
+        <p><span class="phase">out</span>fully as the hips sink and the chest comes forward.</p>
+      </div>
+      <div class="cue extend">
+        <h3>extend</h3>
+        <p>In the V, lengthen from the hands to the tailbone and press the heels toward the floor. In the low position, draw the chest forward between the arms and lengthen the whole spine into a long, even curve.</p>
+      </div>
+      <div class="cue">
+        <h3>easier</h3>
+        <p>Bend the knees in the V. In the low position, let the knees rest on the floor.</p>
+      </div>
+      <div class="cue">
+        <h3>deeper</h3>
+        <p>Heels reach the floor in the V. At the bottom, the hips hover just above the floor with the legs straight and active.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>The Five Tibetan Rites come from Peter Kelder's 1939 booklet <i>The Eye of Revelation</i>. Their Tibetan origin has never been verified.</p>
+    <p>Rites two to five load the neck and lower back, and the spin can bring on dizziness. With back or neck problems, vertigo, heart conditions or high blood pressure, during pregnancy or after recent surgery, ask a doctor first or keep to the easier versions.</p>
+  </footer>
+</main>
+</div>
+
+<script>
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+  const C = { sepia: "#5a3d2b", pencil: "#6b655b", skin: "#e2d6c1", paper: "#e9e3d6" };
+
+  // Body parts, drawn back to front: [from, to, width]
+  const SIDE = [
+    ["hip", "knee", 17], ["knee", "foot", 13],
+    ["sh", "hip", 30],
+    ["sh", "neck", 11], ["head", "head", 28],
+    ["sh", "elbow", 12], ["elbow", "hand", 10]
+  ];
+  const FRONT = [
+    ["hipL", "kneeL", 15], ["kneeL", "footL", 12],
+    ["hipR", "kneeR", 15], ["kneeR", "footR", 12],
+    ["poly", ["shL", "shR", "hipR", "hipL"], 8],
+    ["neckB", "neck", 11], ["head", "head", 30],
+    ["shL", "elbowL", 11], ["elbowL", "handL", 9],
+    ["shR", "elbowR", 11], ["elbowR", "handR", 9]
+  ];
+
+  // Poses: "out" is where the breath goes out (pencil), "in" is where it comes in (ink)
+  const RITES = {
+    1: {
+      front: true,
+      in: { head:[200,50], neck:[200,70], neckB:[200,84], shL:[172,82], shR:[228,82], hipL:[186,158], hipR:[214,158],
+            elbowL:[130,82], handL:[90,84], elbowR:[270,82], handR:[310,84],
+            kneeL:[189,216], footL:[190,272], kneeR:[211,216], footR:[210,272] },
+      ground: '<ellipse class="ground" cx="200" cy="278" rx="78" ry="10"/>',
+      arrows: ['M 300 146 Q 200 214 100 146'],
+      tags: [["turn to your right", 200, 304, "middle", "in"], ["eyes on one point", 200, 18, "middle", ""]],
+      hatch: [160, 240, 280]
+    },
+    2: {
+      face: 1,
+      out: { head:[66,256], neck:[86,260], sh:[100,262], hip:[206,262], knee:[272,264], foot:[338,264], elbow:[146,266], hand:[192,267] },
+      in:  { head:[78,238], neck:[95,251], sh:[104,260], hip:[206,262], knee:[210,198], foot:[212,134], elbow:[148,265], hand:[192,267] },
+      ground: '<path class="ground" d="M 30 280 L 380 280"/><path class="ground" d="M 48 283 L 360 283"/>',
+      arrows: ['M 344 246 Q 336 150 228 128', 'M 54 246 Q 54 224 70 218'],
+      tags: [["breathe in", 232, 104, "start", "in"], ["breathe out", 330, 304, "middle", ""]],
+      hatch: [70, 340, 280]
+    },
+    3: {
+      face: 1,
+      out: { head:[210,80], neck:[201,99], sh:[198,112], hip:[200,192], knee:[202,266], foot:[128,268], elbow:[178,160], hand:[186,200] },
+      in:  { head:[138,108], neck:[154,116], sh:[166,126], hip:[216,194], knee:[202,266], foot:[128,268], elbow:[166,172], hand:[198,208] },
+      ground: '<path class="ground" d="M 60 280 L 340 280"/><path class="ground" d="M 76 283 L 324 283"/>',
+      arrows: ['M 222 60 Q 180 32 138 82'],
+      tags: [["breathe in", 120, 152, "end", "in"], ["breathe out", 232, 92, "start", ""]],
+      hatch: [110, 260, 280]
+    },
+    4: {
+      face: 1,
+      out: { head:[164,150], neck:[154,166], sh:[150,180], hip:[150,262], knee:[222,264], foot:[292,264], elbow:[145,222], hand:[142,264] },
+      in:  { head:[110,170], neck:[126,180], sh:[140,188], hip:[222,190], knee:[290,190], foot:[292,264], elbow:[140,226], hand:[140,264] },
+      ground: '<path class="ground" d="M 50 280 L 360 280"/><path class="ground" d="M 66 283 L 344 283"/>',
+      arrows: ['M 176 252 Q 182 214 214 206'],
+      tags: [["breathe in", 222, 160, "middle", "in"], ["breathe out", 98, 138, "middle", ""]],
+      hatch: [100, 320, 280]
+    },
+    5: {
+      face: -1,
+      out: { head:[90,150], neck:[100,168], sh:[110,182], hip:[214,238], knee:[256,250], foot:[300,264], elbow:[105,222], hand:[100,264] },
+      in:  { head:[118,222], neck:[124,206], sh:[132,198], hip:[204,128], knee:[248,194], foot:[300,264], elbow:[116,232], hand:[100,264] },
+      ground: '<path class="ground" d="M 40 280 L 360 280"/><path class="ground" d="M 56 283 L 344 283"/>',
+      arrows: ['M 232 226 Q 246 168 216 136'],
+      tags: [["breathe in", 220, 112, "start", "in"], ["breathe out", 302, 226, "start", ""]],
+      hatch: [80, 320, 280]
+    }
+  };
+
+  const el = (name, attrs) => {
+    const n = document.createElementNS(NS, name);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  };
+
+  // Draw one part twice: a dark outline stroke, then a lighter body stroke on top.
+  function drawPart(g, pose, part, look) {
+    const [a, b, w] = part;
+    const outlineW = w + (look.ghost ? 2 : 3);
+    if (a === "poly") {
+      const d = "M " + b.map(k => pose[k].join(" ")).join(" L ") + " Z";
+      g.appendChild(el("path", { d, fill: "none", stroke: look.line, "stroke-width": outlineW, "stroke-linejoin": "round" }));
+      g.appendChild(el("path", { d, fill: look.fill, stroke: look.fill, "stroke-width": w, "stroke-linejoin": "round" }));
+      return;
+    }
+    const p = pose[a], q = pose[b];
+    const qx = a === b ? q[0] + 0.01 : q[0];
+    const d = `M ${p[0]} ${p[1]} L ${qx} ${q[1]}`;
+    const common = { fill: "none", "stroke-linecap": "round" };
+    g.appendChild(el("path", { ...common, d, stroke: look.line, "stroke-width": outlineW }));
+    g.appendChild(el("path", { ...common, d, stroke: look.fill, "stroke-width": w }));
+  }
+
+  function drawFigure(g, pose, rite, look) {
+    while (g.firstChild) g.removeChild(g.firstChild);
+    const parts = rite.front ? FRONT : SIDE;
+    parts.forEach(part => drawPart(g, pose, part, look));
+    if (!rite.front) {
+      // a small mark for the face, so you can tell which way the head points
+      const h = pose.head, n = pose.neck;
+      let ux = h[0] - n[0], uy = h[1] - n[1];
+      const len = Math.hypot(ux, uy) || 1; ux /= len; uy /= len;
+      const s = rite.face;
+      const fx = s > 0 ? -uy : uy, fy = s > 0 ? ux : -ux;
+      g.appendChild(el("circle", { cx: h[0] + fx * 13, cy: h[1] + fy * 13, r: 2.6, fill: look.line }));
+    } else {
+      // collar line and hairline sketch on the front view
+      const h = pose.head;
+      g.appendChild(el("path", { d: `M ${h[0]-11} ${h[1]-6} Q ${h[0]} ${h[1]-17} ${h[0]+11} ${h[1]-6}`, fill: "none", stroke: look.line, "stroke-width": .9, opacity: .7 }));
+    }
+  }
+
+  function build(svg) {
+    const id = svg.dataset.rite, rite = RITES[id];
+    svg.innerHTML =
+      `<defs><marker id="tip-${id}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">` +
+      `<path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#a5523a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>` +
+      rite.ground;
+    // pencil hatching for the cast shadow
+    const [x0, x1, gy] = rite.hatch;
+    const hatch = el("g", {});
+    for (let x = x0; x <= x1; x += 7) hatch.appendChild(el("line", { class: "hatch", x1: x, y1: gy - 1, x2: x + 6, y2: gy - 7 }));
+    svg.appendChild(hatch);
+
+    const ghost = el("g", { opacity: .55 });
+    const ink = el("g", {});
+    svg.appendChild(ghost);
+    svg.appendChild(ink);
+
+    rite.arrows.forEach(d => svg.appendChild(el("path", { class: "arrow", d, "marker-end": `url(#tip-${id})` })));
+    rite.tags.forEach(([t, x, y, anchor, cls]) => {
+      const n = el("text", { class: "tag " + cls, x, y, "text-anchor": anchor });
+      n.textContent = t;
+      svg.appendChild(n);
+    });
+
+    const inkLook = { line: C.sepia, fill: C.skin };
+    const ghostLook = { line: C.pencil, fill: C.paper, ghost: true };
+    if (rite.out) drawFigure(ghost, rite.out, rite, ghostLook);
+    drawFigure(ink, rite.in, rite, inkLook);
+    return { rite, ink, inkLook };
+  }
+
+  const figures = {};
+  document.querySelectorAll("svg.figure").forEach(svg => { figures[svg.dataset.rite] = build(svg); });
+
+  // "breathe with it": move the ink figure between the two poses at breathing pace
+  const HALF = 3500; // ms in, ms out
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const running = {};
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function stop(id) {
+    const r = running[id];
+    if (!r) return;
+    cancelAnimationFrame(r.raf);
+    clearInterval(r.timer);
+    delete running[id];
+    const f = figures[id];
+    f.ink.removeAttribute("transform");
+    drawFigure(f.ink, f.rite.in, f.rite, f.inkLook);
+    const btn = document.getElementById("play-" + id);
+    btn.setAttribute("aria-pressed", "false");
+    btn.textContent = "▶ breathe with it";
+    document.getElementById("now-" + id).textContent = "";
+  }
+
+  function start(id) {
+    const f = figures[id], now = document.getElementById("now-" + id);
+    const btn = document.getElementById("play-" + id);
+    btn.setAttribute("aria-pressed", "true");
+    btn.textContent = "❚❚ stop";
+    const t0 = performance.now();
+    const r = running[id] = {};
+
+    if (reduce) {
+      // no motion: swap between the two poses with the breath
+      let inhale = false;
+      const tick = () => {
+        inhale = !inhale;
+        if (f.rite.front) { now.textContent = "breathe evenly, keep turning"; return; }
+        drawFigure(f.ink, inhale ? f.rite.in : f.rite.out, f.rite, f.inkLook);
+        now.textContent = inhale ? "breathe in…" : "breathe out…";
+      };
+      tick();
+      r.timer = setInterval(tick, HALF);
+      return;
+    }
+
+    const frame = t => {
+      const el2 = t - t0;
+      if (f.rite.front) {
+        // a turn seen from the front: the figure narrows, flips and widens again
+        const turn = el2 / 2600;
+        const sx = Math.cos(turn * Math.PI * 2);
+        f.ink.setAttribute("transform", `translate(200 0) scale(${Math.max(Math.abs(sx), .08) * Math.sign(sx || 1)} 1) translate(-200 0)`);
+        now.textContent = `turn ${Math.floor(turn) + 1} · breathe evenly`;
+      } else {
+        const phase = (el2 % (HALF * 2)) / (HALF * 2);
+        const k = (1 - Math.cos(phase * Math.PI * 2)) / 2; // 0 at out, 1 at in
+        const pose = {};
+        for (const j in f.rite.in) pose[j] = [lerp(f.rite.out[j][0], f.rite.in[j][0], k), lerp(f.rite.out[j][1], f.rite.in[j][1], k)];
+        drawFigure(f.ink, pose, f.rite, f.inkLook);
+        now.textContent = phase < .5 ? "breathe in…" : "breathe out…";
+      }
+      r.raf = requestAnimationFrame(frame);
+    };
+    r.raf = requestAnimationFrame(frame);
+  }
+
+  document.querySelectorAll(".breath button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.for;
+      if (running[id]) stop(id); else start(id);
+    });
+  });
+})();
+</script>
+</body>
+</html>
