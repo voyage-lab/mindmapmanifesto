@@ -1,0 +1,1257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Investigation — MindMapManifesto</title>
+<meta name="description" content="Every symptom is a solution that once made sense. The psychological algorithm: six steps from a symptom to the childhood strategy behind it, with 54 worked examples.">
+<meta property="og:title" content="The Investigation — the psychological algorithm">
+<meta property="og:description" content="Every symptom is a solution that once made sense. Six steps from a symptom to the strategy behind it, with 54 worked examples.">
+<meta property="og:image" content="https://mindmapmanifesto.com/background.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --char: #1a1918;
+    --paper: #e9e3d6;
+    --paper-dim: #b9b2a3;
+    --glass: rgba(220, 235, 240, .55);
+    --pencil: #6b655b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+  body {
+    min-height: 100svh;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 20px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .bg {
+    position: fixed; inset: 0; z-index: -2;
+    background: url("../background.jpg") center / cover no-repeat;
+    filter: grayscale(.35) contrast(1.05) brightness(.45) blur(2px);
+    transform: scale(1.04);
+  }
+  .bg::after {
+    content: ""; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.25) 20%, rgba(0,0,0,.9) 100%);
+  }
+
+  nav { padding: 20px 16px; }
+  nav a { font-family: "Caveat", cursive; font-size: 1.5rem; color: var(--paper-dim); text-decoration: none; }
+  nav a:hover { color: var(--paper); }
+
+  main { max-width: 960px; margin: 0 auto; padding: 1rem 16px 4rem; }
+
+  header { text-align: center; margin-bottom: 3.5rem; }
+  h1 {
+    font-family: "Caveat", cursive; font-weight: 700;
+    font-size: clamp(2.4rem, 11vw, 6rem); line-height: 1; overflow-wrap: anywhere;
+    text-shadow: 0 4px 30px rgba(0,0,0,.8);
+  }
+  .sub {
+    margin: .6rem 0 0;
+    font-size: clamp(.85rem, 2vw, 1.1rem);
+    letter-spacing: .5em; text-transform: uppercase; color: var(--paper-dim);
+  }
+  .lede { max-width: 640px; margin: 1.8rem auto 0; color: var(--paper-dim); font-style: italic; }
+  .fine { max-width: 600px; margin: 1.1rem auto 0; color: var(--paper-dim); font-size: .95rem; line-height: 1.5; opacity: .85; }
+  .jump { margin-top: 1.6rem; font-family: "Caveat", cursive; font-size: 1.35rem; color: var(--paper-dim); }
+  .jump a { color: var(--paper); text-decoration: none; }
+  .jump a:hover { text-decoration: underline; }
+
+  section { scroll-margin-top: 1rem; }
+  section + section { margin-top: 4rem; }
+  .group {
+    font-family: "Caveat", cursive; font-weight: 700; font-size: clamp(1.8rem, 5vw, 2.4rem);
+    color: var(--paper-dim); text-align: center; margin-bottom: 2.2rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,.8);
+  }
+
+  /* paper notes, taped under the glass */
+  .note {
+    background: var(--paper); color: var(--char);
+    padding: 1.8rem clamp(1.1rem, 3vw, 1.8rem) 1.5rem;
+    border-radius: 2px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.75);
+    position: relative;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(120,100,70,.12), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(90,75,55,.15), transparent 45%);
+  }
+  .note::before {
+    content: ""; position: absolute; top: -14px; left: 50%;
+    width: 120px; height: 28px; transform: translateX(-50%) rotate(2deg);
+    background: var(--glass); box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  }
+  .note h3 { font-family: "Caveat", cursive; font-size: clamp(1.8rem, 4.5vw, 2.1rem); line-height: 1.1; margin-bottom: .6rem; }
+  .note p { margin-bottom: .7rem; line-height: 1.45; }
+  .note p:last-child { margin-bottom: 0; }
+  .margin { font-family: "Caveat", cursive; font-size: 1.4rem; color: var(--pencil); display: block; }
+  .k { font-family: "Caveat", cursive; font-size: 1.3rem; font-weight: 700; color: var(--pencil); margin-right: .3rem; }
+  .note.narrow { max-width: 760px; margin: 0 auto 3rem; }
+
+  .series { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)); gap: 2.4rem 1.6rem; }
+  .series > * { min-width: 0; }
+  .series .note:nth-child(odd) { transform: rotate(-.8deg); }
+  .series .note:nth-child(even) { transform: rotate(.7deg); }
+  .after { margin-top: 3rem; }
+
+  /* code, kept quiet on the paper */
+  code.algo, pre.code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .78rem; line-height: 1.55; color: var(--char);
+    background: rgba(26,25,24,.06); border-left: 2px solid rgba(26,25,24,.28);
+  }
+  code.algo { display: block; padding: .45rem .7rem; margin: .1rem 0 .9rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+  pre.code { padding: .9rem 1rem; margin-top: .9rem; overflow-x: auto; tab-size: 4; }
+  .job-line { font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.15 !important; }
+
+  /* input / process / output, beats, engine rows */
+  dl.flow > div, dl.beats > div, dl.rows > div {
+    display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem;
+    padding: .8rem 0; border-top: 1px dashed rgba(26,25,24,.22);
+  }
+  dl.flow, dl.beats, dl.rows { margin-top: .4rem; }
+  dl.flow dt, dl.beats dt, dl.rows dt { font-family: "Caveat", cursive; font-size: 1.55rem; font-weight: 700; line-height: 1.1; }
+  dl.beats dt small, dl.rows dt small { display: block; font-size: 1.05rem; font-weight: 500; color: var(--pencil); }
+  dl.rows dt { font-size: 1.35rem; }
+  dl.rows code.algo { margin: 0; }
+  dl.beats dd { font-style: italic; }
+  dl.flow ol { list-style: none; }
+  dl.flow li { padding: .25rem 0; line-height: 1.4; }
+  dl.flow li b { font-weight: 600; }
+  ul.checks { list-style: none; margin-top: .4rem; }
+  ul.checks li { padding: .35rem 0; border-top: 1px dashed rgba(26,25,24,.22); }
+  ul.checks li::before { content: "\2713"; font-family: "Caveat", cursive; font-size: 1.4rem; color: var(--pencil); margin-right: .6rem; }
+
+  blockquote.pull {
+    max-width: 720px; margin: 0 auto; text-align: center; font-style: italic;
+    font-size: 1.35rem; line-height: 1.5; color: var(--paper);
+    text-shadow: 0 2px 20px rgba(0,0,0,.8);
+  }
+
+  /* the cases */
+  .tools { max-width: 760px; margin: 0 auto 2.6rem; display: flex; flex-direction: column; gap: 1.1rem; align-items: center; }
+  .find { display: block; width: 100%; max-width: 460px; }
+  .find span { display: block; font-family: "Caveat", cursive; font-size: 1.4rem; color: var(--paper-dim); text-align: center; }
+  .find input {
+    width: 100%; font: inherit; font-size: 1.15rem; color: var(--paper); text-align: center;
+    background: transparent; border: 0; border-bottom: 1.5px solid rgba(233,227,214,.45);
+    border-radius: 0; padding: .3rem .1rem; outline: none; -webkit-appearance: none; appearance: none;
+  }
+  .find input::placeholder { color: var(--paper-dim); opacity: .7; font-style: italic; }
+  .find input:focus { border-bottom-color: var(--paper); }
+  .chips { display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center; }
+  .chip {
+    background: rgba(0,0,0,.55); color: var(--paper);
+    border: 1px solid var(--glass); border-radius: 999px;
+    padding: .2rem 1.2rem; font-family: "Caveat", cursive; font-size: 1.3rem; cursor: pointer;
+  }
+  .chip:hover { background: #000; }
+  .chip[aria-pressed="true"] { background: var(--paper); color: var(--char); border-color: var(--paper); }
+  .chip:focus-visible, .link:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+  .meta { font-family: "Caveat", cursive; font-size: 1.3rem; color: var(--paper-dim); text-align: center; }
+  .link {
+    background: none; border: 0; font: inherit; color: var(--paper); cursor: pointer;
+    text-decoration: underline; text-decoration-color: rgba(233,227,214,.4); text-underline-offset: .15em;
+  }
+  #none { text-align: center; font-family: "Caveat", cursive; font-size: 1.6rem; color: var(--paper-dim); margin-top: 1rem; }
+
+  .cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 2.6rem 1.6rem; align-items: start; }
+  .case {
+    padding: 1.8rem clamp(1.1rem, 3vw, 1.6rem) 1.3rem; min-width: 0;
+    box-shadow: 0 18px 44px rgba(0,0,0,.6); transition: transform .3s;
+  }
+  .case:nth-child(odd) { transform: rotate(-.5deg); }
+  .case:nth-child(even) { transform: rotate(.45deg); }
+  .case:not([open]):hover { transform: rotate(0) translateY(-4px); }
+  .case[open] { transform: none; }
+  .case summary { list-style: none; cursor: pointer; display: block; }
+  .case summary::-webkit-details-marker { display: none; }
+  .case summary:focus-visible { outline: 2px solid var(--char); outline-offset: 6px; }
+  .case h3 { margin: 0 0 .1rem; }
+  .case .analogy { display: block; font-style: italic; color: #3a3530; line-height: 1.35; }
+  .case .toggle { display: block; margin-top: .7rem; font-family: "Caveat", cursive; font-size: 1.5rem; }
+  .case .t-close { display: none; }
+  .case[open] .t-open { display: none; }
+  .case[open] .t-close { display: inline; }
+  .file { margin-top: 1rem; padding-top: .9rem; border-top: 1px dashed rgba(26,25,24,.28); }
+  .gist { list-style: none; }
+  .gist li { margin-bottom: .45rem; line-height: 1.45; }
+  .file h4 { font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.1; margin: 1.2rem 0 .4rem; color: var(--pencil); }
+  .steps { list-style: none; }
+  .steps li { padding: .3rem 0; border-bottom: 1px dashed rgba(26,25,24,.15); line-height: 1.4; }
+  .steps li:last-child { border-bottom: 0; font-weight: 600; }
+  .steps b { font-family: "Caveat", cursive; font-size: 1.3rem; color: var(--pencil); font-weight: 700; margin-right: .35rem; }
+  .voice { border-left: 2px solid rgba(26,25,24,.25); padding-left: 1rem; margin: .7rem 0; font-style: italic; color: #3a3530; line-height: 1.4; }
+  .voice span { display: block; font-family: "Caveat", cursive; font-style: normal; font-size: 1.25rem; color: var(--pencil); }
+
+  footer { text-align: center; margin-top: 3rem; color: var(--paper-dim); font-size: 1rem; }
+
+  @media (max-width: 760px) {
+    .series .note:nth-child(n), .case:nth-child(n) { transform: none; }
+    dl.flow > div, dl.beats > div, dl.rows > div { grid-template-columns: 1fr; gap: .2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<nav><a href="../index.html">← back to the map</a></nav>
+
+<main>
+  <header>
+    <h1>the investigation</h1>
+    <p class="sub">— the psychological algorithm —</p>
+    <p class="lede">Every symptom is a solution that once made sense. Give it a voice, find its job, trace it back to the child who needed it, then thank it and let it go.</p>
+    <p class="fine">A way of asking questions, not a diagnosis. The examples show how the dialogue goes; they are illustrations, not medical findings. Get any physical symptom checked by a doctor, and treat each “origin” as something to explore with the person, never a fact to hand them.</p>
+    <p class="jump"><a href="#the-algorithm">the algorithm</a> · <a href="#six-steps">six steps</a> · <a href="#three-jobs">three jobs</a> · <a href="#the-engine">the engine</a> · <a href="#the-cases">the cases</a></p>
+  </header>
+
+  <section id="the-algorithm">
+    <h2 class="group">the algorithm</h2>
+    <div class="note narrow">
+      <span class="margin">the core algorithm</span>
+      <h3>symptom in, release out</h3>
+      <dl class="flow">
+        <div><dt>input</dt><dd>Present symptom/behavior/problem</dd></div>
+        <div><dt>process</dt><dd><ol>
+          <li><b>Assign Agency</b> → Give the symptom a voice/personality</li>
+          <li><b>Identify Function</b> → What job is it doing?</li>
+          <li><b>Trace Origin</b> → When did this “solution” begin?</li>
+          <li><b>Reframe Purpose</b> → Show it was logical protection then</li>
+          <li><b>Update Context</b> → Demonstrate it’s outdated now</li>
+        </ol></dd></div>
+        <div><dt>output</dt><dd>Release/transformation of symptom</dd></div>
+      </dl>
+    </div>
+    <div class="note narrow">
+      <span class="margin">the meta-algorithm</span>
+      <h3>the deeper pattern</h3>
+      <pre class="code">FUNCTION heal_symptom(symptom):
+    personality = personify(symptom)
+    original_purpose = identify_function(personality)
+    trauma_context = find_origin(original_purpose)
+
+    IF trauma_context.danger_level = HIGH:
+        validate_logic(original_purpose)
+
+    current_context = assess_present_reality()
+
+    IF current_context.safety_level &gt; trauma_context.safety_level:
+        create_new_narrative(empowered_adult_self)
+        release_old_pattern(with_gratitude)
+
+    RETURN transformed_self</pre>
+    </div>
+    <blockquote class="pull">This is essentially a psychological debugging system that locates the original “code” (childhood survival strategy), updates it for the current “operating system” (adult reality), and patches the bugs (outdated protective mechanisms).</blockquote>
+  </section>
+
+  <section id="six-steps">
+    <h2 class="group">six steps</h2>
+    <div class="series">
+      <div class="note">
+        <span class="margin">step 1</span>
+        <h3>Symptom Personification</h3>
+        <code class="algo">IF symptom EXISTS THEN create_personality(symptom)</code>
+        <p><b class="k">Function</b> Transform abstract problem into concrete entity</p>
+        <p><b class="k">Purpose</b> Make the unconscious conscious through dialogue</p>
+      </div>
+      <div class="note">
+        <span class="margin">step 2</span>
+        <h3>Role Function Purpose Detection</h3>
+        <code class="algo">WHILE purpose_unclear DO ask("What is your job/role/function?")</code>
+        <p><b class="k">Function</b> Identify the protective/survival function</p>
+        <p><b class="k">Purpose</b> Reveal the hidden logic behind seemingly irrational behavior</p>
+      </div>
+      <div class="note">
+        <span class="margin">step 3</span>
+        <h3>Temporal Regression Analysis</h3>
+        <code class="algo">SEARCH childhood_memories WHERE symptom_origin = TRUE</code>
+        <p><b class="k">Function</b> Locate the original traumatic context</p>
+        <p><b class="k">Purpose</b> Find when the “solution” was first implemented</p>
+      </div>
+      <div class="note">
+        <span class="margin">step 4</span>
+        <h3>Contextual Logic Validation</h3>
+        <code class="algo">IF past_context = dangerous THEN solution = logical</code>
+        <p><b class="k">Function</b> Validate the symptom made sense in original context</p>
+        <p><b class="k">Purpose</b> Remove shame and self-blame from the equation</p>
+      </div>
+      <div class="note">
+        <span class="margin">step 5</span>
+        <h3>Present Reality Assessment</h3>
+        <code class="algo">IF current_context ≠ past_context THEN solution = outdated</code>
+        <p><b class="k">Function</b> Highlight the contextual change</p>
+        <p><b class="k">Purpose</b> Create cognitive dissonance with old pattern</p>
+      </div>
+      <div class="note">
+        <span class="margin">step 6</span>
+        <h3>Permission to Release</h3>
+        <code class="algo">THANK symptom FOR protection THEN grant_permission(release)</code>
+        <p><b class="k">Function</b> Grateful dismissal of outdated protection</p>
+        <p><b class="k">Purpose</b> Allow natural healing without resistance</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="three-jobs">
+    <h2 class="group">three jobs</h2>
+    <p class="lede" style="margin:-1rem auto 2.6rem; text-align:center">Every symptom serves one of these three functions.</p>
+    <div class="series">
+      <div class="note">
+        <span class="margin">job 1</span>
+        <h3>protect</h3>
+        <p class="job-line">“Keep you safe from harm”</p>
+        <p><b class="k">Analogies</b> bodyguard / armor / shield / fortress</p>
+      </div>
+      <div class="note">
+        <span class="margin">job 2</span>
+        <h3>punish</h3>
+        <p class="job-line">“Make you suffer for perceived wrongdoing”</p>
+        <p><b class="k">Analogies</b> judge / jury / jailer / disciplinarian</p>
+      </div>
+      <div class="note">
+        <span class="margin">job 3</span>
+        <h3>connect</h3>
+        <p class="job-line">“Get attention/care/love”</p>
+        <p><b class="k">Analogies</b> distress signal / attention magnet / care request</p>
+      </div>
+    </div>
+    <div class="note narrow after">
+      <span class="margin">the recognition algorithm</span>
+      <h3>which job is it?</h3>
+      <pre class="code">IF symptom_function = PROTECT:
+    analogy = "bodyguard/armor/shield/fortress"
+
+IF symptom_function = PUNISH:
+    analogy = "judge/jury/jailer/disciplinarian"
+
+IF symptom_function = CONNECT:
+    analogy = "distress signal/attention magnet/care request"</pre>
+    </div>
+  </section>
+
+  <section id="the-engine">
+    <h2 class="group">the engine</h2>
+    <div class="note narrow">
+      <span class="margin">the therapeutic reframe</span>
+      <h3>that was then, this is now</h3>
+      <dl class="beats"><div><dt>acknowledge<small>validate the child’s logic</small></dt><dd>“That made perfect sense when you were [age]”</dd></div><div><dt>contrast<small>highlight the context change</small></dt><dd>“But that was then, this is now”</dd></div><div><dt>declare<small>empower the adult self</small></dt><dd>“You have better tools now”</dd></div><div><dt>appreciate<small>release with gratitude</small></dt><dd>“Thank you for protecting me, but I don’t need this anymore”</dd></div></dl>
+      <pre class="code">FUNCTION reframe_symptom(symptom, child_context, adult_context):
+
+    // Validate the child's logic
+    acknowledge("That made perfect sense when you were [age]")
+
+    // Highlight the context change
+    contrast("But that was then, this is now")
+
+    // Empower the adult self
+    declare("You have better tools now")
+
+    // Release with gratitude
+    appreciate("Thank you for protecting me, but I don't need this anymore")
+
+    RETURN integrated_healing</pre>
+    </div>
+    <div class="note narrow">
+      <span class="margin">the inference engine</span>
+      <h3>always running underneath</h3>
+      <p>The algorithm constantly runs these background processes:</p>
+      <dl class="rows"><div><dt>Pattern Recognition</dt><dd><code class="algo">symptom_behavior → protective_function</code></dd></div><div><dt>Temporal Analysis</dt><dd><code class="algo">present_problem → past_solution</code></dd></div><div><dt>Context Comparison</dt><dd><code class="algo">child_powerlessness → adult_capability</code></dd></div><div><dt>Analogy Generation</dt><dd><code class="algo">abstract_function → concrete_metaphor</code></dd></div><div><dt>Narrative Reconstruction</dt><dd><code class="algo">victim_story → survivor_wisdom</code></dd></div></dl>
+    </div>
+    <div class="note narrow">
+      <span class="margin">the success criteria</span>
+      <h3>how you know it worked</h3>
+      <p>The algorithm is successful when:</p>
+      <ul class="checks"><li>Client experiences the “aha moment” of recognition</li><li>Symptom transforms from enemy to ally</li><li>Shame transforms to understanding</li><li>Powerlessness transforms to choice</li><li>Past trauma transforms to present wisdom</li></ul>
+    </div>
+  </section>
+
+  <section id="the-cases">
+    <h2 class="group">the cases</h2>
+    <p class="lede" style="margin:-1rem auto 2.4rem; text-align:center">54 worked examples. Each one runs the same moves — observe, infer, find the analogy, find the connection, conclude — and then lets the symptom speak for itself.</p>
+
+    <div class="tools">
+      <label class="find"><span>find a symptom</span><input id="q" type="search" placeholder="vertigo, anxiety, shoulder…" autocomplete="off"></label>
+      <div class="chips" role="group" aria-label="filter by the symptom’s job">
+        <button type="button" class="chip" data-fn="all" aria-pressed="true">all</button>
+        <button type="button" class="chip" data-fn="protect" aria-pressed="false">protect</button>
+        <button type="button" class="chip" data-fn="punish" aria-pressed="false">punish</button>
+        <button type="button" class="chip" data-fn="connect" aria-pressed="false">connect</button>
+      </div>
+      <p class="meta"><span id="count" aria-live="polite">54 files</span> · <button type="button" class="link" id="openall">open all</button> · <button type="button" class="link" id="closeall">close all</button></p>
+    </div>
+
+    <div class="cases">
+      <details class="note case" id="case-chronic-vertigo" data-fn="protect">
+        <summary>
+          <span class="margin">case 01 · protect</span>
+          <h3>chronic vertigo</h3>
+          <span class="analogy">Vertigo as Balance Disruption System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The vertigo is treated as a destabilization device: “My job is to keep you off balance so you can’t move forward confidently”</li><li>The dizziness becomes a way to prevent taking risks</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client experiences chronic vertigo and balance issues with no medical cause</li><li><b>Inference</b> The vertigo serves to prevent confident movement through life</li><li><b>Analogy</b> The vertigo is like a ship’s compass spinning wildly, preventing navigation</li><li><b>Connection</b> Childhood where any confident action led to being knocked down</li><li><b>Conclusion</b> Vertigo = protective instability to prevent confident risks that might lead to failure</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates vertigo… I’m your balance disruptor”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to keep you unsteady so you won’t take confident steps forward”</blockquote><blockquote class="voice"><span>Function</span>“If I keep you dizzy and off-balance, you can’t move confidently toward goals and risk being knocked down again”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-ringing-ears" data-fn="protect">
+        <summary>
+          <span class="margin">case 02 · protect</span>
+          <h3>chronic ringing ears</h3>
+          <span class="analogy">Tinnitus as Static Interference</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The ear ringing is treated as a radio jammer: “My job is to block out dangerous messages”</li><li>The constant noise becomes protection against hearing harmful things</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has constant ringing in ears with no medical explanation</li><li><b>Inference</b> The tinnitus serves to block out potentially harmful auditory information</li><li><b>Analogy</b> The tinnitus is like static on a radio blocking clear reception</li><li><b>Connection</b> Childhood where hearing certain things was traumatic or dangerous</li><li><b>Conclusion</b> Tinnitus = protective static to prevent hearing anything that might be harmful</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates ear ringing… I’m your audio interference system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you can’t hear anything that might hurt you”</blockquote><blockquote class="voice"><span>Function</span>“If I fill your ears with noise, you won’t be able to hear criticism or threats like you did as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-bloating" data-fn="protect">
+        <summary>
+          <span class="margin">case 03 · protect</span>
+          <h3>chronic bloating</h3>
+          <span class="analogy">Bloating as Expansion Protection</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The bloating is treated as body armor: “My job is to make you bigger so you take up more space”</li><li>The swelling becomes a way to claim physical territory</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic bloating and digestive swelling</li><li><b>Inference</b> The bloating serves to make the body appear larger and more dominant</li><li><b>Analogy</b> The bloating is like a pufferfish expanding to look threatening</li><li><b>Connection</b> Childhood where being small made client vulnerable to attack</li><li><b>Conclusion</b> Bloating = protective expansion to appear bigger and less vulnerable</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates bloating… I’m your expansion system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make you bigger so you can’t be hurt as easily”</blockquote><blockquote class="voice"><span>Function</span>“If I make you swell up, you’ll take up more space and be harder to push around”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-muscle-spasms" data-fn="protect">
+        <summary>
+          <span class="margin">case 04 · protect</span>
+          <h3>chronic muscle spasms</h3>
+          <span class="analogy">Muscle Spasms as Protective Armor Lock</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The spasms are treated as automatic defense shields: “My job is to tense up your armor when danger approaches”</li><li>The muscle tension becomes a suit of armor protecting vital areas</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic muscle spasms and tension throughout body</li><li><b>Inference</b> The spasms serve to create protective armor against anticipated attacks</li><li><b>Analogy</b> The spasms are like a knight’s armor automatically locking into place</li><li><b>Connection</b> Childhood where physical or emotional attacks came without warning</li><li><b>Conclusion</b> Muscle spasms = automatic armor system preparing for anticipated assault</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates muscle spasms… I’m your automatic armor system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to tense up your muscles so you’re ready for attack”</blockquote><blockquote class="voice"><span>Function</span>“If I keep your muscles tight and ready, you won’t be caught off guard when someone tries to hurt you”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-nausea" data-fn="protect">
+        <summary>
+          <span class="margin">case 05 · protect</span>
+          <h3>chronic nausea</h3>
+          <span class="analogy">Nausea as Poison Detection System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The nausea is treated as a toxin alert: “My job is to warn you when something poisonous is coming”</li><li>The sick feeling becomes an early warning system for danger</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client experiences chronic nausea in social or stressful situations</li><li><b>Inference</b> The nausea serves to detect and warn about toxic people or situations</li><li><b>Analogy</b> The nausea is like a canary in a coal mine detecting poison gas</li><li><b>Connection</b> Childhood where toxic people or situations were disguised as normal</li><li><b>Conclusion</b> Nausea = internal poison detector warning about dangerous people/situations</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates nausea… I’m your poison detection system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make you sick when toxic people or situations are around”</blockquote><blockquote class="voice"><span>Function</span>“If I make you nauseous, you’ll know to get away from whatever is poisoning you”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-yeast-infections" data-fn="protect">
+        <summary>
+          <span class="margin">case 06 · protect</span>
+          <h3>chronic yeast infections</h3>
+          <span class="analogy">Yeast Infections as Barrier System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The infections are treated as a moat around a castle: “My job is to make you untouchable and unapproachable”</li><li>The infections become a protective barrier against intimacy</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has recurring yeast infections with no clear medical cause</li><li><b>Inference</b> The infections serve to prevent sexual intimacy and vulnerability</li><li><b>Analogy</b> The infections are like a moat filled with crocodiles protecting a castle</li><li><b>Connection</b> Childhood sexual abuse where intimacy was dangerous</li><li><b>Conclusion</b> Yeast infections = protective barrier making intimacy impossible</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates yeast infections… I’m your intimacy barrier”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure no one can get close to you sexually”</blockquote><blockquote class="voice"><span>Function</span>“If I make you untouchable, you’ll be safe from sexual harm like you weren’t as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-dry-eyes" data-fn="protect">
+        <summary>
+          <span class="margin">case 07 · protect</span>
+          <h3>chronic dry eyes</h3>
+          <span class="analogy">Dry Eyes as Tears Prevention System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The dry eyes are treated as emotional shutdown: “My job is to make sure you never cry again”</li><li>The lack of tears becomes protection against showing vulnerability</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic dry eyes despite using artificial tears</li><li><b>Inference</b> The dry eyes serve to prevent emotional tears and vulnerability</li><li><b>Analogy</b> The dry eyes are like a dam blocking a river of tears</li><li><b>Connection</b> Childhood where crying led to punishment or increased danger</li><li><b>Conclusion</b> Dry eyes = protective system preventing vulnerable emotional expression</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates dry eyes… I’m your tear prevention system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you never cry and show weakness”</blockquote><blockquote class="voice"><span>Function</span>“If I keep your eyes dry, you can’t shed tears and be vulnerable like you were as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-swollen-glands" data-fn="protect">
+        <summary>
+          <span class="margin">case 08 · protect</span>
+          <h3>chronic swollen glands</h3>
+          <span class="analogy">Swollen Glands as Immune Fortress</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The swollen glands are treated as military fortifications: “My job is to build up defenses against attack”</li><li>The swelling becomes fortification against perceived threats</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronically swollen lymph nodes with no infection</li><li><b>Inference</b> The swollen glands serve to create maximum immune defense</li><li><b>Analogy</b> The swollen glands are like a fortress with walls getting thicker</li><li><b>Connection</b> Childhood where client’s defenses were constantly overwhelmed</li><li><b>Conclusion</b> Swollen glands = over-fortification to prevent being defenseless again</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that swells your glands… I’m your fortress builder”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure your defenses are as strong as possible”</blockquote><blockquote class="voice"><span>Function</span>“If I keep your immune system on high alert, you won’t be defenseless against attack”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-chest-tightness" data-fn="protect">
+        <summary>
+          <span class="margin">case 09 · protect</span>
+          <h3>chronic chest tightness</h3>
+          <span class="analogy">Chest Tightness as Heart Protection System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The chest tightness is treated as a protective cage: “My job is to squeeze your heart so it can’t be broken again”</li><li>The constriction becomes armor around the heart</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic chest tightness and breathing difficulty</li><li><b>Inference</b> The chest tightness serves to protect the heart from emotional damage</li><li><b>Analogy</b> The chest tightness is like a protective cage around a fragile bird</li><li><b>Connection</b> Childhood heartbreak where emotional pain was unbearable</li><li><b>Conclusion</b> Chest tightness = protective constriction preventing heart from being vulnerable</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates chest tightness… I’m your heart protector”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to squeeze around your heart so it can’t be broken”</blockquote><blockquote class="voice"><span>Function</span>“If I keep your chest tight, your heart will be protected from the kind of pain you felt as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-cold-hands-feet" data-fn="protect">
+        <summary>
+          <span class="margin">case 10 · protect</span>
+          <h3>chronic cold hands/feet</h3>
+          <span class="analogy">Cold Extremities as Circulation Withdrawal</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The cold hands/feet are treated as strategic retreat: “My job is to pull your life force away from vulnerable areas”</li><li>The coldness becomes energy conservation for survival</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronically cold hands and feet despite warm environment</li><li><b>Inference</b> The coldness serves to withdraw energy from vulnerable extremities</li><li><b>Analogy</b> The cold extremities are like a turtle pulling into its shell</li><li><b>Connection</b> Childhood where reaching out or moving forward led to harm</li><li><b>Conclusion</b> Cold hands/feet = protective withdrawal of life force from vulnerable areas</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that makes your hands and feet cold… I’m your energy withdrawal system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to pull your life force away from areas that might get hurt”</blockquote><blockquote class="voice"><span>Function</span>“If I keep your extremities cold, you won’t reach out or step forward into danger”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-migraines" data-fn="protect">
+        <summary>
+          <span class="margin">case 11 · protect</span>
+          <h3>chronic migraines</h3>
+          <span class="analogy">Migraines as Pressure Relief System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The migraines are treated as a steam valve: “My job is to release the pressure before your head explodes”</li><li>The pain becomes a way to discharge unbearable mental pressure</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client suffers from debilitating migraines with no medical cause</li><li><b>Inference</b> The migraines serve to release overwhelming mental/emotional pressure</li><li><b>Analogy</b> The migraines are like a pressure cooker releasing steam through the valve</li><li><b>Connection</b> Childhood where client had to hold in all emotions and stress</li><li><b>Conclusion</b> Migraines = pressure release system for emotions that have nowhere else to go</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates migraines… I’m your pressure release valve”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to let out all the pressure you’ve been holding in since childhood”</blockquote><blockquote class="voice"><span>Function</span>“If I create this pain, at least some of the pressure gets released instead of building up forever”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-constipation" data-fn="protect">
+        <summary>
+          <span class="margin">case 12 · protect</span>
+          <h3>chronic constipation</h3>
+          <span class="analogy">Constipation as Holding Pattern Control</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The constipation is treated as a retention system: “My job is to hold everything in so nothing gets taken away”</li><li>The inability to release becomes control over what leaves the body</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic constipation despite dietary changes</li><li><b>Inference</b> The constipation serves to control what gets released from the body</li><li><b>Analogy</b> The constipation is like a security guard not letting anything leave</li><li><b>Connection</b> Childhood where everything was taken away, nothing was allowed to be kept</li><li><b>Conclusion</b> Constipation = desperate attempt to hold onto something, anything</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates constipation… I’m your security guard”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure nothing leaves your body without permission”</blockquote><blockquote class="voice"><span>Function</span>“If I can control what goes out, maybe you’ll finally have power over keeping something”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-diarrhea" data-fn="protect">
+        <summary>
+          <span class="margin">case 13 · protect</span>
+          <h3>chronic diarrhea</h3>
+          <span class="analogy">Diarrhea as Emergency Evacuation System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The diarrhea is treated as a panic button: “My job is to get everything toxic out of you immediately”</li><li>The bowel issues become an emergency purge system</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic diarrhea triggered by stress</li><li><b>Inference</b> The diarrhea serves to purge anything perceived as toxic or threatening</li><li><b>Analogy</b> The diarrhea is like an emergency evacuation system clearing a building</li><li><b>Connection</b> Childhood where client felt constantly poisoned by toxic environment</li><li><b>Conclusion</b> Diarrhea = emergency system to purge anything that feels dangerous</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates diarrhea… I’m your emergency evacuation system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to get all the toxic stuff out of you before it can hurt you”</blockquote><blockquote class="voice"><span>Function</span>“If I can flush everything out quickly, maybe the poison won’t stay in your system like it did when you were trapped”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-cystitis" data-fn="protect">
+        <summary>
+          <span class="margin">case 14 · protect</span>
+          <h3>chronic cystitis</h3>
+          <span class="analogy">Cystitis as Boundary Alarm System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The cystitis is treated as a security alarm: “My job is to create pain when your boundaries are crossed”</li><li>The bladder pain becomes a warning system about violation</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client gets recurring bladder infections with no bacterial cause</li><li><b>Inference</b> The cystitis serves to signal when boundaries are being violated</li><li><b>Analogy</b> The cystitis is like a burglar alarm going off when someone breaks in</li><li><b>Connection</b> Childhood sexual abuse where boundaries were constantly violated</li><li><b>Conclusion</b> Cystitis = physical alarm system alerting to boundary violations</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates cystitis… I’m your boundary alarm system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to alert you when someone is violating your space”</blockquote><blockquote class="voice"><span>Function</span>“If I create pain in your most private area, maybe you’ll finally pay attention to boundary violations”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-jaw-clenching" data-fn="protect">
+        <summary>
+          <span class="margin">case 15 · protect</span>
+          <h3>chronic jaw clenching</h3>
+          <span class="analogy">Jaw Clenching as Vault Lock System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The jaw clenching is treated as a security lock: “My job is to keep your mouth locked so nothing dangerous comes out”</li><li>The tension becomes a protection against saying the wrong thing</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client grinds teeth and clenches jaw, especially at night</li><li><b>Inference</b> The jaw clenching serves to prevent dangerous words from escaping</li><li><b>Analogy</b> The jaw clenching is like a vault lock keeping secrets secure</li><li><b>Connection</b> Childhood where speaking up led to severe punishment</li><li><b>Conclusion</b> Jaw clenching = protective lock to prevent dangerous self-expression</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that locks your jaw… I’m your vault security system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure nothing dangerous comes out of your mouth”</blockquote><blockquote class="voice"><span>Function</span>“If I keep your jaw locked tight, you can’t say anything that will get you in trouble”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-shoulder-pain" data-fn="connect">
+        <summary>
+          <span class="margin">case 16 · connect</span>
+          <h3>chronic shoulder pain</h3>
+          <span class="analogy">Shoulder Pain as Atlas Burden</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The shoulder pain is treated as bearing the weight of the world: “My job is to carry everyone’s problems on your shoulders”</li><li>The pain becomes a physical manifestation of emotional burdens</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic shoulder and neck pain with no injury</li><li><b>Inference</b> The shoulder pain represents carrying too much responsibility</li><li><b>Analogy</b> The shoulder pain is like Atlas carrying the world on his shoulders</li><li><b>Connection</b> Childhood where client was responsible for everyone’s emotional wellbeing</li><li><b>Conclusion</b> Shoulder pain = physical manifestation of carrying everyone’s burdens</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates shoulder pain… I’m showing you how much weight you’re carrying”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to physically demonstrate the emotional load you bear”</blockquote><blockquote class="voice"><span>Function</span>“If your shoulders hurt from carrying everyone’s problems, maybe you’ll finally see how much you’re doing”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-throat-problems" data-fn="protect">
+        <summary>
+          <span class="margin">case 17 · protect</span>
+          <h3>chronic throat problems</h3>
+          <span class="analogy">Throat Problems as Communication Blockade</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The throat issues are treated as a roadblock: “My job is to stop dangerous words from coming out”</li><li>The throat becomes a checkpoint controlling what can be expressed</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has recurring throat infections, hoarseness, difficulty swallowing</li><li><b>Inference</b> The throat problems serve to prevent dangerous self-expression</li><li><b>Analogy</b> The throat problems are like a roadblock stopping traffic</li><li><b>Connection</b> Childhood where speaking truth led to punishment or abandonment</li><li><b>Conclusion</b> Throat problems = protective blockade preventing dangerous communication</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates throat problems… I’m your communication checkpoint”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you can’t say anything that will get you abandoned”</blockquote><blockquote class="voice"><span>Function</span>“If I block your throat, you can’t tell people what you really think and drive them away”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-foot-pain" data-fn="protect">
+        <summary>
+          <span class="margin">case 18 · protect</span>
+          <h3>chronic foot pain</h3>
+          <span class="analogy">Foot Pain as Movement Restriction System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The foot pain is treated as ball and chain: “My job is to keep you from moving forward into danger”</li><li>The pain becomes a way to prevent progress and change</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic foot pain that limits mobility and activity</li><li><b>Inference</b> The foot pain serves to prevent moving forward in life</li><li><b>Analogy</b> The foot pain is like shackles preventing escape from prison</li><li><b>Connection</b> Childhood where any attempt to grow or change was punished</li><li><b>Conclusion</b> Foot pain = protective restraint preventing dangerous progress</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates foot pain… I’m your movement restriction system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to keep you from moving forward into unknown danger”</blockquote><blockquote class="voice"><span>Function</span>“If I make your feet hurt, you’ll stay safe where you are instead of risking change”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-hip-pain" data-fn="protect">
+        <summary>
+          <span class="margin">case 19 · protect</span>
+          <h3>chronic hip pain</h3>
+          <span class="analogy">Hip Pain as Flexibility Limiter</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The hip pain is treated as a brace: “My job is to keep you rigid so you can’t bend or adapt”</li><li>The stiffness becomes protection against being too flexible or accommodating</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic hip pain that limits movement and flexibility</li><li><b>Inference</b> The hip pain serves to prevent being too accommodating or flexible</li><li><b>Analogy</b> The hip pain is like a back brace keeping everything rigid</li><li><b>Connection</b> Childhood where being too flexible led to being taken advantage of</li><li><b>Conclusion</b> Hip pain = protective rigidity to prevent being bent out of shape by others</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates hip pain… I’m your rigidity protector”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to keep you stiff so no one can bend you to their will”</blockquote><blockquote class="voice"><span>Function</span>“If I make your hips inflexible, you can’t accommodate everyone else’s needs like you did as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-road-rage" data-fn="protect">
+        <summary>
+          <span class="margin">case 20 · protect</span>
+          <h3>road rage</h3>
+          <span class="analogy">Road Rage as Warrior Defense System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The road rage is treated as a battlefield commander: “My job is to fight back against anyone who threatens you”</li><li>The anger becomes a protective warrior ready for combat</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has explosive anger when driving, gets into confrontations</li><li><b>Inference</b> The road rage serves to protect against feeling powerless and vulnerable</li><li><b>Analogy</b> The road rage is like a warrior defending their territory</li><li><b>Connection</b> Childhood where client was powerless and couldn’t fight back</li><li><b>Conclusion</b> Road rage = delayed fighting back against all past powerlessness</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates road rage… I’m your warrior protector”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you never feel powerless again like you did as a child”</blockquote><blockquote class="voice"><span>Function</span>“If I make you fight every driver who cuts you off, you’re proving you’re not weak anymore”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-jealousy" data-fn="protect">
+        <summary>
+          <span class="margin">case 21 · protect</span>
+          <h3>chronic jealousy</h3>
+          <span class="analogy">Jealousy as Security Guard</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The jealousy is treated as a surveillance system: “My job is to watch for threats to your relationship”</li><li>The jealousy becomes a hypervigilant protection against abandonment</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client is obsessively jealous, constantly suspicious of partner</li><li><b>Inference</b> The jealousy serves to prevent abandonment through vigilance</li><li><b>Analogy</b> The jealousy is like a security guard watching for intruders</li><li><b>Connection</b> Childhood abandonment where people always left unexpectedly</li><li><b>Conclusion</b> Jealousy = early warning system to prevent surprise abandonment</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates jealousy… I’m your relationship security guard”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to watch for signs that they’re going to leave you”</blockquote><blockquote class="voice"><span>Function</span>“If I can catch them cheating or losing interest early, you won’t be blindsided like when your parents left”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-lying" data-fn="protect">
+        <summary>
+          <span class="margin">case 22 · protect</span>
+          <h3>chronic lying</h3>
+          <span class="analogy">Lying as Survival Camouflage</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The lying is treated as protective camouflage: “My job is to hide the real you so no one can hurt you”</li><li>The lies become a false identity to avoid rejection</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client compulsively lies about everything, even small things</li><li><b>Inference</b> The lying serves to protect the real self from being known and rejected</li><li><b>Analogy</b> The lying is like a chameleon changing colors to survive</li><li><b>Connection</b> Childhood where the real self was constantly criticized and rejected</li><li><b>Conclusion</b> Lying = protective false identity to avoid experiencing rejection of true self</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates lies… I’m your camouflage system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure no one ever sees the real you”</blockquote><blockquote class="voice"><span>Function</span>“If I keep creating false versions of you, no one can reject who you really are”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-cough" data-fn="connect">
+        <summary>
+          <span class="margin">case 23 · connect</span>
+          <h3>chronic cough</h3>
+          <span class="analogy">Coughing as Attention Signal</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The cough is treated as a communication device: “My job is to make sure people notice you need help”</li><li>The coughing becomes a way to signal distress without words</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has persistent cough with no medical cause</li><li><b>Inference</b> The cough serves to get attention and care from others</li><li><b>Analogy</b> The cough is like a distress signal or alarm bell</li><li><b>Connection</b> Childhood where emotional needs were ignored unless physically ill</li><li><b>Conclusion</b> Coughing = learned way to signal for care when emotional needs go unmet</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates this cough… I’m your attention signal”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure someone notices you’re suffering”</blockquote><blockquote class="voice"><span>Function</span>“If I make you cough, maybe someone will care about you like they did when you were sick as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-headaches" data-fn="protect">
+        <summary>
+          <span class="margin">case 24 · protect</span>
+          <h3>chronic headaches</h3>
+          <span class="analogy">Headaches as Overload Circuit Breaker</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The headaches are treated as electrical surge protection: “My job is to shut you down before you overload”</li><li>The pain becomes a forced shutdown system</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client gets severe headaches when stressed or overwhelmed</li><li><b>Inference</b> The headaches serve to force rest and prevent emotional overload</li><li><b>Analogy</b> The headaches are like circuit breakers that trip when overloaded</li><li><b>Connection</b> Childhood where client was overwhelmed with adult responsibilities</li><li><b>Conclusion</b> Headaches = protective shutdown to prevent emotional system overload</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates headaches… I’m your circuit breaker”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to shut you down before you have a complete breakdown”</blockquote><blockquote class="voice"><span>Function</span>“If I give you a headache, you’ll have to stop taking care of everyone else like you did as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-lateness" data-fn="protect">
+        <summary>
+          <span class="margin">case 25 · protect</span>
+          <h3>chronic lateness</h3>
+          <span class="analogy">Lateness as Freedom Fighter</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The lateness is treated as a resistance movement: “My job is to rebel against anyone trying to control your time”</li><li>The tardiness becomes an act of defiance against authority</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client is chronically late despite consequences</li><li><b>Inference</b> The lateness serves as rebellion against feeling controlled</li><li><b>Analogy</b> The lateness is like a freedom fighter resisting oppression</li><li><b>Connection</b> Childhood with controlling parents who micromanaged every minute</li><li><b>Conclusion</b> Lateness = delayed rebellion against childhood control and micromanagement</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that makes you late… I’m your freedom fighter”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure no one controls you like your parents did”</blockquote><blockquote class="voice"><span>Function</span>“If I make you late, you’re proving that you have power over your own time”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-skin-picking" data-fn="punish">
+        <summary>
+          <span class="margin">case 26 · punish</span>
+          <h3>chronic skin picking</h3>
+          <span class="analogy">Skin Picking as Perfectionist Quality Control</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The skin picking is treated as a quality inspector: “My job is to fix every flaw I can find”</li><li>The picking becomes an attempt to create perfect skin</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client compulsively picks at skin, creating wounds and scars</li><li><b>Inference</b> The picking serves to achieve impossible perfection</li><li><b>Analogy</b> The picking is like a quality control inspector rejecting defective products</li><li><b>Connection</b> Childhood where any imperfection led to criticism and rejection</li><li><b>Conclusion</b> Skin picking = desperate attempt to achieve perfection to avoid criticism</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that picks your skin… I’m your quality control department”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you’re perfect so no one can criticize you”</blockquote><blockquote class="voice"><span>Function</span>“If I can just fix every tiny flaw, maybe you’ll finally be good enough”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-apologizing" data-fn="protect">
+        <summary>
+          <span class="margin">case 27 · protect</span>
+          <h3>chronic apologizing</h3>
+          <span class="analogy">Apologizing as Peace Treaty Negotiator</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The apologizing is treated as diplomatic immunity: “My job is to prevent conflict by surrendering immediately”</li><li>The apologies become preemptive peace offerings</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client apologizes constantly, even for things beyond their control</li><li><b>Inference</b> The apologizing serves to prevent anger and maintain peace</li><li><b>Analogy</b> The apologizing is like a diplomat offering peace treaties</li><li><b>Connection</b> Childhood where any perceived mistake led to explosive anger</li><li><b>Conclusion</b> Apologizing = preemptive surrender to avoid experiencing rage</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that apologizes constantly… I’m your peace negotiator”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure no one ever gets angry at you”</blockquote><blockquote class="voice"><span>Function</span>“If I apologize for everything first, maybe they won’t explode at you like your parents did”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-indecision" data-fn="protect">
+        <summary>
+          <span class="margin">case 28 · protect</span>
+          <h3>chronic indecision</h3>
+          <span class="analogy">Indecision as Risk Management System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The indecision is treated as a safety protocol: “My job is to prevent you from making the wrong choice”</li><li>The inability to decide becomes protection against making mistakes</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client cannot make decisions, paralyzed by fear of choosing wrong</li><li><b>Inference</b> The indecision serves to avoid the consequences of wrong choices</li><li><b>Analogy</b> The indecision is like a safety system that prevents action</li><li><b>Connection</b> Childhood where any wrong choice led to severe punishment</li><li><b>Conclusion</b> Indecision = protective paralysis to avoid making punishable mistakes</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that can’t decide… I’m your risk management system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to protect you from making the wrong choice and getting punished”</blockquote><blockquote class="voice"><span>Function</span>“If I keep you from deciding, you can’t choose wrong and get hurt like you did as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-agoraphobia" data-fn="protect">
+        <summary>
+          <span class="margin">case 29 · protect</span>
+          <h3>agoraphobia</h3>
+          <span class="analogy">Agoraphobia as Fortress Protection</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The agoraphobia is treated as a castle wall: “My job is to keep you safe inside where nothing bad can happen”</li><li>The home becomes an impenetrable fortress against outside threats</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client cannot leave house, terrified of public spaces</li><li><b>Inference</b> The agoraphobia serves to create absolute safety through isolation</li><li><b>Analogy</b> The agoraphobia is like building a fortress with impenetrable walls</li><li><b>Connection</b> Childhood trauma where outside world was consistently dangerous</li><li><b>Conclusion</b> Agoraphobia = protective isolation preventing exposure to unpredictable threats</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that keeps you inside… I’m your fortress builder”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you never have to face the dangerous world again”</blockquote><blockquote class="voice"><span>Function</span>“If I keep you home, no one can hurt you like they did when you went out before”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-compulsive-shopping" data-fn="protect">
+        <summary>
+          <span class="margin">case 30 · protect</span>
+          <h3>compulsive shopping</h3>
+          <span class="analogy">Shopping as Emotional Pharmacy</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The shopping is treated as medication: “My job is to give you a hit of happiness when you feel empty”</li><li>The purchases become doses of temporary emotional relief</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client compulsively shops, goes into debt buying things they don’t need</li><li><b>Inference</b> The shopping serves as emotional medication for inner emptiness</li><li><b>Analogy</b> The shopping is like taking pills to treat depression</li><li><b>Connection</b> Childhood emotional neglect where material things were the only comfort</li><li><b>Conclusion</b> Shopping = self-medication for chronic emotional emptiness</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that needs to shop… I’m your emotional pharmacist”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to give you a temporary dose of happiness when you feel worthless”</blockquote><blockquote class="voice"><span>Function</span>“If I can make you feel good for a few minutes by buying something, maybe you won’t notice how empty you feel inside”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-hair-pulling" data-fn="protect">
+        <summary>
+          <span class="margin">case 31 · protect</span>
+          <h3>hair-pulling</h3>
+          <span class="analogy">Hair-Pulling as Stress Release Valve</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The hair-pulling is treated as a pressure release system: “My job is to let out the tension before you explode”</li><li>The pulling becomes a way to discharge unbearable internal pressure</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client compulsively pulls out hair when stressed</li><li><b>Inference</b> The hair-pulling serves as physical release for emotional pressure</li><li><b>Analogy</b> The hair-pulling is like a pressure cooker releasing steam</li><li><b>Connection</b> Childhood where emotions had no safe outlet</li><li><b>Conclusion</b> Hair-pulling = physical release valve for suppressed emotional intensity</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that pulls hair… I’m your pressure release valve”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to give you a way to let out all that trapped emotion”</blockquote><blockquote class="voice"><span>Function</span>“If I can create physical pain, maybe it will distract from the emotional pain you’re not allowed to feel”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-social-anxiety" data-fn="protect">
+        <summary>
+          <span class="margin">case 32 · protect</span>
+          <h3>social anxiety</h3>
+          <span class="analogy">Social Anxiety as Invisibility Cloak</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The social anxiety is treated as camouflage: “My job is to make you invisible so no one can judge you”</li><li>The anxiety becomes a protective hiding mechanism</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client cannot speak or function in social situations</li><li><b>Inference</b> The social anxiety serves to avoid judgment and rejection</li><li><b>Analogy</b> The social anxiety is like Harry Potter’s invisibility cloak</li><li><b>Connection</b> Childhood where any attention led to criticism or humiliation</li><li><b>Conclusion</b> Social anxiety = protective invisibility to avoid being seen and judged</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates social anxiety… I’m your invisibility cloak”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure no one notices you enough to criticize you”</blockquote><blockquote class="voice"><span>Function</span>“If I make you too anxious to speak, no one can laugh at you or tell you you’re stupid”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-complainer" data-fn="connect">
+        <summary>
+          <span class="margin">case 33 · connect</span>
+          <h3>chronic complainer</h3>
+          <span class="analogy">Complaining as Attention Magnet</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The complaining is treated as a distress signal: “My job is to make sure someone notices you need help”</li><li>The complaints become SOS signals for care and attention</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client constantly complains about everything, nothing is ever good enough</li><li><b>Inference</b> The complaining serves to get attention and care from others</li><li><b>Analogy</b> The complaining is like a ship sending out distress signals</li><li><b>Connection</b> Childhood where only problems got attention, happiness was ignored</li><li><b>Conclusion</b> Complaining = learned way to signal for care and attention</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that complains… I’m your distress signal broadcaster”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure someone pays attention to you”</blockquote><blockquote class="voice"><span>Function</span>“If I create problems for you to complain about, maybe someone will care enough to help you”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-fatigue" data-fn="protect">
+        <summary>
+          <span class="margin">case 34 · protect</span>
+          <h3>chronic fatigue</h3>
+          <span class="analogy">Fatigue as Strike Action</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The fatigue is treated as a labor strike: “My job is to force you to stop working so hard”</li><li>The exhaustion becomes a body rebellion against overwork</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has unexplained chronic fatigue, cannot function normally</li><li><b>Inference</b> The fatigue serves to force rest and prevent overwork</li><li><b>Analogy</b> The fatigue is like workers going on strike for better conditions</li><li><b>Connection</b> Childhood where client was treated like a workhorse, never allowed rest</li><li><b>Conclusion</b> Fatigue = body’s rebellion against returning to childhood overwork patterns</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates fatigue… I’m your internal labor union”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to force you to rest because you’ll never choose to stop working”</blockquote><blockquote class="voice"><span>Function</span>“If I make you too tired to function, you can’t work yourself to death like you did as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-eating-disorder" data-fn="protect">
+        <summary>
+          <span class="margin">case 35 · protect</span>
+          <h3>eating disorder</h3>
+          <span class="analogy">Eating Disorder as Control Tower</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The eating disorder is treated as mission control: “My job is to give you control over something in your chaotic life”</li><li>The food restriction becomes the one area of absolute control</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client severely restricts food, obsessive about weight and eating</li><li><b>Inference</b> The eating disorder serves as control in an otherwise powerless life</li><li><b>Analogy</b> The eating disorder is like air traffic control managing all flights</li><li><b>Connection</b> Childhood where client had no control over anything in their environment</li><li><b>Conclusion</b> Eating disorder = desperate attempt to control something, anything</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that controls food… I’m your control tower”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to give you power over at least one thing in your life”</blockquote><blockquote class="voice"><span>Function</span>“If I can control what goes into your body, you’ll finally have some power instead of being helpless like you were as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-nail-biting" data-fn="punish">
+        <summary>
+          <span class="margin">case 36 · punish</span>
+          <h3>nail-biting</h3>
+          <span class="analogy">Nail-Biting as Self-Destruction Defense</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The nail-biting is treated as a preemptive strike: “My job is to hurt you before anyone else can”</li><li>The nail-biting becomes a form of self-punishment to avoid external criticism</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client compulsively bites nails until they bleed</li><li><b>Inference</b> The nail-biting serves to punish self before others can</li><li><b>Analogy</b> The nail-biting is like beating yourself up before the bully can</li><li><b>Connection</b> Childhood where client was constantly criticized for everything</li><li><b>Conclusion</b> Nail-biting = self-punishment to avoid worse punishment from others</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that makes you bite your nails… I’m your internal critic”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to punish you first before anyone else notices you’re not perfect”</blockquote><blockquote class="voice"><span>Function</span>“If I hurt you first, maybe they won’t be as harsh when they see you’re already suffering”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-back-pain" data-fn="connect">
+        <summary>
+          <span class="margin">case 37 · connect</span>
+          <h3>chronic back pain</h3>
+          <span class="analogy">Back Pain as Burden Carrier</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The back pain is treated as a weight-bearing system: “My job is to carry everyone’s problems”</li><li>The pain becomes a physical manifestation of emotional burdens</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic back pain with no medical cause</li><li><b>Inference</b> The back pain represents carrying too much emotional weight</li><li><b>Analogy</b> The back pain is like a pack mule carrying everyone’s burdens</li><li><b>Connection</b> Childhood role as family caretaker/problem-solver</li><li><b>Conclusion</b> Back pain = physical manifestation of carrying everyone’s emotional baggage</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates this back pain… I’m carrying the weight of the world”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to show you how much you’re carrying for everyone else”</blockquote><blockquote class="voice"><span>Function</span>“The pain in your back represents all the emotional burdens you’ve been carrying since childhood”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-hoarding" data-fn="protect">
+        <summary>
+          <span class="margin">case 38 · protect</span>
+          <h3>hoarding</h3>
+          <span class="analogy">Hoarding as Security Stockpile</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The hoarding is treated as emergency preparedness: “My job is to make sure you never run out of anything”</li><li>The hoarding becomes a protection against future scarcity</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client cannot throw anything away, house is full of stuff</li><li><b>Inference</b> The hoarding serves as protection against future deprivation</li><li><b>Analogy</b> The hoarding is like a squirrel storing nuts for winter</li><li><b>Connection</b> Childhood poverty where there was never enough</li><li><b>Conclusion</b> Hoarding = insurance policy against returning to having nothing</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that keeps everything… I’m your security system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you never go without like you did as a child”</blockquote><blockquote class="voice"><span>Function</span>“If I keep everything, you’ll never be poor or hungry or without again”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-procrastination" data-fn="protect">
+        <summary>
+          <span class="margin">case 39 · protect</span>
+          <h3>procrastination</h3>
+          <span class="analogy">Procrastination as Delay Tactics</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The procrastination is treated as a strategic delay: “My job is to avoid the possibility of failure”</li><li>The procrastination becomes a protection from judgment</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client consistently procrastinates on important tasks</li><li><b>Inference</b> The procrastination serves to avoid potential failure and criticism</li><li><b>Analogy</b> The procrastination is like a military strategy of delayed engagement</li><li><b>Connection</b> Childhood where attempts were met with harsh criticism</li><li><b>Conclusion</b> Procrastination = avoidance of judgment by never completing anything</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that procrastinates… I’m your protection from failure”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you never have to face criticism again”</blockquote><blockquote class="voice"><span>Function</span>“If you never finish anything, no one can judge your work and tell you it’s not good enough”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-illness" data-fn="protect">
+        <summary>
+          <span class="margin">case 40 · protect</span>
+          <h3>chronic illness</h3>
+          <span class="analogy">Illness as Get-Out-of-Jail Card</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The illness is treated as an excuse system: “My job is to give you a reason to avoid life”</li><li>The illness becomes a socially acceptable way to withdraw</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has multiple unexplained chronic illnesses</li><li><b>Inference</b> The illness serves as legitimate excuse to avoid overwhelming responsibilities</li><li><b>Analogy</b> The illness is like a doctor’s note excusing you from participation</li><li><b>Connection</b> Childhood where client was overwhelmed with adult responsibilities</li><li><b>Conclusion</b> Illness = acceptable way to say “I can’t cope” without being judged</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates these illnesses… I’m your excuse system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to give you a legitimate reason to not participate in life”</blockquote><blockquote class="voice"><span>Function</span>“If you’re sick, no one can expect you to handle everything like you had to as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-relationship-sabotage" data-fn="protect">
+        <summary>
+          <span class="margin">case 41 · protect</span>
+          <h3>relationship sabotage</h3>
+          <span class="analogy">Sabotage as Preemptive Strike Force</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The sabotage is treated as a first-strike military unit: “My job is to end it before they can leave you”</li><li>The sabotage becomes protection from abandonment</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client consistently sabotages good relationships</li><li><b>Inference</b> The sabotage serves to control the timing of inevitable abandonment</li><li><b>Analogy</b> The sabotage is like ending a war before the enemy can attack</li><li><b>Connection</b> Childhood abandonment where people always left</li><li><b>Conclusion</b> Sabotage = controlled ending to avoid unpredictable abandonment</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that ruins relationships… I’m your preemptive strike force”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you leave before they can abandon you”</blockquote><blockquote class="voice"><span>Function</span>“If I destroy it first, you won’t be surprised and devastated when they leave like everyone else did”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-workaholic" data-fn="connect">
+        <summary>
+          <span class="margin">case 42 · connect</span>
+          <h3>workaholic</h3>
+          <span class="analogy">Workaholism as Worthiness Proving Machine</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The workaholism is treated as a value demonstration system: “My job is to prove you deserve to exist”</li><li>The overwork becomes a way to earn love and acceptance</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client works 80+ hours per week, cannot relax</li><li><b>Inference</b> The workaholism serves to prove worthiness through productivity</li><li><b>Analogy</b> The workaholism is like a machine that produces evidence of value</li><li><b>Connection</b> Childhood where love was conditional on achievement</li><li><b>Conclusion</b> Workaholism = continuous proof of worthiness to avoid rejection</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that never stops working… I’m your worthiness production line”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you always deserve the love you’re getting”</blockquote><blockquote class="voice"><span>Function</span>“If I keep you working constantly, no one can say you don’t deserve to be loved”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-stuttering" data-fn="protect">
+        <summary>
+          <span class="margin">case 43 · protect</span>
+          <h3>stuttering</h3>
+          <span class="analogy">Stuttering as Protective Camouflage</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The stuttering is treated as a hiding mechanism: “I’m hiding the real problem behind this stuttering”</li><li>The stuttering becomes a distraction from deeper issues</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has severe stuttering problem</li><li><b>Inference</b> The stuttering serves to mask something more threatening</li><li><b>Analogy</b> The stuttering is like a smokescreen hiding the real issue</li><li><b>Connection</b> Client was covering over stuttering to avoid deeper shame</li><li><b>Conclusion</b> Stuttering = protective cover for more vulnerable core issues</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that created this stuttering… I’m hiding something”</blockquote><blockquote class="voice"><span>Inference</span>“The stuttering is actually covering over the real root cause”</blockquote><blockquote class="voice"><span>Function</span>“My role is to give you something obvious to focus on so you don’t have to deal with the deeper problem”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-alcoholic" data-fn="protect">
+        <summary>
+          <span class="margin">case 44 · protect</span>
+          <h3>alcoholic</h3>
+          <span class="analogy">Alcohol as Emotional Anesthesia</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The alcoholism is treated as pain management: “My job is to numb you so you don’t feel the pain”</li><li>The alcohol becomes a medication for emotional wounds</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client is a functional alcoholic</li><li><b>Inference</b> The alcohol serves to block unbearable feelings</li><li><b>Analogy</b> The drinking is like anesthesia before surgery</li><li><b>Connection</b> “I’m so unlovable, I need to numb this pain”</li><li><b>Conclusion</b> Alcoholism = self-medication for feelings of unworthiness</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that needs alcohol… I’m your anesthesiologist”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you never feel how unlovable you think you are”</blockquote><blockquote class="voice"><span>Function</span>“If I keep you numb, you won’t have to face the truth about how much you hate yourself”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-overweight" data-fn="protect">
+        <summary>
+          <span class="margin">case 45 · protect</span>
+          <h3>overweight</h3>
+          <span class="analogy">Excess Weight as Protective Shield</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The weight is treated as armor: “My job is to keep you safe by making you unattractive”</li><li>The fat becomes a barrier between client and potential harm</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client is significantly overweight despite trying to lose weight</li><li><b>Inference</b> The weight serves a protective function</li><li><b>Analogy</b> The excess weight is like a suit of armor protecting from danger</li><li><b>Connection</b> Sexual abuse where being thin/attractive was dangerous</li><li><b>Conclusion</b> Weight = physical barrier to prevent sexual attention/vulnerability</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that keeps you heavy… I’m your bodyguard”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make you so unattractive that no one will want to hurt you”</blockquote><blockquote class="voice"><span>Function</span>“If you’re fat, you’re safe — no one will try to abuse you like they did before”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-fatigue-2" data-fn="protect">
+        <summary>
+          <span class="margin">case 46 · protect</span>
+          <h3>chronic fatigue</h3>
+          <span class="analogy">Fatigue as Emergency Brake System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The fatigue is treated as a safety mechanism: “My job is to stop you from doing too much”</li><li>The exhaustion becomes a protective shutdown system</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client suffers from debilitating chronic fatigue</li><li><b>Inference</b> The fatigue serves to prevent overwhelming responsibility</li><li><b>Analogy</b> The fatigue is like a car’s emergency brake preventing a crash</li><li><b>Connection</b> Childhood parentification where child had to care for everyone</li><li><b>Conclusion</b> Fatigue = protective mechanism preventing return to overwhelming caretaking role</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates this fatigue… I’m your emergency brake”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to stop you from taking on everyone else’s problems again”</blockquote><blockquote class="voice"><span>Function</span>“If you’re too tired to function, you can’t be responsible for fixing everyone like you had to as a child”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-panic-attack" data-fn="protect">
+        <summary>
+          <span class="margin">case 47 · protect</span>
+          <h3>panic attack</h3>
+          <span class="analogy">Panic as Alarm System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The panic attacks are treated as warning sirens: “My job is to alert you to danger”</li><li>The panic becomes a hypervigilant security system</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client experiences frequent panic attacks</li><li><b>Inference</b> The panic serves as an early warning system</li><li><b>Analogy</b> The panic is like a smoke alarm going off at the first sign of threat</li><li><b>Connection</b> Childhood trauma where danger was unpredictable</li><li><b>Conclusion</b> Panic = overactive alarm system protecting from perceived threats</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that creates panic… I’m your alarm system”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to warn you when something bad might happen”</blockquote><blockquote class="voice"><span>Function</span>“I keep you safe by making you run away before anyone can hurt you like they did before”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-insomnia" data-fn="protect">
+        <summary>
+          <span class="margin">case 48 · protect</span>
+          <h3>insomnia</h3>
+          <span class="analogy">Insomnia as Night Watch Guard</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The insomnia is treated as a security guard: “My job is to keep watch while you’re vulnerable”</li><li>The sleeplessness becomes a protection during defenseless hours</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client cannot sleep, stays awake all night</li><li><b>Inference</b> The insomnia serves as protection during vulnerable sleep hours</li><li><b>Analogy</b> The insomnia is like a guard standing watch through the night</li><li><b>Connection</b> Childhood abuse that happened at night when child was asleep</li><li><b>Conclusion</b> Insomnia = protective vigilance preventing nighttime vulnerability</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that keeps you awake… I’m your night watchman”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure no one can hurt you while you’re sleeping”</blockquote><blockquote class="voice"><span>Function</span>“If you stay awake, you’re safe — no one can sneak into your room like they did before”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-perfectionism" data-fn="protect">
+        <summary>
+          <span class="margin">case 49 · protect</span>
+          <h3>perfectionism</h3>
+          <span class="analogy">Perfectionism as Quality Control System</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The perfectionism is treated as a quality inspector: “My job is to make sure you never make a mistake”</li><li>The perfectionism becomes a protection from criticism</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client is paralyzed by perfectionism, unable to complete tasks</li><li><b>Inference</b> The perfectionism serves to avoid criticism and rejection</li><li><b>Analogy</b> The perfectionism is like a quality control inspector rejecting anything imperfect</li><li><b>Connection</b> Childhood where mistakes led to severe punishment or rejection</li><li><b>Conclusion</b> Perfectionism = protective mechanism preventing criticism by never producing anything</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that demands perfection… I’m your quality control department”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make sure you never get criticized again”</blockquote><blockquote class="voice"><span>Function</span>“If nothing you do is ever good enough to show anyone, no one can reject you or tell you it’s wrong”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-shoplifting" data-fn="protect">
+        <summary>
+          <span class="margin">case 50 · protect</span>
+          <h3>shoplifting</h3>
+          <span class="analogy">Stealing as Balancing the Scales</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The shoplifting is treated as a balancing mechanism: “I need to take stuff back to address the balance”</li><li>The stealing becomes a way to correct perceived injustice</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client compulsively shoplifts</li><li><b>Inference</b> The shoplifting serves a purpose (role/function/purpose technique)</li><li><b>Analogy</b> The stealing is like balancing scales of justice</li><li><b>Connection</b> “Everyone’s taking from me, so I need to take stuff back”</li><li><b>Conclusion</b> Shoplifting = correcting imbalance when client feels “not enough”</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that makes you shoplift… my role is to get you more stuff”</blockquote><blockquote class="voice"><span>Inference</span>“The world owes me something… if I buy stuff, I’m not getting it for free”</blockquote><blockquote class="voice"><span>Function</span>“My job is to try and take back something because everyone’s taking”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-chronic-dermatitis" data-fn="protect connect">
+        <summary>
+          <span class="margin">case 51 · protect · connect</span>
+          <h3>chronic dermatitis</h3>
+          <span class="analogy">Skin Condition as Protective Armor</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The dermatitis is treated as a bodyguard: “My job is to make you ugly so your stepfather doesn’t come in your room”</li><li>The skin condition becomes a sexual protection system</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client has chronic dermatitis covering body</li><li><b>Inference</b> The skin condition serves a protective purpose</li><li><b>Analogy</b> The dermatitis is like armor making her “unattractive” to predators</li><li><b>Connection</b> Sexual abuse where being “pretty” was dangerous</li><li><b>Conclusion</b> Dermatitis = protective ugliness to prevent sexual attention</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of you that gave you chronic dermatitis… I have a job”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to make you ugly so your stepfather doesn’t come in your room and try to touch you”</blockquote><blockquote class="voice"><span>Function</span>“My intention is to show your parents something’s wrong — suddenly you’re covered in it, you’re scaly, something is wrong”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-depression" data-fn="punish protect">
+        <summary>
+          <span class="margin">case 52 · punish · protect</span>
+          <h3>depression</h3>
+          <span class="analogy">Depression as Judge, Jury, and Jailer</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The depression is treated as a punishment system: “My role is to punish her for being the favorite”</li><li>The depression becomes both punisher and protector</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client suffers from chronic depression</li><li><b>Inference</b> The depression serves dual purposes of punishment and protection</li><li><b>Analogy</b> The depression is like a court system dispensing justice</li><li><b>Connection</b> Survivor’s guilt from being spared when siblings were abused</li><li><b>Conclusion</b> Depression = self-punishment for being “lucky” + protection from dangerous attention</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the part of her that came up with depression… my role in her life is to punish her”</blockquote><blockquote class="voice"><span>Inference</span>“The role of the depression is to punish her for being the favorite”</blockquote><blockquote class="voice"><span>Function</span>“My function is to protect her from attention because if she gets attention, she’ll be criticized”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-headache" data-fn="punish">
+        <summary>
+          <span class="margin">case 53 · punish</span>
+          <h3>headache</h3>
+          <span class="analogy">Headaches as Internal Punisher</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The headaches are treated as a disciplinary system: “I must punish you because you did something terrible”</li><li>The headaches become an internal judge delivering sentences</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client suffers from chronic headaches</li><li><b>Inference</b> The headaches serve to punish perceived childhood “crimes”</li><li><b>Analogy</b> The headaches are like a strict parent delivering punishment</li><li><b>Connection</b> Child blamed themselves for normal childhood actions</li><li><b>Conclusion</b> Headaches = ongoing self-punishment for imagined wrongdoing</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“I’m the headaches… I got a really important job to do for you”</blockquote><blockquote class="voice"><span>Inference</span>“My job is to punish you because you did something terrible”</blockquote><blockquote class="voice"><span>Function</span>“You killed your mom when you were born… you told your dad you hated him and then he died and that was all your fault”</blockquote>
+        </div>
+      </details>
+      <details class="note case" id="case-psoriasis" data-fn="connect">
+        <summary>
+          <span class="margin">case 54 · connect</span>
+          <h3>psoriasis</h3>
+          <span class="analogy">Psoriasis as Weeping Skin</span>
+          <span class="toggle"><span class="t-open">open the file →</span><span class="t-close">close the file ↑</span></span>
+        </summary>
+        <div class="file">
+          <ul class="gist"><li>The psoriasis is treated as emotional expression: “If love cannot find expression in tears, other organs will weep”</li><li>The skin condition becomes the tears the child couldn’t shed</li></ul>
+          <h4>the inference</h4>
+          <ol class="steps"><li><b>Observation</b> Client develops psoriasis at age 7</li><li><b>Inference</b> The psoriasis expresses suppressed grief</li><li><b>Analogy</b> The weeping skin is like the tears that couldn’t be cried</li><li><b>Connection</b> Father left when she was 7, but she had to “be brave”</li><li><b>Conclusion</b> Psoriasis = physical manifestation of unexpressed emotional pain</li></ol>
+          <h4>the part speaks</h4>
+          <blockquote class="voice"><span>Analogy</span>“Psoriasis is often weeping skin… the body will do what the mind cannot”</blockquote><blockquote class="voice"><span>Inference</span>“She didn’t even cry when her daddy left, she just had to be brave”</blockquote><blockquote class="voice"><span>Function</span>“Her skin certainly wept for her… expressing the grief she couldn’t show”</blockquote>
+        </div>
+      </details>
+    </div>
+    <p id="none" hidden>nothing under the glass matches that. try another word.</p>
+  </section>
+
+  <footer>© 2026 MindMapManifesto.com</footer>
+</main>
+
+<script>
+  (function () {
+    var cases = [].slice.call(document.querySelectorAll('.case'));
+    var texts = cases.map(function (c) {
+      return [c.querySelector('.margin'), c.querySelector('h3'), c.querySelector('.analogy'), c.querySelector('.file')]
+        .map(function (el) { return el.textContent; }).join(' ').toLowerCase();
+    });
+    var q = document.getElementById('q'), count = document.getElementById('count'), none = document.getElementById('none');
+    var chips = [].slice.call(document.querySelectorAll('.chip'));
+    var fn = 'all';
+
+    function apply() {
+      var term = q.value.trim().toLowerCase(), n = 0;
+      cases.forEach(function (c, i) {
+        var okFn = fn === 'all' || (' ' + c.dataset.fn + ' ').indexOf(' ' + fn + ' ') > -1;
+        var ok = okFn && (!term || texts[i].indexOf(term) > -1);
+        c.hidden = !ok;
+        if (ok) n++;
+      });
+      count.textContent = (n === cases.length ? n : n + ' of ' + cases.length) + ' files';
+      none.hidden = n > 0;
+    }
+    function setAll(open) { cases.forEach(function (c) { if (!c.hidden) c.open = open; }); }
+
+    q.addEventListener('input', apply);
+    chips.forEach(function (b) {
+      b.addEventListener('click', function () {
+        fn = b.dataset.fn;
+        chips.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        apply();
+      });
+    });
+    document.getElementById('openall').addEventListener('click', function () { setAll(true); });
+    document.getElementById('closeall').addEventListener('click', function () { setAll(false); });
+
+    // #case-… links open that file
+    function openHash() {
+      var id = location.hash.slice(1);
+      if (id.indexOf('case-') !== 0) return;
+      var el = document.getElementById(id);
+      if (el) { el.hidden = false; el.open = true; el.scrollIntoView(); }
+    }
+    window.addEventListener('hashchange', openHash);
+    openHash();
+  })();
+</script>
+</body>
+</html>
