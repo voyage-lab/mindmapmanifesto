@@ -1,0 +1,888 @@
+<title>The 21 Day Cut</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap">
+
+<style>
+:root{
+  --ground:#0E1114;
+  --panel:#161B21;
+  --raised:#1E252D;
+  --line:#2B343E;
+  --line-soft:#212932;
+  --text:#ECEFF2;
+  --muted:#8E9CA9;
+  --dim:#697987;
+
+  --edit:#F2A54C;
+  --audio:#46B8AE;
+  --color:#E4707E;
+  --fx:#9080DE;
+  --ship:#96C374;
+
+  --accent:var(--edit);
+
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --maxw:1200px;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.62;
+  font-weight:350;
+  background-image:
+    radial-gradient(1100px 520px at 78% -8%, rgba(242,165,76,.10), transparent 62%),
+    radial-gradient(760px 420px at 8% 4%, rgba(70,184,174,.055), transparent 60%);
+  background-repeat:no-repeat;
+}
+h1,h2,h3,h4{font-family:var(--display);font-weight:800;line-height:1.06;text-wrap:balance;margin:0;letter-spacing:-.015em}
+p{margin:0}
+a{color:var(--edit);text-decoration:none;border-bottom:1px solid rgba(242,165,76,.35)}
+a:hover{border-bottom-color:var(--edit)}
+a:focus-visible,input:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--edit);outline-offset:3px;border-radius:2px}
+ul{margin:0;padding-left:1.1em}
+li{margin:.22em 0}
+strong{font-weight:600;color:#fff}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.mono{font-family:var(--mono)}
+
+/* ── top progress bar ─────────────────────────── */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  background:rgba(14,17,20,.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line-soft);
+}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:9px 28px;display:flex;align-items:center;gap:16px}
+.topbar .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+.meter{flex:1;height:5px;background:var(--raised);border-radius:99px;overflow:hidden;min-width:60px}
+.meter i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--edit),var(--audio));transition:width .35s cubic-bezier(.2,.7,.3,1)}
+.topbar .pct{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ── hero ─────────────────────────────────────── */
+.hero{padding:74px 0 46px;border-bottom:1px solid var(--line-soft)}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--edit);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.eyebrow s{width:26px;height:1px;background:var(--edit);display:inline-block;text-decoration:none}
+h1{
+  font-size:clamp(3.2rem,10vw,7.2rem);
+  letter-spacing:-.045em;
+  margin:.16em 0 0;
+  line-height:.9;
+}
+h1 em{font-style:normal;color:var(--edit)}
+.lede{font-size:clamp(1.08rem,2.1vw,1.32rem);color:var(--muted);max-width:60ch;margin-top:26px;line-height:1.55}
+.lede b{color:var(--text);font-weight:500}
+
+.stats{display:flex;flex-wrap:wrap;gap:0;margin-top:40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat{flex:1 1 150px;padding:18px 22px 18px 0;border-right:1px solid var(--line-soft)}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-family:var(--display);font-size:1.9rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.stat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);display:block;margin-top:8px}
+
+/* filmstrip */
+.strip{margin-top:38px}
+.strip-row{display:flex;gap:3px}
+.cell{
+  flex:1;height:44px;background:var(--panel);border:1px solid var(--line-soft);
+  border-radius:2px;position:relative;overflow:hidden;
+  display:flex;align-items:flex-end;justify-content:center;
+  font-family:var(--mono);font-size:9.5px;color:var(--dim);padding-bottom:4px;
+  transition:background .3s,color .3s,border-color .3s;
+}
+.cell::before{content:"";position:absolute;inset:0 0 auto 0;height:7px;
+  background:repeating-linear-gradient(90deg,transparent 0 4px,var(--line-soft) 4px 6px)}
+.cell.on{background:linear-gradient(180deg,rgba(242,165,76,.28),rgba(242,165,76,.07));border-color:rgba(242,165,76,.5);color:var(--text)}
+.strip-legend{display:flex;justify-content:space-between;margin-top:9px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+/* ── generic section ──────────────────────────── */
+section{padding:66px 0;border-bottom:1px solid var(--line-soft)}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.sec-num{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.16em;padding-top:6px}
+h2{font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.032em}
+.sec-sub{color:var(--muted);max-width:62ch;margin-top:14px}
+
+/* ── cards grid ───────────────────────────────── */
+.grid{display:grid;gap:14px;margin-top:32px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line-soft);border-radius:4px;padding:22px 22px 24px}
+.card h4{font-size:1.02rem;letter-spacing:-.01em;font-weight:700}
+.card p,.card ul{color:var(--muted);font-size:.95rem;margin-top:10px}
+.klabel{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:11px}
+
+/* ── legend ───────────────────────────────────── */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.lg{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);padding:6px 11px;border-radius:99px;background:var(--panel)}
+.dot{width:8px;height:8px;border-radius:2px;display:block}
+
+/* ── week + day layout ────────────────────────── */
+.week{scroll-margin-top:60px}
+.week-hd{
+  display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:end;
+  padding:0 0 20px;border-bottom:1px solid var(--line);margin-bottom:26px;
+}
+.week-hd .wk{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.week-hd h3{font-size:clamp(1.5rem,3.4vw,2.15rem);letter-spacing:-.03em}
+.week-hd p{color:var(--muted);font-size:.97rem;margin-top:8px;max-width:58ch}
+
+.layout{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:1000px){
+  .layout{grid-template-columns:186px 1fr;gap:44px;align-items:start}
+  .rail{position:sticky;top:70px}
+}
+.rail{display:none}
+@media(min-width:1000px){.rail{display:block}}
+.rail-t{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+.rail a{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:11.5px;color:var(--muted);border-left:0;text-decoration:none;letter-spacing:.02em}
+.rail a:hover{color:var(--text)}
+.rail a b{color:var(--dim);font-weight:400}
+
+.days{display:flex;flex-direction:column;gap:14px}
+.day{
+  position:relative;background:var(--panel);border:1px solid var(--line-soft);
+  border-radius:4px;padding:20px 22px 22px 26px;overflow:hidden;
+  transition:border-color .25s,background .25s;
+}
+.day::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tk,var(--edit));opacity:.85}
+.day:hover{border-color:var(--line)}
+.day[data-track="edit"]{--tk:var(--edit)}
+.day[data-track="audio"]{--tk:var(--audio)}
+.day[data-track="color"]{--tk:var(--color)}
+.day[data-track="fx"]{--tk:var(--fx)}
+.day[data-track="ship"]{--tk:var(--ship)}
+
+.day-hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tc{font-family:var(--mono);font-size:11.5px;color:var(--dim);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.day h4{font-size:1.24rem;letter-spacing:-.022em;flex:1 1 240px}
+.chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--tk);border:1px solid color-mix(in srgb,var(--tk) 40%,transparent);
+  background:color-mix(in srgb,var(--tk) 10%,transparent);padding:3px 8px;border-radius:99px}
+.dur{font-family:var(--mono);font-size:11px;color:var(--dim)}
+
+.obj{color:var(--text);margin-top:12px;font-size:1.02rem;max-width:64ch}
+.obj i{color:var(--muted)}
+
+.blocks{margin-top:18px;display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:3px;overflow:hidden}
+@media(min-width:760px){.blocks{grid-template-columns:1fr 1fr}}
+.blk{background:var(--panel);padding:14px 16px}
+.blk .kl{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);display:flex;justify-content:space-between;gap:10px;margin-bottom:8px}
+.blk .kl u{text-decoration:none;color:var(--tk)}
+.blk p,.blk ul{font-size:.93rem;color:var(--muted);line-height:1.55}
+.blk ul{padding-left:1.05em}
+
+.ck{margin-top:16px;padding:13px 16px;border-radius:3px;background:var(--raised);
+  border:1px solid var(--line-soft);font-size:.94rem;color:var(--muted)}
+.ck b{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tk);display:block;margin-bottom:5px;font-weight:600}
+
+.done{display:inline-flex;align-items:center;gap:9px;margin-top:16px;cursor:pointer;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);user-select:none}
+.done input{appearance:none;width:15px;height:15px;border:1px solid var(--line);border-radius:2px;background:var(--raised);cursor:pointer;display:grid;place-content:center;margin:0}
+.done input::after{content:"";width:7px;height:7px;border-radius:1px;background:var(--tk);transform:scale(0);transition:transform .16s}
+.done input:checked::after{transform:scale(1)}
+.done:hover{color:var(--muted)}
+.day:has(input:checked){background:var(--ground);border-color:var(--line)}
+.day:has(input:checked) h4{color:var(--muted)}
+.day:has(input:checked) .done{color:var(--tk)}
+
+/* ── keyboard ─────────────────────────────────── */
+.keys{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin-top:30px}
+.kgroup{background:var(--panel);border:1px solid var(--line-soft);border-radius:4px;padding:18px 20px 20px}
+.kgroup h4{font-size:.95rem;margin-bottom:14px}
+.krow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:6px 0;border-top:1px solid var(--line-soft);font-size:.9rem;color:var(--muted)}
+.krow:first-of-type{border-top:0}
+kbd{font-family:var(--mono);font-size:11px;background:var(--raised);border:1px solid var(--line);
+  border-bottom-width:2px;border-radius:3px;padding:2px 6px;color:var(--text);white-space:nowrap}
+
+/* ── table ────────────────────────────────────── */
+.tablewrap{overflow-x:auto;margin-top:28px;border:1px solid var(--line-soft);border-radius:4px}
+table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:560px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);background:var(--raised);font-weight:500}
+td{color:var(--muted)}
+td:first-child{color:var(--text);font-family:var(--display);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+
+/* ── callout ──────────────────────────────────── */
+.note{border-left:2px solid var(--edit);padding:4px 0 4px 18px;margin-top:26px;color:var(--muted);max-width:64ch;font-size:.98rem}
+.note b{color:var(--text)}
+
+details{background:var(--panel);border:1px solid var(--line-soft);border-radius:4px;margin-top:10px}
+summary{cursor:pointer;padding:14px 18px;font-family:var(--display);font-weight:600;font-size:.98rem;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);color:var(--dim)}
+details[open] summary::after{content:"–"}
+details .dbody{padding:0 18px 18px;color:var(--muted);font-size:.95rem}
+
+footer{padding:56px 0 76px;color:var(--dim);font-size:.9rem}
+footer p{max-width:62ch}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:620px){
+  .wrap{padding:0 18px}
+  .topbar-in{padding:9px 18px}
+  .stat{flex-basis:50%;border-right:0}
+  .cell{height:32px;font-size:0}
+  body{font-size:16px}
+}
+</style>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="tag">Progress</span>
+    <span class="meter"><i id="bar"></i></span>
+    <span class="pct" id="pct">0 / 21</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow"><s></s> DaVinci Resolve 20 · Editor track · 21 days</p>
+    <h1>The 21<br>Day <em>Cut</em></h1>
+    <p class="lede">A day-by-day training system that takes you from first launch to a finished, delivered, client-ready edit — built around Blackmagic's own free curriculum. <b>Three hours a day. Three capstone films. One certification exam.</b> No passive watching: every day ends with something rendered.</p>
+
+    <div class="stats">
+      <div class="stat"><b>63</b><span>Hours total</span></div>
+      <div class="stat"><b>21</b><span>Days</span></div>
+      <div class="stat"><b>3</b><span>Capstone edits</span></div>
+      <div class="stat"><b>5</b><span>Pages mastered</span></div>
+      <div class="stat"><b>1</b><span>Certification</span></div>
+    </div>
+
+    <div class="strip">
+      <div class="strip-row" id="strip"></div>
+      <div class="strip-legend"><span>Day 01 — Assembly</span><span>Day 21 — Delivery</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ RULES ══ -->
+<section id="rules">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">00</span><h2>The seven rules</h2></div>
+    <p class="sec-sub">Twenty-one days is enough to become genuinely employable in Resolve — but only if you spend the hours the right way. These rules are what separate this plan from watching tutorials for three weeks and retaining nothing.</p>
+
+    <div class="grid g2">
+      <div class="card"><span class="klabel">Rule 01</span><h4>Render something every single day</h4><p>An unrendered day didn't happen. Even a 20-second test export forces you through the whole chain: timeline settings, audio levels, codec choice. The Deliver page should stop being scary by Day 3, not Day 18.</p></div>
+      <div class="card"><span class="klabel">Rule 02</span><h4>Drill before you build</h4><p>Start each session with 20 minutes of pure mechanics — the same trim, the same shortcut, twenty times. Editing speed is muscle memory. You cannot think about story while hunting for the blade tool.</p></div>
+      <div class="card"><span class="klabel">Rule 03</span><h4>Keyboard first, mouse second</h4><p>Set your keyboard preset to <b>DaVinci Resolve</b> (not Premiere or FCP emulation) on Day 1 and never change it. Learn the native map once. Every shortcut you internalise is a permanent speed dividend.</p></div>
+      <div class="card"><span class="klabel">Rule 04</span><h4>Use real footage, not your own</h4><p>Download Blackmagic's free lesson media. It's professionally shot, properly logged, and it removes the biggest time sink for beginners: agonising over their own precious clips. Judgement comes faster on material you're not attached to.</p></div>
+      <div class="card"><span class="klabel">Rule 05</span><h4>Finish ugly, then fix</h4><p>Always cut a complete rough pass end-to-end before polishing anything. Editors who perfect the first 30 seconds never finish. Structure first, frames second.</p></div>
+      <div class="card"><span class="klabel">Rule 06</span><h4>Time-box the checkpoint</h4><p>Each day ends with a timed self-test. If you can't hit it, repeat that drill tomorrow as your warm-up. Speed under a clock is exactly what a job measures.</p></div>
+      <div class="card"><span class="klabel">Rule 07</span><h4>Keep a mistakes log</h4><p>One text file. Every time something breaks — offline media, wrong frame rate, audio out of sync — write the symptom and the fix in one line. By Day 21 that file is worth more than any course.</p></div>
+      <div class="card"><span class="klabel">The read</span><h4>How the days are colour-coded</h4><p>Each day belongs to one discipline, matching the page of Resolve you'll be living in. The stripe on the left of every card tells you which.</p>
+        <div class="legend">
+          <span class="lg"><i class="dot" style="background:var(--edit)"></i>Edit</span>
+          <span class="lg"><i class="dot" style="background:var(--audio)"></i>Audio</span>
+          <span class="lg"><i class="dot" style="background:var(--color)"></i>Color</span>
+          <span class="lg"><i class="dot" style="background:var(--fx)"></i>VFX</span>
+          <span class="lg"><i class="dot" style="background:var(--ship)"></i>Deliver</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SETUP ══ -->
+<section id="setup">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Day zero setup</h2></div>
+    <p class="sec-sub">Do this the night before Day 1. It takes about ninety minutes, most of it downloading, and it removes every excuse from the next three weeks.</p>
+
+    <div class="grid g2">
+      <div class="card"><span class="klabel">Software</span><h4>Install Resolve, free version</h4><p>The free build does everything in this plan except a handful of Studio-only features (noise reduction, some Fusion tools, above-UHD render). Download from Blackmagic's support page. If your machine is older, install the version your hardware can actually run smoothly rather than the newest.</p></div>
+      <div class="card"><span class="klabel">Books</span><h4>Download the free training guides</h4><p>From the training page, grab the PDFs for <b>The Beginner's Guide to DaVinci Resolve 20</b> and <b>The Editor's Guide to DaVinci Resolve 20</b>. Skim the Colorist and Fairlight guides in Week 3. These are the official certification textbooks and they're free.</p></div>
+      <div class="card"><span class="klabel">Media</span><h4>Pull the lesson footage</h4><p>Each guide has a matching lesson-media download (several GB each). Get the Beginner and Editor sets before Day 1 so a slow connection never eats a study session. Also grab the free training-video project files.</p></div>
+      <div class="card"><span class="klabel">Storage</span><h4>Build the folder skeleton</h4><p>One drive, one folder per project, always the same five subfolders: <span class="mono">01_FOOTAGE</span>, <span class="mono">02_AUDIO</span>, <span class="mono">03_GRAPHICS</span>, <span class="mono">04_PROJECT</span>, <span class="mono">05_EXPORTS</span>. Never import from Downloads. Never import from a phone. This one habit prevents most offline-media disasters.</p></div>
+      <div class="card"><span class="klabel">Preferences</span><h4>Set it up once, properly</h4><ul><li>Keyboard preset → <b>DaVinci Resolve</b></li><li>Media Storage → your project drive, not the system disk</li><li>Cache and gallery stills → fast local drive</li><li>Auto-save / Live Save → on, plus project backups on</li><li>Timeline default → 1920×1080, 24 or 25 fps, matched to your footage</li></ul></div>
+      <div class="card"><span class="klabel">Ergonomics</span><h4>Two things worth buying</h4><p>A cheap wired mouse with a real middle click, and headphones you already trust. A second monitor helps enormously but isn't required. Skip the Speed Editor and colour panels for now — learn the keyboard first; panels reward people who already know the software.</p></div>
+    </div>
+
+    <div class="note"><b>If your machine struggles:</b> work in Optimized Media (Playback → Use Optimized Media if Available) and set Timeline Proxy Mode to Half or Quarter Resolution. Stuttering playback destroys editing rhythm and teaches you bad timing instincts. Fix it on Day 0, not Day 12.</div>
+  </div>
+</section>
+
+<!-- ══ RHYTHM ══ -->
+<section id="rhythm">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>The shape of a day</h2></div>
+    <p class="sec-sub">Every day runs the same four blocks. The order matters: mechanics while you're fresh, creative work while you're warm, review while you're tired.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Block</th><th>Time</th><th>What happens</th><th>Why it's there</th></tr></thead>
+        <tbody>
+          <tr><td>Drill</td><td>20 min</td><td>Repeat one mechanical skill — a trim type, a shortcut set, a three-point edit — until it's automatic.</td><td>Builds speed that survives pressure. This is the block people skip and the one that makes you hireable.</td></tr>
+          <tr><td>Learn</td><td>45 min</td><td>Read the assigned chapter or watch the lesson, following along in Resolve. Pause and copy every step.</td><td>Passive watching produces recognition, not recall. Hands on keys the entire time.</td></tr>
+          <tr><td>Build</td><td>90 min</td><td>Apply the day's skill to your own running project. No tutorial open. Struggle is the point.</td><td>Retrieval under difficulty is what actually encodes the skill.</td></tr>
+          <tr><td>Ship</td><td>25 min</td><td>Export something, watch it once all the way through, log three things you'd change and one mistake for the log.</td><td>Closes the loop and trains the reviewing eye that clients pay for.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g2">
+      <div class="card"><span class="klabel">Compressed track</span><h4>If you only have 90 minutes</h4><p>Drill 15 · Learn 30 · Build 40 · Ship 5. Cut the Learn block's optional reading, never the Drill or the Ship. Expect to need 26–28 days instead of 21 — that's a fine trade, and far better than quitting at Day 9.</p></div>
+      <div class="card"><span class="klabel">Intensive track</span><h4>If you have full days</h4><p>Run the standard three hours in the morning, then add a second Build block in the afternoon on a different project — ideally something close to the work your new job will actually ask for. Do not add more Learn. More reading is not the bottleneck.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WEEK 1 ══ -->
+<section id="w1" class="week">
+  <div class="wrap">
+    <div class="layout">
+      <nav class="rail" aria-label="Week 1 days">
+        <p class="rail-t">Week 01 · Assembly</p>
+        <a href="#d1">Day 01<b>Cold open</b></a>
+        <a href="#d2">Day 02<b>Media</b></a>
+        <a href="#d3">Day 03<b>Cut page</b></a>
+        <a href="#d4">Day 04<b>Edit page</b></a>
+        <a href="#d5">Day 05<b>Trimming</b></a>
+        <a href="#d6">Day 06<b>Audio</b></a>
+        <a href="#d7">Day 07<b>Capstone I</b></a>
+      </nav>
+
+      <div>
+        <div class="week-hd">
+          <span class="wk">Week<br>01</span>
+          <div>
+            <h3>Assembly — get footage in, get a cut out</h3>
+            <p>By Sunday you will have edited and delivered a complete short film. It will not be good. It will be finished, which at this stage is the only thing that matters.</p>
+          </div>
+        </div>
+
+        <div class="days">
+
+          <article class="day" id="d1" data-track="edit">
+            <div class="day-hd"><span class="tc">01:00:00:00</span><h4>Cold open</h4><span class="chip">Edit</span><span class="dur">3h 00</span></div>
+            <p class="obj">Install, configure, import, cut, export — all of it, today. <i>You will make a bad 60-second edit within three hours of first launch, and that single loop removes 80% of the intimidation.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Launch Resolve, create a project, delete it. Repeat five times. Learn the Project Manager cold: create, rename, export a <span class="mono">.drp</span>, import it back.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Beginner's Guide, Lessons 1–2. Tour the seven pages and learn what each one is for. Memorise <kbd>Shift</kbd>+<kbd>1</kbd>–<kbd>7</kbd> to jump between them.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>On the <b>Cut page</b> only: import the lesson media, drop clips to the timeline, trim the heads and tails, add one music track. Sixty seconds, no titles, no effects.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Quick Export → H.264 1080p. Watch it on your phone. Write down three things that feel wrong — don't fix them.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>New project → import → timeline → export, in under 10 minutes, without looking anything up.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d2" data-track="edit">
+            <div class="day-hd"><span class="tc">02:00:00:00</span><h4>Media management</h4><span class="chip">Edit</span><span class="dur">3h 00</span></div>
+            <p class="obj">Learn the Media page and the discipline that keeps a project alive. <i>Every professional editing job is 30% organisation. Editors who lose media lose work.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Import the same folder five times into five fresh projects, building the same bin structure each time, faster each round.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Bins vs Smart Bins, clip attributes, metadata and keywords, scene/shot/take, Power Bins for shared assets, and how to relink media that's gone offline.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Organise a full lesson-media set: bins by type, keywords on every clip, colour flags for selects. Then deliberately break it — move the source folder — and relink it.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Save a <b>project template</b>: your bin structure, timeline settings and render presets, ready to duplicate for every future job.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Given 100 unsorted clips, produce a fully organised, keyworded project in 20 minutes — and relink it after a folder move without panic.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d3" data-track="edit">
+            <div class="day-hd"><span class="tc">03:00:00:00</span><h4>The Cut page, at speed</h4><span class="chip">Edit</span><span class="dur">3h 00</span></div>
+            <p class="obj">Master Resolve's fast-turnaround room. <i>The Cut page is how you'll survive a same-day deadline in your first month on the job.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Source Tape review: scrub an entire day's footage as one continuous strip, marking In/Out on every usable moment. <kbd>I</kbd> <kbd>O</kbd>, nothing else.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Dual timeline, Source Tape, Smart Insert, Append, Ripple Overwrite, Close Up, Sync Bin, and the Boring Detector. Learn what each of the smart edit buttons actually does to the timeline.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Cut a 90-second piece entirely on the Cut page, under a self-imposed 45-minute clock. Then cut it again from scratch in 30.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Quick Export both versions. Compare them. The faster one is usually tighter — note why.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Assemble a watchable 90-second rough cut from raw footage in 30 minutes flat.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d4" data-track="edit">
+            <div class="day-hd"><span class="tc">04:00:00:00</span><h4>Edit page anatomy</h4><span class="chip">Edit</span><span class="dur">3h 00</span></div>
+            <p class="obj">Move into the room you'll spend your career in. <i>Three-point editing is the grammar of the craft — everything after this is vocabulary.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Twenty three-point edits in a row: mark In/Out in the source, park the playhead, choose the track destination, <kbd>F10</kbd>. No dragging with the mouse, at all.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Editor's Guide: timeline anatomy, track destination and auto-select, source vs timeline viewer, the five edit types — insert, overwrite, replace, place on top, append — and JKL transport.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Rebuild yesterday's 90-second piece on the Edit page from scratch, using only keyboard edits. Add a second video track for cutaways.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export and A/B it against the Cut page version. Which was faster to make? Which is better? Write the answer down.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Explain out loud what insert, overwrite, replace, place-on-top and append each do to surrounding clips — then demonstrate all five in 60 seconds.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d5" data-track="edit">
+            <div class="day-hd"><span class="tc">05:00:00:00</span><h4>Trimming — the real craft</h4><span class="chip">Edit</span><span class="dur">3h 00</span></div>
+            <p class="obj">Ripple, roll, slip, slide, and dynamic trim. <i>This is the day amateurs skip and the day editors are actually made. Nothing else moves the needle this much.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>The trim ladder: take one edit point and perform all four trims on it in sequence, then nudge with <kbd>,</kbd> and <kbd>.</kbd>. Repeat across ten edit points.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Trim Edit Mode <kbd>T</kbd>, Dynamic Trim <kbd>W</kbd> with JKL, asymmetric trimming, ripple delete, and why roll changes nothing about duration while ripple changes everything after it.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Take a dialogue scene from the lesson media and cut it properly: cut on action, trim every edit point deliberately, then tighten the whole scene by 15% without losing sense.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export the scene twice — before and after the 15% tighten — and watch both. The difference is the lesson.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Name which trim you need before you touch the timeline, every time, for ten consecutive edits.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d6" data-track="audio">
+            <div class="day-hd"><span class="tc">06:00:00:00</span><h4>Audio that doesn't embarrass you</h4><span class="chip">Audio</span><span class="dur">3h 00</span></div>
+            <p class="obj">Levels, sync, and split edits on the Edit page. <i>Audiences forgive a soft image and never forgive bad sound. This is the cheapest quality win available to you.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Build six J-cuts and six L-cuts. Unlink audio, extend the handle, listen. Do it until the shape is instinctive.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Linked selection, syncing external audio by waveform or timecode, clip vs track volume, volume keyframes, audio track layers, and reading the meters instead of trusting your speakers.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Take yesterday's scene and do a full audio pass: level dialogue consistently, add room tone under every gap, place music under it and duck it beneath the voice.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export and listen on headphones, then on laptop speakers, then on your phone. Fix whatever falls apart on the worst one.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Dialogue sits at a consistent level, music never fights it, and no cut has an audible pop or dead silence under it.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d7" data-track="ship">
+            <div class="day-hd"><span class="tc">07:00:00:00</span><h4>Capstone I — The 60-Second Story</h4><span class="chip">Deliver</span><span class="dur">3h 30</span></div>
+            <p class="obj">One finished piece, made alone, no tutorials open. <i>A complete small thing teaches more than a half-finished ambitious thing.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Brief <u>—</u></span><p>Sixty seconds. A clear beginning, middle and end. One music bed, clean audio, no titles, no effects, no colour work. It must survive being watched twice.</p></div>
+              <div class="blk"><span class="kl">Build <u>150m</u></span><p>Assemble → rough cut end-to-end → tighten → audio pass → picture lock. Give yourself one hour per pass and move on when the clock says so.</p></div>
+              <div class="blk"><span class="kl">Ship <u>30m</u></span><p>Export H.264 1080p at a sensible bitrate. File-name it properly: <span class="mono">PROJECT_v01_YYMMDD.mp4</span>.</p></div>
+              <div class="blk"><span class="kl">Review <u>30m</u></span><p>Score it against the rubric further down this page. Be harsh. Note the two lowest scores — those are your Week 2 priorities.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>A finished, delivered 60-second film exists on your drive. Week 1 is passed or failed on this one fact.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WEEK 2 ══ -->
+<section id="w2" class="week">
+  <div class="wrap">
+    <div class="layout">
+      <nav class="rail" aria-label="Week 2 days">
+        <p class="rail-t">Week 02 · Craft</p>
+        <a href="#d8">Day 08<b>Story</b></a>
+        <a href="#d9">Day 09<b>Multicam</b></a>
+        <a href="#d10">Day 10<b>Titles</b></a>
+        <a href="#d11">Day 11<b>Fusion</b></a>
+        <a href="#d12">Day 12<b>Fairlight</b></a>
+        <a href="#d13">Day 13<b>Sound</b></a>
+        <a href="#d14">Day 14<b>Capstone II</b></a>
+      </nav>
+
+      <div>
+        <div class="week-hd">
+          <span class="wk">Week<br>02</span>
+          <div>
+            <h3>Craft — decisions, not operations</h3>
+            <p>Week 1 taught you to operate the software. This week is about what to cut and why, plus the three neighbouring skills every editing job quietly expects: multicam, motion graphics and a competent mix.</p>
+          </div>
+        </div>
+
+        <div class="days">
+
+          <article class="day" id="d8" data-track="edit">
+            <div class="day-hd"><span class="tc">08:00:00:00</span><h4>Story, pacing and where to cut</h4><span class="chip">Edit</span><span class="dur">3h 00</span></div>
+            <p class="obj">The theory that makes the mechanics worth something. <i>Software knowledge gets you the interview; this gets you kept on.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Cutting on action: find ten movements in the footage and cut mid-gesture on each. Then watch them back at speed and mark the ones that jump.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Coverage and the shot hierarchy, the 180-degree rule, eyeline and screen direction, matching action, when a cut is motivated, and montage vs scene logic.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Re-cut one scene three separate ways: fast and aggressive, slow and observational, and with all dialogue removed. Same footage, three different films.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export all three back-to-back in one timeline and watch as a triptych. Note which choices came from the footage and which you imposed.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>For any cut in your timeline, answer in one sentence why it happens on that exact frame.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d9" data-track="edit">
+            <div class="day-hd"><span class="tc">09:00:00:00</span><h4>Multicam and interviews</h4><span class="chip">Edit</span><span class="dur">3h 00</span></div>
+            <p class="obj">Two cameras, one conversation. <i>Interview and event work is the bread and butter of most editing jobs — and multicam is how it gets done on time.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Cut a five-minute multicam clip live at playback speed, switching angles by number key. Don't stop, don't fix. Then do it again.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Creating multicam clips, syncing by timecode / audio waveform / in-points, cutting vs switching, refining angle changes after the fact, and using the Sync Bin for b-roll.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Cut a two-camera interview down to three minutes: remove every stumble and filler, hide each removal with a cutaway or angle change, keep it invisible.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export and watch specifically for jump cuts you failed to hide. Fix the worst two.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Turn twenty minutes of two-camera interview into a tight three-minute cut in a single session.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d10" data-track="fx">
+            <div class="day-hd"><span class="tc">10:00:00:00</span><h4>Titles, motion and retiming</h4><span class="chip">VFX</span><span class="dur">3h 00</span></div>
+            <p class="obj">The Inspector, keyframes and speed. <i>Lower thirds and a clean speed ramp are the two things you'll be asked for in your first week, guaranteed.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Build the same lower third five times from scratch — Text+, position, font, colour, fade in and out — until it takes under two minutes.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Text vs Text+, Fusion title templates, Inspector transforms, cropping, Dynamic Zoom, keyframes and the keyframe editor, retime controls, speed ramps and stabilisation.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Title package for your interview cut: an opening title, two lower thirds, an end card. Then add one speed ramp that actually serves a moment rather than showing off.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export and check title safe areas and legibility at phone size. If you can't read it on a phone, it's not finished.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Build a styled, animated lower third from scratch in under two minutes, and save it as a reusable preset.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d11" data-track="fx">
+            <div class="day-hd"><span class="tc">11:00:00:00</span><h4>Fusion, only what an editor needs</h4><span class="chip">VFX</span><span class="dur">3h 00</span></div>
+            <p class="obj">Nodes, masks, tracking, keying. <i>You're not becoming a compositor this week. You're becoming the editor who can fix it instead of sending it out.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Build the same node tree ten times: MediaIn → mask → Merge → MediaOut. Learn the node graph's navigation until it stops feeling foreign.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>How nodes differ from layers, the Merge node, masks and mattes, the Tracker and Planar Tracker, and DeltaKeyer for green screen.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Three practical fixes: remove a logo or blemish with a tracked patch, blur an unwanted face, and key one green-screen shot cleanly with a proper edge.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export a before/after split-screen of your best fix. This clip belongs in your reel.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Track an object and attach something to it that stays locked for the whole shot, with no slipping.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d12" data-track="audio">
+            <div class="day-hd"><span class="tc">12:00:00:00</span><h4>Fairlight — the mixing room</h4><span class="chip">Audio</span><span class="dur">3h 00</span></div>
+            <p class="obj">Dialogue that sounds professional. <i>Most "cheap-looking" video is actually cheap-sounding video. Fix the voice and everything lifts.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Take one noisy dialogue clip and repair it four different ways — EQ, dynamics, de-hum, level — listening critically to each in isolation.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>The Fairlight mixer, tracks vs buses, channel EQ, the dynamics section (compressor, gate, limiter), clip vs track levels, and recording voiceover directly into the timeline.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Full dialogue pass on the interview: even out levels, high-pass out rumble, gentle compression, notch out any hum, and remove the mouth noises that make edits feel amateur.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export audio-only and listen with your eyes closed. It should be effortless to follow.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Take a rough, noisy dialogue clip and make it broadcast-listenable in under ten minutes.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d13" data-track="audio">
+            <div class="day-hd"><span class="tc">13:00:00:00</span><h4>Sound design and the mix</h4><span class="chip">Audio</span><span class="dur">3h 00</span></div>
+            <p class="obj">Layers, music and loudness. <i>Sound design is how you make ordinary footage feel expensive.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Take a silent 15-second clip and build its world from nothing: ambience, three spot effects, one movement sound. Then do a second clip.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Track layering, cutting music to picture without wrecking the beat, ducking under dialogue, buses and submixes, and loudness — roughly −14 LUFS integrated for web, −23 LUFS for EBU R128 broadcast.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Complete mix of the interview piece: dialogue bus, music bus, effects bus, all routed properly, with a limiter on the main so nothing clips.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Check your loudness meter against the target, export, and confirm on three different playback devices.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Deliver a mix that hits its loudness target, never peaks into distortion, and needs no volume adjustment while watching.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d14" data-track="ship">
+            <div class="day-hd"><span class="tc">14:00:00:00</span><h4>Capstone II — The Three-Minute Piece</h4><span class="chip">Deliver</span><span class="dur">3h 30</span></div>
+            <p class="obj">Everything from Week 2, in one deliverable. <i>This is the piece that proves you can hold a longer structure together.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Brief <u>—</u></span><p>Three minutes. Multicam interview, b-roll throughout, a title package, music, and a proper mix. Colour comes later — leave it ungraded on purpose.</p></div>
+              <div class="blk"><span class="kl">Build <u>150m</u></span><p>Paper edit first: write the story order in a text file before you touch the timeline. Then assemble, tighten, add b-roll, titles, mix.</p></div>
+              <div class="blk"><span class="kl">Ship <u>30m</u></span><p>Export at the same spec as Capstone I, versioned <span class="mono">v01</span>. Keep the project — Week 3 grades and finishes this exact piece.</p></div>
+              <div class="blk"><span class="kl">Review <u>30m</u></span><p>Show it to one person and watch <b>them</b>, not the screen. Where their attention drifts is where your edit is slack.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Three minutes that hold attention, with sound good enough that nobody mentions the sound.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WEEK 3 ══ -->
+<section id="w3" class="week">
+  <div class="wrap">
+    <div class="layout">
+      <nav class="rail" aria-label="Week 3 days">
+        <p class="rail-t">Week 03 · Finish</p>
+        <a href="#d15">Day 15<b>Primaries</b></a>
+        <a href="#d16">Day 16<b>Secondaries</b></a>
+        <a href="#d17">Day 17<b>Management</b></a>
+        <a href="#d18">Day 18<b>Deliver</b></a>
+        <a href="#d19">Day 19<b>Pro workflow</b></a>
+        <a href="#d20">Day 20<b>Client brief</b></a>
+        <a href="#d21">Day 21<b>Ship &amp; certify</b></a>
+      </nav>
+
+      <div>
+        <div class="week-hd">
+          <span class="wk">Week<br>03</span>
+          <div>
+            <h3>Finish — colour, delivery and the professional habits</h3>
+            <p>Resolve's reputation was built in the colour suite, and finishing is where editors who can also grade become far more valuable than editors who can't. This week also covers the unglamorous things that get you rehired: specs, versions, backups and revision rounds.</p>
+          </div>
+        </div>
+
+        <div class="days">
+
+          <article class="day" id="d15" data-track="color">
+            <div class="day-hd"><span class="tc">15:00:00:00</span><h4>Primaries and scopes</h4><span class="chip">Color</span><span class="dur">3h 00</span></div>
+            <p class="obj">Balance a shot with your eyes on the scopes, not the image. <i>Monitors lie. Scopes don't. This is the single biggest mindset shift in colour.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Balance ten shots in ten minutes each cut to two: set black point, set white point, correct the cast. Scopes only, no artistic decisions.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>The node graph, serial nodes, Lift/Gamma/Gain vs Offset, contrast and pivot, and reading the waveform, parade and vectorscope confidently.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Balance every shot in your Capstone II timeline, then shot-match across the whole piece so it reads as one continuous camera.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export a before/after and check that skin tones sit near the vectorscope's skin line in both interview angles.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Balance any shot to neutral in under 90 seconds using only the scopes to judge it.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d16" data-track="color">
+            <div class="day-hd"><span class="tc">16:00:00:00</span><h4>Secondaries and look</h4><span class="chip">Color</span><span class="dur">3h 00</span></div>
+            <p class="obj">Qualifiers, windows, curves and a house look. <i>Balance is technical and correct. Look is authored — and it's what a client actually notices.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Isolate a skin tone with the qualifier and refine the matte until the edges are clean. Repeat on five different shots and lighting conditions.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Serial <kbd>⌥S</kbd>, parallel <kbd>⌥P</kbd> and layer <kbd>⌥L</kbd> nodes, HSL qualifiers, Power Windows with tracking, Hue vs Hue / Hue vs Sat curves, LUTs, and grade management with stills and versions.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Grade Capstone II properly: a vignette that isn't obvious, warmed skin, controlled background saturation, and a consistent look copied across every shot.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Save the grade as a still to the Gallery and export a graded version alongside the ungraded one.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Build a look on one shot, then apply and adapt it across twenty shots in under 30 minutes.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d17" data-track="color">
+            <div class="day-hd"><span class="tc">17:00:00:00</span><h4>Colour management and log</h4><span class="chip">Color</span><span class="dur">3h 00</span></div>
+            <p class="obj">Why the footage looked flat and grey. <i>Understanding colour management is the line between someone who grades and someone who guesses.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Take the same log clip and bring it to a correct Rec.709 image three ways: manually, with a conversion LUT, and with a colour-managed timeline. Compare all three.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Log vs Rec.709, DaVinci YRGB vs colour-managed vs ACES, input/timeline/output colour spaces, camera raw settings, and where HDR fits in.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Set up one project with Resolve Colour Management end to end and grade three log shots inside it. Notice how much better the wheels behave.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Export and confirm the levels are right — nothing crushed below 0, nothing clipped above 1023 unless you meant it.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Explain in plain language what colour space your footage is in, what your timeline is in, and what you're delivering in.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d18" data-track="ship">
+            <div class="day-hd"><span class="tc">18:00:00:00</span><h4>Deliver — codecs and specs</h4><span class="chip">Deliver</span><span class="dur">3h 00</span></div>
+            <p class="obj">The page where jobs are actually completed or ruined. <i>Nobody sees your edit until this page works. Missed specs get files rejected.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Render the same 30-second timeline six ways: H.264 web, H.265, ProRes 422 HQ, DNxHR SQ, audio-only, and a still frame. Compare file sizes and quality.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Render presets, delivery vs mastering codecs, bitrate and data levels, the render queue, render in place, individual clips vs single clip, and round-tripping with XML / AAF / EDL.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Create three saved render presets for the specs you'll actually be handed: web review with burned-in timecode, client master, and social vertical.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Archive a project properly: consolidate media, export the <span class="mono">.drp</span>, and confirm it restores on a clean project.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Hand over a correct file for any spec asked of you — and know why you chose that codec.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d19" data-track="edit">
+            <div class="day-hd"><span class="tc">19:00:00:00</span><h4>Working like a professional</h4><span class="chip">Edit</span><span class="dur">3h 00</span></div>
+            <p class="obj">Speed, versions, backups, collaboration. <i>Day one at the new job is mostly about not losing work and not being slow.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Drill <u>20m</u></span><p>Keyboard sprint: perform twenty named operations from the shortcut list below without touching the mouse once. Time yourself, then beat it.</p></div>
+              <div class="blk"><span class="kl">Learn <u>45m</u></span><p>Custom keyboard mapping, timeline versions and duplicates, project backups and restore, dynamic project switching, and collaboration basics on a shared database or Blackmagic Cloud.</p></div>
+              <div class="blk"><span class="kl">Build <u>90m</u></span><p>Run a full revision simulation: duplicate your timeline as <span class="mono">v02</span>, apply five imaginary client notes, and keep both versions intact and comparable.</p></div>
+              <div class="blk"><span class="kl">Ship <u>25m</u></span><p>Write your own one-page workflow document — folder structure, naming convention, backup routine. This is the thing you'll actually use at work.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Recover from a corrupted project, an offline drive, and a wrong-version export — all three, calmly.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d20" data-track="ship">
+            <div class="day-hd"><span class="tc">20:00:00:00</span><h4>The client brief</h4><span class="chip">Deliver</span><span class="dur">3h 30</span></div>
+            <p class="obj">Capstone III, day one: work to someone else's requirements. <i>Editing for yourself is a hobby. Editing to a brief is the job.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Brief <u>—</u></span><p>Write yourself a real brief and hold to it: 90 seconds exactly, a fixed message, a mandatory end card, delivered in 16:9 and 9:16. Set a hard deadline of tomorrow evening.</p></div>
+              <div class="blk"><span class="kl">Build <u>150m</u></span><p>Assemble and rough cut to the brief. Then reframe for vertical using Smart Reframe or manual keyframed repositioning — don't just crop the middle and hope.</p></div>
+              <div class="blk"><span class="kl">Ship <u>30m</u></span><p>Export a review version with burned-in timecode, and write the note you'd send a client with it.</p></div>
+              <div class="blk"><span class="kl">Review <u>30m</u></span><p>Then act like the client: watch it once and write five genuinely critical notes with timecodes. Those are tomorrow's work.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>A cut that satisfies every constraint in the brief, in both aspect ratios, on time.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+          <article class="day" id="d21" data-track="ship">
+            <div class="day-hd"><span class="tc">21:00:00:00</span><h4>Ship, certify, and build the reel</h4><span class="chip">Deliver</span><span class="dur">4h 00</span></div>
+            <p class="obj">Finish the job, prove it, and package the evidence. <i>Twenty-one days ends with a credential and three finished films, not a feeling.</i></p>
+            <div class="blocks">
+              <div class="blk"><span class="kl">Finish <u>90m</u></span><p>Address all five client notes, grade, mix, and deliver both aspect ratios as <span class="mono">v02</span> finals. Archive the project the way you learned on Day 18.</p></div>
+              <div class="blk"><span class="kl">Certify <u>60m</u></span><p>Take the free online exam for <b>The Beginner's Guide to DaVinci Resolve 20</b>, and the Editor's Guide exam if you're ready. Skim the guide's review questions first.</p></div>
+              <div class="blk"><span class="kl">Reel <u>60m</u></span><p>Cut a 60-second reel from your three capstones. Best material first, ruthlessly short, music-led. Add a one-page case study for the strongest piece.</p></div>
+              <div class="blk"><span class="kl">Plan <u>30m</u></span><p>Re-read your mistakes log. The three most frequent entries become your first month's practice targets on the job.</p></div>
+            </div>
+            <div class="ck"><b>Checkpoint</b>Certificate earned, reel exported, three delivered films, and a written workflow you can hand to a colleague.</div>
+            <label class="done"><input type="checkbox"> Day complete</label>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SHORTCUTS ══ -->
+<section id="keys">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>The shortcut arsenal</h2></div>
+    <p class="sec-sub">Learn these in the order shown — roughly one group per Week 1 day. Everything assumes the <b>DaVinci Resolve</b> keyboard preset; on Windows read <kbd>⌘</kbd> as <kbd>Ctrl</kbd> and <kbd>⌥</kbd> as <kbd>Alt</kbd>. Verify anything unfamiliar in Keyboard Customization, since presets and versions shift a few of these.</p>
+
+    <div class="keys">
+      <div class="kgroup"><h4>Transport &amp; marking</h4>
+        <div class="krow"><span>Reverse / stop / forward</span><kbd>J K L</kbd></div>
+        <div class="krow"><span>Faster shuttle</span><kbd>tap L again</kbd></div>
+        <div class="krow"><span>Mark in / out</span><kbd>I</kbd> <kbd>O</kbd></div>
+        <div class="krow"><span>Go to in / out</span><kbd>⇧I</kbd> <kbd>⇧O</kbd></div>
+        <div class="krow"><span>Previous / next edit</span><kbd>↑</kbd> <kbd>↓</kbd></div>
+        <div class="krow"><span>One frame back / forward</span><kbd>←</kbd> <kbd>→</kbd></div>
+        <div class="krow"><span>Full-screen viewer</span><kbd>⌘F</kbd></div>
+      </div>
+
+      <div class="kgroup"><h4>Making edits</h4>
+        <div class="krow"><span>Insert</span><kbd>F9</kbd></div>
+        <div class="krow"><span>Overwrite</span><kbd>F10</kbd></div>
+        <div class="krow"><span>Replace</span><kbd>F11</kbd></div>
+        <div class="krow"><span>Place on top</span><kbd>F12</kbd></div>
+        <div class="krow"><span>Append to end</span><kbd>⇧F12</kbd></div>
+        <div class="krow"><span>Add edit at playhead</span><kbd>⌘B</kbd></div>
+        <div class="krow"><span>Change clip speed</span><kbd>⌘R</kbd></div>
+      </div>
+
+      <div class="kgroup"><h4>Tools &amp; timeline</h4>
+        <div class="krow"><span>Selection mode</span><kbd>A</kbd></div>
+        <div class="krow"><span>Trim edit mode</span><kbd>T</kbd></div>
+        <div class="krow"><span>Blade edit mode</span><kbd>B</kbd></div>
+        <div class="krow"><span>Dynamic trim mode</span><kbd>W</kbd></div>
+        <div class="krow"><span>Toggle snapping</span><kbd>N</kbd></div>
+        <div class="krow"><span>Nudge one frame</span><kbd>,</kbd> <kbd>.</kbd></div>
+        <div class="krow"><span>Nudge five frames</span><kbd>⇧,</kbd> <kbd>⇧.</kbd></div>
+      </div>
+
+      <div class="kgroup"><h4>Pages &amp; project</h4>
+        <div class="krow"><span>Media page</span><kbd>⇧1</kbd></div>
+        <div class="krow"><span>Cut page</span><kbd>⇧2</kbd></div>
+        <div class="krow"><span>Edit page</span><kbd>⇧3</kbd></div>
+        <div class="krow"><span>Fusion page</span><kbd>⇧4</kbd></div>
+        <div class="krow"><span>Color page</span><kbd>⇧5</kbd></div>
+        <div class="krow"><span>Fairlight page</span><kbd>⇧6</kbd></div>
+        <div class="krow"><span>Deliver page</span><kbd>⇧7</kbd></div>
+        <div class="krow"><span>Save project</span><kbd>⌘S</kbd></div>
+      </div>
+
+      <div class="kgroup"><h4>Colour page</h4>
+        <div class="krow"><span>Add serial node</span><kbd>⌥S</kbd></div>
+        <div class="krow"><span>Add parallel node</span><kbd>⌥P</kbd></div>
+        <div class="krow"><span>Add layer node</span><kbd>⌥L</kbd></div>
+        <div class="krow"><span>Next / previous clip</span><kbd>⌘←</kbd> <kbd>⌘→</kbd></div>
+        <div class="krow"><span>Bypass all grades</span><kbd>⇧D</kbd></div>
+      </div>
+
+      <div class="kgroup"><h4>Drill this order</h4>
+        <div class="krow"><span>Day 1–2</span><span>Pages, save, transport</span></div>
+        <div class="krow"><span>Day 3</span><span>In / out, source tape</span></div>
+        <div class="krow"><span>Day 4</span><span>F9–F12, append</span></div>
+        <div class="krow"><span>Day 5</span><span>A T B W, nudges</span></div>
+        <div class="krow"><span>Day 6</span><span>Audio unlink, keyframes</span></div>
+        <div class="krow"><span>Day 15+</span><span>Node shortcuts</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RUBRIC ══ -->
+<section id="rubric">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Grade your own work</h2></div>
+    <p class="sec-sub">Score each capstone 1–5 on all seven criteria. Anything scoring 3 or below becomes a drill for the following week. Total out of 35: below 18 means repeat the week's build; 25+ means you're at working-editor standard for that piece.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Criterion</th><th>1 — Not yet</th><th>3 — Competent</th><th>5 — Professional</th></tr></thead>
+        <tbody>
+          <tr><td>Structure</td><td>Feels like clips in a row</td><td>Clear beginning, middle, end</td><td>Every section earns its place; nothing removable</td></tr>
+          <tr><td>Pacing</td><td>Drags or rushes throughout</td><td>Mostly holds attention</td><td>Rhythm varies deliberately and lands its beats</td></tr>
+          <tr><td>Trimming</td><td>Visible fumbles at edits</td><td>Clean, unobtrusive cuts</td><td>Cuts are invisible; timing feels inevitable</td></tr>
+          <tr><td>Sound</td><td>Uneven levels, hiss, hard cuts</td><td>Consistent and clean</td><td>Designed — layers, space, deliberate silence</td></tr>
+          <tr><td>Image</td><td>Shots don't match each other</td><td>Balanced and consistent</td><td>A deliberate look serving the content</td></tr>
+          <tr><td>Titles</td><td>Default font, misaligned</td><td>Legible, consistent, safe</td><td>Designed system with considered motion</td></tr>
+          <tr><td>Delivery</td><td>Wrong spec or wrong name</td><td>Correct file, correctly named</td><td>Multiple correct specs, archived and reproducible</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MISTAKES ══ -->
+<section id="traps">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Traps that cost beginners days</h2></div>
+    <p class="sec-sub">Each of these will happen to you at least once. Reading them now turns a lost afternoon into a five-minute fix.</p>
+
+    <details><summary>My clips are offline / the media went red</summary><div class="dbody">You moved, renamed or unplugged the source files. Right-click the bin or clip → Relink Media and point at the new location. This is why everything lives in one project folder on one drive, imported from there and nowhere else — never from Downloads, never straight off a card.</div></details>
+    <details><summary>Playback stutters and my timing instincts are ruined</summary><div class="dbody">Generate optimized media or proxies and enable Playback → Use Optimized Media if Available. Drop Timeline Proxy Mode to Half Resolution while cutting. Render Cache set to Smart handles heavier effects. Judge performance on the final render, not on laggy playback.</div></details>
+    <details><summary>My timeline is a different frame rate than my footage</summary><div class="dbody">Set the timeline frame rate before the first clip lands — after that it's locked for the project. If it's wrong, create a new timeline at the right rate and copy your clips into it. Check Project Settings → Master Settings first, every single time.</div></details>
+    <details><summary>Everything sounds quiet, or clips distort</summary><div class="dbody">Watch the meters, not the fader positions. Dialogue peaks around −12 to −6 dBFS, with the integrated loudness at your delivery target. Put a limiter on the main bus so nothing ever exceeds 0. If the source is distorted at record, no plugin will save it — reshoot or replace.</div></details>
+    <details><summary>My export looks worse than the timeline</summary><div class="dbody">Usually bitrate or data levels. For 1080p H.264 aim for roughly 15–25 Mb/s; for 4K, considerably more. Check that data levels match between timeline and render, and that you haven't accidentally rendered a proxy-resolution timeline.</div></details>
+    <details><summary>I clicked the wrong thing and the interface vanished</summary><div class="dbody">Workspace → Reset UI Layout. Learn this early; it's the fastest recovery in the whole application.</div></details>
+    <details><summary>I applied a grade to one clip and it changed everything</summary><div class="dbody">You were on a shared node or an adjustment clip, or you had multiple clips selected in the thumbnail timeline. Check your selection before touching a wheel, and use versions to keep alternates.</div></details>
+    <details><summary>My project crashed and I lost hours</summary><div class="dbody">Preferences → User → Project Save and Load: enable Live Save and Project Backups. Then export a <span class="mono">.drp</span> at the end of every session into <span class="mono">04_PROJECT</span>. This is a five-second habit that has saved careers.</div></details>
+  </div>
+</section>
+
+<!-- ══ DAY 22 ══ -->
+<section id="after">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Day 22 — the job itself</h2></div>
+    <p class="sec-sub">What to do in your first week when the training wheels come off and the footage is real.</p>
+    <div class="grid g3">
+      <div class="card"><span class="klabel">First hour</span><h4>Learn their structure before their software</h4><p>Ask where projects live, what the naming convention is, what specs they deliver, and who has the final say on a cut. Every studio's conventions differ more than the software does.</p></div>
+      <div class="card"><span class="klabel">First day</span><h4>Rebuild your setup on their machine</h4><p>Keyboard preset, cache location, autosave, render presets. Fifteen minutes that make you look — and be — fast for the rest of the job.</p></div>
+      <div class="card"><span class="klabel">First week</span><h4>Volunteer for the assembly</h4><p>Nobody enjoys logging and assembling. Do it well, quickly, and you'll be trusted with the cuts that matter far sooner than the queue suggests.</p></div>
+      <div class="card"><span class="klabel">Ongoing</span><h4>Keep the mistakes log running</h4><p>Same file, forever. It becomes your personal manual and, eventually, the document you hand to the person hired after you.</p></div>
+      <div class="card"><span class="klabel">Month 2</span><h4>Take the next certification</h4><p>Colorist Guide or Fairlight Audio Guide, depending on what your work actually demands. Same free books, same free exams, immediately applicable.</p></div>
+      <div class="card"><span class="klabel">Always</span><h4>Watch finished work with the sound off</h4><p>Then again with the picture off. Separating the two channels is the fastest way to keep improving once the tutorials run out.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RESOURCES ══ -->
+<section id="resources">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Everything you need, all free</h2></div>
+    <p class="sec-sub">This plan is built entirely on Blackmagic's own materials. There is nothing to buy.</p>
+
+    <div class="grid g2">
+      <div class="card"><span class="klabel">Primary</span><h4>Official training hub</h4><p>Books, lesson media, free training videos with project files, and the certification exams — all in one place.</p><p><a href="https://www.blackmagicdesign.com/products/davinciresolve/training">blackmagicdesign.com — Resolve training</a></p></div>
+      <div class="card"><span class="klabel">Books</span><h4>Read in this order</h4><ul><li>The Beginner's Guide to DaVinci Resolve 20 — Days 1–7</li><li>The Editor's Guide to DaVinci Resolve 20 — Days 4–14</li><li>The Colorist Guide to DaVinci Resolve 20 — Days 15–17</li><li>The Fairlight Audio Guide — Days 12–13</li><li>The Visual Effects Guide — Day 11</li></ul></div>
+      <div class="card"><span class="klabel">Video</span><h4>Free lesson series</h4><p>Introduction to Editing parts 1–2, Multicam Editing, Introduction to Color, Advanced Color, Introduction to Audio, Sound Design, Mixing, Introduction to Fusion. Each comes with downloadable project files — use them, don't just watch them.</p></div>
+      <div class="card"><span class="klabel">Reference</span><h4>The manual is genuinely good</h4><p>Help → DaVinci Resolve Reference Manual. Roughly 4,000 pages, searchable, authoritative. When a forum answer and the manual disagree, the manual wins.</p></div>
+      <div class="card"><span class="klabel">Certification</span><h4>The exam</h4><p>Each book has a matching free online exam and a certificate on passing. Complete the book, do its review questions, sit the exam the same week while it's fresh.</p></div>
+      <div class="card"><span class="klabel">Version note</span><h4>Books say 20, software may say 21</h4><p>The training guides currently target Resolve 20 while the application ships ahead of them. Everything in this plan applies either way — menu locations shift occasionally, concepts don't.</p></div>
+    </div>
+
+    <div class="note"><b>One honest caveat:</b> twenty-one days makes you a competent, employable operator with real finished work — it does not make you a senior editor. Taste takes years. But the mechanical fluency, the delivery discipline and the vocabulary all fit comfortably inside three weeks, and those are the things a new job tests first.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="mono" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)">End of timeline · 21:00:00:00</p>
+    <p style="margin-top:14px">Tick each day as you finish it — the strip at the top fills as you go. Progress lives in this browser tab only, so keep it open, or keep your own copy of the mistakes log alongside it.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.done input'));
+  var strip = document.getElementById('strip');
+  var bar = document.getElementById('bar');
+  var pct = document.getElementById('pct');
+
+  for (var i = 0; i < boxes.length; i++) {
+    var c = document.createElement('span');
+    c.className = 'cell';
+    c.textContent = (i + 1 < 10 ? '0' : '') + (i + 1);
+    strip.appendChild(c);
+  }
+  var cells = Array.prototype.slice.call(strip.children);
+
+  function update(){
+    var n = 0;
+    boxes.forEach(function(b, i){
+      if (b.checked) { n++; cells[i].classList.add('on'); }
+      else { cells[i].classList.remove('on'); }
+    });
+    bar.style.width = (n / boxes.length * 100) + '%';
+    pct.textContent = n + ' / ' + boxes.length;
+  }
+
+  boxes.forEach(function(b){ b.addEventListener('change', update); });
+  update();
+})();
+</script>
