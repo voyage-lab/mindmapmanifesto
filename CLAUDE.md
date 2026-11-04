@@ -7,6 +7,7 @@ Static site served by GitHub Pages at mindmapmanifesto.com. No framework: every 
 - `mind-brain/index.html`: just a redirect to the front page, kept so old links still work. Every page's "← back to the map" link goes to the front page.
 - `mind-brain/15-brain-waves/`, `mind-brain/21-rules-mind/`: slide decks. Both run on `mind-brain/deck.js`, and `mind-brain/theme.css` gives them the site look.
 - The other `mind-brain/*` topics are small React apps styled by `mind-brain/theme-app.css`.
+- `turkish/index.html`: the Turkish training ground, one self-contained page (data, script and styles inline) with hash routes like `#u4`. Progress is saved in the visitor's browser.
 - `notes/`: source notes and transcripts. They stay in the repo but are not published (see `_config.yml`).
 - `case-workbook/`: the case workbook (mindmapmanifesto.com/case-workbook). `index.html` is the page (plain HTML and vanilla JS, no build step) and `data.js` holds the method text and the 38 cases. Edit them directly. The cases are anonymised on purpose: never add client names, places, exact ages or addresses.
 

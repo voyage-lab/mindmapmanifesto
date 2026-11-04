@@ -1,0 +1,1228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turkish Training Ground — MindMapManifesto</title>
+<meta name="description" content="Chapter-by-chapter practice for Teach Yourself Turkish: purpose, words and grammar drills for every unit.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Matches mindmapmanifesto.com: near-black ground under a dimmed photo, paper notes with charcoal ink, Caveat headings, Cormorant Garamond text. */
+:root{
+  --bg:#0d0d0d; --ink:#e9e3d6; --muted:#b9b2a3; --line:rgba(233,227,214,.24);
+  --surface:rgba(0,0,0,.5); --surface2:rgba(233,227,214,.09);
+  --accent:#e9e3d6; --accent-ink:#0d0d0d; --accent2:#b9b2a3; --signal:#e9e3d6; --signal-ink:#1a1918;
+  --good:#8fd0aa; --good-bg:rgba(143,208,170,.16); --bad:#f0907f; --bad-bg:rgba(240,144,127,.16);
+  --f-display:'Caveat',cursive;
+  --f-body:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --f-mono:'Cormorant Garamond',Georgia,serif;
+  color-scheme:dark}
+/* paper notes: cards re-scope the tokens to charcoal ink on paper */
+.stopcard,.q,.sum,.gcard,.fc,.scene,.tip,.tw,.vow div{
+  --surface:#e9e3d6; --bg:#f4efe3; --ink:#1a1918; --muted:#6b655b; --line:rgba(26,25,24,.22); --surface2:rgba(26,25,24,.07);
+  --accent:#1a1918; --accent-ink:#e9e3d6; --accent2:#6b655b; --signal:#1a1918; --signal-ink:#e9e3d6;
+  --good:#2f6b4f; --good-bg:#cfe3d6; --bad:#9b3a2e; --bad-bg:#efd3cd;
+  color:var(--ink);box-shadow:0 20px 50px rgba(0,0,0,.6)}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:20px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+
+.wrap{max-width:1040px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--signal);outline-offset:2px;border-radius:6px}
+.mono{font-family:var(--f-mono);font-size:.94em}
+.muted{color:var(--muted)}
+.tr{font-weight:600}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;padding-block:10px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.15rem;letter-spacing:.01em;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:10px}
+.brand i{display:inline-block;width:26px;height:10px;border-radius:5px;background:var(--accent);position:relative}
+.brand i::after{content:"";position:absolute;right:-4px;top:-3px;width:16px;height:16px;border-radius:50%;background:var(--signal);border:3px solid var(--bg)}
+.nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.nav a,.nav button{padding:6px 12px;border-radius:999px;text-decoration:none;color:var(--muted);font-size:.92rem;border:1px solid transparent;background:none}
+.nav a:hover,.nav button:hover{color:var(--ink);border-color:var(--line)}
+.nav a[aria-current="page"]{background:var(--ink);color:var(--bg)}
+
+/* generic */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:600;text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{padding:6px 12px;font-size:.9rem;border-radius:8px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.chip{display:inline-block;padding:2px 10px;border-radius:999px;background:var(--surface2);color:var(--muted);font-size:.8rem;letter-spacing:.02em}
+.eyebrow{font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+
+/* home */
+.hero{padding:40px 0 26px;display:grid;gap:18px}
+.hero h1{font-size:clamp(2rem,5.5vw,3.4rem);font-weight:700;letter-spacing:-.01em}
+.hero p.lead{max-width:62ch;color:var(--muted);font-size:1.08rem}
+.hero .row{display:flex;gap:10px;flex-wrap:wrap}
+.stats{display:flex;gap:26px;flex-wrap:wrap;padding-top:6px}
+.stats div{display:grid}
+.stats b{font-family:var(--f-display);font-size:1.7rem;font-variant-numeric:tabular-nums}
+.stats span{color:var(--muted);font-size:.84rem}
+.band{margin-top:34px}
+.band>header{display:grid;gap:2px;margin-bottom:12px;padding-left:46px}
+.band>header h2{font-size:1.35rem}
+.band>header p{color:var(--muted);font-size:.95rem;max-width:70ch}
+.line{position:relative;display:grid;gap:10px}
+.line::before{content:"";position:absolute;left:17px;top:0;bottom:0;width:6px;border-radius:3px;background:var(--line)}
+.stop{display:grid;grid-template-columns:40px 1fr;gap:6px;position:relative}
+.node{width:40px;height:40px;border-radius:50%;background:var(--bg);border:4px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:.85rem;z-index:1;font-variant-numeric:tabular-nums;color:var(--muted);margin-top:14px}
+.stop[data-st="going"] .node{border-color:var(--accent);color:var(--accent)}
+.stop[data-st="done"] .node{border-color:var(--good);background:var(--good);color:var(--bg)}
+.stopcard{display:grid;gap:6px;padding:14px 18px;border-radius:12px;background:var(--surface);border:1px solid var(--line);text-decoration:none;color:var(--ink);min-width:0}
+.stopcard:hover{border-color:var(--accent)}
+.stopcard h3{font-size:1.2rem}
+.stopcard .en{color:var(--muted);font-size:.95rem}
+.stopcard .why{font-size:.95rem;max-width:80ch}
+.stopcard .meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bar{height:6px;border-radius:3px;background:var(--surface2);overflow:hidden;flex:1;min-width:80px}
+.bar i{display:block;height:100%;background:var(--accent2);border-radius:3px}
+.pct{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* chapter */
+.chead{padding:30px 0 10px;display:grid;gap:8px}
+.chead .big{display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.chead .num{font-family:var(--f-display);font-size:clamp(2.6rem,8vw,4.6rem);font-weight:700;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+.chead h1{font-size:clamp(1.7rem,4.6vw,2.8rem)}
+.chead .en{color:var(--muted);font-size:1.1rem}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:14px 0 22px;overflow-x:auto}
+.tabs button{padding:10px 16px;border:0;background:none;border-bottom:3px solid transparent;color:var(--muted);font-weight:600;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--signal)}
+.cols{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:820px){.cols{grid-template-columns:minmax(0,1fr)}}
+.purpose{font-family:var(--f-display);font-size:1.28rem;line-height:1.5;max-width:60ch}
+.scene{padding:12px 16px;border-left:5px solid var(--signal);background:var(--surface);border-radius:0 10px 10px 0;margin:6px 0 16px}
+.scene b{display:block;font-size:.76rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+ul.can{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+ul.can li{padding-left:28px;position:relative}
+ul.can li::before{content:"";position:absolute;left:4px;top:.45em;width:12px;height:7px;border-left:3px solid var(--good);border-bottom:3px solid var(--good);transform:rotate(-45deg)}
+.gram{display:grid;gap:12px}
+.gcard{padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.gcard h3{font-size:1.02rem;font-family:var(--f-body);font-weight:700;margin-bottom:4px}
+.gcard p{font-size:.95rem;color:var(--muted)}
+.gcard .ex{margin-top:8px;display:grid;gap:3px;font-family:var(--f-mono);font-size:.9rem}
+.gcard .ex span{color:var(--muted);font-family:var(--f-body)}
+.tip{padding:14px 16px;border-radius:12px;background:var(--surface2);font-size:.95rem}
+.tip b{display:block;font-size:.76rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent2);margin-bottom:2px}
+.side{display:grid;gap:14px}
+.side h2{font-size:1.05rem;font-family:var(--f-body);font-weight:700}
+
+/* trainer */
+.modes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.modes button{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:.92rem}
+.modes button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.stage{max-width:720px}
+.q{display:grid;gap:16px;padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.qtop{display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--muted);font-size:.86rem}
+.qtext{font-family:var(--f-display);font-size:1.4rem;line-height:1.35}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;padding:12px 16px;border-radius:10px;border:2px solid var(--line);background:var(--bg);font-size:1.02rem;display:flex;gap:12px;align-items:center}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt .k{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);min-width:1.2em}
+.opt.ok{border-color:var(--good);background:var(--good-bg)}
+.opt.no{border-color:var(--bad);background:var(--bad-bg)}
+.opt[disabled]{cursor:default}
+.fb{padding:12px 16px;border-radius:10px;font-size:.97rem}
+.fb.ok{background:var(--good-bg);color:var(--ink);border-left:5px solid var(--good)}
+.fb.no{background:var(--bad-bg);color:var(--ink);border-left:5px solid var(--bad)}
+.fb b{display:block;margin-bottom:2px}
+.inrow{display:flex;gap:8px;flex-wrap:wrap}
+input.txt{flex:1;min-width:180px;padding:12px 14px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:1.1rem}
+input.txt:focus{border-color:var(--accent);outline:none}
+.chars{display:flex;gap:6px;flex-wrap:wrap}
+.chars button{min-width:36px;padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-weight:600}
+.pool,.answer{display:flex;gap:8px;flex-wrap:wrap;min-height:48px;padding:8px;border-radius:10px}
+.answer{border:2px dashed var(--line);background:var(--bg)}
+.tok{padding:8px 14px;border-radius:8px;border:1px solid var(--accent);background:var(--surface);color:var(--ink);font-weight:600;font-size:1.02rem}
+.tok:hover{background:var(--accent);color:var(--accent-ink)}
+.flash{display:grid;gap:14px;max-width:520px}
+.fc{min-height:210px;border-radius:18px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer;gap:6px;position:relative;width:100%}
+.fc .w{font-family:var(--f-display);font-size:clamp(1.8rem,6vw,2.6rem);font-weight:700;overflow-wrap:anywhere}
+.fc .hint{position:absolute;bottom:12px;left:0;right:0;font-size:.8rem;color:var(--muted)}
+.fc.back{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:640px}
+.match button{padding:12px;border-radius:10px;border:2px solid var(--line);background:var(--surface);text-align:left;min-width:0;overflow-wrap:anywhere}
+.match button.sel{border-color:var(--signal);background:var(--surface2)}
+.match button.done{border-color:var(--good);background:var(--good-bg);opacity:.75}
+.match button.miss{border-color:var(--bad);background:var(--bad-bg)}
+.sum{display:grid;gap:14px;padding:26px;border:1px solid var(--line);border-radius:16px;background:var(--surface);max-width:720px}
+.sum .score{font-family:var(--f-display);font-size:3rem;font-weight:700;color:var(--accent)}
+.miss-list{display:grid;gap:6px;font-size:.95rem}
+.miss-list li{padding:8px 12px;background:var(--surface2);border-radius:8px}
+.nav2{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:30px;padding-top:16px;border-top:1px solid var(--line)}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{padding:9px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface2)}
+tr:last-child td{border-bottom:0}
+td.suf b{color:var(--accent);font-family:var(--f-mono)}
+.labin{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 16px}
+.vow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:420px;margin:10px 0 20px}
+.vow div{padding:10px;border:1px solid var(--line);border-radius:10px;text-align:center;background:var(--surface);font-weight:700;font-size:1.2rem}
+.vow div small{display:block;font-size:.72rem;font-weight:500;color:var(--muted)}
+.vow div.on{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
+.vow div.on small{color:var(--signal-ink)}
+.foot{margin-top:50px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* site background: dimmed photo with a vignette */
+body::before{content:"";position:fixed;inset:-2%;z-index:-2;background:url("../background.jpg") center/cover no-repeat;filter:grayscale(.35) contrast(1.05) brightness(.45) blur(2px)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,rgba(0,0,0,.25) 20%,rgba(0,0,0,.9) 100%)}
+h1,h2,h3{font-weight:700;line-height:1.05}
+.top{background:rgba(13,13,13,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);top:0}
+.brand{font-size:1.7rem;font-weight:700}
+.brand i{display:none}
+.nav a,.nav button{font-family:var(--f-display);font-size:1.4rem;padding:2px 12px}
+.nav a[aria-current="page"]{background:none;color:var(--ink);text-decoration:underline;text-underline-offset:.2em}
+.eyebrow{letter-spacing:.4em;font-weight:600;color:var(--muted)}
+.hero{text-align:center;justify-items:center}
+.hero h1{font-size:clamp(2.4rem,9vw,5rem);text-shadow:0 4px 30px rgba(0,0,0,.8)}
+.hero h1 em{font-style:normal;text-decoration:underline;text-decoration-color:rgba(233,227,214,.4);text-underline-offset:.12em}
+.hero p.lead{font-size:1.2rem}
+.hero .row,.stats{justify-content:center}
+.stats b{font-family:var(--f-display);font-size:2.4rem}
+.band>header h2{font-size:2rem;color:var(--muted)}
+.band>header{text-shadow:0 2px 20px rgba(0,0,0,.8)}
+.btn{font-family:var(--f-display);font-size:1.4rem;font-weight:700;border-radius:999px;padding:4px 20px;background:rgba(0,0,0,.55)}
+.btn.primary{background:var(--ink);color:var(--accent-ink);border-color:var(--ink)}
+.btn.sm{font-size:1.2rem}
+.chip{font-family:var(--f-body);font-weight:600}
+.stopcard h3{font-size:1.7rem}
+.stopcard{border-radius:2px}
+.stop[data-st="going"] .node{border-color:var(--ink);color:var(--ink)}
+.node{background:#0d0d0d;border-color:rgba(233,227,214,.3);font-family:var(--f-display);font-size:1.2rem}
+.line::before{background:rgba(233,227,214,.22)}
+.bar{background:rgba(26,25,24,.15)}.bar i{background:#1a1918}
+.chead .num{color:var(--ink)}
+.chead h1{font-size:clamp(2.4rem,7vw,4rem)}
+.purpose{font-size:1.5rem}
+.tabs button{font-family:var(--f-display);font-size:1.5rem}
+.tabs button[aria-selected="true"]{border-bottom-color:var(--ink)}
+.modes button{font-family:var(--f-display);font-size:1.3rem;border-radius:999px;background:rgba(0,0,0,.55)}
+.modes button[aria-pressed="true"]{background:var(--ink);color:#0d0d0d}
+.qtext{font-family:var(--f-body);font-size:1.7rem;font-weight:600}
+.q,.sum{border-radius:2px}
+.opt{font-size:1.2rem;border-radius:2px}
+.tok{font-size:1.2rem;border-radius:2px;border-color:#1a1918}
+.tok:hover{background:#1a1918;color:#e9e3d6}
+input.txt{font-size:1.3rem}
+.fc{border-radius:2px}
+.fc .w{font-family:var(--f-body);font-weight:700}
+.fc.back{background:#1a1918;color:#e9e3d6;border-color:#1a1918}
+.fc.back *{color:#e9e3d6}
+.sum .score{font-family:var(--f-display);font-size:4rem}
+.gcard h3{font-family:var(--f-display);font-size:1.5rem}
+.gcard p{color:#3d3a35}
+.side h2{font-family:var(--f-display);font-size:1.6rem}
+.mono,.gcard .ex,td.suf b{font-weight:700}
+.vow div.on{background:#1a1918;color:#e9e3d6;border-color:#1a1918}
+.vow div.on small{color:#e9e3d6}
+.tw{border-radius:2px}
+.foot{color:var(--muted)}
+.match button{background:#e9e3d6;color:#1a1918;border-radius:2px;--ink:#1a1918;--muted:#6b655b}
+.match button.sel{background:#d8d1bf;border-color:#1a1918}
+.match button.done{background:#cfe3d6;border-color:#2f6b4f}
+.match button.miss{background:#efd3cd;border-color:#9b3a2e}
+.chars button{background:#e9e3d6;color:#1a1918;border-radius:6px}
+.modes,.labin{--ink:#e9e3d6}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+window.SECTIONS=window.SECTIONS||[];
+function ADD(o){window.SECTIONS.push(o)}
+
+ADD({id:'p0',kind:'p',n:0,group:'O',tr:'Giriş',en:'Introduction',pp:'1–5',
+short:'How the book is built and how to study from it: the five parts of every unit and the habits that make them work.',
+scene:'Before unit 1. You are deciding how to spend your study time.',
+purpose:'This chapter is the manual. It explains how each unit is laid out and what to do with each part, and it argues for short, regular sessions, copying what you hear, and living with the language between sessions. It teaches no grammar, but it sets the method every later chapter depends on.',
+can:['Name the five parts of every unit and say what each one is for.','Plan short, regular study sessions instead of one long cram.','Carry on when you do not understand every word yet.'],
+gram:[['The five parts of a unit','The dialogue (Konuşma) comes first, then comprehension questions (Sorular), cultural and language notes (Notlar), the grammar explanations (Dilbilgisi), the exercises (Alıştırmalar), and a second dialogue that closes the unit.',[['Konuşma','dialogue'],['Sorular','questions'],['Dilbilgisi','language points'],['Alıştırmalar','exercises']]],
+['The method','Listen to or read the dialogue before the explanations. Answer the questions. Read the language points slowly, then do the exercises, and come back to earlier units. Copy what you hear and exaggerate it.',[]]],
+tip:'You are not meant to memorise whole dialogues. Words come back in later units, and meeting them again is what fixes them.',
+vocab:[['konuşma','dialogue, conversation'],['sorular','questions'],['notlar','notes'],['dilbilgisi','grammar'],['alıştırmalar','exercises'],['doğru','true, correct'],['yanlış','false, wrong'],['evet','yes'],['hayır','no'],['cevap','answer'],['anahtar','key'],['kelime','word'],['ders','lesson'],['sözlük','dictionary']],
+drills:[
+{t:'mc',q:'Which part of a unit checks that you understood the dialogue?',o:['Notlar','Sorular','Dilbilgisi','Alıştırmalar'],a:1,w:'Sorular means questions. They come straight after the dialogue.'},
+{t:'mc',q:'Which part explains the grammar?',o:['Konuşma','Sorular','Dilbilgisi','Notlar'],a:2,w:'Dilbilgisi literally means grammar (language points).'},
+{t:'mc',q:'"Doğru mu, yanlış mı?" asks you to decide whether a statement is…',o:['polite or rude','true or false','past or future','formal or informal'],a:1,w:'Doğru is true, yanlış is false.'},
+{t:'mc',q:'What is the best first step with a new unit?',o:['Memorise the vocabulary list','Do the exercises cold','Listen to or read the dialogue before the explanations','Skip to the grammar'],a:2,w:'Meeting the language in a real situation first gives the grammar something to attach to.'},
+{t:'mc',q:'How do you pick up Turkish rhythm?',o:['By reading rules about stress','By listening a lot and copying','By translating word for word','It cannot be learned'],a:1,w:'Rhythm is absorbed from exposure, so listen repeatedly and imitate.'},
+{t:'mc',q:'You do not understand every word of a dialogue. What now?',o:['Stop and look up every word','Give up on the unit','Carry on; the words return in later units','Memorise it anyway'],a:2,w:'The course recycles vocabulary, so you do not need to master everything at first sight.'},
+{t:'ty',q:'Type the Turkish for "exercises".',a:['alıştırmalar'],w:'Alıştırmalar, from alıştırma (an exercise).'}
+]});
+
+ADD({id:'p1',kind:'p',n:1,group:'O',tr:'Türkçeye giriş',en:'Introduction to the Turkish language',pp:'6–9',
+short:'What makes Turkish different: endings glued onto words, vowel harmony, verb-last order, and no genders.',
+scene:'Before unit 1. A first look at how a Turkish sentence is put together.',
+purpose:'This chapter sells you on how Turkish works before you meet it in detail. Turkish glues endings onto a word instead of adding separate words (agglutination), those endings rhyme with the word\'s vowels (vowel harmony), the verb comes last, and nouns have no gender. Once these four ideas are clear, every later chapter reads as a new application of the same machinery.',
+can:['Break a long Turkish word into stem and endings.','Say whether an ending has two forms (e-type) or four (i-type).','Put a simple sentence in subject, object, verb order.','Guess the meaning of a word built with -ci.'],
+gram:[['Agglutination','Where English uses several words, Turkish stacks endings on one stem, always in a fixed order.',[['gel-ebil-ecek-sin','come-able-will-you = you will be able to come'],['ev-ler-im-de','house-s-my-in = in my houses']]],
+['Vowel harmony','Endings change to rhyme with the vowel before them. e-type endings have two forms, i-type endings have four.',[['ev → evler','okul → okullar'],['-iyor → -iyor, -ıyor, -uyor, -üyor','']]],
+['Word order','Subject, object, verb. A describing word goes before the thing it describes.',[['Kadın kitabı okudu.','The woman read the book.'],['Büyük kadın kitabı okudu.','The big woman read the book.']]],
+['Building words','-ci / -cı / -cu / -cü marks a person tied to something: a trade or a job.',[['gazete → gazeteci','newspaper → journalist'],['deniz → denizci','sea → sailor']]]],
+tip:'Turkish has no genders and very few exceptions. Learn a rule and it nearly always holds.',
+vocab:[['gazete','newspaper'],['gazeteci','journalist'],['eski','old'],['eskici','rag-and-bone man'],['deniz','sea'],['denizci','sailor'],['kitap','book'],['kitapçı','bookseller'],['ekmek','bread'],['ekmekçi','baker'],['balık','fish'],['balıkçı','fisherman'],['çiçek','flower'],['çiçekçi','florist'],['kadın','woman'],['erkek','man'],['okumak','to read'],['ev','house'],['okul','school']],
+drills:[
+{t:'mc',q:'In gel-ebil-ecek-sin ("you will be able to come"), which piece means "you"?',o:['-ebil','-ecek','-sin','gel'],a:2,w:'-sin is the personal ending for "you". The chain is stem + ability + future + person.'},
+{t:'mc',q:'In gel-ebil-ecek-sin, which piece means "will"?',o:['-ecek','-ebil','-sin','gel'],a:0,w:'-ecek marks the future.'},
+{t:'mc',q:'"Evlerimde" is ev-ler-im-de. What does it mean?',o:['my house','in my houses','from the houses','their house'],a:1,w:'ev house + -ler plural + -im my + -de in.'},
+{t:'mc',q:'Which ending has four vowel forms (i-type)?',o:['-ler','-de','-mek','-iyor'],a:3,w:'-iyor becomes -iyor, -ıyor, -uyor or -üyor. The others have two forms.'},
+{t:'or',q:'The woman read the book.',a:'Kadın kitabı okudu.',w:'Subject first, then the object, with the verb at the end.'},
+{t:'or',q:'The big woman read the book.',a:'Büyük kadın kitabı okudu.',w:'The describing word büyük goes before kadın.'},
+{t:'mc',q:'Where does the verb usually go in a Turkish sentence?',o:['At the start','Second','At the end','Anywhere'],a:2,w:'Turkish is subject, object, verb.'},
+{t:'ty',q:'Add -ci to gazete to name the person.',a:['gazeteci'],w:'gazete + ci = journalist.'},
+{t:'ty',q:'Name the person from deniz (sea).',a:['denizci'],w:'deniz + ci = sailor.'},
+{t:'mc',q:'Do Turkish nouns have grammatical gender?',o:['Yes, two genders','Yes, three genders','No','Only for people'],a:2,w:'There is no masculine or feminine to memorise.'},
+{t:'ty',q:'A person who bakes bread: ekmek + ci =',a:['ekmekçi'],w:'After k (a voiceless consonant) the ending becomes -çi.'}
+]});
+
+ADD({id:'p2',kind:'p',n:2,group:'O',tr:'Alfabe ve telaffuz',en:'The alphabet and pronunciation',pp:'10–13',
+short:'The 29 letters, the six that English lacks, and the sounds, stress and rhythm that make you understood.',
+scene:'Before unit 1. You are learning to read Turkish aloud correctly.',
+purpose:'Turkish spelling is phonetic: one letter, one sound, and every letter is pronounced. This chapter gives you the 29-letter alphabet and the few sounds English does not have (ı, ö, ü, ğ, plus c, ç, ş, j and v behaving differently). After it you can read any Turkish word aloud, and you know the default stress and why rhythm matters.',
+can:['List the letters Turkish lacks (q, w, x) and those it adds.','Tell dotted i from dotless ı and capital İ from I.','Say c, ç, ş, j, v and ğ correctly.','Put the stress on the last syllable by default.'],
+gram:[['The 29 letters','a b c ç d e f g ğ h ı i j k l m n o ö p r s ş t u ü v y z. There is no q, w or x. Eight vowels: a e ı i o ö u ü, and every Turkish vowel is short.',[]],
+['Vowels English lacks','ı is a dull sound like the i in cousin. ö is like the French eu or German ö. ü is like the French u or German ü. Dotted and dotless i are different letters, with capitals İ and I.',[['ılık, iş','lukewarm, work'],['göz, üç','eye, three']]],
+['Consonants that surprise','c is j as in John. ç is ch. ş is sh. j is the s of pleasure. v sits between v and w. ğ has no sound of its own and lengthens the vowel before it (sağ is close to saa).',[['cam, çay, şeker, jeton','glass, tea, sugar, token']]],
+['Stress and rhythm','Stress is light and usually falls on the last syllable. Place names, adverbs and some loan words are exceptions. Pronounce every letter, so bale is baleh.',[]]],
+tip:'Capital letters follow the dot: i becomes İ and ı becomes I. İstanbul starts with a dotted capital.',
+vocab:[['çay','tea'],['cam','glass'],['şeker','sugar'],['jeton','token'],['yağ','oil, fat'],['ağaç','tree'],['dağ','mountain'],['sağ','right; alive'],['öğle','noon'],['göz','eye'],['üç','three'],['ışık','light'],['ılık','lukewarm'],['iş','work'],['kız','girl'],['yüz','face; hundred'],['dört','four'],['ömür','life'],['ülke','country'],['kuş','bird']],
+drills:[
+{t:'mc',q:'Which English letters are missing from the Turkish alphabet?',o:['k, y, z','q, w, x','c, j, v','h, p, r'],a:1,w:'Turkish has no q, w or x.'},
+{t:'mc',q:'How many vowels does Turkish have?',o:['5','6','8','10'],a:2,w:'a, e, ı, i, o, ö, u, ü.'},
+{t:'mc',q:'Which is the dotless i?',o:['i','ı','İ','j'],a:1,w:'ı is the dotless lower case. Its capital is I.'},
+{t:'mc',q:'What is the capital of the dotted i?',o:['I','İ','Y','J'],a:1,w:'Dotted i keeps its dot in capitals: İstanbul.'},
+{t:'mc',q:'What is the capital of dotless ı?',o:['I','İ','Ï','L'],a:0,w:'The dotless letter has the plain capital I.'},
+{t:'mc',q:'How is c pronounced?',o:['like k','like English j in John','like ch','like s'],a:1,w:'c is j. Cem sounds like Jem.'},
+{t:'mc',q:'How is ç pronounced?',o:['like ch in child','like k','like s','like j'],a:0,w:'ç is the ch of child.'},
+{t:'mc',q:'What does ğ do?',o:['Sounds like g in go','Sounds like gh','Has no sound and lengthens the vowel before it','Sounds like y'],a:2,w:'The soft g never starts a word and stretches the preceding vowel.'},
+{t:'mc',q:'How is ş pronounced?',o:['sh','s','ch','z'],a:0,w:'ş is the sh of show.'},
+{t:'mc',q:'How is j pronounced?',o:['like English j in John','like the s in pleasure','like y','like ch'],a:1,w:'Turkish j is the French j in Jacques.'},
+{t:'mc',q:'Where does the stress usually fall?',o:['First syllable','Second syllable','Last syllable','It is random'],a:2,w:'As a rule of thumb, stress the last syllable. Place names and adverbs are exceptions.'},
+{t:'mc',q:'Which vowel is closest to German ü or French u?',o:['u','ö','ü','ı'],a:2,w:'ü is a front rounded vowel, halfway between English e and oo.'},
+{t:'mc',q:'How do you say the Turkish word "bale"?',o:['like English bail','like English bale with a silent e','baleh, with every letter sounded','bahl'],a:2,w:'Turkish never leaves a letter silent.'},
+{t:'mc',q:'Which word contains the soft g?',o:['gece','güzel','dağ','gül'],a:2,w:'Only dağ (mountain) has ğ.'},
+{t:'ty',q:'Type the letter that sounds like English "sh".',a:['ş'],s:1,w:'ş, s with a cedilla.'}
+]});
+
+ADD({id:'p3',kind:'p',n:3,group:'O',tr:'Hayatta kalma rehberi',en:'Pronunciation practice: survival guide',pp:'14–17',
+short:'Seventy-odd survival words and phrases to say aloud: basics, talking, shopping, eating, directions, travel, time, numbers, places, trouble.',
+scene:'Before unit 1. You step off a plane with no grammar yet and need to cope.',
+purpose:'A kick-start list of survival words and phrases, grouped by situation, used here to practise pronunciation on real vocabulary. You are not analysing the grammar. You are saying the words aloud while watching how they are spelled, so that the sounds from the alphabet chapter become habits and you can already ask, thank, count, point and call for help.',
+can:['Greet, thank and say goodbye.','Ask someone to repeat or slow down.','Ask where something is, when, and how much.','Read signs: otogar, eczane, postane, tuvalet.'],
+gram:[['Politeness core','lütfen (please), sağ olun and teşekkürler (thanks), pardon and bakar mısınız (excuse me).',[['Lütfen.','Please.'],['Sağ olun.','Thank you.']]],
+['Question words in use','nerede (where), ne zaman (when), kaç para (how much money), hangi (which).',[['Tuvalet nerede?','Where is the toilet?'],['Kaç para?','How much?']]],
+['Existence','var means there is, yok means there is not. They are the most useful two words in a shop.',[['Su var.','There is water.'],['Bilet yok.','There are no tickets.']]]],
+tip:'Say each word aloud twice, once slowly with every letter sounded, once at speed. The hear-it button on the Words tab uses your browser\'s Turkish voice if one is installed.',
+vocab:[['evet','yes'],['hayır','no'],['lütfen','please'],['sağ olun','thank you'],['merhaba','hello'],['hoşça kalın','goodbye'],['nasılsınız?','how are you?'],['iyiyim','I am fine'],['pardon','excuse me'],['anladım','I understand'],['anlamadım',"I don't understand"],['tekrar','again'],['yavaş','slowly'],['ne demek?','what does it mean?'],['Türkçesi ne?','what is it in Turkish?'],['kaç para?','how much (money)?'],['ucuz','cheap'],['pahalı','expensive'],['var','there is'],['yok','there isn\'t'],['pul','stamp'],['bakar mısınız!','excuse me! (to get attention)'],['fiyat listesi','price list'],['hesap','bill'],['öğle yemeği','lunch'],['nerede?','where?'],['sol','left'],['düz','straight on'],['ne zaman?','when?'],['hangi otobüs?','which bus?'],['ilk','first'],['son','last'],['bilet','ticket'],['burada','here'],['bir gece','one night'],['kahvaltı dahil','breakfast included'],['dakika','minute'],['saat','hour, o\'clock'],['gün','day'],['hafta','week'],['şimdi','now'],['sonra','later'],['dün','yesterday'],['bugün','today'],['yarın','tomorrow'],['az','a little'],['çok','a lot'],['tuvalet','toilet'],['postane','post office'],['eczane','chemist'],['otogar','bus station'],['iskele','jetty, ferry stop'],['bakkal','grocer'],['imdat!','help!'],['kaza','accident'],['doktor','doctor'],['çok ayıp!','shame on you!']],
+drills:[
+{t:'mc',q:'You did not catch what was said. Ask for it again.',o:['Tekrar, lütfen.','Hesap, lütfen.','Hoşça kalın.','Yarın.'],a:0,w:'Tekrar means again. Lütfen softens it.'},
+{t:'mc',q:'You want to say you do not understand.',o:['Anladım.','Anlamadım.','Evet.','Pardon.'],a:1,w:'Anlamadım. Anladım is the opposite: I understand.'},
+{t:'mc',q:'Ask where the toilet is.',o:['Tuvalet var.','Tuvalet nerede?','Tuvalet kaç para?','Nerede hesap?'],a:1,w:'Place first, then nerede.'},
+{t:'mc',q:'Ask how much something costs.',o:['Kaç para?','Ne zaman?','Hangi otobüs?','Ne demek?'],a:0,w:'Kaç para literally means how much money.'},
+{t:'mc',q:'Ask someone to speak slowly.',o:['Çok, lütfen.','Yavaş, lütfen.','Şimdi, lütfen.','Son, lütfen.'],a:1,w:'Yavaş is slowly.'},
+{t:'mc',q:'You need a stamp. Where do you go?',o:['eczane','bakkal','postane','otogar'],a:2,w:'Pul (stamp) is sold at the postane.'},
+{t:'mc',q:'You need medicine. Where do you go?',o:['postane','eczane','iskele','tuvalet'],a:1,w:'An eczane is a chemist.'},
+{t:'mc',q:'You are leaving a shop. What do you say?',o:['Merhaba.','Hoşça kalın.','Pardon.','İmdat!'],a:1,w:'Hoşça kalın is said by the person who is leaving.'},
+{t:'mc',q:'You need urgent help.',o:['İmdat!','Pardon.','Yavaş.','Tekrar.'],a:0,w:'İmdat means help.'},
+{t:'mc',q:'You want the waiter\'s attention.',o:['Bakar mısınız!','İyiyim.','Evet.','Dün.'],a:0,w:'Bakar mısınız literally means would you look.'},
+{t:'mc',q:'Which word means "yesterday"?',o:['yarın','bugün','dün','sonra'],a:2,w:'dün yesterday, bugün today, yarın tomorrow.'},
+{t:'ty',q:'Type the Turkish for "tomorrow".',a:['yarın'],w:'yarın, with a dotless ı.'},
+{t:'ty',q:'Type the Turkish for "today".',a:['bugün'],w:'bugün, with ü.'},
+{t:'ty',q:'Type the Turkish for "please".',a:['lütfen'],w:'lütfen, with ü.'},
+{t:'mc',q:'Which phrase would you read on a sign pointing to the bus station?',o:['eczane','postane','otogar','iskele'],a:2,w:'otogar is the bus station; iskele is a jetty or ferry stop.'}
+]});
+
+ADD({id:'u1',kind:'u',n:1,group:'A',tr:'Ekmek var mı?',en:'Is there any bread?',pp:'18–28',
+short:'Shop talk: greet, ask whether something is there, turn any statement into a yes/no question, and say what something is not.',
+scene:'A village grocer\'s in the morning. A holidaymaker with a few words of Turkish buys bread, sausage and olives for breakfast.',
+purpose:'This is your first working toolkit. You learn to greet and part at any time of day, to ask for goods with var and yok, to turn any statement into a question with mı/mi/mu/mü, and to deny something with değil. It also introduces vowel harmony for the first time, through the plural endings and the question word, so the idea is familiar before it matters.',
+can:['Greet and say goodbye at different times of day.','Ask "Is there any…?" and ask for goods politely.','Turn a statement into a yes/no question.','Say "it is not X" with değil and "isn\'t it?" with değil mi.','Count from zero to ten and use set phrases for meals and work.'],
+gram:[['Greetings and farewells','Günaydın is good morning, iyi günler good day, iyi akşamlar good evening, iyi geceler good night. Merhaba works at any time. Hoşça kalın is what the person leaving says.',[['Günaydın efendim.','Good morning.'],['Hoşça kalın.','Goodbye.']]],
+['Plurals: -ler / -lar','Add -ler after e, i, ö, ü and -lar after a, ı, o, u. After a number the noun stays singular.',[['gün → günler','akşam → akşamlar'],['iki gün','two days (not günler)']]],
+['The question word mı / mi / mu / mü','A separate word after the thing you ask about. It copies the last vowel: ı after a/ı, i after e/i, u after o/u, ü after ö/ü.',[['Salam mı?','Salami?'],['Türk mü?','Turkish?']]],
+['Var and yok','var is there is, yok is there is not. They also form questions.',[['Çay var mı?','Is there any tea?'],['Problem yok!','No problem!']]],
+['Değil','Place değil after the noun or adjective you deny. Değil mi? at the end means isn\'t it?',[['Salam değil.','It is not salami.'],['Güzel, değil mi?','Nice, isn\'t it?']]],
+['Numbers and pleasantries','sıfır, bir, iki, üç, dört, beş, altı, yedi, sekiz, dokuz, on. Afiyet olsun to someone eating, Elinize sağlık to a cook, Kolay gelsin to someone working.',[]]],
+tip:'A raised eyebrow with a single tut is a polite Turkish no. Do not read it as rudeness.',
+vocab:[['günaydın','good morning'],['merhaba','hello'],['hoşça kalın','goodbye'],['iyi akşamlar','good evening'],['iyi geceler','good night'],['efendim','madam, sir'],['ekmek','bread'],['var','there is'],['yok','there is not'],['lütfen','please'],['bu','this'],['ne','what'],['çok','very'],['güzel','nice, beautiful'],['tabii','certainly'],['peki','OK'],['teşekkürler','thanks'],['buyurun','here you are'],['değil','not'],['bakkal','grocer'],['zeytin','olive'],['süt','milk'],['su','water'],['bira','beer'],['oda','room'],['anahtar','key'],['sıcak','hot'],['soğuk','cold'],['büyük','big'],['küçük','small'],['zor','difficult'],['kolay','easy'],['boş','empty, free'],['sıfır','zero'],['bir','one'],['iki','two'],['üç','three'],['dört','four'],['beş','five'],['altı','six'],['yedi','seven'],['sekiz','eight'],['dokuz','nine'],['on','ten']],
+drills:[
+{t:'mc',q:'Türk ___ ?',o:['mı','mi','mu','mü'],a:3,w:'The last vowel is ü, so the question word is mü.'},
+{t:'mc',q:'Salam ___ ?',o:['mı','mi','mu','mü'],a:0,w:'The last vowel is a, so the question word is mı.'},
+{t:'mc',q:'İstanbul ___ ?',o:['mı','mi','mu','mü'],a:2,w:'The last vowel is u, so the question word is mu.'},
+{t:'mc',q:'Ben ___ ?',o:['mı','mi','mu','mü'],a:1,w:'The last vowel is e, so the question word is mi.'},
+{t:'mc',q:'Televizyon ___ ?',o:['mı','mi','mu','mü'],a:2,w:'The last vowel is o, so the question word is mu.'},
+{t:'mc',q:'Şoför ___ ?',o:['mı','mi','mu','mü'],a:3,w:'The last vowel is ö, so the question word is mü.'},
+{t:'mc',q:'Plural of anahtar (key):',o:['anahtarler','anahtarlar','anahtarlır','anahtarlarlar'],a:1,w:'The last vowel is a, so the plural is -lar.'},
+{t:'ty',q:'Plural of gece (night):',a:['geceler'],w:'The last vowel is e, so -ler.'},
+{t:'ty',q:'Plural of televizyon:',a:['televizyonlar'],w:'The last vowel is o, so -lar.'},
+{t:'mc',q:'How do you say "three tickets"?',o:['üç biletler','üç bilet','üçler bilet','bilet üçler'],a:1,w:'After a number the noun stays singular.'},
+{t:'mc',q:'How do you ask "Is there any bread?"',o:['Ekmek var mı?','Ekmek mı var?','Var ekmek?','Ekmek yok mı var?'],a:0,w:'Noun, var, then the question word.'},
+{t:'mc',q:'How do you say "It is not salami"?',o:['Salam yok.','Salam değil.','Salam mı değil.','Değil salam mı.'],a:1,w:'Put değil after the word you deny.'},
+{t:'ty',q:'How do you say "there is not (any)"?',a:['yok'],w:'yok is the opposite of var.'},
+{t:'mc',q:'It is nine in the morning and you walk into a grocer\'s. What do you say?',o:['İyi geceler.','Günaydın.','Hoşça kalın.','Afiyet olsun.'],a:1,w:'Günaydın is good morning.'},
+{t:'or',q:'Is there any green olive?',a:'Yeşil zeytin var mı?',w:'Adjective before noun, then var, then the question word.'},
+{t:'mc',q:'What do you say to the person who cooked your dinner?',o:['Kolay gelsin.','Elinize sağlık.','İyi geceler.','Peki.'],a:1,w:'Elinize sağlık means health to your hands.'},
+{t:'ty',q:'Write the number 7 in Turkish.',a:['yedi'],w:'yedi.'}
+]});
+
+ADD({id:'u2',kind:'u',n:2,group:'A',tr:'İngiliz misiniz?',en:'Are you English?',pp:'29–42',
+short:'Say who and what you are, ask about others, address people politely, and count into the millions.',
+scene:'A ship has docked and a passport official checks a passenger. Later, two travellers walk into a kebab restaurant.',
+purpose:'This chapter is about identity: your name, nationality and job, and the same questions put to others. You get the personal pronouns, the Turkish endings for am/are/is, polite forms of address, the buffer consonant that keeps vowels apart, and the numbers beyond ten. You also meet my and your as endings, which is the first real taste of agglutination.',
+can:['Address people politely (efendim, Ali Bey, memur bey).','State nationality, job and name, and ask the same of others.','Use the endings for am, are and is, and ask questions with them.','Count to a billion and say half and one and a half.','Say my and your with -im and -iniz.'],
+gram:[['Politeness words','Bey after a man\'s first name, Hanım after a woman\'s. Efendim is sir or madam. After a job title: memur bey, doktor bey.',[['Ali Bey','Mr Ali'],['şoför bey!','driver!']]],
+['Pronouns and sen/siz','ben, sen, o, biz, siz, onlar. Use siz for one person when you are being formal.',[]],
+['To be: -im -sin -iz -siniz','Endings added to the noun or adjective: Türküm, Almansın, Türk (no ending for he or she), Türküz, Türksünüz. They follow i-type harmony.',[['İngilizim','I am English'],['Memnunuz','We are pleased']]],
+['Questions with to be','Split off the ending and put mi before it: İngiliz misiniz? After a vowel a buffer y appears: Güzel miyim?',[['Hazır mıyız?','Are we ready?'],['Açık mısınız?','Are you open?']]],
+['Buffer y','Turkish will not put two vowels side by side across an ending, so it inserts y.',[]],
+['Numbers beyond ten','yirmi 20, otuz 30, kırk 40, elli 50, altmış 60, yetmiş 70, seksen 80, doksan 90, yüz, bin, milyon. Write them as one word: ikiyüzkırkbeş. Yarım is half, buçuk is and a half.',[['onsekiz','18'],['bir buçuk','1.5']]],
+['Bu, şu, o','bu is this, şu is that (nearby), o is that (far away).',[]],
+['Question words','kim who, ne what, nerede where, ne zaman when, nasıl how, kaç tane how many, ne kadar how much.',[]],
+['My and your: -im / -iniz','Added to nouns: adım my name, adınız your name. After a vowel only -m and -nız remain.',[['Türkçem','my Turkish'],['bankanız','your bank']]],
+['A and the','Usually not expressed. Bir means a when it is needed.',[['Kalem var.','There is a pen.'],['Bu bir kalem.','This is a pen.']]]],
+tip:'If you are unsure whether to use sen or siz, use siz. You will never offend anyone by being too polite.',
+vocab:[['memur','official'],['milliyet','nationality'],['pasaport','passport'],['ad','name'],['Türkçe','Turkish (language)'],['İngiliz','English'],['Alman','German'],['Türk','Turk, Turkish'],['hoş geldiniz','welcome'],['hoş bulduk','glad to be here (reply)'],['memnun','pleased, happy'],['kim','who'],['nerede','where'],['nasıl','how'],['kaç tane','how many'],['ne kadar','how much'],['ne zaman','when'],['ben','I'],['sen','you (informal)'],['biz','we'],['siz','you (formal, plural)'],['onlar','they'],['eş','spouse'],['otel','hotel'],['kişi','person'],['yirmi','twenty'],['otuz','thirty'],['kırk','forty'],['elli','fifty'],['altmış','sixty'],['yetmiş','seventy'],['seksen','eighty'],['doksan','ninety'],['yüz','hundred'],['bin','thousand'],['milyon','million'],['açık','open'],['kapalı','closed'],['ucuz','cheap'],['pahalı','expensive'],['hazır','ready'],['garson','waiter'],['yarım','half'],['buçuk','and a half']],
+drills:[
+{t:'mc',q:'"I am English."',o:['İngilizim','İngilizsin','İngiliz','İngiliziz'],a:0,w:'-im is the ending for I am; the harmony vowel is i.'},
+{t:'mc',q:'"You (formal) are Turkish."',o:['Türküm','Türksün','Türksünüz','Türküz'],a:2,w:'Siz takes -siniz; after ü the vowel becomes ü: Türksünüz.'},
+{t:'ty',q:'"We are pleased." (memnun)',a:['memnunuz'],w:'memnun + uz: the last vowel is u, so -uz.'},
+{t:'ty',q:'"I am German." (Alman)',a:['Almanım'],w:'Alman + ım: the last vowel is a, so -ım.'},
+{t:'mc',q:'"Are you English?" (formal)',o:['İngilizsiniz mi?','İngiliz misiniz?','Mi İngilizsiniz?','İngiliz mısınız?'],a:1,w:'Split the ending off, insert mi before it: İngiliz mi-siniz. The vowel is i, so mi.'},
+{t:'mc',q:'"Am I beautiful?"',o:['Güzel mim?','Güzel miyim?','Güzelim mi?','Güzel mıyım?'],a:1,w:'After the vowel of mi a buffer y keeps the vowels apart: mi-y-im.'},
+{t:'mc',q:'"Are we ready?"',o:['Hazır mıyız?','Hazır miyiz?','Hazır mıız?','Hazırız mı?'],a:0,w:'Hazır has ı, so mı; then buffer y: mı-y-ız.'},
+{t:'mc',q:'"What is your name?" (formal)',o:['Adın ne?','Adınız ne?','Ad sen ne?','Sizin ad ne?'],a:1,w:'ad + ınız: your name.'},
+{t:'ty',q:'"My Turkish" (Türkçe + my)',a:['Türkçem'],w:'After a vowel only -m is added.'},
+{t:'mc',q:'Which number is kırk?',o:['14','40','400','4'],a:1,w:'kırk is forty.'},
+{t:'ty',q:'Write 245 in Turkish as one word.',a:['ikiyüzkırkbeş','iki yüz kırk beş'],w:'Say the hundreds, tens and ones in that order. Turkish does not say "one hundred": just yüz.'},
+{t:'mc',q:'"One and a half."',o:['bir yarım','bir buçuk','yarım bir','bir yarım buçuk'],a:1,w:'After a number, half is buçuk.'},
+{t:'mc',q:'A tree on the far horizon is …',o:['bu','şu','o','kim'],a:2,w:'bu is near, şu is nearby, o is far.'},
+{t:'mc',q:'"Who is your spouse?" (formal)',o:['Eşiniz kim?','Eşin nerede?','Siz eş kim?','Kim eşiniz mi?'],a:0,w:'eş + iniz, then the question word kim.'},
+{t:'mc',q:'An official asks "Milliyetiniz ne?" What do they want to know?',o:['Your name','Your nationality','Your job','Your age'],a:1,w:'Milliyet means nationality.'},
+{t:'mc',q:'"They are Turkish."',o:['Onlar Türk.','Onlar Türksünüz.','Onlar Türküm.','Türk onlar mi.'],a:0,w:'With the pronoun onlar the -ler ending is left out.'},
+{t:'or',q:'What is your nationality?',a:'Milliyetiniz ne?',w:'Noun with -iniz, then the question word.'}
+]});
+
+ADD({id:'u3',kind:'u',n:3,group:'A',tr:'Daha koymayın, lütfen!',en:'No more, please!',pp:'43–58',
+short:'Order a meal, tell people what to do and not to do, and give simple directions with at / to / from endings.',
+scene:'A restaurant. A couple chooses a table, orders wine, and has to stop the waiter piling on starters.',
+purpose:'This chapter teaches you to steer other people: order food, ask for things and give directions. You learn commands (informal, formal and negative), the three location endings -de, -e and -den, the definite object ending -i, how personal pronouns change, and the sound changes (d to t, k to ğ) that make endings fit. It is the first chapter where Turkish word order really bites.',
+can:['Order a meal and ask for the bill.','Give informal, formal and negative commands.','Say at, to and from with -de, -e, -den.','Mark a specific object with -i and know how pronouns change.','Give simple directions: sağa dön, düz git.'],
+gram:[['Commands','Informal: the bare stem. Formal: add -in. Very formal (signs): add -iniz. Negative: add -me before the ending, with a buffer y in the formal form.',[['Gel! Gelin! Geliniz!','Come!'],['Gelme! Gelmeyin!','Do not come!']]],
+['-de, -e, -den','At or in, to, from. They follow e-type harmony.',[['Masada otur.','Sit at the table.'],['Bankadan bakkala git.','Go from the bank to the grocer\'s.']]],
+['Direct objects and -i','A specific object takes -i (-yi after a vowel). A non-specific one takes nothing, or bir.',[['Kahve iç.','Have a coffee.'],['Kahveyi iç.','Drink the coffee.']]],
+['Pronoun forms','ben → beni, bana, bende, benden. sen → seni, sana. o → onu, ona, onda, ondan (n is added). biz, siz, onlar: bizi, size, onları.',[]],
+['Apostrophes','Put one between a proper noun and its ending.',[['İstanbul\'dan İzmir\'e','from İstanbul to İzmir']]],
+['d becomes t','After a voiceless consonant (ç f h k p s ş t) the d of -de/-den becomes t.',[['maç → maçta','saat beş → saat beşte']]],
+['k becomes ğ','A word of more than one syllable ending in k turns it into ğ before a vowel ending. A one-syllable word keeps k.',[['sucuk → sucuğu','park → parkı']]],
+['The infinitive','Stem + -mek or -mak. The stem is also the informal command.',[['bak → bakmak','git → gitmek']]]],
+tip:'When a waiter unloads a huge tray of starters, you are expected to stop him and pick: Yeter. Daha koymayın, lütfen.',
+vocab:[['buyurun','here you are, go ahead'],['masa','table'],['köşe','corner'],['mönü','menu'],['önce','first, firstly'],['ve','and'],['meze','starter'],['içki','alcoholic drink'],['biraz','a little'],['buz','ice'],['getirmek','to bring'],['hemen','straight away'],['salata','salad'],['yeter','that is enough'],['daha','more'],['koymak','to put'],['şerefe','cheers'],['hesap','bill'],['üstü kalsın','keep the change'],['et','meat'],['etsiz','without meat'],['gelmek','to come'],['gitmek','to go'],['yapmak','to do'],['oturmak','to sit'],['bakmak','to look'],['durmak','to stop'],['almak','to take, buy'],['vermek','to give'],['içmek','to drink, smoke'],['yemek','to eat; food'],['sağ','right'],['sol','left'],['düz','straight'],['dönmek','to turn'],['cami','mosque'],['meydan','square'],['lokanta','restaurant'],['plaj','beach'],['erken','early'],['uzak','far']],
+drills:[
+{t:'mc',q:'Formal command: "Come!" (gel)',o:['Gelin!','Gelen!','Gelmek!','Gele!'],a:0,w:'Formal = stem + -in.'},
+{t:'mc',q:'Informal: "Do not put!" (koymak)',o:['Koyma!','Koymayın!','Koyun!','Koy mi!'],a:0,w:'Informal negative = stem + -ma.'},
+{t:'mc',q:'Formal: "Do not do!" (yapmak)',o:['Yapma!','Yapın!','Yapmayın!','Yapmaın!'],a:2,w:'Formal negative = stem + -ma + y + -ın.'},
+{t:'ty',q:'Formal: "Sit!" (otur)',a:['oturun','Oturun!'],w:'The last vowel is u, so the formal ending is -un.'},
+{t:'mc',q:'"To the grocer\'s" (bakkal)',o:['bakkalda','bakkala','bakkaldan','bakkalı'],a:1,w:'-a is to; bakkal has an a.'},
+{t:'mc',q:'"From the bank" (banka)',o:['bankada','bankaya','bankadan','bankayı'],a:2,w:'-dan is from.'},
+{t:'ty',q:'"At the table" (masa)',a:['masada'],w:'masa + da.'},
+{t:'mc',q:'"At the football match" (maç)',o:['maçda','maçta','maçtı','maçde'],a:1,w:'ç is voiceless, so d becomes t.'},
+{t:'mc',q:'"In the road" (sokak)',o:['sokakda','sokakta','sokağta','sokakde'],a:1,w:'k is voiceless, so -ta.'},
+{t:'mc',q:'"Eat the sausage!" (specific object; sucuk)',o:['Sucuk ye!','Sucuğu ye!','Sucuku ye!','Sucuka ye!'],a:1,w:'A specific object takes -u, and the k softens to ğ before the vowel.'},
+{t:'mc',q:'"Go to the park!" (park)',o:['Parğa git!','Parka git!','Parga git!','Park git!'],a:1,w:'Park has one syllable, so k stays.'},
+{t:'ty',q:'"Kiss me!" (öp = kiss)',a:['öp beni','Öp beni!'],w:'ben becomes beni as a direct object.'},
+{t:'mc',q:'"To me"',o:['bene','bana','bende','beni'],a:1,w:'ben + e becomes bana, not bene.'},
+{t:'mc',q:'"From him/her"',o:['onda','ondan','onden','oden'],a:1,w:'o gets an n before the ending: ondan.'},
+{t:'mc',q:'"In Turkey"',o:['Türkiye\'de','Türkiyede','Türkiye\'da','Türkiye\'ta'],a:0,w:'Apostrophe before the ending after a proper noun; the vowel e gives -de.'},
+{t:'mc',q:'The waiter keeps adding starters. What do you say?',o:['Yeter. Daha koymayın, lütfen.','Daha koyun, lütfen.','Hesap, lütfen.','Şerefe.'],a:0,w:'Yeter is enough; koymayın is the formal negative of koymak.'},
+{t:'or',q:'Go from the bank to the grocer\'s.',a:'Bankadan bakkala git.',w:'From, then to, then the verb last.'},
+{t:'mc',q:'"Turn left."',o:['Sağa dön.','Sola dön.','Düz git.','Sola dönme.'],a:1,w:'sol + a = sola.'}
+]});
+
+ADD({id:'u4',kind:'u',n:4,group:'B',tr:'Şaka yapıyorsunuz!',en:'You\'re joking!',pp:'59–74',
+short:'The -iyor present tense, possession (my, your, the doctor\'s), saying what you have, and haggling over a carpet.',
+scene:'A carpet shop in İzmir. A Swede in a hurry looks at rugs, refuses tea, and bargains over a price.',
+purpose:'This chapter gives you your first tense, the -iyor present, for what is happening now, for routines and for things about to happen. It also teaches possession (my house, the doctor\'s house), saying you have something, -li and -siz for with and without, and istemek for wanting. Together these let you describe your day and haggle.',
+can:['Say what is happening, what you do, and what happens soon.','Negate and question the -iyor tense.','Say whose something is, and what you have or do not have.','Say with or without something (-li, -siz).','Say what you want, including wanting to do something.'],
+gram:[['The -iyor present','Stem + -iyor (i-type harmony) + person. Vowel-final stems lose their vowel: başla → başlıyor, bekle → bekliyor, ye → yiyor.',[['içiyorum','I am drinking'],['gidiyorsunuz','you are going']]],
+['Negative and question','Negative: -me before -iyor (-miyor). Question: mı/mi goes before the person ending.',[['gelmiyorum','I am not coming'],['geliyor musunuz?','are you coming?']]],
+['What the tense covers','Now, an unchanging fact, a habit and what is about to happen.',[['Bu akşam geliyorum.','I am coming this evening.']]],
+['Possessor and possessed','The owner takes -in, the owned thing takes -i. After a vowel -nin and -si. Su is irregular: suyu.',[['doktorun evi','the doctor\'s house'],['kızların annesi','the girls\' mother']]],
+['Possessive pronouns','benim, senin, onun, bizim, sizin, onların. The owned noun matches: evim, evin, evi, evimiz, eviniz.',[['benim annem','my mother'],['onların evi','their house']]],
+['Having: var and yok','Turkish says "my daughter exists": Kızım var. Negative: yok.',[['Duşumuz yok.','We have no shower.']]],
+['-li and -siz','with and without. -li also makes nationalities and town-dwellers.',[['balkonlu','with a balcony'],['şekersiz','without sugar'],['İstanbullu','from İstanbul']]],
+['İstemek','Wants a noun or an infinitive.',[['Gitmek istiyorum.','I want to go.']]]],
+tip:'Abi (big brother) and abla (big sister) are friendly ways to address someone older. Listen for them in shops.',
+vocab:[['satıcı','salesperson'],['kilim','kilim, rug'],['halı','carpet'],['renk','colour'],['mavi','blue'],['yeşil','green'],['kırmızı','red'],['sarı','yellow'],['siyah','black'],['beyaz','white'],['fiyat','price'],['pazarlık','bargaining'],['dükkan','shop'],['acele','hurry'],['acelem var','I am in a hurry'],['bilmek','to know'],['konuşmak','to speak'],['bırakmak','to give up, to leave'],['istemek','to want'],['sigara','cigarette'],['yazmak','to write'],['satmak','to sell'],['sürmek','to drive'],['koşmak','to run'],['başlamak','to start'],['beklemek','to wait'],['ev','house'],['araba','car'],['anne','mother'],['baba','father'],['kız','daughter, girl'],['oğul','son'],['kardeş','brother, sister'],['aile','family'],['çocuk','child'],['hangi','which'],['özel','special'],['kaliteli','good quality']],
+drills:[
+{t:'mc',q:'"I am drinking." (iç)',o:['içiyorum','içıyorum','içyorum','içeceğim'],a:0,w:'The last vowel is i, so -iyor. Then -um for I.'},
+{t:'ty',q:'"She is coming." (gel)',a:['geliyor'],w:'gel + iyor; he/she/it takes no ending.'},
+{t:'mc',q:'"We are selling." (sat)',o:['satıyoruz','satiyoruz','satuyoruz','satıyorlar'],a:0,w:'The last vowel is a, so -ıyor, then -uz.'},
+{t:'mc',q:'"I am not coming."',o:['gelmiyorum','gelmeiyorum','gelemiyorum','gelmiyum'],a:0,w:'-me before -iyor loses its e: -m-iyor.'},
+{t:'mc',q:'"Are you smoking?" (formal; iç = smoke)',o:['İçiyor musunuz?','İçiyormusunuz mu?','İçiyorsunuz mu?','İçiyor mısınız?'],a:0,w:'The question word goes before the person ending: içiyor mu-sunuz.'},
+{t:'mc',q:'"Are they running?" (koş)',o:['Koşuyorlar mı?','Koşuyor mular?','Koşuyor muyuz?','Koşuyorlar mu?'],a:0,w:'For they, mı goes at the very end. The last vowel is a, so mı.'},
+{t:'ty',q:'"He is waiting." (bekle)',a:['bekliyor'],w:'bekle drops its e before -iyor.'},
+{t:'ty',q:'"I am starting." (başla)',a:['başlıyorum'],w:'başla drops its a, then -ıyor, then -um.'},
+{t:'mc',q:'"The doctor\'s house"',o:['doktor evi','doktorun evi','doktorun ev','doktorın evi'],a:1,w:'Owner + -un, owned thing + -i.'},
+{t:'ty',q:'"My house" (ev)',a:['evim'],w:'ev + im.'},
+{t:'mc',q:'"Our mother" (anne)',o:['annemiz','annemmiz','anneimiz','annenmiz'],a:0,w:'After a vowel the m is added without a vowel: anne-miz.'},
+{t:'mc',q:'"I have a daughter."',o:['Kızım var.','Kızım yok.','Kız benim var.','Benim kız mı var.'],a:0,w:'kız + ım (my) + var.'},
+{t:'mc',q:'"We have no shower." (duş)',o:['Duşumuz yok.','Duşumuz var.','Duş biz yok.','Bizim duş değil.'],a:0,w:'duş + umuz (our) + yok.'},
+{t:'mc',q:'"Without sugar" (şeker)',o:['şekerli','şekersiz','şekerde','şekerden'],a:1,w:'-siz is without; -li is with.'},
+{t:'ty',q:'"A person from İstanbul" (İstanbul + -li)',a:['İstanbullu'],w:'The last vowel is u, so -lu.'},
+{t:'mc',q:'"I want to go."',o:['Gitmek istiyorum.','Gidiyor istemek.','Gitmeyi istemiyorum.','İstiyorum gidiyorum.'],a:0,w:'Infinitive + istiyorum.'},
+{t:'mc',q:'A seller names a high price. You say it is a joke:',o:['Şaka yapıyorsunuz!','Pazarlık yapıyoruz.','Teşekkür ederim.','Hoş geldiniz.'],a:0,w:'Şaka yapmak is to joke.'},
+{t:'or',q:'This blue kilim is very beautiful.',a:'Bu mavi kilim çok güzel.',w:'Adjective before noun; the predicate güzel comes last.'}
+]});
+
+ADD({id:'u5',kind:'u',n:5,group:'B',tr:'Çok beklediniz mi?',en:'Have you been waiting long?',pp:'75–89',
+short:'Introductions, the simple past, telling time on the hour, compound nouns, and verbs that demand a particular ending.',
+scene:'A hotel bar in Ankara. An engineer arrives late to meet two clients, apologises, and orders rakı.',
+purpose:'This chapter opens the past. You learn the -di past tense for what happened, the past of to be, how Turkish uses the past where English says have done, how to tell time on the hour and half hour, how to build compound nouns like orange juice, and how some verbs insist on -e or -den instead of -i. It also gives you the social script for meeting people.',
+can:['Introduce people and respond (Memnun oldum).','Say what you did and did not do, and ask "did you…?"','Say was and was not.','Tell the time on the hour and the half hour.','Build compound nouns and say for me, for him.'],
+gram:[['Past of to be','-dim -din -di -dik -diniz -diler on the noun or adjective. After a vowel a buffer y: iyiydim. Negative uses değil.',[['zengindim','I was rich'],['Mutlu değildim.','I was not happy.']]],
+['The -di past','Stem + -di + person. -di has i-type harmony and becomes -ti after a voiceless consonant. Negative: -me-. Question: mi after the ending.',[['geldim, gittik','I came, we went'],['gelmedim','I did not come'],['geldin mi?','did you come?']]],
+['Turkish past for English present perfect','There is no have-done tense. Çok beklediniz mi? covers have you been waiting long. Some verbs use the past for the present: Anladım, I understand.',[['Geç kaldım.','I am late.']]],
+['Telling the time','Saat üç, saat üçte (at three), saat dört buçuk (half past four). Half past twelve is just yarım.',[['Saat kaç?','What time is it?']]],
+['Compound nouns','The second noun takes -i or -si.',[['pizza evi','pizza house'],['portakal suyu','orange juice']]],
+['Verbs with -e and -den','Some verbs need a particular ending on their object: bakmak, binmek take -e; bıkmak, inmek take -den. All others take -i.',[['arabaya baktı','looked at the car'],['arabadan indi','got out of the car']]],
+['İçin','for. With pronouns the possessor form: benim için, onun için. With nouns no ending: Ahmet için.',[]],
+['Question words with endings','ne, neyi, nerede, neden, kimin, kime… Neden, niçin and niye all mean why.',[]]],
+tip:'The usual answer to Nasılsınız? is simply Teşekkür ederim. You do not need to say you are fine.',
+vocab:[['memnun oldum','pleased to meet you'],['geç kalmak','to be late'],['geç kaldım','I am late'],['affedersiniz','excuse me, sorry'],['önemli','important'],['önemli değil','never mind'],['yolculuk','journey'],['çabuk','quickly'],['seyretmek','to watch'],['dinlemek','to listen'],['uyumak','to sleep'],['uçak','aeroplane'],['durmak','to stop'],['falan','or so, roughly'],['rakı','rakı (aniseed spirit)'],['çerez','nibbles'],['haber','news'],['ne haber?','what is new?'],['iyilik','fine (reply to ne haber)'],['yorgun','tired'],['sarhoş','drunk'],['unutmak','to forget'],['sormak','to ask'],['aramak','to telephone, to look for'],['pazar','Sunday'],['öğle yemeği','lunch'],['selam söylemek','to say hello (from)'],['hadi','come on, right then'],['benim için','for me'],['onun için','for him, her; that is why'],['sonra','later, then'],['zengin','rich'],['mutlu','happy'],['bakmak','to look at'],['binmek','to get on, into'],['inmek','to get off, out of'],['bıkmak','to be fed up with']],
+drills:[
+{t:'mc',q:'"I was good." (iyi)',o:['iyiydim','iyidim','iyiyim','iyiydın'],a:0,w:'After the vowel i a buffer y is inserted: iyi-y-dim.'},
+{t:'ty',q:'"They were not ready." (hazır değil)',a:['hazır değillerdi','hazır değildiler','Hazır değillerdi.'],w:'değil + past ending; the plural can sit on either side.'},
+{t:'mc',q:'"I came."',o:['geldim','gelidim','geltim','geldum'],a:0,w:'gel + dim.'},
+{t:'ty',q:'"We went." (git)',a:['gittik'],w:'After the voiceless t the ending is -tik: git-ti-k.'},
+{t:'mc',q:'"You started." (formal; başla)',o:['başladınız','başladınz','başlattınız','başlıyorsunuz'],a:0,w:'başla + dı + nız.'},
+{t:'mc',q:'"I did not come."',o:['gelmedim','gelmiyordum','gelemedim','gelmedimi'],a:0,w:'Negative: -me- before the past ending.'},
+{t:'mc',q:'"Did you wait?" (formal; bekle)',o:['Beklediniz mi?','Bekledinizmi?','Bekle mi diniz?','Mi beklediniz?'],a:0,w:'In the past tense mi comes after the ending.'},
+{t:'ty',q:'"I drank." (iç)',a:['içtim'],w:'ç is voiceless, so -ti, then m.'},
+{t:'mc',q:'"It is three o\'clock."',o:['Saat üç.','Saat üçte.','Üç saat.','Saat üçü.'],a:0,w:'Saat üç. Saat üçte means at three; üç saat means three hours.'},
+{t:'mc',q:'"At half past four."',o:['Dört buçukta.','Dört buçuk.','Saat dört yarım.','Dörtte buçuk.'],a:0,w:'Add -ta (after k, voiceless) to buçuk.'},
+{t:'mc',q:'What is half past twelve?',o:['Saat on iki buçuk.','Saat yarım.','Saat on bir buçuk.','Saat sıfır buçuk.'],a:1,w:'Half past twelve is simply yarım.'},
+{t:'mc',q:'"Orange juice"',o:['portakal suyu','portakal su','portakalın su','portakal suyuyu'],a:0,w:'The second noun takes the possessed ending; su becomes suyu.'},
+{t:'mc',q:'"Melek looked at the car." (bakmak takes -e)',o:['Melek arabayı baktı.','Melek arabaya baktı.','Melek arabadan baktı.','Melek araba baktı.'],a:1,w:'bakmak insists on -e.'},
+{t:'mc',q:'"For me"',o:['benim için','bana için','ben için','beni için'],a:0,w:'With a pronoun, için takes the possessor form.'},
+{t:'mc',q:'"Where have you come from?" (formal)',o:['Nereden geliyorsunuz?','Nereden geldiniz mi?','Nerede geldiniz?','Nereye geliyorsunuz?'],a:0,w:'Turkish uses the -iyor present here. -den marks the origin.'},
+{t:'mc',q:'You walk in late to a meeting. What do you say?',o:['Geç kaldım. Affedersiniz.','Hoş bulduk.','Elinize sağlık.','İyi geceler.'],a:0,w:'Geç kaldım literally means I was late.'},
+{t:'or',q:'Have you been waiting long?',a:'Çok beklediniz mi?',w:'Adverb first, verb with the past ending, then mi.'}
+]});
+
+ADD({id:'u6',kind:'u',n:6,group:'B',tr:'Yarın erken kalkacağım',en:'I\'ll get up early tomorrow',pp:'90–105',
+short:'The future tense, inviting and suggesting, with / by (-le), where things are in relation to each other, and telling the time to the minute.',
+scene:'A corridor in a language school in Bursa. A colleague tries to talk someone into dinner with friends, and they arrange where to meet.',
+purpose:'This chapter is about plans. You learn the -ecek future, friendly suggestions with -sene, the with/by ending -le, the position words (on, under, in front of, between), and the full way to tell time with geçiyor, var, kala and geçe. It also shows that Turkish often uses the present tense with a future meaning.',
+can:['Say what will and will not happen, and ask about it.','Suggest or insist politely with -sene.','Say with whom and by what means.','Say where something is relative to something else.','Tell the time to the minute.'],
+gram:[['The future -ecek','Stem + -ecek / -acak + person. The k becomes ğ before a vowel: geleceğim. Negative: -me- with buffer y: gelmeyeceğim.',[['gideceğiz','we will go'],['gelecek misiniz?','will you come?']]],
+['Olmak for future to be','Olacak is the future of var, yok and to be.',[['Yarın Ankara\'da olacağız.','Tomorrow we will be in Ankara.']]],
+['Suggestions: -sene / -senize','Stem + -sene is a friendly push: Gelsene! (informal), Gelsenize! (formal).',[['Baksana!','Why don\'t you look!']]],
+['With and by: ile, -le / -la','Shortened to an ending: arabayla, Ali\'yle. Pronouns take possessor forms: benimle, seninle, onunla.',[['Arabayla gidiyoruz.','We are going by car.']]],
+['Top, bottom, front, back','Use the possessed form plus a case: masanın üstünde (on), üstüne (onto), üstünden (off). Others: altında, önünde, arkasında, yanında, ortasında.',[['masanın altında','under the table']]],
+['More place words','içinde inside, dışında outside, arasında between, etrafında around, karşısında opposite.',[['Banka ile otelin arasında.','Between the bank and the hotel.']]],
+['Telling time precisely','Saat bire beş var (five to one), saat biri beş geçiyor (five past), saat bire beş kala, saat biri beş geçe. Çeyrek is a quarter.',[['Dörde çeyrek var.','A quarter to four.']]]],
+tip:'A Turkish no is rarely accepted at once. Saying no to an invitation is usually heard as "go on, persuade me".',
+vocab:[['yarın','tomorrow'],['erken','early'],['geç','late'],['kalkmak','to get up'],['yatmak','to go to bed'],['arkadaş','friend'],['çünkü','because'],['ders','lesson, class'],['fark etmez','it makes no difference'],['emin','sure'],['bozuk','broken'],['buluşmak','to meet'],['otogar','bus station'],['yakın','near'],['dolmuş','shared taxi'],['cadde','street, avenue'],['büro','office'],['önünde','in front of'],['arkasında','behind'],['altında','under'],['üstünde','on top of'],['yanında','beside'],['içinde','inside'],['dışında','outside'],['arasında','between'],['karşısında','opposite'],['çeyrek','quarter'],['geçmek','to pass'],['kala','remaining (to the hour)'],['bu akşam','this evening'],['arabayla','by car'],['ile','with'],['hadi','come on'],['görüşmek üzere','see you'],['yürümek','to walk'],['bozmak','to break']],
+drills:[
+{t:'mc',q:'"I will come."',o:['geleceğim','gelecegim','geliyorum','gelirim'],a:0,w:'gel + ecek + im, with k softened to ğ before the vowel.'},
+{t:'ty',q:'"You will sell." (informal; sat)',a:['satacaksın'],w:'sat + acak + sın.'},
+{t:'mc',q:'"We will go." (git)',o:['gideceğiz','gitceğiz','gidecegiz','gideceğim'],a:0,w:'Stems ending in t usually soften to d before a vowel: gid-.'},
+{t:'mc',q:'"He will not drive." (sür)',o:['sürmeyecek','sürmiyecek','sürmeceğ','sürmeyecekdir'],a:0,w:'Negative: -me, buffer y, -ecek.'},
+{t:'mc',q:'"Will you come?" (formal)',o:['Gelecek misiniz?','Gelecek mısınız?','Gelecekmisiniz?','Gelecek mi siniz?'],a:0,w:'The last vowel is e, so mi.'},
+{t:'mc',q:'"Will she be at home tomorrow?"',o:['Yarın evde olacak mı?','Yarın evde olacak mi?','Evde yarın olur mu?','Yarın evdeyim mi?'],a:0,w:'Olacak is the future of to be; the last vowel is a, so mı.'},
+{t:'ty',q:'"Why don\'t you come?" (informal, friendly)',a:['gelsene','Gelsene!'],w:'Stem + -sene.'},
+{t:'mc',q:'"By car"',o:['arabayla','arabada','arabaya','arabadan'],a:0,w:'ile shortens to -yla after a vowel.'},
+{t:'mc',q:'"With me"',o:['benimle','bene','benden','bende'],a:0,w:'Pronouns take the possessor form before -le.'},
+{t:'mc',q:'"With Ali"',o:['Ali\'yle','Ali\'le','Alile','Ali\'de'],a:0,w:'After a vowel a buffer y appears: Ali\'yle.'},
+{t:'mc',q:'"The cat is under the table."',o:['Kedi masanın altında.','Kedi masa altında.','Kedi masanın altına.','Kedi masanın üstünde.'],a:0,w:'Possessor on masa, possessed form altı, then -nda.'},
+{t:'mc',q:'"Opposite the post office" (postane)',o:['postanenin karşısında','postane karşısında','postanede karşı','postaneyi karşısında'],a:0,w:'Owner + -nin, then karşısında.'},
+{t:'mc',q:'"Between the bank and the hotel"',o:['Banka ile otelin arasında.','Banka otel arasında.','Bankanın otelin arasında.','Banka ile otel arasına.'],a:0,w:'X ile Y\'nin arasında.'},
+{t:'mc',q:'"It is five to one."',o:['Saat bire beş var.','Saat biri beş geçiyor.','Saat bir beş var.','Saat bire beş geçiyor.'],a:0,w:'To the hour: saat + hour with -e + number + var.'},
+{t:'mc',q:'"It is ten past three."',o:['Saat üçü on geçiyor.','Saat üçe on var.','Saat üçte on.','Saat üç on kala.'],a:0,w:'Past the hour: hour with -i + number + geçiyor.'},
+{t:'mc',q:'"A quarter to four."',o:['Dörde çeyrek var.','Dördü çeyrek geçiyor.','Dört çeyrek var.','Dörtte çeyrek.'],a:0,w:'Four + e = dörde.'},
+{t:'mc',q:'A friend invites you out, but you have an early class. Say you cannot stay out late:',o:['Geç yatmak istemiyorum çünkü yarın erken kalkacağım.','Hadi, gidelim.','Şaka yapıyorsunuz.','Geç kaldım.'],a:0,w:'Çünkü gives the reason; yarın erken kalkacağım uses the future.'}
+]});
+
+ADD({id:'u7',kind:'u',n:7,group:'B',tr:'Yardım eder misiniz?',en:'Would you help me?',pp:'106–119',
+short:'The -r tense for polite requests, offers and promises, adjectives made from verbs, by -ing, and verbs that need -e, -den or ile.',
+scene:'An elderly woman is lost in Trabzon on the way to the airport. She asks a young man for directions, then asks a minibus driver for small favours.',
+purpose:'This chapter gives you the second present tense, the -r (aorist) tense, which handles politeness: requests (Yardım eder misiniz?), offers, promises, intentions, hopes, habits and facts. It also teaches -en adjectives (the running man), -erek (by -ing, as), more verbs that need particular endings, and the formal -dir you see on signs.',
+can:['Make polite requests and offers with the -r tense.','Promise, state intentions and express hope.','Describe a person or thing by what it does (the man who is running).','Say by -ing and as with -erek and olarak.','Recognise the formal -dir.'],
+gram:[['Forming the -r tense','Stem + -r, -ir/-ur/-ür/-ır or -er/-ar. A vowel-final stem takes just -r. Most one-syllable consonant stems take -er/-ar; one-syllable stems ending in r or l and all longer stems take -ir (i-type).',[['gelir, alır','he comes, he takes'],['yapar, koşar','he does, he runs'],['konuşur','he speaks']]],
+['Negative','-me-/-ma- + -z. Ben and biz forms drop the z: gelmem, gelmeyiz.',[['bilmezsin','you do not know'],['almam','I do not take']]],
+['Where you use it','Requests, offers, promises, intentions, hope, general facts, habits, stories and jokes.',[['Kapıyı açar mısınız?','Would you open the door?'],['Çay içer misiniz?','Would you like some tea?'],['Yarın gelirim.','I\'ll come tomorrow.']]],
+['-en adjectives','Stem + -en. Describes the doer. Can stand alone: the one who…',[['koşan adam','the running man'],['Viyana\'dan gelen tren','the Vienna train']]],
+['-erek','By doing, while doing. Olarak means as.',[['yürüyerek geldim','I came on foot'],['öğretmen olarak','as a teacher']]],
+['Verbs with -e, -den, ile','sormak, basmak, vurmak, yardım etmek take -e. korkmak, hoşlanmak, geçmek, bahsetmek take -den. evlenmek takes ile.',[['Anneme sordum.','I asked my mother.'],['Örümceklerden korkuyor.','He is afraid of spiders.']]],
+['-dir','A formal is on notices and in newspapers: Kapalıdır, yasaktır.',[]]],
+tip:'Yavrum (my dear) and teyze (aunt) are warm forms of address between a younger and an older person.',
+vocab:[['yardım etmek','to help'],['kusura bakmayın','excuse me'],['acaba','I wonder, by any chance'],['havalimanı','airport'],['otobüs','bus'],['durak','stop'],['yol','road, way'],['sapmak','to turn off'],['ileride','further on'],['bayağı','quite'],['yürüyerek','on foot'],['dakika','minute'],['anlatmak','to explain'],['göstermek','to show'],['taşımak','to carry'],['çanta','bag'],['şoför','driver'],['pencere','window'],['kapatmak','to close'],['kısmak','to turn down'],['ödemek','to pay'],['kaçırmak','to miss'],['yetmek','to be enough'],['rica ederim','you are welcome'],['bir şey değil','don\'t mention it'],['teyze','aunt; older woman'],['yavrum','my dear'],['yabancı','stranger, foreigner'],['belki','maybe'],['herhalde','probably'],['umarım','I hope'],['sanırım','I suppose'],['korkmak','to be afraid of'],['hoşlanmak','to like, enjoy'],['evlenmek','to marry']],
+drills:[
+{t:'mc',q:'"I come." (gel, -r tense)',o:['gelirim','gelerim','geliyorum','gelirm'],a:0,w:'gel ends in l, so it takes -ir (not -er).'},
+{t:'mc',q:'"You (siz) open." (aç)',o:['açarsınız','açırsınız','açıyorsunuz','açsınız'],a:0,w:'Most one-syllable stems take -ar/-er; aç gives açar.'},
+{t:'ty',q:'"He reads." (oku, -r tense)',a:['okur'],w:'oku ends in a vowel, so only -r is added: oku + r.'},
+{t:'mc',q:'"We know." (bilmek, -r tense)',o:['biliriz','bilerik','bilriz','biliyoruz'],a:0,w:'bil ends in l, so -ir.'},
+{t:'mc',q:'"I do not know."',o:['bilmem','bilmezim','bilmiyorum','bilmeyim'],a:0,w:'Ben form of the negative has no z: bil-me-m.'},
+{t:'mc',q:'"You (informal) do not take." (al)',o:['almazsın','almasın','almaysın','almıyorsun'],a:0,w:'Negative: -maz + sın.'},
+{t:'mc',q:'"Would you carry my bag?" (formal)',o:['Çantamı taşır mısınız?','Çantam taşır mısınız?','Çantamı taşıyor musunuz?','Çantamı taşırsınız mı?'],a:0,w:'Object with -ı, verb in the -r tense, then mısınız.'},
+{t:'mc',q:'"Would you show me the way?" (formal)',o:['Yolu gösterir misiniz?','Yolu gösterirsiniz mi?','Yol gösterir misin?','Yolu gösteriyor misiniz?'],a:0,w:'The -r tense with a question word makes the polite request.'},
+{t:'ty',q:'"I will help." (yardım etmek, -r tense, ben)',a:['yardım ederim'],w:'et softens to ed before a vowel, then -er and -im: yardım ed-er-im.'},
+{t:'mc',q:'"The man who is running" (koş)',o:['koşan adam','koşacak adam','koştuğu adam','koşarak adam'],a:0,w:'-en describes the doer.'},
+{t:'mc',q:'"The train coming from Vienna"',o:['Viyana\'dan gelen tren','Viyana\'dan gelir tren','Viyana\'dan gelerek tren','Viyana gelen treni'],a:0,w:'Origin with -dan, then the -en adjective.'},
+{t:'ty',q:'"I came on foot." (yürümek)',a:['yürüyerek geldim'],w:'yürü + y (buffer) + erek.'},
+{t:'mc',q:'"I work as a programmer."',o:['Programcı olarak çalışıyorum.','Programcı olan çalışıyorum.','Programcı gibi çalışıyorum.','Programcıyım çalışıyorum.'],a:0,w:'olarak means as.'},
+{t:'mc',q:'"He is afraid of spiders." (korkmak takes -den)',o:['Örümceklerden korkuyor.','Örümcekleri korkuyor.','Örümceklere korkuyor.','Örümcekler korkuyor.'],a:0,w:'korkmak insists on -den.'},
+{t:'mc',q:'"I asked my mother." (sormak takes -e)',o:['Anneme sordum.','Annemi sordum.','Annemden sordum.','Anne sordum.'],a:0,w:'sormak takes -e: anne + m + e.'},
+{t:'mc',q:'You are lost and need directions. What is the most polite opening?',o:['Pardon. Kusura bakmayın. Yardım eder misiniz acaba?','Yol nerede?','Yardım et!','Hadi gidelim.'],a:0,w:'Pardon, kusura bakmayın, the -r tense question and acaba stack up politeness.'}
+]});
+
+ADD({id:'u8',kind:'u',n:8,group:'C',tr:'Nereye gidelim? Ne yapabiliriz?',en:'Where shall we go? What can we do?',pp:'120–136',
+short:'Can, cannot and might, comparing things, let me / let us / let him, the -ki ending, and naming languages.',
+scene:'A couple at home on a Saturday afternoon tries to decide whether to go out, where, and how to get there.',
+purpose:'This chapter is the grammar of planning. You learn ability and possibility with -ebil- (can, might) and -e- (cannot), comparisons (more than, the most), the three let forms (let me, let us, let him), the -ki ending (the one in the hotel), and -ce for languages and opinions. It also collects the buffer-letter rules in one place and gives you Turkish exclamations.',
+can:['Say what you can, cannot and might do.','Make suggestions and offers with let forms.','Compare things and name the best.','Say "the one in/at…" with -ki.','Name languages and say in my opinion.'],
+gram:[['Can: -ebil-','Add -ebil after the stem: gelebilirim, yapabilirsin. Vowel-final stems take a y: yürüyebilir. Any tense works: yapabileceğim, oynayabildi.',[['gidebilirim','I can go'],['Gelebilecek misin?','Will you be able to come?']]],
+['Cannot: -e-','Take the negative and put -e- after the stem: gelemem, yapamazsın, yapamadım.',[['Gelemedik.','We could not come.']]],
+['Might','-ebil- also means might. Might not is -meyebil-.',[['Gitmeyebilirim.','I might not go.'],['Gidemem.','I cannot go.']]],
+['Comparing','X Y\'den daha … Most: en.',[['benden daha akıllı','cleverer than me'],['en büyük şehir','the biggest city']]],
+['Let forms','-eyim let me / shall I, -elim let us / shall we, -sin let him. Plural: -sinler.',[['Yardım edeyim mi?','Shall I help?'],['Gidelim.','Let us go.'],['Eve gitsin.','Let him go home.']]],
+['-ki','Turns a place word into an adjective: oteldeki bar. Alone it means the one: benimki (mine).',[['masadaki çiçekler','the flowers on the table']]],
+['-ce','Languages and opinions: Türkçe, İngilizce, Almanca. Also bence (in my opinion), iyice (rather good).',[['Çince','Chinese']]],
+['Buffer letters','s with possessed endings and compounds, n with possessor endings, bu/şu/o and -ki, y otherwise.',[]]],
+tip:'Exclamations like Aman!, Eyvah!, Üf! and Yok canım! carry feeling that is easier to hear than translate. Listen to the tone.',
+vocab:[['çıkmak','to go out'],['sinema','cinema'],['tiyatro','theatre'],['oyun','play'],['bilet','ticket'],['telefon etmek','to telephone'],['ödünç vermek','to lend'],['götürmek','to take, carry'],['ters yön','opposite direction'],['bence','in my opinion'],['herhalde','certainly, probably'],['gibi','like'],['başka','other'],['hangisi','which one'],['akıllı','clever'],['güçlü','strong'],['en','most'],['dünya','world'],['şehir','city'],['yer','place'],['Çince','Chinese'],['İngilizce','English'],['Almanca','German'],['Fransızca','French'],['Arapça','Arabic'],['fikir','idea'],['çeşit','type, sort'],['sanırım','I suppose'],['iyice','rather well'],['unutmak','to forget'],['yemek','food'],['bıkmak','to be fed up'],['fark etmek','to matter']],
+drills:[
+{t:'mc',q:'"I can go." (git, -r tense)',o:['gidebilirim','gidebilirm','gidirebilirim','gidiyebilirim'],a:0,w:'gid + ebil + ir + im.'},
+{t:'mc',q:'"You (sen) can do." (yap)',o:['yapabilirsin','yapabelirsin','yapabilsin','yapabiliyorsun'],a:0,w:'yap + abil + ir + sin. -ebil/-abil follows e-type harmony.'},
+{t:'ty',q:'"I cannot come." (gel)',a:['gelemem'],w:'gel + e + me + m: the negative of can.'},
+{t:'mc',q:'"He cannot walk." (yürü)',o:['yürüyemez','yürüyebilmez','yürümez','yürüyemiyor'],a:0,w:'yürü + y + e + mez.'},
+{t:'mc',q:'"Can I go?"',o:['Gidebilir miyim?','Gidebilirim mi?','Gidebilir mıyım?','Gidemez miyim?'],a:0,w:'The last vowel is i, so mi, then buffer y.'},
+{t:'mc',q:'"I could not do it."',o:['Yapamadım.','Yapmadım.','Yapabilmedim.','Yapamıyorum.'],a:0,w:'yap + a + ma + dım, written yapamadım.'},
+{t:'mc',q:'"I might not go to the cinema."',o:['Sinemaya gitmeyebilirim.','Sinemaya gidemem.','Sinemaya gidemeyebilirim.','Sinemaya gitmem.'],a:0,w:'Might not is -meyebil-. Gidemem means cannot.'},
+{t:'mc',q:'"Cleverer than you."',o:['senden daha akıllı','seni daha akıllı','sana daha akıllı','sen daha akıllı'],a:0,w:'The thing compared takes -den.'},
+{t:'mc',q:'"The biggest city"',o:['en büyük şehir','daha büyük şehir','büyük en şehir','çok büyük şehri'],a:0,w:'en before the adjective.'},
+{t:'mc',q:'"Let us go."',o:['Gidelim.','Gideyim.','Gitsin.','Gidebilirim.'],a:0,w:'-elim is let us.'},
+{t:'mc',q:'"Shall I help?"',o:['Yardım edeyim mi?','Yardım edelim mi?','Yardım etsin mi?','Yardım eder miyim?'],a:0,w:'-eyim is let me / shall I.'},
+{t:'ty',q:'"Let him go home."',a:['Eve gitsin','eve gitsin.'],w:'Stem + -sin.'},
+{t:'mc',q:'"The bar in the hotel"',o:['oteldeki bar','otelki bar','otelde bar','otelin bar'],a:0,w:'Locative -de plus -ki.'},
+{t:'ty',q:'"Mine" (benim + ki)',a:['benimki'],w:'-ki added to the possessor.'},
+{t:'mc',q:'"Arabic" (the language)',o:['Arapça','Arapca','Arapce','Arab'],a:0,w:'-ça after a voiceless consonant and back vowel.'},
+{t:'mc',q:'Your friend asks "Nereye gidelim?" You suggest the cinema:',o:['Sinemaya gidebiliriz.','Sinemaya gidemeyiz.','Sinemada gideriz.','Sinemadan gidelim.'],a:0,w:'Sinema + ya (to), then the can form with we.'}
+]});
+
+ADD({id:'u9',kind:'u',n:9,group:'C',tr:'Neler yapmayı seviyorsunuz?',en:'What do you like doing?',pp:'137–152',
+short:'Likes and dislikes, necessity and advice: infinitives used as nouns, lazım, gerek, şart, -meli, and nouns built with -lik.',
+scene:'A pop singer is interviewed on a talk show about her free time, her dislike of football and where she writes songs.',
+purpose:'This chapter is about talking about what you like, hate, need and must do. Its core idea is using a verb as a noun (walking, flying, Ali\'s coming here) through the full and short infinitive. It also gives you the family of necessity words (lazım, gerek, şart, mecbur, gerekli), the -meli ending for must and should, useful phrases with olmak, and -lik for building nouns.',
+can:['Say what you like, enjoy, hate and are afraid of doing.','Say what you must, need or ought to do.','Give advice and strong suggestions.','Use verbs as nouns with the right ending.','Build nouns and adjectives with -lik.'],
+gram:[['Full and short infinitive','Full (-mek/-mak) goes with adjectives, istemek, için and -den. Short (-me/-ma, drop the k) takes -i, -e and possessed endings.',[['Türkçe öğrenmek kolay.','Learning Turkish is easy.'],['Yürümeyi severim.','I like walking.'],['Uçmaktan korkuyorum.','I am afraid of flying.']]],
+['Short infinitive as a noun','Possessed endings show the doer: benim gitmem, senin gitmen, onun gitmesi.',[['Senin bu kadar içmen iyi değil.','Your drinking this much is not good.']]],
+['Stress separates look-alikes','İÇ-me suyu! (stress before -me) is Don\'t drink the water. iç-ME suyu is drinking water.',[['yüzme havuzu','swimming pool']]],
+['Necessity words','lazım, gerek, gerekli with a short infinitive plus possessed ending. şart and mecbur are the strongest. The verb gerekmek covers other tenses.',[['İşte olmam lazım.','I need to be at work.'],['Gelmeniz şart.','You simply must come.']]],
+['-meli','Must, should, ought to. Stem + -meli + person. Negative: -memeli.',[['Okula gitmelisin.','You must go to school.'],['Koşmamalısınız.','You must not run.']]],
+['Olmak phrases','oldu (that is settled), olur (all right), olmaz (not all right), ne oldu? (what happened?), olsun (let it be).',[]],
+['-lik','Makes nouns (mutluluk, happiness) and adjectives meaning for (günlük, daily; yazlık, for summer).',[['yağmur → yağmurluk','rain → raincoat']]]],
+tip:'Lazım is spoken with a long, soft a, as if written laazım. It comes from Arabic.',
+vocab:[['boş zaman','free time'],['basit','simple'],['sunucu','host, presenter'],['hepimiz','all of us'],['kenar','edge, shore'],['yani','I mean, well'],['pek','very, much'],['kesinlikle','absolutely'],['nefret etmek','to hate'],['özür dilemek','to apologise'],['bahsetmek','to mention'],['kusursuz','faultless'],['daire','flat'],['gerekmek','to be necessary'],['lazım','necessary'],['gerek','necessity, need'],['şart','condition, must'],['mecbur','forced, compelled'],['gerekli','necessary'],['çalışmak','to work, to try'],['düşünmek','to think'],['sessiz','quiet'],['yalnız','alone'],['sakin','calm'],['yasak','forbidden'],['havuz','pool'],['yüzmek','to swim'],['öğrenmek','to learn'],['korkmak','to fear'],['hasta','ill'],['mutlu','happy'],['mutluluk','happiness'],['günlük','daily'],['haftalık','weekly'],['yazlık','summer house'],['tavsiye','advice']],
+drills:[
+{t:'mc',q:'"Learning Turkish is easy."',o:['Türkçe öğrenmek kolay.','Türkçe öğrenme kolay.','Türkçe öğreniyor kolay.','Türkçeyi öğrenmeyi kolay.'],a:0,w:'With an adjective such as kolay, use the full infinitive.'},
+{t:'mc',q:'"I like walking." (yürümek)',o:['Yürümeyi severim.','Yürümek severim.','Yürümekten severim.','Yürümeyi sevmek.'],a:0,w:'With sevmek the short infinitive takes -i: yürüme + yi.'},
+{t:'mc',q:'"I am afraid of flying." (uçmak)',o:['Uçmaktan korkuyorum.','Uçmayı korkuyorum.','Uçmaya korkuyorum.','Uçmak korkuyorum.'],a:0,w:'korkmak needs -den, and -den attaches to the full infinitive.'},
+{t:'mc',q:'"Swimming pool"',o:['yüzme havuzu','yüzmek havuz','yüzme havuz','yüzmeyi havuzu'],a:0,w:'Short infinitive as the first half of a compound noun.'},
+{t:'mc',q:'"I need to be at work." (iş, olmak)',o:['İşte olmam lazım.','İşte olmak lazım.','İşte olacağım lazım.','İşe olmam gerek.'],a:0,w:'Short infinitive + possessed ending (olmam) + lazım.'},
+{t:'mc',q:'"You must go to school." (informal)',o:['Okula gitmelisin.','Okulda gitmelisin.','Okula gidersin.','Okula gitmeli.'],a:0,w:'gitmeli + sin, with okul + a for to.'},
+{t:'ty',q:'"They must not enter." (girmek)',a:['girmemeliler','Girmemeliler.'],w:'gir + me + meli + ler.'},
+{t:'mc',q:'"I like watching tennis."',o:['Tenis seyretmeyi seviyorum.','Tenis seyretmek seviyorum.','Tenisi seyretmeyi seviyorum mu.','Tenis seyretmeden seviyorum.'],a:0,w:'Short infinitive + -i, then seviyorum.'},
+{t:'mc',q:'Which stress pattern means "Don\'t drink the water!"?',o:['İÇ-me suyu!','iç-ME suyu','iç-me SU-yu','All are the same'],a:0,w:'In negative verbs the stress falls before -me. The noun is stressed on -me.'},
+{t:'mc',q:'"Happiness" (mutlu + -lik)',o:['mutluluk','mutlulik','mutlulük','mutlulık'],a:0,w:'The last vowel is u, so the ending is -luk.'},
+{t:'ty',q:'"Daily" (gün + -lük)',a:['günlük'],w:'The last vowel is ü, so -lük.'},
+{t:'mc',q:'"You must see a doctor." (formal)',o:['Doktora gitmelisiniz.','Doktoru gitmelisiniz.','Doktora gitmelisin.','Doktordan gitmeniz.'],a:0,w:'gitmeli + siniz; doktor + a.'},
+{t:'mc',q:'Which two words express the strongest necessity?',o:['lazım and gerek','şart and mecbur','gerekli and lazım','olur and olmaz'],a:1,w:'Şart and mecbur are the strongest.'},
+{t:'mc',q:'What does "Ne oldu?" ask?',o:['What do you want?','What happened?','What will happen?','Who is it?'],a:1,w:'Ne oldu is what happened.'},
+{t:'ty',q:'"I want to talk." (konuşmak)',a:['konuşmak istiyorum','Konuşmak istiyorum.'],w:'The full infinitive goes with istiyorum.'},
+{t:'mc',q:'The host asks "Neler yapmayı seviyorsunuz?" What is a natural answer?',o:['Yürümeyi severim.','Yarın gelirim.','Bir kahve lütfen.','Hesap lütfen.'],a:0,w:'Short infinitive + -i answers what-do-you-like-doing.'}
+]});
+
+ADD({id:'u10',kind:'u',n:10,group:'C',tr:'Eğer geçmezse, ilaç veririm',en:'If it doesn\'t get better, I\'ll give you some medicine',pp:'153–166',
+short:'If-sentences, saying what you need, how long something has been going on, until / as…as, and parts of the body.',
+scene:'A chemist\'s counter. A woman asks advice for her sunburnt husband and her son\'s upset stomach.',
+purpose:'This chapter teaches you to say what will happen if something else happens, and to give and follow health advice. It gives you the present if forms (-se-), the pairing of an if clause with the -r tense, the pattern for saying you need something, the two meanings of since and for, until and as…as with kadar, and the main parts of the body.',
+can:['Say "if I…, then I will…".','Describe symptoms and ask for advice at a chemist.','Say what you need (… ihtiyacım var).','Say how long something has been going on (-den beri, -dir).','Say until and as…as.','Name the parts of the body.'],
+gram:[['If forms of to be','Add -se- endings: iyiysem, Türkse. They follow e-type harmony: -sam, -san, -sa, -sak, -sanız, -salar.',[['iyiysem','if I am well'],['hafifseniz','if you are light']]],
+['If forms of verbs','Take the -r tense, drop the person ending and add the if ending.',[['gelirsem','if I come'],['istersen','if you want'],['açarlarsa','if they open']]],
+['With var and yok','Paramız yoksa gidemeyiz. If we have no money, we cannot go.',[['Problem varsa haber ver.','If there is a problem, let me know.']]],
+['If then -r tense','An if clause is usually followed by the -r tense, not the future. A warning like Düşersin! is the second half of an unspoken if.',[['Gelirse memnun olurum.','If he comes I will be glad.']]],
+['Need: -e ihtiyaç var','You say there is a need to a thing.',[['Tatile ihtiyacım var.','I need a holiday.']]],
+['Since and for','-den beri is since. For something still going on use -den beri or -dir. For a finished period use nothing.',[['Dünden beri hastayım.','I have been ill since yesterday.'],['İki gündür yemiyoruz.','We haven\'t eaten for two days.']]],
+['Kadar','-e kadar is until or as far as. kadar alone is as…as. Ben, sen, biz, siz take the possessor form: benim kadar.',[['Beşe kadar beklerim.','I\'ll wait until five.'],['Senin kadar akıllı değil.','He is not as clever as you.']]]],
+tip:'Most medicine in Turkey is sold without a prescription, so the chemist is the first port of call for small ailments.',
+vocab:[['eczane','chemist\'s'],['eczacı','chemist'],['ilaç','medicine'],['ağrı','pain'],['baş','head'],['göz','eye'],['kulak','ear'],['burun','nose'],['ağız','mouth'],['diş','tooth'],['boyun','neck'],['omuz','shoulder'],['kol','arm'],['el','hand'],['parmak','finger'],['göğüs','chest'],['karın','stomach'],['sırt','back'],['bacak','leg'],['ayak','foot'],['güneş','sun'],['yanmak','to burn'],['ishal','diarrhoea'],['merhem','ointment'],['dinlenmek','to rest'],['inşallah','God willing, hopefully'],['ihtiyaç','need'],['eğer','if'],['gerekirse','if necessary'],['dün','yesterday'],['beri','since'],['kadar','until, as…as'],['rahatsız','uncomfortable, unwell'],['hastalık','illness'],['kötü','bad'],['iyileşmek','to get better'],['borç','debt'],['hesaplamak','to calculate']],
+drills:[
+{t:'mc',q:'"If I come." (gel)',o:['gelirsem','gelsem','gelirim','gelseydim'],a:0,w:'-r tense stem, then -se-, then -m.'},
+{t:'mc',q:'"If you want." (sen; iste)',o:['istersen','isterisen','istesen','isterse'],a:0,w:'ister + sen: the person ending joins the if ending.'},
+{t:'ty',q:'"If she is Turkish."',a:['Türkse'],w:'Türk + se.'},
+{t:'mc',q:'"If we cannot come." (gelemez + if)',o:['gelemezsek','gelemesek','gelmezsek','gelemeyiz'],a:0,w:'gelemez + sek.'},
+{t:'mc',q:'"If there is a problem, let me know."',o:['Problem varsa bana haber ver.','Problem var bana haber ver.','Problem varsın bana haber ver.','Eğer problem var mı haber ver.'],a:0,w:'var + sa is the if form of var.'},
+{t:'mc',q:'"If he comes, I will be happy."',o:['Gelirse memnun olurum.','Gelecekse memnun olurum.','Gelse memnun olacağım.','Gelirse memnun olacak.'],a:0,w:'An if clause is usually followed by the -r tense.'},
+{t:'mc',q:'"I need a holiday." (tatil)',o:['Tatile ihtiyacım var.','Tatil ihtiyacım yok.','Tatili ihtiyaç var.','Tatilde ihtiyacım var.'],a:0,w:'Need takes -e; ihtiyaç softens to ihtiyac- before -ım.'},
+{t:'mc',q:'"Since yesterday." (dün)',o:['dünden beri','dünde beri','düne beri','dünü beri'],a:0,w:'-den beri.'},
+{t:'mc',q:'"I have been ill since this morning." (sabah)',o:['Bu sabahtan beri hastayım.','Bu sabah beri hastayım.','Bu sabaha kadar hastayım.','Bu sabahtan hastaydım.'],a:0,w:'Turkish says I am ill since this morning.'},
+{t:'mc',q:'"I\'ll wait until five."',o:['Beşe kadar beklerim.','Beşten kadar beklerim.','Beş kadar beklerim.','Beşte kadar beklerim.'],a:0,w:'-e kadar is until.'},
+{t:'mc',q:'"As clever as you." (informal)',o:['senin kadar akıllı','sen kadar akıllı','sana kadar akıllı','seni kadar akıllı'],a:0,w:'Sen takes the possessor form with kadar.'},
+{t:'mc',q:'"As rich as them." (onlar)',o:['onlar kadar','onların kadar','onlara kadar','onları kadar'],a:0,w:'O and onlar and nouns take no ending before kadar.'},
+{t:'mc',q:'Your head aches. What do you tell the chemist?',o:['Başım ağrıyor. Bir ilaç istiyorum.','Başı ağrıyor mu?','Baş ilaç var mı?','Ağrı başımı değil.'],a:0,w:'baş + ım (my head) + ağrıyor.'},
+{t:'ty',q:'Type the Turkish for "head".',a:['baş'],w:'baş, with ş.'},
+{t:'mc',q:'Someone shouts "Düşersin!" What do they mean?',o:['You will fall (careful)!','You fell!','Don\'t fall!','You fall a lot.'],a:0,w:'It is the -r tense warning: the unspoken if you are not careful.'}
+]});
+
+ADD({id:'u11',kind:'u',n:11,group:'D',tr:'Sizce çok sakin bir yermiş!',en:'You said it was a very quiet place!',pp:'167–178',
+short:'Complaining and apologising, reporting what others said with -miş, and linking events with when, after, while and before.',
+scene:'A travel agency. A family has come home early from a disastrous hotel and the mother has come to complain and ask for her money back.',
+purpose:'This chapter is about speaking at one remove: reporting what you were told, expressing doubt, and showing you were not there. The -miş tense carries all of that, and it also marks surprise and storytelling. You also learn to sequence events with -ince, -dikten sonra, -ken, -meden önce and -meden, to build verbs with -le and -leş, and to complain and apologise.',
+can:['Complain and apologise.','Report what someone else said or what you have just discovered.','Tell a story or joke in the right tense.','Say when, after, while, before and without doing something.','Build verbs from nouns and adjectives.'],
+gram:[['-miş','Stem + -miş + person. It means apparently, reportedly or I have just found out. With to be: -ymiş.',[['Dün gelmişsin.','Apparently you came yesterday.'],['İngilizmiş.','They say he is English.']]],
+['What -miş is for','Reporting what someone said, asking approval when you are unsure, discovering something, and stories and jokes.',[['Bir güzel prenses varmış…','There was a beautiful princess…']]],
+['-miştir','You expect something has happened, or it is an official past.',[['Unutmuştur.','She must have forgotten.']]],
+['Time linkers','-ince on doing. -dikten sonra after. -ken while (on the -r tense). -meden önce before. -meden without.',[['İstanbul\'a gelince…','On arriving in İstanbul…'],['Yemeğini yedikten sonra uyudu.','She slept after eating her meal.']]],
+['Verbs with -le and -leş','-lemek makes a verb (temiz → temizlemek). -leşmek means to become (iyi → iyileşmek).',[['hazır → hazırlamak','ready → prepare']]],
+['Paired words','hem… hem both… and, ya… ya either… or, ne… ne neither… nor.',[['Ya çarşamba ya perşembe.','Either Wednesday or Thursday.']]]],
+tip:'Turks use -miş all the time to distance themselves from what they are saying. English has no tense that does the same.',
+vocab:[['şikâyet','complaint'],['şikâyet etmek','to complain'],['özür dilemek','to apologise'],['çok özür dilerim','I am very sorry'],['felaket','disaster'],['gürültülü','noisy'],['berbat','terrible'],['tatsız','tasteless'],['iğrenç','disgusting'],['kirli','dirty'],['müdür','manager'],['geri almak','to take back'],['hemen şimdi','right now'],['en kısa zamanda','as soon as possible'],['pişman olmak','to regret'],['teklif','offer'],['müşteri','customer'],['sakin','quiet, calm'],['manzara','view'],['rezervasyon','booking'],['lüks','luxurious'],['dönmek','to return'],['devam etmek','to continue'],['saçma','nonsense'],['üzülmek','to be sorry'],['en sonunda','finally'],['temiz','clean'],['temizlemek','to clean'],['hazır','ready'],['hazırlamak','to prepare'],['iyileşmek','to get better'],['zayıf','thin, weak'],['ya… ya…','either… or…'],['hem… hem…','both… and…'],['ne… ne…','neither… nor…']],
+drills:[
+{t:'mc',q:'"Apparently she came."',o:['Gelmiş.','Gelmiştir.','Geldi.','Gelmeli.'],a:0,w:'-miş means apparently or reportedly.'},
+{t:'ty',q:'"They say it is nice." (güzel + -miş)',a:['güzelmiş','Güzelmiş.'],w:'güzel + miş.'},
+{t:'mc',q:'"Apparently you were English." (formal)',o:['İngilizmişsiniz','İngilizdiniz','İngiliz misiniz','İngilizmişim'],a:0,w:'İngiliz + miş + siniz.'},
+{t:'mc',q:'"They say it is a very quiet place." (yer)',o:['Çok sakin bir yermiş.','Çok sakin bir yerdi.','Çok sakin bir yerimiş.','Çok sakin yer mi.'],a:0,w:'yer ends in a consonant: yer + miş.'},
+{t:'mc',q:'You look out of the window and see wet streets. You say it has rained (just discovered):',o:['Yağmur yağmış!','Yağmur yağıyor.','Yağmur yağacak.','Yağmur yağsın!'],a:0,w:'Discovering something you did not witness uses -miş.'},
+{t:'mc',q:'"On arriving in İstanbul…" (gel)',o:['İstanbul\'a gelince','İstanbul\'a gelirken','İstanbul\'a gelmeden','İstanbul\'a geldikten'],a:0,w:'-ince on doing something.'},
+{t:'mc',q:'"After eating." (yemek)',o:['yedikten sonra','yeyince sonra','yemeden sonra','yerken sonra'],a:0,w:'-dikten sonra: after.'},
+{t:'mc',q:'"While working." (çalış)',o:['çalışırken','çalışınca','çalıştıktan','çalışmadan'],a:0,w:'-ken follows the -r tense: çalışır + ken.'},
+{t:'mc',q:'"Before doing the shopping."',o:['alışveriş yapmadan önce','alışveriş yaptıktan sonra','alışveriş yaparken','alışveriş yapınca'],a:0,w:'-meden önce is before.'},
+{t:'mc',q:'"Without asking." (sor)',o:['sormadan','sorarken','sorunca','sorduktan'],a:0,w:'-meden alone means without.'},
+{t:'ty',q:'Make a verb "to clean" from temiz.',a:['temizlemek'],w:'temiz + lemek.'},
+{t:'mc',q:'"To get better" from iyi:',o:['iyileşmek','iyilemek','iyimek','iyilik'],a:0,w:'-leşmek means to become.'},
+{t:'mc',q:'"Either Wednesday or Thursday."',o:['Ya çarşamba ya perşembe.','Hem çarşamba hem perşembe.','Ne çarşamba ne perşembe.','Çarşamba ve ya perşembe.'],a:0,w:'ya… ya… is either… or…'},
+{t:'mc',q:'You want to start a complaint at a travel agency:',o:['Bir şikâyetim var.','Bir ilacım var.','Hoş bulduk.','Şerefe.'],a:0,w:'şikâyet + im + var.'},
+{t:'mc',q:'"She must have forgotten." (unut)',o:['Unutmuştur.','Unutacaktır.','Unutuyordur.','Unutsun.'],a:0,w:'-miştir expresses probability.'},
+{t:'mc',q:'Which is NOT a use of -miş?',o:['Reporting what someone said','Telling a story','A future promise','Discovering something'],a:2,w:'Promises use the -r tense.'}
+]});
+
+ADD({id:'u12',kind:'u',n:12,group:'D',tr:'Aradığınız numara yanlıştır',en:'The number you have dialled is incorrect',pp:'179–192',
+short:'Which-clauses (the colour I like), official announcements, chaining actions with -ip, and intensified adjectives like kıpkırmızı.',
+scene:'A holiday morning. A woman tries to phone her parents and keeps hitting telephone company recordings, then finally gets through.',
+purpose:'This chapter gives you Turkish relative clauses, which put the whole description before the noun: instead of the colour which I like, Turkish says my-liked colour. You learn -dik and -ecek adjectives, how to turn them into nouns, how -en differs from -dik (doer versus object), the -ip ending for chaining actions, and the prefix that intensifies adjectives. You also see the formal -dir and -miştir of announcements.',
+can:['Say the book you are holding, the house I live in, the film you will see.','Tell the doer (-en) from the object (-dik).','Use -dik and -ecek forms as nouns.','Chain actions with -ip instead of and.','Read recorded announcements.'],
+gram:[['-dik adjectives','Stem + -dik + possessed ending of the doer. The verb need not be in the past: it can mean am, was or did.',[['sevdiğim renk','the colour I like'],['sürdüğü araba','the car he drives'],['oturduğum ev','the house I live in']]],
+['The case is built in','When the head noun would take -e, -den or ile, that meaning is folded into the -dik form: gittiği okul (the school he goes to).',[['geldiğiniz köy','the village you come from']]],
+['-en versus -dik','-en describes the doer: beni seven kadın. -dik describes the object: sevdiğim kadın.',[['beni seven kadın','the woman who loves me'],['sevdiğim kadın','the woman I love']]],
+['-dik and -ecek as nouns','Drop the head noun and move its ending to the end: Yaptığına bak.',[['Aldığımı istiyor musun?','Do you want what I bought?']]],
+['-ecek adjectives','The future version: okuyacağım kitap, göreceğiniz film. Also used for doers: Yapacak bu.',[['gideceğim yerler','the places I will go']]],
+['-ip','Replaces and between two actions with the same subject and same tense: Bakkala gidip süt al.',[['Oturup ders çalışıyorlar.','They sit down and study.']]],
+['Intensifying prefix','Repeat the first two letters and add m, p, s or r: kırmızı → kıpkırmızı.',[['beyaz → bembeyaz','mavi → masmavi'],['siyah → simsiyah','boş → bomboş']]]],
+tip:'The Turkish phone message uses the formal -dir (yanlıştır) and -miştir. Both mean nothing more than is and has.',
+vocab:[['numara','number'],['yanlış','wrong'],['kontrol etmek','to check'],['abone','subscriber'],['kayıt','recording'],['hat','line'],['bayram','public holiday'],['misafir','guest'],['sohbet etmek','to chat'],['tahmin etmek','to guess'],['çağırmak','to call'],['yürüyüş','walk'],['karışmak','to interfere'],['değişmek','to change'],['yine','again'],['ayrıca','in addition'],['dolu','full'],['meşgul','busy'],['bütün','all, whole'],['rakam','digit'],['kıpkırmızı','bright red'],['bembeyaz','snow white'],['masmavi','clear blue'],['sapsarı','pure yellow'],['yemyeşil','bright green'],['simsiyah','pitch black'],['tertemiz','spotlessly clean'],['bomboş','completely empty'],['dümdüz','straight as a die'],['bambaşka','totally different'],['çırılçıplak','stark naked']],
+drills:[
+{t:'mc',q:'"The colour which I like." (sev)',o:['sevdiğim renk','seven renk','sevdiği renk','seveceğim renk'],a:0,w:'sev + dik + im: the owner of the liking is I.'},
+{t:'mc',q:'"The book you are holding." (sen; tut)',o:['tuttuğun kitap','tutan kitap','tuttun kitap','tutacağın kitap'],a:0,w:'tut + tuk + un, with k softening to ğ.'},
+{t:'mc',q:'"The car he drives." (sür)',o:['sürdüğü araba','süren araba','sürdü araba','sürecek araba'],a:0,w:'sür + düğ + ü.'},
+{t:'mc',q:'"The house in which I live." (otur)',o:['oturduğum ev','oturan ev','oturacağım ev','oturduk ev'],a:0,w:'The in is folded into the -dik form.'},
+{t:'mc',q:'"The school he goes to." (git)',o:['gittiği okul','giden okul','gideceği okul','gittim okul'],a:0,w:'git + tik + i: gittiği.'},
+{t:'mc',q:'Which phrase means "the woman who loves me"?',o:['beni seven kadın','sevdiğim kadın','sevdiği kadın','beni sevdiğim kadın'],a:0,w:'The woman does the loving, so use -en.'},
+{t:'mc',q:'Which phrase means "the woman I love"?',o:['sevdiğim kadın','beni seven kadın','seven kadın','sevecek kadın'],a:0,w:'The woman receives the love, so use -dik.'},
+{t:'ty',q:'"The film you will see." (formal; gör)',a:['göreceğiniz film'],w:'gör + ecek + iniz with k softening: göreceğiniz.'},
+{t:'mc',q:'"The book I am going to read." (oku)',o:['okuyacağım kitap','okuduğum kitap','okuyan kitap','okurum kitap'],a:0,w:'oku + y + acak + ım, with k softening.'},
+{t:'mc',q:'"Look at what you have done."',o:['Yaptığına bak.','Yaptığın bak.','Yapana bak.','Yapacağını bak.'],a:0,w:'Yaptığın şeye bak shortens to Yaptığına bak: the -e moves onto the -dik word.'},
+{t:'mc',q:'"Go to the grocer\'s and buy a litre of milk." (shortened with -ip)',o:['Bakkala gidip bir litre süt al.','Bakkala gitmek bir litre süt al.','Bakkala gidince bir litre süt al.','Bakkala gitti bir litre süt al.'],a:0,w:'-ip replaces and when the subject is the same.'},
+{t:'mc',q:'Which sentence cannot be shortened with -ip?',o:['Ali oyun oynuyor ve Hakan televizyon seyrediyor.','Bakkala git ve süt al.','Oturuyorlar ve ders çalışıyorlar.','Sinemaya gidelim ve film seyredelim.'],a:0,w:'-ip needs the same subject doing both things.'},
+{t:'ty',q:'"Pitch black." (siyah, intensified)',a:['simsiyah'],w:'si + m + siyah.'},
+{t:'mc',q:'"As green as can be." (yeşil)',o:['yemyeşil','yeşyeşil','yeyeşil','yeşşeşil'],a:0,w:'ye + m + yeşil.'},
+{t:'mc',q:'"Completely empty." (boş)',o:['bomboş','bobboş','boboş','bosboş'],a:0,w:'bo + m + boş.'},
+{t:'mc',q:'The recording says "Aradığınız numara yanlıştır." What does it mean?',o:['The number you called is wrong.','Your phone is broken.','The line is busy.','Please call again later.'],a:0,w:'aradığınız numara is the number you called; yanlıştır is the formal is wrong.'}
+]});
+
+ADD({id:'u13',kind:'u',n:13,group:'D',tr:'Ne olduğunu anlatır mısınız?',en:'Could you tell me what happened?',pp:'193–204',
+short:'Narrating the past in layers: was happening, had happened, and reporting events with -dik and -ecek noun clauses.',
+scene:'A beach in Marmaris. A tourist reports a missing wallet to the tourist police and describes what she did and saw.',
+purpose:'This chapter lets you tell a story with the right time layers. The past continuous (-iyordu) gives what was going on, the past perfect (-mişti) gives what had already happened, and -dik and -ecek noun clauses let you report events: I said that I was fine, they heard that you got married. You also get the linking phrases (as, although, because, as far as) and -iş nouns.',
+can:['Say what was happening and what had happened before.','Report what was said, heard or guessed.','Link clauses with gibi, halde, için, kadar and zaman.','Tell the difference between a specific event and the idea of doing something.','Build nouns with -iş (giriş, çıkış).'],
+gram:[['Past continuous','-iyor + past of to be: yapıyordum, içiyordunuz.',[['Ders çalışıyordum.','I was studying.']]],
+['Past perfect -mişti','Had done. It is not the -miş of reports.',[['Sen gitmiştin.','You had gone.'],['Daha önce hiç yememiştim.','I had never eaten it before.']]],
+['Reported events','The verb of the reported clause becomes a noun with -dik or -ecek plus a possessed ending and -i.',[['Hasta olduğumu kim söyledi?','Who said that I was ill?'],['Yardım etmeyeceğimizi anlıyorlar.','They understand we won\'t help.']]],
+['-diği + a linker','-diği gibi as, -diği halde although, -diği için because, -diği kadar as far as, -diği zaman when.',[['Bildiğim kadar iyiler.','As far as I know they are fine.']]],
+['Event or idea','Use -dik / -ecek for a specific event, the short infinitive for the idea or way of doing it.',[['gittiğini söylediler','they said he went'],['gitmesini söylediler','they told him to go']]],
+['-iş nouns','kalkış departure, çıkış exit, giriş entry, uçuş flight, yürüyüş walk, alışveriş shopping.',[]],
+['Var and yok phrases','Bir varmış bir yokmuş (once upon a time), Ne var? (what is up?), yok olmak (to disappear).',[]]],
+tip:'Bilemiyorum (I cannot know) is the very Turkish way to say you cannot tell, because it uses the can\'t form of bilmek.',
+vocab:[['hırsız','thief'],['cüzdan','wallet'],['eşya','belongings'],['plaj','beach'],['kum','sand'],['yüzmek','to swim'],['saymak','to count'],['izlemek','to watch, follow'],['takip etmek','to follow'],['tarif etmek','to describe'],['karakol','police station'],['rapor','report'],['yok olmak','to disappear'],['farkında olmak','to be aware'],['kontrol etmek','to check'],['anlatmak','to explain, tell'],['bir kere','once'],['sık sık','often'],['yalnız','alone'],['emin','sure'],['polis','police'],['mayo','swimsuit'],['bıyık','moustache'],['genç','young'],['yabancı','foreign, foreigner'],['turist','tourist'],['düşürmek','to drop'],['kalkış','departure'],['çıkış','exit'],['giriş','entry'],['uçuş','flight'],['alışveriş','shopping'],['fakir','poor'],['halde','although (with -diği)'],['gibi','as, like']],
+drills:[
+{t:'mc',q:'"I was swimming." (yüz)',o:['yüzüyordum','yüzdüm','yüzmüştüm','yüzerdim'],a:0,w:'-üyor + dum: past continuous.'},
+{t:'mc',q:'"What were you doing at eight?" (sen)',o:['Saat sekizde ne yapıyordun?','Saat sekizde ne yaptın?','Saat sekizde ne yapacaktın?','Saat sekiz ne yapıyorsun?'],a:0,w:'yapıyor + dun.'},
+{t:'mc',q:'"You had gone." (sen; git)',o:['gitmiştin','gittin','gidiyordun','gitmişsin'],a:0,w:'-miş + past of to be: -mişti + n.'},
+{t:'mc',q:'"I had never eaten it before."',o:['Daha önce hiç yememiştim.','Daha önce hiç yemedim.','Daha önce hiç yemiyordum.','Daha önce hiç yemişim.'],a:0,w:'yememiştim is the past perfect negative.'},
+{t:'mc',q:'"I said that I was fine." (iyi olmak)',o:['İyi olduğumu söyledim.','İyi olmak söyledim.','İyi olacağım söyledim.','İyi olmamı söyledim.'],a:0,w:'ol + duk + um + u: I-was-ness, with the object ending -u.'},
+{t:'mc',q:'"I guessed you would say that." (sen)',o:['Bunu söyleyeceğini tahmin ettim.','Bunu söylediğini tahmin ettim.','Bunu söylemeni tahmin ettim.','Bunu söyleyecektin tahmin ettim.'],a:0,w:'-ecek noun for the future.'},
+{t:'ty',q:'"When I came home" (-diği zaman)',a:['eve geldiğim zaman','Eve geldiğim zaman'],w:'gel + dik + im, then zaman.'},
+{t:'mc',q:'"Although he is poor."',o:['Fakir olduğu halde','Fakir olduğu için','Fakir olduğu gibi','Fakir olduğu kadar'],a:0,w:'-diği halde is although.'},
+{t:'mc',q:'"Because I came." (gel)',o:['geldiğim için','geldiğim halde','geldiğim gibi','geldiğim kadar'],a:0,w:'-diği için gives a reason.'},
+{t:'mc',q:'"As far as I know."',o:['bildiğim kadar','bildiğim gibi','bildiğim halde','bildiğim zaman'],a:0,w:'-diği kadar is as far as.'},
+{t:'mc',q:'"Departure" (kalkmak)',o:['kalkış','kalkma','kalkım','kalkık'],a:0,w:'-iş makes nouns from verbs.'},
+{t:'ty',q:'"Exit" (çıkmak + -iş)',a:['çıkış'],w:'çık + ış.'},
+{t:'mc',q:'How do you begin a fairy tale ("Once upon a time")?',o:['Bir varmış bir yokmuş…','Bir var bir yok…','Bir vardı bir yoktu…','Bir olmuş bir yok…'],a:0,w:'Stories use -miş.'},
+{t:'mc',q:'"My wallet had disappeared."',o:['Cüzdanım yok olmuştu.','Cüzdanım yok oluyordu.','Cüzdanım yok olacak.','Cüzdanım yok mu.'],a:0,w:'yok olmak is to disappear; -muştu is had.'},
+{t:'mc',q:'What is the difference between "gittiğini söylediler" and "gitmesini söylediler"?',o:['The first reports that he went; the second says they told him to go','The first says they told him to go; the second reports that he went','There is no difference','Both mean they said he will go'],a:0,w:'-dik reports a fact; the short infinitive reports an instruction.'}
+]});
+
+ADD({id:'u14',kind:'u',n:14,group:'E',tr:'Güldürme beni!',en:'Don\'t make me laugh!',pp:'205–217',
+short:'Used to, causing things to happen, doing things to each other, getting things done, and adverbs of time, place and manner.',
+scene:'Two old school friends bump into each other in the street and catch up over eight or nine years.',
+purpose:'This chapter lets you reminisce and react. You learn the habitual past (-erdi, used to or would), the causative endings (to make or have someone do something, to stop a car versus to stop), the reciprocal (each other, with birbiri and -iş), and the adverbs of time, place and manner that tell you when, where and how.',
+can:['Say what used to happen and what you did not use to do.','Say you make or have someone do something.','Tell a normal verb from its causative (durmak versus durdurmak).','Say each other and do things to one another.','Use the main adverbs of when, where and how.'],
+gram:[['Used to: -erdi','Take the -r tense, remove the person ending and add the past of to be: sürerdim, gelirdin.',[['Araba sürerdim.','I used to drive.'],['Futbol oynamazdın.','You didn\'t use to play football.']]],
+['Causatives','Endings -dir, -t, -it, -ir, -er cause an action. There is no firm rule; verbs with more than one syllable ending in r, l or a vowel take -t.',[['ölmek → öldürmek','to die → to kill'],['gülmek → güldürmek','to laugh → to make laugh'],['hatırlamak → hatırlatmak','to remember → to remind'],['saçı kestirmek','to have your hair cut']]],
+['Stopping something or stopping','Intransitive verbs have a causative twin that takes an object.',[['Durdum.','I stopped.'],['Arabayı durdurdum.','I stopped the car.']]],
+['Each other','birbiri (birbirimiz, birbiriniz, birbirleri) is always an object. The -iş ending on a verb also means each other.',[['Birbirimizi seviyoruz.','We love each other.'],['Yarın görüşürüz.','We\'ll see each other tomorrow.']]],
+['Adverbs: when','artık now, henüz not yet, hemen straight away, bazen sometimes, nadiren seldom, sık sık often, her zaman always, hiçbir zaman never, sabahları in the mornings, kışın in winter.',[]],
+['Adverbs: where and how','ileri ahead, geri back, aşağı down, yukarı up, içeri inside, dışarı outside. Çok, az, böyle, yavaş yavaş, zaman zaman. Adjectives work as adverbs; -ce makes more.',[['Yavaşça sür.','Drive slowly.']]]],
+tip:'A pair of adverbs goes when first, then how. They sit directly in front of the verb.',
+vocab:[['sürpriz','surprise'],['şaşırmak','to be surprised'],['görünmek','to look, appear'],['görüşmek','to see each other'],['eskiden','in the past'],['evli','married'],['ev hanımı','housewife'],['öğretmen','teacher'],['hatırlamak','to remember'],['hatırlatmak','to remind'],['itiraf etmek','to confess'],['beraber','together'],['okul','school'],['bitirmek','to finish'],['yavaş','slow'],['hemen','immediately'],['henüz','not yet'],['hiçbir zaman','never'],['nadiren','seldom'],['bazen','sometimes'],['sık sık','often'],['her zaman','always'],['sabahları','in the mornings'],['geceleri','at night'],['kışın','in winter'],['yazın','in summer'],['öldürmek','to kill'],['güldürmek','to make laugh'],['uyandırmak','to wake someone'],['durdurmak','to stop (something)'],['pişirmek','to cook (something)'],['değiştirmek','to change (something)'],['birbiri','each other'],['saçı kestirmek','to have your hair cut']],
+drills:[
+{t:'mc',q:'"I used to drive." (sür)',o:['Araba sürerdim.','Araba sürüyordum.','Araba sürdüm.','Araba sürecektim.'],a:0,w:'-r tense stem + past of to be.'},
+{t:'mc',q:'"You used to come on Sunday." (sen)',o:['Pazar günü gelirdin.','Pazar günü geliyordun.','Pazar günü geldin.','Pazar günü gelmiştin.'],a:0,w:'gelir + din.'},
+{t:'ty',q:'"I didn\'t use to drive."',a:['Araba sürmezdim','araba sürmezdim.'],w:'sür + mez + dim.'},
+{t:'mc',q:'"They used to work a lot."',o:['Çok çalışırlardı.','Çok çalıştılar.','Çok çalışıyorlar.','Çok çalışmışlar.'],a:0,w:'çalışırlardı (or çalışırdılar).'},
+{t:'mc',q:'"To kill" is the causative of ölmek. It is:',o:['öldürmek','ölmek','ölemek','öltmek'],a:0,w:'öl + dür + mek.'},
+{t:'mc',q:'"To remind" is the causative of hatırlamak:',o:['hatırlatmak','hatırlamak','hatırdırmak','hatırlaşmak'],a:0,w:'Longer stems ending in a vowel or l take -t.'},
+{t:'mc',q:'"To wake someone up" (uyanmak):',o:['uyandırmak','uyanmak','uyandamak','uyandatmak'],a:0,w:'uyan + dır + mak.'},
+{t:'mc',q:'"I stopped the car."',o:['Arabayı durdurdum.','Arabayı durdum.','Araba durdum.','Arabada durdum.'],a:0,w:'When there is an object, use the causative durdurmak.'},
+{t:'mc',q:'"He is cooking the chicken." (tavuk)',o:['Tavuğu pişiriyor.','Tavuk pişiyor.','Tavuğa pişiyor.','Tavuk pişirir mi.'],a:0,w:'pişmek is to cook (by itself), pişirmek is to cook something.'},
+{t:'mc',q:'"We love each other."',o:['Birbirimizi seviyoruz.','Birbirimiz seviyoruz.','Birbirini seviyoruz.','Biz birbiriz seviyoruz.'],a:0,w:'birbirimiz + -i as the object.'},
+{t:'mc',q:'"Help each other!" (formal)',o:['Birbirinize yardım edin!','Birbirimize yardım edin!','Birbirlerine yardım edin!','Birbirini yardım edin!'],a:0,w:'The you form of birbiri is birbiriniz; add -e.'},
+{t:'mc',q:'"We\'ll see each other tomorrow." (görüşmek)',o:['Yarın görüşürüz.','Yarın görürüz.','Yarın görüşelim mi.','Yarın birbirimiz görürüz.'],a:0,w:'-iş marks the reciprocal.'},
+{t:'mc',q:'Which word means "seldom"?',o:['bazen','nadiren','hemen','sık sık'],a:1,w:'nadiren seldom, bazen sometimes, sık sık often.'},
+{t:'mc',q:'"Drive slowly."',o:['Yavaşça sür.','Yavaş sürme.','Yavaşı sür.','Sürme yavaş.'],a:0,w:'-ça makes the adverb; it sits before the verb.'},
+{t:'ty',q:'"I had my hair cut." (saç, kes)',a:['saçımı kestirdim','Saçımı kestirdim.'],w:'kes + tir + di + m.'},
+{t:'mc',q:'A friend teases you about an old claim. You say "Güldürme beni!" What does it mean?',o:['Don\'t make me laugh!','Don\'t laugh at me!','Let him laugh.','I am laughing.'],a:0,w:'güldürmek is to make someone laugh; -me is the informal negative command.'}
+]});
+
+ADD({id:'u15',kind:'u',n:15,group:'E',tr:'Burası ne zaman inşa edilmiş?',en:'When was this place built?',pp:'218–233',
+short:'The passive, saying by whom, was going to, reflexives (myself, himself), and nouns and adjectives built from verb stems.',
+scene:'A tavern in Çiçek Pasajı, an old arcade in İstanbul. A host tells his friend how the building was built and why it has its name.',
+purpose:'This chapter teaches you to say what was done without saying who did it: the passive. It adds tarafından for by, the passive signs you see everywhere (Girilmez, Kahvaltı verilir), the past future for was going to, the reflexive (kendi, -in verbs), and a large family of noun and adjective endings built from verb stems. It is the chapter that makes Turkish signs readable.',
+can:['Say that something was done, is done or will be done.','Say by whom with tarafından.','Read common passive signs.','Say was going to.','Use kendi and reflexive verbs.','Recognise nouns built from verb stems.'],
+gram:[['The passive','Stem + -il, or -in after a stem ending in l, or -n after a vowel. Then add the tense.',[['Kapı açıldı.','The door was opened.'],['Araba yıkanacak.','The car will be washed.'],['Cüzdan çalındı.','The purse was stolen.']]],
+['By: tarafından','Used for inventions, discoveries and processes. For ordinary actions use the active.',[['Bu bina Türkler tarafından inşa edildi.','This building was built by Turks.']]],
+['Signs','Passive forms state what is done or not done.',[['Girilmez.','No entry.'],['Sigara içilmez.','No smoking.'],['Kahvaltı verilir.','Breakfast served.']]],
+['Past future -ecekti','Future stem + past of to be: yapacaktım, I was going to.',[['Sana telefon edecektim.','I was going to phone you.']]],
+['Kendi','Self. Kendim, kendin, kendisi, kendimiz, kendiniz, kendileri. Kendi kendime means by myself.',[['Kendine iyi bak.','Look after yourself.']]],
+['Reflexive verbs','-in on the stem: yıkanmak (wash yourself), giyinmek (get dressed), dinlenmek (relax). Some are identical to the passive: context decides.',[['giymek → giyinmek','to put on → to get dressed']]],
+['Verb stems to nouns','-im, -in, -gi, -gin, -gen, -i, and more: bilmek → bilgi, bilim; üzmek → üzgün; çalışmak → çalışkan.',[['saymak → sayı, sayın, saygı','to count → number, esteemed, respect']]]],
+tip:'When someone bothers you, Rahatsız etmeyin! is a polite request, Sataşmayın! is stronger, and Çok ayıp! shames them.',
+vocab:[['inşa etmek','to build'],['inşa edilmek','to be built'],['mimar','architect'],['çizmek','to draw'],['han','large commercial building'],['pasaj','arcade, passage'],['meyhane','tavern'],['çiçek','flower'],['asker','soldier'],['sayı','number'],['ihtilal','revolution'],['keşfetmek','to discover'],['kapı','door'],['açılmak','to be opened'],['yazılmak','to be written'],['satılmak','to be sold'],['yapılmak','to be made'],['verilmek','to be given'],['girilmez','no entry'],['içilmez','not smoked, no smoking'],['kendi','self, own'],['yıkanmak','to wash oneself'],['giyinmek','to get dressed'],['dinlenmek','to relax'],['taşınmak','to move house'],['bilgi','knowledge'],['bilim','science'],['sorun','problem'],['saygı','respect'],['duygu','feeling'],['üzgün','sad'],['çalışkan','hard-working'],['unutkan','forgetful'],['rahatsız etmek','to disturb'],['sataşmak','to harass'],['ayıp','shame']],
+drills:[
+{t:'mc',q:'"The door was opened." (aç)',o:['Kapı açıldı.','Kapı açtı.','Kapıyı açıldı.','Kapı açtırdı.'],a:0,w:'aç + ıl + dı. The subject has no object ending.'},
+{t:'mc',q:'"The car will be washed." (yıka)',o:['Araba yıkanacak.','Araba yıkılacak.','Arabayı yıkanacak.','Araba yıkayacak.'],a:0,w:'yıka ends in a vowel, so the passive is -n.'},
+{t:'mc',q:'"The purse was stolen." (çal)',o:['Cüzdan çalındı.','Cüzdan çalıldı.','Cüzdan çaldı.','Cüzdanı çalındı.'],a:0,w:'çal ends in l, so the passive is -ın.'},
+{t:'mc',q:'"The table is being wiped." (sil)',o:['Masa siliniyor.','Masa siliyor.','Masayı siliniyor.','Masa silecek.'],a:0,w:'sil ends in l, so -in: silin + iyor.'},
+{t:'ty',q:'Passive of yemek ("to be eaten"):',a:['yenmek'],w:'ye ends in a vowel: ye + n + mek.'},
+{t:'mc',q:'"Hamlet was written by Shakespeare."',o:['Hamlet Şekspir tarafından yazıldı.','Hamlet Şekspir yazıldı.','Hamlet Şekspir yazdı.','Hamlet Şekspir\'e yazıldı.'],a:0,w:'tarafından is by.'},
+{t:'mc',q:'A sign says "Girilmez." What does it mean?',o:['No entry.','Entry free.','Closed for repairs.','Enter here.'],a:0,w:'Passive of girmek: it is not entered.'},
+{t:'mc',q:'A sign says "Kahvaltı verilir." What does it mean?',o:['Breakfast served.','Breakfast wanted.','No breakfast.','Breakfast included in price.'],a:0,w:'It is given: breakfast is served.'},
+{t:'mc',q:'"I was going to phone you." (telefon etmek)',o:['Sana telefon edecektim.','Sana telefon ediyordum.','Sana telefon ettim.','Sana telefon ederdim.'],a:0,w:'Future stem + past of to be: -ecektim.'},
+{t:'mc',q:'"I chose it myself."',o:['Kendim seçtim.','Ben kendi seçtim.','Kendini seçtim.','Kendimi seçtim.'],a:0,w:'kendim: myself, as subject.'},
+{t:'mc',q:'"Look after yourself." (informal)',o:['Kendine iyi bak.','Kendini iyi bak.','Kendin iyi bak.','Kendinde iyi bak.'],a:0,w:'bakmak takes -e, so kendine.'},
+{t:'mc',q:'"To get dressed" is the reflexive of giymek:',o:['giyinmek','giyilmek','giydirmek','giyişmek'],a:0,w:'Reflexive uses -in.'},
+{t:'mc',q:'"To relax" is the reflexive of dinlemek:',o:['dinlenmek','dinlemek','dinletmek','dinlişmek'],a:0,w:'Literally to listen to yourself.'},
+{t:'mc',q:'"Knowledge" is built from bilmek with:',o:['-gi (bilgi)','-in (bilin)','-iş (biliş)','-miş (bilmiş)'],a:0,w:'bilmek → bilgi.'},
+{t:'ty',q:'"Hard-working" (çalışmak + -kan)',a:['çalışkan'],w:'çalış + kan.'},
+{t:'mc',q:'A sign says "Sigara içilmez." What does it mean?',o:['Smoking forbidden.','Cigarettes sold.','Smoking area.','Light your cigarette.'],a:0,w:'Passive of içmek, negative -mez.'}
+]});
+
+ADD({id:'u16',kind:'u',n:16,group:'E',tr:'Fiyatları bilseydim orada yemezdik',en:'If I had known the prices we wouldn\'t have eaten there',pp:'234–246',
+short:'Unlikely and past conditionals, expressing regret with keşke, saying as soon as, and nouns and adjectives built from verb stems.',
+scene:'A neighbour describes a family holiday on a Marmara island and a birthday fish dinner whose bill nearly ruined it.',
+purpose:'This is the last grammar chapter, and it pulls together what came before. You learn the -seydi conditional for things that are unlikely or that did not happen (If I had known…), the regret word keşke, yapar yapmaz for as soon as, and another set of verb-stem endings that build nouns and adjectives. If you can say these, you can speak about possibility and the past in the same breath.',
+can:['Say what you would do in an unlikely situation.','Say what you would have done if things had been different.','Express regret with keşke.','Say as soon as.','Recognise more noun and adjective endings.'],
+gram:[['The -seydi conditional','Stem + -se + past of to be: gelseydim, yapsaydın, otursaydık. The main clause uses the -erdi form.',[['Yerinde olsaydım giderdim.','If I were you I would go.'],['Fiyatları bilseydim yemezdik.','If I had known the prices we would not have eaten.']]],
+['Unlikely versus past','The same form covers an improbable present or future and an impossible past. Context decides.',[['Daha serin olsaydı giderdik.','If it had been cooler we would have gone.']]],
+['Real versus unreal','gelirsen memnun olurum is a plain condition. gelseydin memnun olurdum signals doubt.',[]],
+['Keşke','If only… with the -seydi form.',[['Keşke gitmeseydin.','I wish you hadn\'t gone.'],['Keşke hiç tanışmasaydık.','I wish we had never met.']]],
+['Yapar yapmaz','Positive then negative -r tense means as soon as.',[['Eve gelir gelmez banyo yapacağım.','As soon as I get home I will bathe.']]],
+['More stem endings','-mez, -ç, -gıç, -ik, -ek, -it, -ıntı: inanılmaz (unbelievable), kazanç (profit), başlangıç (start), uçak (aeroplane), akıntı (current).',[['inanmak → inanılmaz','to believe → unbelievable']]]],
+tip:'The same -erdi form that meant used to now means would. Do not translate it as used to inside an if-sentence.',
+vocab:[['keşke','if only'],['yerinde olmak','to be in someone\'s place'],['dikkat etmek','to pay attention'],['pişman','regretful'],['şok olmak','to be shocked'],['hesap','bill'],['ada','island'],['vapur','ferry'],['deniz otobüsü','sea bus'],['sürmek','to take (time)'],['serin','cool'],['gezmek','to tour, stroll'],['balık','fish'],['ısmarlamak','to order'],['ertesi sabah','the next morning'],['yeterince','enough'],['yarısı','half of it'],['bile','even'],['patron','boss'],['fark etmek','to notice'],['öldürmek','to kill'],['yüzünden','because of'],['inanılmaz','unbelievable'],['görünmez','invisible'],['değişmez','unchanging'],['kazanç','profit'],['utanç','shame'],['başlangıç','start'],['uçak','aeroplane'],['akıntı','current'],['söylenti','rumour'],['uyanık','alert, awake'],['karışık','mixed'],['bozuk','broken'],['kaçak','fugitive']],
+drills:[
+{t:'mc',q:'"If I had come." (gel)',o:['gelseydim','gelirsem','gelsem','gelecektim'],a:0,w:'gel + se + ydi + m, written gelseydim.'},
+{t:'mc',q:'"If you had done it." (sen; yap)',o:['yapsaydın','yaparsan','yaptıysan','yapacaktın'],a:0,w:'yap + sa + ydı + n.'},
+{t:'ty',q:'"If we had sat down." (otur)',a:['otursaydık'],w:'otur + say + dı + k.'},
+{t:'mc',q:'"If I had known the prices, we wouldn\'t have eaten there."',o:['Fiyatları bilseydim orada yemezdik.','Fiyatları bilirsem orada yemeyiz.','Fiyatları biliyorsam orada yemezdik.','Fiyatları bilmiştim orada yemezdik.'],a:0,w:'-seydi in the if clause, -erdi in the main clause.'},
+{t:'mc',q:'"If I were you, I would go."',o:['Yerinde olsaydım giderdim.','Yerinde olursam giderim.','Yerinde olmuşum giderdim.','Yerinde olacaktım gideriz.'],a:0,w:'olsaydım + giderdim.'},
+{t:'mc',q:'"I wish you hadn\'t gone."',o:['Keşke gitmeseydin.','Keşke gitmedin.','Keşke gitmezsin.','Keşke gitme.'],a:0,w:'keşke takes the -seydi form.'},
+{t:'mc',q:'"If only I were prettier." (daha güzel)',o:['Keşke daha güzel olsaydım.','Keşke daha güzelim.','Keşke daha güzel olurum.','Keşke daha güzeldim.'],a:0,w:'olsaydım after keşke.'},
+{t:'mc',q:'"As soon as I get home I\'ll have a bath."',o:['Eve gelir gelmez banyo yapacağım.','Eve geldikten sonra banyo yaptım.','Eve gelince gelmez banyo yapacağım.','Eve gelmeden banyo yaparım.'],a:0,w:'gelir gelmez: positive then negative -r tense.'},
+{t:'mc',q:'"Answer straight away when the phone rings."',o:['Telefon çalar çalmaz cevap ver!','Telefon çalarken cevap vermedin.','Telefon çalınca çalmaz cevap ver!','Telefon çalmadan cevap ver!'],a:0,w:'çalar çalmaz = as soon as it rings.'},
+{t:'mc',q:'"Unbelievable" (inanmak + passive + -maz)',o:['inanılmaz','inanamaz','inanmaz','inanılış'],a:0,w:'inan + ıl + maz.'},
+{t:'mc',q:'"Aeroplane" (uçmak + -ak)',o:['uçak','uçık','uçek','uçuk'],a:0,w:'uç + ak.'},
+{t:'ty',q:'Type the noun meaning "start" (built from başlamak).',a:['başlangıç'],w:'başlamak gives başlangıç, one of the nouns built with the -gıç family of endings.'},
+{t:'mc',q:'What is the difference between "gelirsen memnun olurum" and "gelseydin memnun olurdum"?',o:['The second suggests doubt that it will happen','The second is formal','The first is past','No difference'],a:0,w:'The -seydi form implies the situation is unlikely or did not happen.'},
+{t:'ty',q:'"Profit" (kazanmak + -ç)',a:['kazanç'],w:'kazan + ç.'},
+{t:'mc',q:'"If she had seen the bill, she would have killed me."',o:['Hesabı görseydi beni öldürürdü.','Hesabı görürse beni öldürür.','Hesabı gördüyse beni öldürdü.','Hesabı görsün beni öldürsün.'],a:0,w:'görseydi + öldürürdü.'},
+{t:'mc',q:'"If the children had been older, we would have toured."',o:['Çocuklar daha büyük olsaydı gezerdik.','Çocuklar daha büyük olursa gezeriz.','Çocuklar daha büyük olmuş gezdik.','Çocuklar büyük olsunlar gezdik.'],a:0,w:'olsaydı (3rd person) + gezerdik.'}
+]});
+
+</script>
+<script>
+(function(){
+'use strict';
+var SECTIONS=window.SECTIONS||[];
+var GROUPS={
+  O:['Orientation','How the course works, what makes Turkish different, and the sounds you need before unit 1.'],
+  A:['First contact','Units 1 to 3. Shops, passports and restaurants: ask, answer, order and instruct with the smallest working toolkit.'],
+  B:['The four everyday tenses','Units 4 to 7. Now, past, future and the all-purpose -r tense, plus possession and polite requests.'],
+  C:['Ability, obligation and conditions','Units 8 to 10. Can, might, let us, must, and if: the grammar of plans, advice and bargaining.'],
+  D:['Reporting and describing','Units 11 to 13. Say what others said, build which-clauses, and narrate events in the right time layer.'],
+  E:['Stories, passives and what-ifs','Units 14 to 16. Habits, causing and receiving actions, regrets, and hypothetical situations.']
+};
+var KEY='turkish-training-ground-v1';
+var P={};
+try{P=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){P={}}
+if(!P.s)P.s={};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}}
+function rec(id){if(!P.s[id])P.s[id]={best:0,att:0,k:{}};return P.s[id]}
+
+var $=function(s,r){return (r||document).querySelector(s)};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var trLower=function(s){return String(s).replace(/İ/g,'i').replace(/I/g,'ı').toLowerCase()};
+var strip=function(s){return trLower(s).replace(/ç/g,'c').replace(/ğ/g,'g').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ş/g,'s').replace(/ü/g,'u')};
+var norm=function(s){return trLower(s).replace(/[?!.,;:"“”]/g,'').replace(/\s+/g,' ').trim()};
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function sec(id){for(var i=0;i<SECTIONS.length;i++)if(SECTIONS[i].id===id)return SECTIONS[i];return null}
+function label(s){return s.kind==='u'?('Unit '+s.n):('Orientation '+(s.n+1))}
+function knownCount(s){var k=rec(s.id).k,c=0;s.vocab.forEach(function(v){if((k[v[0]]||0)>=2)c++});return c}
+function pct(s){var r=rec(s.id);var w=s.vocab.length?knownCount(s)/s.vocab.length:0;return Math.round(100*(0.65*r.best+0.35*w))}
+function status(s){var p=pct(s);return p>=80?'done':(p>0||rec(s.id).att>0)?'going':'new'}
+var speakOK='speechSynthesis' in window;
+function speak(t){try{var u=new SpeechSynthesisUtterance(t);u.lang='tr-TR';u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+var SPK='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+
+var app,view={name:'home',tab:'purpose',mode:'cards'};
+
+/* ---------- shell ---------- */
+function shell(){
+  var h='<header class="top"><div class="wrap"><a class="brand" href="#home"><i></i>Turkish Training Ground</a><nav class="nav" aria-label="Main"><a href="../index.html">← back to the map</a>'+
+  '<a href="#home" data-nav="home">Map</a><a href="#review" data-nav="review">Mixed review</a><a href="#lab" data-nav="lab">Harmony lab</a><a href="#ladder" data-nav="ladder">Verb ladder</a>'+
+  '</nav></div></header><main class="wrap" id="main" tabindex="-1"></main>';
+  document.getElementById('app').innerHTML=h;
+}
+function setNav(n){var a=document.querySelectorAll('.nav a');for(var i=0;i<a.length;i++){if(a[i].getAttribute('data-nav')===n)a[i].setAttribute('aria-current','page');else a[i].removeAttribute('aria-current')}}
+function main(){return document.getElementById('main')}
+
+/* ---------- routing ---------- */
+function route(){
+  var h=(location.hash||'#home').slice(1);
+  var m=main();if(!m)return;
+  if(h==='review'){setNav('review');viewReview();window.scrollTo(0,0);return}
+  if(h==='lab'){setNav('lab');viewLab();window.scrollTo(0,0);return}
+  if(h==='ladder'){setNav('ladder');viewLadder();window.scrollTo(0,0);return}
+  var s=sec(h);
+  if(s){setNav('');if(view.name!==h){view={name:h,tab:'purpose',mode:'cards'}}viewChapter(s);window.scrollTo(0,0);return}
+  setNav('home');viewHome();
+}
+
+/* ---------- home ---------- */
+function viewHome(){
+  view={name:'home'};
+  var tot=0,done=0,words=0,known=0;
+  SECTIONS.forEach(function(s){tot++;if(status(s)==='done')done++;words+=s.vocab.length;known+=knownCount(s)});
+  var drills=SECTIONS.reduce(function(a,s){return a+s.drills.length},0);
+  var next=null;for(var i=0;i<SECTIONS.length;i++){if(status(SECTIONS[i])!=='done'){next=SECTIONS[i];break}}
+  var h='<section class="hero"><span class="eyebrow">Teach Yourself Turkish, chapter by chapter</span><h1>Train every chapter until it is <em>automatic.</em></h1>'+
+  '<p class="lead">Each of the 20 stops below covers one chapter of the book. Open a stop to see what it is for, then drill its words and its grammar until you stop having to think about it.</p>'+
+  '<div class="row">'+(next?'<a class="btn primary" href="#'+next.id+'">'+(done?'Continue: ':'Start: ')+esc(label(next))+'</a>':'')+'<a class="btn" href="#review">Mixed review</a><a class="btn" href="#lab">Harmony lab</a></div>'+
+  '<div class="stats"><div><b>'+done+'/'+tot+'</b><span>stops cleared</span></div><div><b>'+known+'/'+words+'</b><span>words known</span></div><div><b>'+drills+'</b><span>grammar drills</span></div></div></section>';
+  var order=['O','A','B','C','D','E'];
+  order.forEach(function(g){
+    var list=SECTIONS.filter(function(s){return s.group===g});if(!list.length)return;
+    h+='<section class="band"><header><h2>'+esc(GROUPS[g][0])+'</h2><p>'+esc(GROUPS[g][1])+'</p></header><div class="line">';
+    list.forEach(function(s){
+      var p=pct(s);
+      h+='<div class="stop" data-st="'+status(s)+'"><div class="node">'+(s.kind==='u'?s.n:'·')+'</div><a class="stopcard" href="#'+s.id+'"><h3>'+esc(s.tr)+'</h3><div class="en">'+esc(s.en)+'</div><div class="why">'+esc(s.short||s.purpose)+'</div>'+
+      '<div class="meta"><span class="chip">'+esc(label(s))+' · book p. '+esc(s.pp)+'</span><div class="bar"><i style="width:'+p+'%"></i></div><span class="pct">'+p+'%</span></div></a></div>';
+    });
+    h+='</div></section>';
+  });
+  h+='<p class="foot">Progress is saved in this browser only. Built from Pollard and Pollard, Teach Yourself Turkish. Drills and examples are original practice material that follow each chapter\'s targets.</p>';
+  main().innerHTML=h;
+}
+
+/* ---------- chapter ---------- */
+function viewChapter(s){
+  var idx=SECTIONS.indexOf(s),prev=SECTIONS[idx-1],nx=SECTIONS[idx+1];
+  var h='<div class="chead"><span class="eyebrow">'+esc(GROUPS[s.group][0])+' · book p. '+esc(s.pp)+'</span><div class="big"><span class="num">'+(s.kind==='u'?s.n:'·')+'</span><h1>'+esc(s.tr)+'</h1></div><div class="en">'+esc(s.en)+'</div></div>'+
+  '<div class="tabs" role="tablist">'+[['purpose','Purpose'],['words','Words ('+s.vocab.length+')'],['drills','Drills ('+s.drills.length+')']].map(function(t){return '<button role="tab" type="button" data-tab="'+t[0]+'" aria-selected="'+(view.tab===t[0])+'">'+t[1]+'</button>'}).join('')+'</div><div id="pane"></div>'+
+  '<div class="nav2">'+(prev?'<a class="btn" href="#'+prev.id+'">← '+esc(prev.tr)+'</a>':'<span></span>')+(nx?'<a class="btn" href="#'+nx.id+'">'+esc(nx.tr)+' →</a>':'<span></span>')+'</div>';
+  main().innerHTML=h;
+  var tb=document.querySelectorAll('.tabs button');
+  for(var i=0;i<tb.length;i++)tb[i].onclick=function(){view.tab=this.getAttribute('data-tab');viewChapter(s)};
+  var pane=$('#pane');
+  if(view.tab==='purpose')paintPurpose(s,pane);
+  else if(view.tab==='words')paintWords(s,pane);
+  else paintDrills(s,pane);
+}
+function paintPurpose(s,el){
+  var h='<div class="cols"><div><div class="scene"><b>Situation</b>'+esc(s.scene)+'</div><p class="purpose">'+esc(s.purpose)+'</p><div style="margin-top:20px"><h2 style="font-size:1.1rem;font-family:var(--f-body);font-weight:700">By the end you can</h2><ul class="can">'+s.can.map(function(c){return '<li>'+esc(c)+'</li>'}).join('')+'</ul></div>'+
+  '<div class="row" style="margin-top:22px"><button class="btn primary" type="button" data-go="drills">Start the drills</button><button class="btn" type="button" data-go="words">Practise the words</button></div></div>'+
+  '<div class="side">'+(s.tip?'<div class="tip"><b>Field note</b>'+esc(s.tip)+'</div>':'')+'<h2>Grammar and sounds trained here</h2><div class="gram">'+
+  s.gram.map(function(g){return '<div class="gcard"><h3>'+esc(g[0])+'</h3><p>'+esc(g[1])+'</p>'+(g[2]&&g[2].length?'<div class="ex">'+g[2].map(function(e){return '<div>'+esc(e[0])+' <span>'+esc(e[1])+'</span></div>'}).join('')+'</div>':'')+'</div>'}).join('')+'</div></div></div>';
+  el.innerHTML=h;
+  var b=el.querySelectorAll('[data-go]');for(var i=0;i<b.length;i++)b[i].onclick=function(){view.tab=this.getAttribute('data-go');viewChapter(s)};
+}
+
+/* ---------- words ---------- */
+function paintWords(s,el){
+  var modes=[['cards','Flashcards'],['match','Match pairs'],['type','Type it']];
+  el.innerHTML='<div class="modes" role="group" aria-label="Word practice mode">'+modes.map(function(m){return '<button type="button" data-m="'+m[0]+'" aria-pressed="'+(view.mode===m[0])+'">'+m[1]+'</button>'}).join('')+'</div><div class="stage" id="stage"></div>';
+  var b=el.querySelectorAll('[data-m]');for(var i=0;i<b.length;i++)b[i].onclick=function(){view.mode=this.getAttribute('data-m');paintWords(s,el)};
+  var st=$('#stage');
+  if(view.mode==='cards')cards(s,st);else if(view.mode==='match')match(s,st);else typer(s,st);
+}
+function box(s,w,d){var k=rec(s.id).k;k[w]=Math.max(0,Math.min(3,(k[w]||0)+d));save()}
+function cards(s,st){
+  var q=shuffle(s.vocab.slice()),i=0,flipped=false,seen=0;
+  function paint(){
+    if(!q.length){st.innerHTML='<div class="sum"><div class="score">'+knownCount(s)+'/'+s.vocab.length+'</div><p>words marked as known. Words you miss come back sooner next time.</p><div class="row"><button class="btn primary" type="button" id="again">Go again</button></div></div>';$('#again').onclick=function(){cards(s,st)};return}
+    var c=q[0];
+    st.innerHTML='<div class="flash"><div class="qtop"><span>'+(s.vocab.length-q.length+1>s.vocab.length?s.vocab.length:Math.min(s.vocab.length,seen+1))+' of '+s.vocab.length+'</span><span>box '+(rec(s.id).k[c[0]]||0)+'/3</span></div>'+
+    '<div class="fc'+(flipped?' back':'')+'" id="fc" tabindex="0" role="button" aria-label="Flip card"><div class="w">'+esc(flipped?c[1]:c[0])+'</div><div class="hint">'+(flipped?'':'Tap to reveal the meaning')+'</div></div>'+
+    '<div class="row">'+(speakOK?'<button class="btn sm" type="button" id="spk" aria-label="Hear it">'+SPK+' Hear it</button>':'')+(flipped?'<button class="btn sm" type="button" id="no">Again</button><button class="btn sm primary" type="button" id="yes">Got it</button>':'<button class="btn sm" type="button" id="flip">Show meaning</button>')+'</div></div>';
+    var f=function(){flipped=true;paint()};
+    $('#fc').onclick=function(){flipped=!flipped;paint()};$('#fc').onkeydown=function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();flipped=!flipped;paint()}};
+    if($('#flip'))$('#flip').onclick=f;
+    if($('#spk'))$('#spk').onclick=function(e){e.stopPropagation();speak(c[0])};
+    if($('#yes'))$('#yes').onclick=function(){box(s,c[0],1);q.shift();seen++;flipped=false;paint()};
+    if($('#no'))$('#no').onclick=function(){box(s,c[0],-3);q.push(q.shift());flipped=false;paint()};
+  }
+  paint();
+}
+function match(s,st){
+  var pool=shuffle(s.vocab.slice()).slice(0,6),L=shuffle(pool.slice()),R=shuffle(pool.slice()),sel=null,done=0,miss=0;
+  st.innerHTML='<p class="muted" style="margin-bottom:10px">Pick a Turkish word, then its meaning.</p><div class="match" id="mt"><div style="display:grid;gap:10px" id="lc"></div><div style="display:grid;gap:10px" id="rc"></div></div><div id="mres" style="margin-top:14px"></div>';
+  function btn(c,side){var b=document.createElement('button');b.type='button';b.textContent=side==='l'?c[0]:c[1];b.setAttribute('data-id',c[0]);b.setAttribute('data-side',side);
+    b.onclick=function(){
+      if(b.classList.contains('done'))return;
+      if(side==='l'&&speakOK)speak(c[0]);
+      var cur=st.querySelector('button.sel[data-side="'+side+'"]');if(cur)cur.classList.remove('sel');
+      b.classList.add('sel');
+      var l=st.querySelector('button.sel[data-side="l"]'),r=st.querySelector('button.sel[data-side="r"]');
+      if(l&&r){
+        if(l.getAttribute('data-id')===r.getAttribute('data-id')){l.className='done';r.className='done';box(s,l.getAttribute('data-id'),1);done++;
+          if(done===pool.length){$('#mres').innerHTML='<div class="fb ok"><b>All matched.</b>'+(miss?miss+' wrong tries.':'No wrong tries.')+'</div><div class="row" style="margin-top:10px"><button class="btn primary" type="button" id="nr">Another round</button></div>';$('#nr').onclick=function(){match(s,st)}}}
+        else{miss++;box(s,l.getAttribute('data-id'),-1);l.classList.add('miss');r.classList.add('miss');setTimeout(function(){l.classList.remove('miss','sel');r.classList.remove('miss','sel')},500)}
+      }
+    };return b}
+  L.forEach(function(c){$('#lc').appendChild(btn(c,'l'))});R.forEach(function(c){$('#rc').appendChild(btn(c,'r'))});
+}
+var CHARS=['ç','ğ','ı','ö','ş','ü','İ'];
+function charBar(inp){var d=document.createElement('div');d.className='chars';d.setAttribute('aria-label','Turkish letters');CHARS.forEach(function(c){var b=document.createElement('button');b.type='button';b.textContent=c;b.onclick=function(){var p=inp.selectionStart||inp.value.length;inp.value=inp.value.slice(0,p)+c+inp.value.slice(inp.selectionEnd||p);inp.focus();inp.selectionStart=inp.selectionEnd=p+1};d.appendChild(b)});return d}
+function typer(s,st){
+  var q=shuffle(s.vocab.slice()).slice(0,10),i=0,ok=0;
+  function paint(){
+    if(i>=q.length){st.innerHTML='<div class="sum"><div class="score">'+ok+'/'+q.length+'</div><p>typed correctly. Plain letters count (c for ç), the correct spelling is always shown.</p><div class="row"><button class="btn primary" type="button" id="again">Another ten</button></div></div>';$('#again').onclick=function(){typer(s,st)};return}
+    var c=q[i];
+    st.innerHTML='<div class="q"><div class="qtop"><span>Word '+(i+1)+' of '+q.length+'</span></div><div class="qtext">'+esc(c[1])+'</div><div class="inrow"><input class="txt" id="ti" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Turkish word"><button class="btn primary" type="button" id="chk">Check</button></div><div id="cb"></div><div id="fb"></div></div>';
+    var inp=$('#ti');$('#cb').appendChild(charBar(inp));inp.focus();
+    var done=false;
+    function check(){
+      if(done){i++;paint();return}
+      var a=strip(norm(inp.value)),r=strip(norm(c[0]));
+      var good=a===r;done=true;inp.disabled=true;
+      if(good){ok++;box(s,c[0],1)}else box(s,c[0],-1);
+      $('#fb').innerHTML='<div class="fb '+(good?'ok':'no')+'"><b>'+(good?'Correct.':'Not quite.')+'</b>'+esc(c[1])+' = <span class="tr">'+esc(c[0])+'</span></div>';
+      $('#chk').textContent=i+1<q.length?'Next':'Finish';$('#chk').focus();
+    }
+    $('#chk').onclick=check;inp.onkeydown=function(e){if(e.key==='Enter')check()};
+  }
+  paint();
+}
+
+/* ---------- drills ---------- */
+function paintDrills(s,el){
+  runner(el,s.drills.slice(),{title:s.tr,onDone:function(res){var r=rec(s.id);r.att++;if(res.score>r.best)r.best=res.score;save()},again:function(){paintDrills(s,el)},nextHref:(SECTIONS[SECTIONS.indexOf(s)+1]||{}).id});
+}
+function runner(el,items,opt){
+  var i=0,right=0,missed=[],items0=items.slice();
+  function end(){
+    var sc=items.length?right/items.length:0;
+    if(opt.onDone)opt.onDone({score:sc,right:right,total:items.length});
+    el.innerHTML='<div class="sum"><span class="eyebrow">Round complete</span><div class="score">'+right+'/'+items.length+'</div><p>'+(sc>=.8?'Solid. This chapter is in good shape.':sc>=.5?'Getting there. Review the misses below, then go again.':'Re-read the Purpose tab, then try again. The explanations after each answer are the real lesson.')+'</p>'+
+    (missed.length?'<div><b>Missed</b><ul class="miss-list" style="list-style:none;padding:0;margin:8px 0 0">'+missed.map(function(m){return '<li><b>'+esc(m.q)+'</b><br><span class="muted">'+esc(m.ans)+'</span></li>'}).join('')+'</ul></div>':'')+
+    '<div class="row">'+(missed.length?'<button class="btn primary" type="button" id="rm">Retry missed ('+missed.length+')</button>':'')+'<button class="btn'+(missed.length?'':' primary')+'" type="button" id="ra">Run the full set again</button>'+(opt.nextHref?'<a class="btn" href="#'+opt.nextHref+'">Next chapter</a>':'')+'</div></div>';
+    if($('#rm'))$('#rm').onclick=function(){var keep=missed.map(function(m){return m.item});i=0;right=0;missed=[];items=keep;ask()};
+    $('#ra').onclick=function(){if(opt.again)opt.again();else runner(el,items0,opt)};
+  }
+  function ask(){
+    if(i>=items.length){end();return}
+    var d=items[i];
+    var wrap=document.createElement('div');wrap.className='q';
+    wrap.innerHTML='<div class="qtop"><span>Question '+(i+1)+' of '+items.length+'</span><span>'+({mc:'Choose',ty:'Type',or:'Build the sentence'}[d.t])+'</span></div><div class="qtext">'+esc(d.q)+'</div><div id="body"></div><div id="fb"></div><div id="nx"></div>';
+    el.innerHTML='';el.className='stage';el.appendChild(wrap);
+    var body=$('#body',wrap),fb=$('#fb',wrap),nx=$('#nx',wrap),answered=false;
+    function finish(good,ansText){
+      if(answered)return;answered=true;
+      if(good)right++;else missed.push({item:d,q:d.q,ans:ansText});
+      fb.innerHTML='<div class="fb '+(good?'ok':'no')+'"><b>'+(good?'Correct.':'Not this time.')+'</b>'+(good?'':'Answer: <span class="tr">'+esc(ansText)+'</span><br>')+esc(d.w||'')+'</div>';
+      nx.innerHTML='<div class="row" style="margin-top:6px"><button class="btn primary" type="button" id="nb">'+(i+1<items.length?'Next question':'See results')+'</button></div>';
+      var nb=$('#nb',nx);nb.onclick=function(){i++;ask()};nb.focus();
+    }
+    if(d.t==='mc'){
+      var order=shuffle(d.o.map(function(t,k){return {t:t,c:k===d.a}}));
+      body.className='opts';
+      order.forEach(function(o,k){
+        var b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML='<span class="k">'+'ABCDEF'[k]+'</span><span>'+esc(o.t)+'</span>';
+        b.onclick=function(){if(answered)return;var all=body.querySelectorAll('.opt');for(var z=0;z<all.length;z++){all[z].disabled=true;if(order[z].c)all[z].classList.add('ok')}
+          if(!o.c)b.classList.add('no');finish(o.c,d.o[d.a])};
+        body.appendChild(b);
+      });
+    }else if(d.t==='ty'){
+      body.innerHTML='<div class="inrow"><input class="txt" id="ti" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Your answer"><button class="btn primary" type="button" id="chk">Check</button></div><div id="cb" style="margin-top:8px"></div>';
+      var inp=$('#ti',body);$('#cb',body).appendChild(charBar(inp));inp.focus();
+      var go=function(){
+        if(answered)return;
+        var v=norm(inp.value);if(!v)return;
+        var good=false,loose=false;
+        d.a.forEach(function(a){if(norm(a)===v)good=true;else if(!d.s&&strip(norm(a))===strip(v))loose=true});
+        inp.disabled=true;$('#chk',body).disabled=true;
+        finish(good||loose,d.a[0]);
+        if(loose&&!good)fb.firstChild.firstChild.textContent='Correct, but check the letters: '+d.a[0]+'. ';
+      };
+      $('#chk',body).onclick=go;inp.onkeydown=function(e){if(e.key==='Enter')go()};
+    }else{
+      var toks=d.a.replace(/[?!.]+$/,'').split(' ').concat(d.x||[]);
+      var pool=shuffle(toks.map(function(t,k){return {t:trLower(t),id:k}})),ans=[];
+      body.innerHTML='<div class="answer" id="ans" aria-label="Your sentence"></div><div class="pool" id="pl"></div><div class="row"><button class="btn primary" type="button" id="chk">Check</button><button class="btn" type="button" id="clr">Clear</button></div>';
+      var A=$('#ans',body),Pl=$('#pl',body);
+      function draw(){
+        A.innerHTML='';Pl.innerHTML='';
+        ans.forEach(function(o,k){var b=document.createElement('button');b.type='button';b.className='tok';b.textContent=o.t;b.onclick=function(){if(answered)return;ans.splice(k,1);pool.push(o);draw()};A.appendChild(b)});
+        pool.forEach(function(o,k){var b=document.createElement('button');b.type='button';b.className='tok';b.style.borderColor='var(--line)';b.textContent=o.t;b.onclick=function(){if(answered)return;pool.splice(k,1);ans.push(o);draw()};Pl.appendChild(b)});
+      }
+      draw();
+      $('#clr',body).onclick=function(){if(answered)return;pool=pool.concat(ans);ans=[];draw()};
+      $('#chk',body).onclick=function(){
+        if(answered)return;var got=ans.map(function(o){return o.t}).join(' ');
+        var good=[d.a].concat(d.alt||[]).some(function(a){return norm(a)===got});
+        $('#chk',body).disabled=true;finish(good,d.a);
+      };
+    }
+  }
+  ask();
+}
+
+/* ---------- mixed review ---------- */
+function viewReview(){
+  view={name:'review'};
+  var all=[];SECTIONS.forEach(function(s){s.drills.forEach(function(d){var c=Object.assign({},d);c.q=c.q;all.push(c)})});
+  var pick=shuffle(all).slice(0,15);
+  main().innerHTML='<div class="chead"><span class="eyebrow">Across all chapters</span><div class="big"><h1>Mixed review</h1></div><div class="en">Fifteen random drills from every stop. Use it when you want to find out what has faded.</div></div><div id="pane" style="margin-top:20px"></div>';
+  runner($('#pane'),pick,{title:'Mixed review',again:viewReview});
+}
+
+/* ---------- harmony lab ---------- */
+var VOW='aeıioöuü',FRONT='eiöü',VLESS='çfhkpsşt',ROUND='ouöü';
+var LOAN={saat:'e',meşgul:'ü',hâlâ:'a'};
+function lastV(w){var f=LOAN[w];if(f)return f;for(var i=w.length-1;i>=0;i--)if(VOW.indexOf(w[i])>-1)return w[i];return ''}
+function eV(w){return FRONT.indexOf(lastV(w))>-1?'e':'a'}
+function iV(w){var v=lastV(w);return {a:'ı',ı:'ı',e:'i',i:'i',o:'u',u:'u',ö:'ü',ü:'ü'}[v]||'i'}
+function endsV(w){return VOW.indexOf(w[w.length-1])>-1}
+function vless(w){return VLESS.indexOf(w[w.length-1])>-1}
+function soft(w){var n=0;for(var i=0;i<w.length;i++)if(VOW.indexOf(w[i])>-1)n++;return (n>1&&w[w.length-1]==='k')?w.slice(0,-1)+'ğ':w}
+var SUFS=[
+ ['Plural -ler / -lar','Unit 1',function(w){return w+'l'+eV(w)+'r'}],
+ ['In, at, on: -de / -da / -te / -ta','Unit 3',function(w){return w+(vless(w)?'t':'d')+eV(w)}],
+ ['From: -den / -dan / -ten / -tan','Unit 3',function(w){return w+(vless(w)?'t':'d')+eV(w)+'n'}],
+ ['To: -e / -a','Unit 3',function(w){return soft(w)+(endsV(w)?'y':'')+eV(w)}],
+ ['The (direct object): -i / -ı / -u / -ü','Unit 3',function(w){return soft(w)+(endsV(w)?'y':'')+iV(w)}],
+ ['I am: -im / -ım / -um / -üm','Unit 2',function(w){return w+(endsV(w)?'y':'')+iV(w)+'m'}],
+ ['Was (I): -dim / -dım / -tim ...','Unit 5',function(w){return w+(vless(w)?'t':'d')+iV(w)+'m'}],
+ ['My: -im / -ım / -m','Unit 2',function(w){return endsV(w)?w+'m':soft(w)+iV(w)+'m'}],
+ ['Your (formal): -iniz / -nız','Unit 2',function(w){return endsV(w)?w+'n'+iV(w)+'z':soft(w)+iV(w)+'n'+iV(w)+'z'}],
+ ['His, her, its (possessed): -i / -si','Unit 4',function(w){return endsV(w)?w+'s'+iV(w):soft(w)+iV(w)}],
+ ['Possessor, of: -in / -nin','Unit 4',function(w){return soft(w)+(endsV(w)?'n':'')+iV(w)+'n'}],
+ ['With: -li / -lı / -lu / -lü','Unit 4',function(w){return w+'l'+iV(w)}],
+ ['Without: -siz / -sız / -suz / -süz','Unit 4',function(w){return w+'s'+iV(w)+'z'}],
+ ['Person or job: -ci / -çi ...','Intro, Unit 4',function(w){return w+(vless(w)?'ç':'c')+iV(w)}],
+ ['-ness, for: -lik / -lık / -luk / -lük','Unit 9',function(w){return w+'l'+iV(w)+'k'}]
+];
+function qWord(w){return w+' m'+iV(w)}
+function viewLab(){
+  view={name:'lab'};
+  main().innerHTML='<div class="chead"><span class="eyebrow">Tool · units 1 to 5 and beyond</span><div class="big"><h1>Harmony lab</h1></div><div class="en">Type any Turkish word. See which vowel drives the endings and what each regular ending turns into.</div></div>'+
+  '<div class="labin"><input class="txt" id="lw" type="text" value="ev" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Turkish word" style="max-width:260px"><div id="lc"></div></div><div id="lo"></div>'+
+  '<p class="foot" style="margin-top:24px">The lab shows the regular pattern. Real words have exceptions (some loan words and a few one-syllable words), so treat it as a coach, not a dictionary. Words ending in k lose it to ğ only when they have more than one syllable.</p>';
+  var inp=$('#lw');$('#lc').appendChild(charBar(inp));
+  function go(){
+    var w=trLower(inp.value.trim().split(/\s+/)[0]||'');
+    if(!w||!lastV(w)){$('#lo').innerHTML='<div class="fb no"><b>No vowel found.</b>Type a Turkish word, for example kitap, göz or okul.</div>';return}
+    var v=lastV(w),e=eV(w),i=iV(w);
+    var grid=[['a','ı','o','u'],['e','i','ö','ü']].map(function(row){return row.map(function(x){return '<div class="'+(x===v?'on':'')+'">'+x+'<small>'+({a:'back',ı:'back',o:'back',u:'back',e:'front',i:'front',ö:'front',ü:'front'}[x])+(ROUND.indexOf(x)>-1?', round':', flat')+'</small></div>'}).join('')}).join('');
+    var h='<p>Last vowel of <b class="tr">'+esc(w)+'</b> is <b>'+esc(v)+'</b>'+(LOAN[w]?' (this loan word is pronounced with a front vowel)':'')+'. It is '+(FRONT.indexOf(v)>-1?'a front':'a back')+', '+(ROUND.indexOf(v)>-1?'rounded':'unrounded')+' vowel.</p><div class="vow">'+grid+'</div>'+
+    '<p style="margin-bottom:14px"><b>e-type endings</b> use <span class="mono">'+e+'</span> &nbsp; <b>i-type endings</b> use <span class="mono">'+i+'</span> &nbsp; Last sound is '+(vless(w)?'<b>voiceless</b>, so d becomes t and c becomes ç':'not voiceless, so d and c stay')+'.</p>';
+    h+='<div class="tw"><table><thead><tr><th>Ending</th><th>Result</th><th>Taught in</th></tr></thead><tbody>';
+    SUFS.forEach(function(s){var r=s[2](w);var p=0;while(p<w.length&&p<r.length&&w[p]===r[p])p++;h+='<tr><td>'+esc(s[0])+'</td><td class="suf">'+esc(r.slice(0,p))+'<b>'+esc(r.slice(p))+'</b></td><td class="muted">'+s[1]+'</td></tr>'});
+    h+='<tr><td>Question word: mı / mi / mu / mü</td><td class="suf">'+esc(w)+' <b>m'+i+'</b>?</td><td class="muted">Unit 1</td></tr></tbody></table></div>';
+    $('#lo').innerHTML=h;
+  }
+  inp.oninput=go;go();
+}
+
+/* ---------- verb ladder ---------- */
+var LADDER=[
+ ['gel!','come! (informal)','3','Stem alone is the informal command.'],['gelin! / geliniz!','come! (formal / very formal)','3','Add -in or -iniz.'],['gelme!','don\'t come!','3','-me after the stem.'],['gelmek','to come','3','Dictionary form, stem + -mek.'],
+ ['geliyorum','I am coming','4','Stem + -iyor + person.'],['gelmiyorum','I am not coming','4','-me- before -iyor.'],['geliyor musunuz?','are you coming?','4','mı/mi goes in the middle.'],['gelmek istiyorum','I want to come','4','Infinitive + istiyorum.'],
+ ['geldim','I came','5','Stem + -di + person.'],['gelmedim','I did not come','5','-me- before -di.'],['geldin mi?','did you come?','5','mı/mi after the ending.'],
+ ['geleceğim','I will come','6','Stem + -ecek; k softens to ğ before a vowel.'],['gelmeyeceğim','I will not come','6','-me- plus buffer y.'],['gelsene','why don\'t you come','6','-sene suggestion.'],
+ ['gelirim','I come / I will come / would you come?','7','The -r tense: requests, offers, habits.'],['gelmem','I do not come','7','Ben and biz forms drop the z.'],['gelen','the one who comes','7','-en adjective (the doer).'],['gelerek','by coming, coming','7','-erek.'],
+ ['gelebilirim','I can / might come','8','-ebil- before the tense.'],['gelemem','I cannot come','8','-e- before -me-.'],['geleyim / gelelim / gelsin','let me / let us / let him come','8','Let forms.'],
+ ['gelmeli','he must come','9','-meli.'],['gelmem lazım','I need to come','9','Short infinitive + possessed + lazım.'],['gelmeyi seviyorum','I like coming','9','Short infinitive + -i.'],
+ ['gelirsem','if I come','10','-r tense + -se- + person.'],['gelirse memnun olurum','if he comes I will be glad','10','If clause then -r tense.'],
+ ['gelmiş','apparently he came','11','-miş: reported, discovered, story.'],['gelince / gelirken / geldikten sonra / gelmeden önce','on coming / while / after / before','11','Time linkers.'],
+ ['geldiğim ev','the house I came to','12','-dik adjective with possessive.'],['geleceğim yer','the place I will come to','12','-ecek adjective.'],['gelip gitti','came and went','12','-ip chains actions.'],
+ ['geliyordum','I was coming','13','Past continuous.'],['gelmiştim','I had come','13','Past perfect.'],['geldiğimi söyledi','he said I came','13','-dik noun + -i.'],
+ ['gelirdim','I used to come','14','-r tense + past of to be.'],['getirmek','to bring (cause to come)','14','Causative.'],['gelişmek','to develop / come together','14','Reciprocal -iş.'],
+ ['yapılır','it is done (passive)','15','Stem + -il/-in/-n: gelmek has no ordinary passive, so yapmak shows it.'],['gelecektim','I was going to come','15','Past future -ecekti.'],
+ ['gelseydim','if I had come / if I came','16','-seydi conditional.'],['gelir gelmez','as soon as he comes','16','Positive then negative -r tense.']
+];
+function viewLadder(){
+  view={name:'ladder'};
+  var h='<div class="chead"><span class="eyebrow">Reference · the whole book on one verb</span><div class="big"><h1>Verb ladder</h1></div><div class="en">Every form the book builds, shown on gelmek (and yapmak where gelmek cannot take the form). Each rung links to its chapter.</div></div><div class="tw" style="margin-top:20px"><table><thead><tr><th>Form</th><th>Meaning</th><th>Chapter</th><th>How it is built</th></tr></thead><tbody>';
+  LADDER.forEach(function(r){h+='<tr><td class="tr mono">'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td><a href="#u'+r[2]+'">Unit '+r[2]+'</a></td><td class="muted">'+esc(r[3])+'</td></tr>'});
+  h+='</tbody></table></div>';
+  main().innerHTML=h;
+}
+
+/* ---------- boot ---------- */
+shell();
+window.addEventListener('hashchange',route);
+route();
+window.__tg={sections:SECTIONS,pct:pct};
+})();
+
+</script>
+</body>
+</html>
