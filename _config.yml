@@ -2,6 +2,7 @@
 # but is not published on the site.
 exclude:
   - notes/
+  - private/
   - scripts/
   - node_modules/
   - package.json
