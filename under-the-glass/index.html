@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Under the Glass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #e9e3d6;
+    --paper-dim: #b9b2a3;
+    --glass: rgba(220, 235, 240, .55);
+    --ember: #e0a160;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    display: grid; place-items: center;
+    padding: 16px;
+    background: var(--ink); color: var(--paper);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 20px;
+  }
+  form { width: 100%; max-width: 340px; text-align: center; }
+  form[hidden] { display: none; }
+  h1 { font-family: "Caveat", cursive; font-weight: 700; font-size: 2.6rem; line-height: 1; margin-bottom: 1.6rem; }
+  label { display: block; color: var(--paper-dim); margin-bottom: .5rem; }
+  input {
+    width: 100%; padding: .7rem .9rem;
+    font: inherit; font-size: 16px; color: var(--paper);
+    background: transparent;
+    border: 1px solid var(--glass); border-radius: 2px;
+  }
+  button {
+    width: 100%; margin-top: .8rem; padding: .55rem 1rem;
+    font-family: "Caveat", cursive; font-size: 1.5rem;
+    color: var(--ink); background: var(--paper);
+    border: 0; border-radius: 2px; cursor: pointer;
+  }
+  button:disabled { opacity: .6; cursor: wait; }
+  input:focus-visible, button:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+  .status { min-height: 1.6em; margin-top: 1rem; font-size: 1.05rem; color: var(--ember); }
+</style>
+</head>
+<body>
+<form id="unlock" hidden>
+  <h1>under the glass</h1>
+  <label for="key">key</label>
+  <input id="key" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false" required>
+  <button type="submit">open</button>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+</form>
+
+<script src="vault-crypto.js"></script>
+<script>
+  const UNAVAILABLE = 'The library is unavailable right now.';
+  const form = document.getElementById('unlock');
+  const input = document.getElementById('key');
+  const button = form.querySelector('button');
+  const status = document.getElementById('status');
+
+  const show = (message = '') => {
+    status.textContent = message;
+    form.hidden = false;
+    input.focus();
+  };
+
+  async function loadMeta() {
+    const response = await fetch('vault/meta.json', { cache: 'no-cache' });
+    if (!response.ok) throw new Error('no vault');
+    return response.json();
+  }
+
+  async function enter() {
+    await navigator.serviceWorker.register('sw.js', { scope: './' });
+    const { active } = await navigator.serviceWorker.ready;
+    active.postMessage('keys-changed');
+    location.replace('open/index.html');
+  }
+
+  // Goes through the service worker too, since it may be holding the old key in memory.
+  async function lock() {
+    await Vault.clearKeys();
+    const registration = await navigator.serviceWorker.getRegistration('./');
+    if (registration && registration.active) registration.active.postMessage('keys-changed');
+  }
+
+  async function tryKey(passphrase) {
+    const meta = await loadMeta();
+    const keys = await Vault.deriveKeys(passphrase.trim(), meta);
+    if (!await Vault.fits(keys, meta)) return false;
+    await Vault.saveKeys(keys);
+    await enter();
+    return true;
+  }
+
+  // Reads what the address asked for. Runs on load and again if a bookmark is
+  // tapped while this page is already open, which doesn't reload it.
+  async function route() {
+    const hash = location.hash;
+    // Takes the key out of the address bar before anything else can happen or fail.
+    if (hash) history.replaceState(null, '', location.pathname);
+
+    if (!('serviceWorker' in navigator)) return show('This browser can’t open the library.');
+    try {
+      if (hash === '#lock') {
+        await lock();
+        return show('locked.');
+      }
+      const linkKey = new URLSearchParams(hash.slice(1)).get('key');
+      if (linkKey) {
+        if (!await tryKey(linkKey)) show('that key doesn’t fit.');
+        return;
+      }
+      const saved = await Vault.loadKeys();
+      if (saved && await Vault.fits(saved, await loadMeta())) return await enter();
+      if (saved) await lock();
+      show();
+    } catch {
+      show(UNAVAILABLE);
+    }
+  }
+
+  // Attached before anything else runs, so the form can never submit to the server.
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    button.disabled = true;
+    status.textContent = '';
+    try {
+      if (!await tryKey(input.value)) {
+        input.select();
+        show('that key doesn’t fit.');
+      }
+    } catch {
+      show(UNAVAILABLE);
+    } finally {
+      button.disabled = false;
+    }
+  });
+  addEventListener('hashchange', () => { if (location.hash) route(); });
+  route();
+</script>
+</body>
+</html>

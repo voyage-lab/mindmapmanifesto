@@ -16,3 +16,8 @@ mind-brain/creative-visualization/*.jsx
 mind-brain/creative-visualization/shared.css
 mind-brain/creative-visualization/slides.js
 node_modules/
+
+# Private library plaintext and its key. Never commit while the repo is public.
+private/
+.library-key
+Claude outputs/
