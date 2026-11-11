@@ -278,6 +278,10 @@
   .sticky.on { transform: none; visibility: visible; }
   .sticky .btn { margin: 0 auto; }
 
+  /* what a session is and costs: once under the hero button, once above the form */
+  .facts { margin-top: .35rem; font-size: 1.15rem; color: var(--paper); }
+  .offer { margin-top: .4rem; }
+
   @media (min-width: 900px) {
     body { font-size: 1.4rem; }
     .hero { justify-content: center; padding: 6rem max(7vw, calc((100vw - 1180px) / 2)) 3rem; }
@@ -317,6 +321,7 @@
       <p class="hero-body">You’re running on autopilot, on beliefs your subconscious picked up long ago. In a one-on-one VOYAGE session, we find the belief and where it started, and we clear it.</p>
       <a class="btn" href="#book" id="hero-book">Book your VOYAGE session</a>
       <p class="micro">Then I make you a recording built only for you.</p>
+      <p class="micro facts">One-on-one over video · 90 minutes · $150</p>
     </div>
   </section>
 
@@ -427,7 +432,8 @@
     </details>
     <details>
       <summary>What does it cost, and how long is it?</summary>
-      <p>Tell me what you want to change and I’ll write back with the price, the length and what to expect. Nothing is booked until you say yes.</p>
+      <!-- FOUNDING OFFER: when your first five clients are done, delete "My first five clients pay $75." -->
+      <p>A session is 90 minutes over video and costs $150. My first five clients pay $75. That includes the recording I make for you afterwards. Nothing is booked until you say yes.</p>
     </details>
     <details>
       <summary>Does this replace therapy or medical care?</summary>
@@ -437,6 +443,10 @@
 
   <section class="band" id="book">
     <h2>ready to switch off the autopilot?</h2>
+
+    <!-- FOUNDING OFFER: when your first five clients are done, delete this paragraph. -->
+    <p class="offer">I’m opening VOYAGE to my first five clients at $75 a session instead of $150. In return I ask for your honest feedback afterwards.</p>
+
     <form class="note" id="book-form">
       <span class="margin">book your VOYAGE session</span>
       <label for="name">your name</label>
@@ -555,6 +565,16 @@
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // Which link in bio sent them. Use mindmapmanifesto.com/?src=instagram (or tiktok,
+  // youtube) as the bio link on each platform, and every request says where it came from.
+  const params = new URLSearchParams(location.search);
+  const rawSource = (params.get('src') || params.get('utm_source') || '').toLowerCase();
+  let source = /^[a-z0-9_-]{1,30}$/.test(rawSource) ? rawSource : '';
+  try {
+    if (source) sessionStorage.setItem('voyage-src', source);
+    else source = sessionStorage.getItem('voyage-src') || '';
+  } catch (error) { /* private browsing: the request just goes without a source */ }
+
   // Booking requests go through EmailJS, the same account as the old contact page.
   // The public key is public by design: lock it to mindmapmanifesto.com under
   // Account → Security in the EmailJS dashboard.
@@ -578,7 +598,7 @@
     }
     const button = form.querySelector('button');
     const label = button.textContent;
-    const body = `VOYAGE session request\n\n${message.value}`;
+    const body = `VOYAGE session request${source ? ` (via ${source})` : ''}\n\n${message.value}`;
     button.disabled = true;
     button.textContent = 'sending…';
     status.textContent = '';
